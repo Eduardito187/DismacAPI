@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_address_extra');
             $table->unsignedBigInteger('id_localization');
             $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamp('updated_at')->nullable();
             $table->foreign('id_municipality')->references('id')->on('municipality')->onDelete('cascade');
             $table->foreign('id_country')->references('id')->on('country')->onDelete('cascade');
             $table->foreign('id_city')->references('id')->on('city')->onDelete('cascade');
