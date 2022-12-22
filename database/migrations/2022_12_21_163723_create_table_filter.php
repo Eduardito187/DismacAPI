@@ -33,9 +33,7 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('filter', function (Blueprint $table) {
-            $table->dropForeign('id_setting');
-            $table->dropIndex('id_setting');
-            $table->dropColumn('id_setting');
+            $table->dropConstrainedForeignId('id_setting');
         });
     }
 };

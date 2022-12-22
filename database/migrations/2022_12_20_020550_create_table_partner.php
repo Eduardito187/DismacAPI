@@ -38,12 +38,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('partner', function (Blueprint $table) {
-            $table->dropForeign('picture_profile');
-            $table->dropIndex('picture_profile');
-            $table->dropColumn('picture_profile');
-            $table->dropForeign('picture_front');
-            $table->dropIndex('picture_front');
-            $table->dropColumn('picture_front');
+            $table->dropConstrainedForeignId('picture_profile');
+            $table->dropConstrainedForeignId('picture_front');
         });
     }
 };

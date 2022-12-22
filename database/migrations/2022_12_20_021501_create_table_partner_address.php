@@ -29,12 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('partner_address', function (Blueprint $table) {
-            $table->dropForeign('id_partner');
-            $table->dropIndex('id_partner');
-            $table->dropColumn('id_partner');
-            $table->dropForeign('id_address');
-            $table->dropIndex('id_address');
-            $table->dropColumn('id_address');
+            $table->dropConstrainedForeignId('id_partner');
+            $table->dropConstrainedForeignId('id_address');
         });
     }
 };

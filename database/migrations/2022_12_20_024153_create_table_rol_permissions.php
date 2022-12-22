@@ -29,12 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('rol_permissions', function (Blueprint $table) {
-            $table->dropForeign('id_rol');
-            $table->dropIndex('id_rol');
-            $table->dropColumn('id_rol');
-            $table->dropForeign('id_permissions');
-            $table->dropIndex('id_permissions');
-            $table->dropColumn('id_permissions');
+            $table->dropConstrainedForeignId('id_rol');
+            $table->dropConstrainedForeignId('id_permissions');
         });
     }
 };

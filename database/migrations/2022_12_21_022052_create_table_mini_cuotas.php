@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('mini_cuotas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('meses')->nullable();
-            $table->double('cuotas', 10, 2)->nullable();
+            $table->integer('cuotas')->nullable();
+            $table->double('monto', 10, 2)->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });

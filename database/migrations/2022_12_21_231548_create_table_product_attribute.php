@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('catalog_store', function (Blueprint $table) {
+        Schema::create('product_attribute', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_catalog');
-            $table->foreign('id_catalog')->references('id')->on('catalog')->onDelete('cascade');
+            $table->longText('value');
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
+            $table->unsignedBigInteger('id_attribute');
+            $table->foreign('id_attribute')->references('id')->on('attributes')->onDelete('cascade');
             $table->unsignedBigInteger('id_store');
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
-            $table->unsignedBigInteger('id_account');
-            $table->foreign('id_account')->references('id')->on('account')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
@@ -33,10 +34,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catalog_store', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('id_catalog');
+        Schema::dropIfExists('product_attribute', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_product');
+            $table->dropConstrainedForeignId('id_attribute');
             $table->dropConstrainedForeignId('id_store');
-            $table->dropConstrainedForeignId('id_account');
         });
     }
 };

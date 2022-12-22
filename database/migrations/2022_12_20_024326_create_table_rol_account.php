@@ -29,12 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('rol_account', function (Blueprint $table) {
-            $table->dropForeign('id_rol');
-            $table->dropIndex('id_rol');
-            $table->dropColumn('id_rol');
-            $table->dropForeign('id_account');
-            $table->dropIndex('id_account');
-            $table->dropColumn('id_account');
+            $table->dropConstrainedForeignId('id_rol');
+            $table->dropConstrainedForeignId('id_account');
         });
     }
 };

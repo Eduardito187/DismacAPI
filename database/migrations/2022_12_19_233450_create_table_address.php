@@ -38,21 +38,11 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('address', function (Blueprint $table) {
-            $table->dropForeign('id_municipality');
-            $table->dropIndex('id_municipality');
-            $table->dropColumn('id_municipality');
-            $table->dropForeign('id_country');
-            $table->dropIndex('id_country');
-            $table->dropColumn('id_country');
-            $table->dropForeign('id_city');
-            $table->dropIndex('id_city');
-            $table->dropColumn('id_city');
-            $table->dropForeign('id_address_extra');
-            $table->dropIndex('id_address_extra');
-            $table->dropColumn('id_address_extra');
-            $table->dropForeign('id_localization');
-            $table->dropIndex('id_localization');
-            $table->dropColumn('id_localization');
+            $table->dropConstrainedForeignId('id_municipality');
+            $table->dropConstrainedForeignId('id_country');
+            $table->dropConstrainedForeignId('id_city');
+            $table->dropConstrainedForeignId('id_address_extra');
+            $table->dropConstrainedForeignId('id_localization');
         });
     }
 };

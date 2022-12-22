@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('filter_hide', function (Blueprint $table) {
+        Schema::create('product_category', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
+            $table->unsignedBigInteger('id_store');
+            $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
             $table->unsignedBigInteger('id_category');
             $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
-            $table->unsignedBigInteger('id_filter');
-            $table->foreign('id_filter')->references('id')->on('filter')->onDelete('cascade');
-            $table->boolean('status');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at')->nullable();
         });
     }
 
@@ -31,9 +30,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('filter_hide', function (Blueprint $table) {
+        Schema::dropIfExists('product_category', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_product');
+            $table->dropConstrainedForeignId('id_store');
             $table->dropConstrainedForeignId('id_category');
-            $table->dropConstrainedForeignId('id_filter');
         });
     }
 };

@@ -35,18 +35,10 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('catalog_category', function (Blueprint $table) {
-            $table->dropForeign('id_category');
-            $table->dropIndex('id_category');
-            $table->dropColumn('id_category');
-            $table->dropForeign('id_catalog');
-            $table->dropIndex('id_catalog');
-            $table->dropColumn('id_catalog');
-            $table->dropForeign('id_account');
-            $table->dropIndex('id_account');
-            $table->dropColumn('id_account');
-            $table->dropForeign('id_store');
-            $table->dropIndex('id_store');
-            $table->dropColumn('id_store');
+            $table->dropConstrainedForeignId('id_category');
+            $table->dropConstrainedForeignId('id_catalog');
+            $table->dropConstrainedForeignId('id_account');
+            $table->dropConstrainedForeignId('id_store');
         });
     }
 };

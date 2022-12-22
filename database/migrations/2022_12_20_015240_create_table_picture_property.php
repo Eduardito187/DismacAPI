@@ -33,12 +33,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('picture_property', function (Blueprint $table) {
-            $table->dropForeign('id_picture');
-            $table->dropIndex('id_picture');
-            $table->dropColumn('id_picture');
-            $table->dropForeign('id_dimensions');
-            $table->dropIndex('id_dimensions');
-            $table->dropColumn('id_dimensions');
+            $table->dropConstrainedForeignId('id_picture');
+            $table->dropConstrainedForeignId('id_dimensions');
         });
     }
 };

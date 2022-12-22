@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_ip', function (Blueprint $table) {
+        Schema::create('ip', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('public');
             $table->string('private');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_ip');
+        Schema::dropIfExists('ip');
     }
 };

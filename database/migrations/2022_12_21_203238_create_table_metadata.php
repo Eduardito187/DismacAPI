@@ -13,7 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        //Schema::rename('table_ip', 'ip');
+        Schema::create('metadata', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->longText('description');
+            $table->longText('keywords');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at')->nullable();
+        });
     }
 
     /**
@@ -23,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('metadata');
     }
 };

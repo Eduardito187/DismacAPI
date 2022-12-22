@@ -13,7 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        //Schema::rename('table_ip', 'ip');
+        Schema::create('type_attributes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('type', 50);
+            $table->string('extension', 50);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at')->nullable();
+        });
     }
 
     /**
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('type_attributes');
     }
 };

@@ -34,9 +34,7 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('category', function (Blueprint $table) {
-            $table->dropForeign('id_info_category');
-            $table->dropIndex('id_info_category');
-            $table->dropColumn('id_info_category');
+            $table->dropConstrainedForeignId('id_info_category');
         });
     }
 };

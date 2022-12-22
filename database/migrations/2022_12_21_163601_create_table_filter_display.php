@@ -35,12 +35,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('filter_display', function (Blueprint $table) {
-            $table->dropForeign('id_display_info');
-            $table->dropIndex('id_display_info');
-            $table->dropColumn('id_display_info');
-            $table->dropForeign('id_info_filter');
-            $table->dropIndex('id_info_filter');
-            $table->dropColumn('id_info_filter');
+            $table->dropConstrainedForeignId('id_display_info');
+            $table->dropConstrainedForeignId('id_info_filter');
         });
     }
 };

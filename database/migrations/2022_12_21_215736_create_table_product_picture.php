@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('clacom', function (Blueprint $table) {
-            $table->id();
-            $table->string('label', 50);
-            $table->string('code', 20);
+        Schema::create('product_picture', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
             $table->unsignedBigInteger('id_picture');
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at')->nullable();
+            $table->unsignedBigInteger('id_category');
+            $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
         });
     }
 
@@ -31,8 +30,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clacom', function (Blueprint $table) {
+        Schema::dropIfExists('product_picture', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_product');
             $table->dropConstrainedForeignId('id_picture');
+            $table->dropConstrainedForeignId('id_category');
         });
     }
 };

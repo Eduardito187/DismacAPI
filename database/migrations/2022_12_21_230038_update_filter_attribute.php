@@ -13,7 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        //Schema::rename('table_ip', 'ip');
+        Schema::table('filter', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_attribute');
+            $table->foreign('id_attribute')->references('id')->on('attributes')->onDelete('cascade');
+        });
     }
 
     /**
@@ -23,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('filter', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_attribute');
+        });
     }
 };

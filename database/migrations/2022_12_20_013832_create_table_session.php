@@ -32,12 +32,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('session', function (Blueprint $table) {
-            $table->dropForeign('id_ip');
-            $table->dropIndex('id_ip');
-            $table->dropColumn('id_ip');
-            $table->dropForeign('id_localization');
-            $table->dropIndex('id_localization');
-            $table->dropColumn('id_localization');
+            $table->dropConstrainedForeignId('id_ip');
+            $table->dropConstrainedForeignId('id_localization');
         });
     }
 };
