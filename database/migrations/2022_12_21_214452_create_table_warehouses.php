@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('code', 20);
             $table->boolean('base');
+            $table->unsignedBigInteger('id_store');
+            $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
@@ -30,6 +32,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('warehouses', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_store');
+        });
     }
 };

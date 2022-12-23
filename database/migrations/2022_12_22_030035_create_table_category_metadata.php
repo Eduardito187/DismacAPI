@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('product', function (Blueprint $table) {
+        Schema::table('category', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_metadata');
         });
     }

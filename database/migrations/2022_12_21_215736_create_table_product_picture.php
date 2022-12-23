@@ -18,8 +18,6 @@ return new class extends Migration
             $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
             $table->unsignedBigInteger('id_picture');
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');
-            $table->unsignedBigInteger('id_category');
-            $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
         });
     }
 
@@ -33,7 +31,6 @@ return new class extends Migration
         Schema::dropIfExists('product_picture', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_product');
             $table->dropConstrainedForeignId('id_picture');
-            $table->dropConstrainedForeignId('id_category');
         });
     }
 };
