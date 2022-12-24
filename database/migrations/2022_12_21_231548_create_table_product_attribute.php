@@ -14,11 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_attribute', function (Blueprint $table) {
-            $table->bigIncrements('id');
             $table->longText('value');
-            $table->unsignedBigInteger('id_product');
+            $table->unsignedBigInteger('id_product')->nullable();
             $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
-            $table->unsignedBigInteger('id_attribute');
+            $table->unsignedBigInteger('id_attribute')->nullable();
             $table->foreign('id_attribute')->references('id')->on('attributes')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

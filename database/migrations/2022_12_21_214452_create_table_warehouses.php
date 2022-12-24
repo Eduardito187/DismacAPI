@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code', 20);
             $table->boolean('base');
-            $table->unsignedBigInteger('id_store');
+            $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

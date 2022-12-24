@@ -18,9 +18,9 @@ return new class extends Migration
             $table->boolean('show_filter');
             $table->integer('id_pos');
             $table->boolean('sub_category_pos');
-            $table->unsignedBigInteger('id_picture');
+            $table->unsignedBigInteger('id_picture')->nullable();
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');
-            $table->unsignedBigInteger('id_content');
+            $table->unsignedBigInteger('id_content')->nullable();
             $table->foreign('id_content')->references('id')->on('content')->onDelete('cascade');
             $table->longText('url');
             $table->timestamp('created_at');

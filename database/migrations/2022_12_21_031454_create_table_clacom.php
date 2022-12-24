@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('label', 50);
             $table->string('code', 20);
-            $table->unsignedBigInteger('id_picture');
+            $table->unsignedBigInteger('id_picture')->nullable();
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

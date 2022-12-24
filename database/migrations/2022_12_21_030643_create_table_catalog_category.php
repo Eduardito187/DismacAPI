@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('catalog_category', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_category');
+            $table->unsignedBigInteger('id_category')->nullable();
             $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
-            $table->unsignedBigInteger('id_catalog');
+            $table->unsignedBigInteger('id_catalog')->nullable();
             $table->foreign('id_catalog')->references('id')->on('catalog')->onDelete('cascade');
-            $table->unsignedBigInteger('id_account');
+            $table->unsignedBigInteger('id_account')->nullable();
             $table->foreign('id_account')->references('id')->on('account')->onDelete('cascade');
-            $table->unsignedBigInteger('id_store');
+            $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

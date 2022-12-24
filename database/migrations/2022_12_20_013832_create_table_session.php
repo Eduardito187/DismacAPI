@@ -17,8 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('token');
             $table->dateTime('date', $precision = 0);
-            $table->unsignedBigInteger('id_ip');
-            $table->unsignedBigInteger('id_localization');
+            $table->unsignedBigInteger('id_ip')->nullable();
+            $table->unsignedBigInteger('id_localization')->nullable();
             $table->foreign('id_ip')->references('id')->on('ip')->onDelete('cascade');
             $table->foreign('id_localization')->references('id')->on('localization')->onDelete('cascade');
         });

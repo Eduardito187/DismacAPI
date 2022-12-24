@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('catalog_store', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_catalog');
+            $table->unsignedBigInteger('id_catalog')->nullable();
             $table->foreign('id_catalog')->references('id')->on('catalog')->onDelete('cascade');
-            $table->unsignedBigInteger('id_store');
+            $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
-            $table->unsignedBigInteger('id_account');
+            $table->unsignedBigInteger('id_account')->nullable();
             $table->foreign('id_account')->references('id')->on('account')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

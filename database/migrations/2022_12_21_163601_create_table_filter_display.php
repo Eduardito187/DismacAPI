@@ -18,9 +18,9 @@ return new class extends Migration
             $table->boolean('status');
             $table->boolean('navigation');
             $table->integer('position');
-            $table->unsignedBigInteger('id_display_info');
+            $table->unsignedBigInteger('id_display_info')->nullable();
             $table->foreign('id_display_info')->references('id')->on('filter_display_info')->onDelete('cascade');
-            $table->unsignedBigInteger('id_info_filter');
+            $table->unsignedBigInteger('id_info_filter')->nullable();
             $table->foreign('id_info_filter')->references('id')->on('filter_info')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

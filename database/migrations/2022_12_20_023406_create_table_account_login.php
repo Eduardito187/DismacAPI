@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('username');
             $table->longText('password');
             $table->boolean('status');
-            $table->unsignedBigInteger('id_account');
+            $table->unsignedBigInteger('id_account')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('id_account')->references('id')->on('account')->onDelete('cascade');

@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('filter_hide', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_category');
+            $table->unsignedBigInteger('id_category')->nullable();
             $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
-            $table->unsignedBigInteger('id_filter');
+            $table->unsignedBigInteger('id_filter')->nullable();
             $table->foreign('id_filter')->references('id')->on('filter')->onDelete('cascade');
             $table->boolean('status');
             $table->timestamp('created_at');

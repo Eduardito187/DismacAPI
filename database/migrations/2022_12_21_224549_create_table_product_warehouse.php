@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_warehouse', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_product');
+            $table->unsignedBigInteger('id_product')->nullable();
             $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
-            $table->unsignedBigInteger('id_warehouse');
+            $table->unsignedBigInteger('id_warehouse')->nullable();
             $table->foreign('id_warehouse')->references('id')->on('warehouses')->onDelete('cascade');
             $table->integer('stock');
             $table->timestamp('created_at');

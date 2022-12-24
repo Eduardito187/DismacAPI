@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('picture_property', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('format', 10);
-            $table->unsignedBigInteger('id_picture');
-            $table->unsignedBigInteger('id_dimensions');
+            $table->unsignedBigInteger('id_picture')->nullable();
+            $table->unsignedBigInteger('id_dimensions')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');

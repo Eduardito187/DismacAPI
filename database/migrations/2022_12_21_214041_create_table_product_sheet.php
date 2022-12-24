@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_sheet', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_product');
+            $table->unsignedBigInteger('id_product')->nullable();
             $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
-            $table->unsignedBigInteger('id_sheet');
+            $table->unsignedBigInteger('id_sheet')->nullable();
             $table->foreign('id_sheet')->references('id')->on('data_sheet')->onDelete('cascade');
         });
     }

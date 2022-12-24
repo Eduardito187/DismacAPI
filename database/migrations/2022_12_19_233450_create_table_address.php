@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('address', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_municipality');
-            $table->unsignedBigInteger('id_country');
-            $table->unsignedBigInteger('id_city');
-            $table->unsignedBigInteger('id_address_extra');
-            $table->unsignedBigInteger('id_localization');
+            $table->unsignedBigInteger('id_municipality')->nullable();
+            $table->unsignedBigInteger('id_country')->nullable();
+            $table->unsignedBigInteger('id_city')->nullable();
+            $table->unsignedBigInteger('id_address_extra')->nullable();
+            $table->unsignedBigInteger('id_localization')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('id_municipality')->references('id')->on('municipality')->onDelete('cascade');

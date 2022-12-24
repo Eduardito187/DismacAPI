@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('picture_property', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_property');
+            $table->unsignedBigInteger('id_property')->nullable();
             $table->foreign('id_property')->references('id')->on('partner')->onDelete('cascade');
         });
     }

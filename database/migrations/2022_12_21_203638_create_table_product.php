@@ -19,13 +19,13 @@ return new class extends Migration
             $table->double('price', 10, 2)->nullable();
             $table->string('sku');
             $table->integer('stock');
-            $table->unsignedBigInteger('id_brand');
+            $table->unsignedBigInteger('id_brand')->nullable();
             $table->foreign('id_brand')->references('id')->on('brand')->onDelete('cascade');
-            $table->unsignedBigInteger('id_clacom');
+            $table->unsignedBigInteger('id_clacom')->nullable();
             $table->foreign('id_clacom')->references('id')->on('clacom')->onDelete('cascade');
-            $table->unsignedBigInteger('id_metadata');
+            $table->unsignedBigInteger('id_metadata')->nullable();
             $table->foreign('id_metadata')->references('id')->on('metadata')->onDelete('cascade');
-            $table->unsignedBigInteger('id_mini_cuota');
+            $table->unsignedBigInteger('id_mini_cuota')->nullable();
             $table->foreign('id_mini_cuota')->references('id')->on('mini_cuotas')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

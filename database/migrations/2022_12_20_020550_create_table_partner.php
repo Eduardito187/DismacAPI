@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('razon_social')->nullable();
             $table->boolean('status');
             $table->string('legal_representative');
-            $table->unsignedBigInteger('picture_profile');
-            $table->unsignedBigInteger('picture_front');
+            $table->unsignedBigInteger('picture_profile')->nullable();
+            $table->unsignedBigInteger('picture_front')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('picture_profile')->references('id')->on('picture')->onDelete('cascade');

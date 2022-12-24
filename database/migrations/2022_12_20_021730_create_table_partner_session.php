@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('partner_session', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_partner');
-            $table->unsignedBigInteger('id_session');
+            $table->unsignedBigInteger('id_partner')->nullable();
+            $table->unsignedBigInteger('id_session')->nullable();
             $table->boolean('status');
             $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
             $table->foreign('id_session')->references('id')->on('session')->onDelete('cascade');

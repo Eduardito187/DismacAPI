@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code');
             $table->boolean('status');
             $table->boolean('in_menu');
-            $table->unsignedBigInteger('id_info_category');
+            $table->unsignedBigInteger('id_info_category')->nullable();
             $table->foreign('id_info_category')->references('id')->on('category_info')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

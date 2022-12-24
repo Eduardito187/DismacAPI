@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('rol_permissions', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_rol');
-            $table->unsignedBigInteger('id_permissions');
+            $table->unsignedBigInteger('id_rol')->nullable();
+            $table->unsignedBigInteger('id_permissions')->nullable();
             $table->foreign('id_rol')->references('id')->on('rol')->onDelete('cascade');
             $table->foreign('id_permissions')->references('id')->on('permissions')->onDelete('cascade');
         });

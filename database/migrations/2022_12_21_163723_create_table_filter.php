@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('code');
             $table->string('class');
-            $table->unsignedBigInteger('id_setting');
+            $table->unsignedBigInteger('id_setting')->nullable();
             $table->foreign('id_setting')->references('id')->on('filter_display')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();

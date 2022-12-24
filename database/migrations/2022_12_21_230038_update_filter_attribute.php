@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('filter', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_attribute');
+            $table->unsignedBigInteger('id_attribute')->nullable();
             $table->foreign('id_attribute')->references('id')->on('attributes')->onDelete('cascade');
         });
     }

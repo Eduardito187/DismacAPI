@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('category', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_metadata');
+            $table->unsignedBigInteger('id_metadata')->nullable();
             $table->foreign('id_metadata')->references('id')->on('metadata')->onDelete('cascade');
         });
     }
