@@ -7,48 +7,18 @@
     <title>Register Account | <?php echo env("APP_NAME"); ?></title>
 </head>
 <body>
-    <div class="column">
-        <div class="row flex center">
-            <div class="inline p5">
-                <img class="imgLogo" src="{{url('storage/fbnew.png')}}" />
+    <div style="width: 100%;">
+        <div style="width: 100%;display: flex;text-align: center;">
+            <div style="display: inline-block;padding: 5px;">
+                <img style="width: 50px;" src="{{url('storage/fbnew.png')}}" />
             </div>
-            <div class="inline p5">
-                <img class="imgLogo" src="{{url('storage/instanew.png')}}" />
+            <div style="display: inline-block;padding: 5px;">
+                <img style="width: 50px;" src="{{url('storage/instanew.png')}}" />
             </div>
-            <div class="inline p5">
-                <img class="imgLogo" src="{{url('storage/ytnew.png')}}" />
+            <div style="display: inline-block;padding: 5px;">
+                <img style="width: 50px;" src="{{url('storage/ytnew.png')}}" />
             </div>
         </div>
     </div>
 </body>
 </html>
-<style>
-    .column{
-        width: 100%;
-    }
-    .row{
-        width: 100%;
-    }
-    .flex{
-        display: flex;
-    }
-    .center{
-        text-align: center;
-    }
-    .p5{
-        padding: 5px;
-    }
-    .inline{
-        display: inline-block;
-    }
-    @media screen and (max-width: 767px) {
-        .imgLogo{
-            width: 50px;
-        }
-    }
-    @media screen and (min-width: 768px) {
-        .imgLogo{
-            width: 78px;
-        }
-    }
-</style>
