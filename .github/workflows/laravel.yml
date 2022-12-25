@@ -13,6 +13,10 @@ jobs:
 
     steps:
     - name: Generate key
-      run: php artisan key:generate
+      run: |
+        chmod +x artisan
+        php artisan key:generate
     - name: Migrate an Scheme
-      run: php artisan migrate
+      run: |
+        chmod +x artisan
+        php artisan migrate
