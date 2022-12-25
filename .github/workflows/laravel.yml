@@ -15,6 +15,6 @@ jobs:
     - name: Generate key
       run: |
         cd /
-        cd var/www/
+        cd var/www/html/
         ls
         pwd
