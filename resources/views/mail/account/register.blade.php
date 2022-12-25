@@ -10,13 +10,13 @@
     <div class="column">
         <div class="row flex center">
             <div class="inline p5">
-                <img src="{{url('store/fbnew.png')}}" />
+                <img src="{{url('storage/fbnew.png')}}" />
             </div>
             <div class="inline p5">
-                <img src="{{url('store/instanew.png')}}" />
+                <img src="{{url('storage/instanew.png')}}" />
             </div>
             <div class="inline p5">
-                <img src="{{url('store/ytnew.png')}}" />
+                <img src="{{url('storage/ytnew.png')}}" />
             </div>
         </div>
     </div>
