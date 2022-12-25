@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('table_example', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
         });
     }
 
