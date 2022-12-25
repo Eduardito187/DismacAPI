@@ -14,8 +14,8 @@ jobs:
     steps:
     - name: Generate key
       run: |
-        chmod +x artisan
-        php artisan key:generate
+        ls
+        pwd
     - name: Migrate an Scheme
       run: |
         chmod +x artisan
