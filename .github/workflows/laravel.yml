@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./../../DismacAPI
+        working-directory: ./../../../DismacAPI
 
     steps:
     - name: Generate key
