@@ -10,12 +10,7 @@ jobs:
   laravel-tests:
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./../../
 
     steps:
     - name: Generate key
-      run: |
-        echo "#!/bin/sh\n" \
-        "php artisan migrate\n"
+      run: php artisan migrate
