@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Partner as PartnerModel;
-use App\Mail\SendLogin;
+use App\Mail\RegisterAccount;
 use Mail;
 
 class Partner extends Controller
@@ -17,7 +17,8 @@ class Partner extends Controller
     public function index()
     {
         //find(1)->name
-        Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
+        //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
+        Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
         return response()->json(PartnerModel::all());
     }
 
