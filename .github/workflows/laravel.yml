@@ -14,11 +14,10 @@ jobs:
     steps:
     - name: Generate key
       run: |
-        cd /
-        cd home/
+        cd ./
         ls
         pwd
-    - name: Migrate an Scheme
-      run: |
-        chmod +x artisan
-        php artisan migrate
+        cd /
+        cd var/
+        ls
+        pwd
