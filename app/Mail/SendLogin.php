@@ -34,7 +34,7 @@ class SendLogin extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Send Login',
+            subject: 'Bienvenido',
         );
     }
 
