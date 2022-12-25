@@ -15,7 +15,7 @@ jobs:
     - name: Generate key
       run: |
         cd /
-        cd /home/u960392013/public_html/DismacAPI/
+        cd home/
         ls
         pwd
     - name: Migrate an Scheme
