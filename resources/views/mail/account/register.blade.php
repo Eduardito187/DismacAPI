@@ -10,13 +10,13 @@
     <div class="column">
         <div class="row flex center">
             <div class="inline p5">
-                <img src="{{url('storage/fbnew.png')}}" />
+                <img class="imgLogo" src="{{url('storage/fbnew.png')}}" />
             </div>
             <div class="inline p5">
-                <img src="{{url('storage/instanew.png')}}" />
+                <img class="imgLogo" src="{{url('storage/instanew.png')}}" />
             </div>
             <div class="inline p5">
-                <img src="{{url('storage/ytnew.png')}}" />
+                <img class="imgLogo" src="{{url('storage/ytnew.png')}}" />
             </div>
         </div>
     </div>
@@ -39,6 +39,16 @@
         padding: 5px;
     }
     .inline{
-        display: inline-flex;
+        display: inline-block;
+    }
+    @media screen and (max-width: 767px) {
+        .imgLogo{
+            width: 50px;
+        }
+    }
+    @media screen and (min-width: 768px) {
+        .imgLogo{
+            width: 78px;
+        }
     }
 </style>
