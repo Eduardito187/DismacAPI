@@ -14,8 +14,8 @@ jobs:
     steps:
     - name: Generate key
       run: |
-        ls
         cd /
+        ls
         pwd
     - name: Migrate an Scheme
       run: |
