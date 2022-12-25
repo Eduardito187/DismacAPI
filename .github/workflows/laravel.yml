@@ -17,4 +17,4 @@ jobs:
         php-version: '8.0'
     - uses: actions/checkout@v3
     - name: Migrate an Scheme
-      run: php artisan migrate
+      run: php ./../../artisan migrate
