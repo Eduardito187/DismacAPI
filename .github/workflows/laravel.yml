@@ -16,7 +16,5 @@ jobs:
       with:
         php-version: '8.0'
     - uses: actions/checkout@v3
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Migrate an Scheme
-      run: php artisan migrate --force
+      run: php artisan migrate
