@@ -12,5 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Generate key
+      run: php artisan key:generate
     - name: Migrate an Scheme
       run: php artisan migrate
