@@ -14,10 +14,7 @@ jobs:
     steps:
     - name: Generate key
       run: |
-        cd ./
-        ls
-        pwd
         cd /
-        cd var/
+        cd var/www/
         ls
         pwd
