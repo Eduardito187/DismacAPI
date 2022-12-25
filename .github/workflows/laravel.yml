@@ -1,0 +1,21 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "production" ]
+  pull_request:
+    branches: [ "production" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./../../
+
+    steps:
+    - name: Generate key
+      run: |
+        echo "#!/bin/sh\n" \
+        "php artisan migrate\n"
