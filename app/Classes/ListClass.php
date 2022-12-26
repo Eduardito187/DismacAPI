@@ -15,12 +15,13 @@ class ListClass{
         $this->from = $from;
         $this->title = $title;
         $this->message = $message;
-        $this->headers = "From:".$this->from;
+        $this->headers = "From:".$this->from."\r\n";
+        $this->headers = "Reply-To:".$this->from."\r\n";
         if ($cc != null) {
             if (is_array($cc)) {
-                $this->headers .= 'Cc:'.implode(', ', $cc);
+                $this->headers .= 'Cc:'.implode(', ', $cc)."\r\n";
             }else{
-                $this->headers .= 'Cc: '.$cc;
+                $this->headers .= 'Cc: '.$cc."\r\n";
             }
         }
         $this->headers .= "MIME-Version: 1.0\r\n";
