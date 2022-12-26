@@ -21,6 +21,7 @@ class Partner extends Controller
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
         //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
         $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@dismac.com.bo", "andyaguilera712@gmail.com", "Registro de cuenta", "<h1>HOLA</h1>");
+        $newEmail->createMail();
         return response()->json(PartnerModel::all());
     }
 
