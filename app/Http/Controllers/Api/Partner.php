@@ -36,7 +36,7 @@ class Partner extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json(PartnerModel::all());
+        return response()->json($request->all());
     }
 
     /**
