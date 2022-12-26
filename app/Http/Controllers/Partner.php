@@ -15,11 +15,12 @@ class Partner extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //find(1)->name
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
         //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
+        echo $request->header('Authorization');
         $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", "andyaguilera712@gmail.com", "Registro de cuenta", "<h1>HOLA</h1>");
         $newEmail->createMail();
         return response()->json(PartnerModel::all());
