@@ -23,6 +23,8 @@ class ListClass{
                 $this->headers .= 'Cc: '.$cc;
             }
         }
+        $this->headers .= "MIME-Version: 1.0\r\n";
+        $this->headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
     }
 
