@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Partner as PartnerModel;
 use App\Mail\RegisterAccount;
 use Mail;
+use App\Classes\ListClass;
 
 class Partner extends Controller
 {
@@ -18,17 +19,8 @@ class Partner extends Controller
     {
         //find(1)->name
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
-        Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
-        ini_set( 'display_errors', 1 );
-        error_reporting( E_ALL );
-        $from = "test@hostinger-tutorials.com";
-        $to = "andyaguilera712@gmail.com";
-        $subject = "Checking PHP mail";
-        $message = "PHP mail works just fine";
-        $headers = "From:" . $from;
-        mail($to,$subject,$message, $headers);
-        echo "The email message was sent.";
-
+        //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
+        $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@dismac.com.bo", "andyaguilera712@gmail.com", "Registro de cuenta", "<h1>HOLA</h1>");
         return response()->json(PartnerModel::all());
     }
 
