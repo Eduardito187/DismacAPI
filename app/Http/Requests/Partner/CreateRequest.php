@@ -26,8 +26,33 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            "user" => "required",
-            "password" => "required"
+            "partner" => array(
+                "name" => "required",
+                "domain" => "required",
+                "email" => "required",
+                "nit" => "required",
+                "razon_social" => "required",
+                "legal_representative" => "required",
+                "address" => array(
+                    "id_municipality" => "required",
+                    "id_country" => "required",
+                    "id_city" => "required",
+                    "address_extra" => array(
+                        "address" => "required",
+                        "extra" => "required"
+                    ),
+                    "localization" => array(
+                        "latitud" => "required",
+                        "longitud" => "required",
+                    )
+                )
+            ),
+            "account" => array(
+                "name" => "required",
+                "email" => "required",
+                "username" => "required",
+                "password" => "required"
+            )
         ];
     }
 }

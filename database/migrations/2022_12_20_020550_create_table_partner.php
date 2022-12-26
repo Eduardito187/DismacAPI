@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('partner', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('domain');
             $table->string('email');
             $table->string('token');
             $table->string('nit', 20)->nullable();
