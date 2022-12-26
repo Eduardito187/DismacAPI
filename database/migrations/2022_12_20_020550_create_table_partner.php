@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->string('token');
             $table->string('nit', 20)->nullable();
             $table->string('razon_social')->nullable();
             $table->boolean('status');

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Account extends Model
+class IntegrationsAPI extends Model
 {
     use HasFactory;
 
-    protected $table = 'account';
+    protected $table = 'integrations_api';
 
-    protected $fillable = ['name', 'email', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'token', 'domain', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

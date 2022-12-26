@@ -15,7 +15,6 @@ class CreateRequest extends FormRequest
      */
     public function authorize(Request  $request)
     {
-        echo $request->header('Authorization');
         return false;
     }
 

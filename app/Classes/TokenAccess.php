@@ -2,27 +2,34 @@
 
 namespace App\Classes;
 
+use App\Models\IntegrationsAPI as ModelIntegrations;
+use App\Models\Partner as ModelPartner;
+
 class TokenAccess{
 
     protected $token = "";
 
-    //tokens App -- Sockets
-    const SYSTEM_TOKENS = ["Bearer eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ", "Bearer SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"];
 
     public function __construct(string $token) {
         $this->token = $token;
     }
 
-    public function validateToken() {
-        if (in_array($this->token, self::SYSTEM_TOKENS)) {
-            # code...
+    public function validateAPI() {
+        $validateAPIS = ModelIntegrations::select('id')->where('token', $this->token)->get()->toArray();
+        if (count($validateAPIS) == 0) {
+            $this->getTokenAccount();
         }else{
-
+            return true;
         }
     }
 
-    public function getTokenpartner(){
-        
+    public function getTokenAccount(){
+        $validatePartner = ModelPartner::select('id')->where('token', $this->token)->get()->toArray();
+        if (count($validatePartner) == 0) {
+            return false;
+        }else{
+            return true;
+        }
     }
 }
 

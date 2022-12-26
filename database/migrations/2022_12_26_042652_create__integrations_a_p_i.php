@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('account', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email');
+        Schema::create('integrations_api', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->longText("token");
+            $table->string("domain")->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account');
+        Schema::dropIfExists('integrations_api');
     }
 };
