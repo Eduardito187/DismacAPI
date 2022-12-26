@@ -18,7 +18,7 @@ class Partner extends Controller
     {
         //find(1)->name
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
-        Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
+        Mail::to("eduardchavez302@gmail.com")->send(new RegisterAccount());
         return response()->json(PartnerModel::all());
     }
 
