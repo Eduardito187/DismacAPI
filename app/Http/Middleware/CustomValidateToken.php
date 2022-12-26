@@ -27,6 +27,8 @@ class CustomValidateToken
                 Log::debug("Rejected => ".$request->header('Authorization'));
                 return abort(403, "TOKEN decline");
             }
+        }else{
+            return abort(403, "Access decline");
         }
     }
 }
