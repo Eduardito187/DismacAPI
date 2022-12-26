@@ -10,6 +10,9 @@ class AddressExtra extends Model
     use HasFactory;
 
     protected $table = 'address_extra';
+
+    protected $fillable = ['address', 'extra'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

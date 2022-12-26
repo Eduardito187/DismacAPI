@@ -10,6 +10,9 @@ class MiniCuota extends Model
     use HasFactory;
 
     protected $table = 'mini_cuotas';
+
+    protected $fillable = ['meses', 'cuotas', 'monto', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('session', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('token');
             $table->dateTime('date', $precision = 0);
             $table->unsignedBigInteger('id_ip')->nullable();
             $table->unsignedBigInteger('id_localization')->nullable();

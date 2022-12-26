@@ -10,6 +10,9 @@ class Country extends Model
     use HasFactory;
 
     protected $table = 'country';
+
+    protected $fillable = ['name'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

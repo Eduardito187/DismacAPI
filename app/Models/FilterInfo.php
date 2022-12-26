@@ -10,6 +10,9 @@ class FilterInfo extends Model
     use HasFactory;
 
     protected $table = 'filter_info';
+
+    protected $fillable = ['title', 'body', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

@@ -10,6 +10,9 @@ class PictureProperty extends Model
     use HasFactory;
 
     protected $table = 'picture_property';
+
+    protected $fillable = ['format', 'id_picture', 'id_dimensions', 'created_at', 'updated_at', 'id_property'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

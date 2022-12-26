@@ -10,6 +10,9 @@ class AccountPartner extends Model
     use HasFactory;
 
     protected $table = 'account_partner';
+
+    protected $fillable = ['id_partner', 'id_account', 'status'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

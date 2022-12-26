@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Partner as PartnerModel;
 use App\Mail\RegisterAccount;
 use Mail;
 use App\Classes\ListClass;
+use App\Http\Requests\Partner\CreateRequest;
 
 class Partner extends Controller
 {
@@ -27,24 +29,15 @@ class Partner extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        print_r($request);
+        return response()->json(PartnerModel::all());
     }
 
     /**
@@ -55,18 +48,7 @@ class Partner extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json(["action" => "show"]);
     }
 
     /**
@@ -78,7 +60,7 @@ class Partner extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json(["action" => "update"]);
     }
 
     /**
@@ -89,6 +71,6 @@ class Partner extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json(["action" => "destroy"]);
     }
 }

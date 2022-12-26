@@ -10,6 +10,9 @@ class AccountLogin extends Model
     use HasFactory;
 
     protected $table = 'account_login';
+
+    protected $fillable = ['username', 'password', 'status', 'id_account', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

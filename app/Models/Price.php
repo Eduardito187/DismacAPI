@@ -10,6 +10,9 @@ class Price extends Model
     use HasFactory;
 
     protected $table = 'prices';
+
+    protected $fillable = ['price', 'special_price', 'from_date', 'to_date', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

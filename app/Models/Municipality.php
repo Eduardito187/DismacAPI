@@ -10,6 +10,9 @@ class Municipality extends Model
     use HasFactory;
 
     protected $table = 'municipality';
+
+    protected $fillable = ['name'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

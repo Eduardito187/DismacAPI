@@ -10,6 +10,9 @@ class Dimensions extends Model
     use HasFactory;
 
     protected $table = 'dimensions';
+
+    protected $fillable = ['width', 'high', 'long', 'volume', 'height'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

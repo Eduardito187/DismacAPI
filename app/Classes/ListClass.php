@@ -31,13 +31,11 @@ class ListClass{
 
     public function createMail() {
         try {
-            
             ini_set( 'display_errors', 1 );
             error_reporting( E_ALL );
             mail($this->to,$this->title,$this->message, $this->headers);
-            echo "SEND";
         } catch (\Throwable $th) {
-            echo $th->getMessage();
+            //
         }
     }
 }

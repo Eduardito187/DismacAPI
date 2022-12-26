@@ -10,6 +10,9 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'category';
+
+    protected $fillable = ['name', 'code', 'status', 'in_menu', 'id_info_category', 'created_at', 'updated_at', 'id_metadata'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

@@ -10,6 +10,9 @@ class DataSheet extends Model
     use HasFactory;
 
     protected $table = 'data_sheet';
+
+    protected $fillable = ['description'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

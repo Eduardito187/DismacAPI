@@ -10,6 +10,9 @@ class Ip extends Model
     use HasFactory;
 
     protected $table = 'ip';
+
+    protected $fillable = ['public', 'private', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

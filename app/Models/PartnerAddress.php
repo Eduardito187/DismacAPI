@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RolPermissions extends Model
+class PartnerAddress extends Model
 {
     use HasFactory;
 
-    protected $table = 'rol_permissions';
+    protected $table = 'partner_address';
 
-    protected $fillable = ['id_rol', 'id_permissions'];
+    protected $fillable = ['id_partner', 'id_address'];
 
     public $incrementing = false;
     public $timestamps = false;

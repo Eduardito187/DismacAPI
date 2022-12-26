@@ -10,6 +10,9 @@ class CatalogPartner extends Model
     use HasFactory;
 
     protected $table = 'catalog_partner';
+
+    protected $fillable = ['id_catalog', 'id_partner', 'id_account', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

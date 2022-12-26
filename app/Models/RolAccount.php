@@ -10,6 +10,9 @@ class RolAccount extends Model
     use HasFactory;
 
     protected $table = 'rol_account';
+
+    protected $fillable = ['id_rol', 'id_account'];
+
     public $incrementing = false;
     public $timestamps = false;
 }

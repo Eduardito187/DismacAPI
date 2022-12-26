@@ -10,6 +10,9 @@ class TypeAttribute extends Model
     use HasFactory;
 
     protected $table = 'type_attributes';
+
+    protected $fillable = ['type', 'extension', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

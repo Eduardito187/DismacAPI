@@ -10,6 +10,9 @@ class Warehouse extends Model
     use HasFactory;
 
     protected $table = 'warehouses';
+
+    protected $fillable = ['name', 'code', 'base', 'id_store', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

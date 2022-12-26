@@ -10,6 +10,9 @@ class Catalog extends Model
     use HasFactory;
 
     protected $table = 'catalog';
+
+    protected $fillable = ['name', 'code', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

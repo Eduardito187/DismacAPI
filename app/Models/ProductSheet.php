@@ -10,6 +10,9 @@ class ProductSheet extends Model
     use HasFactory;
 
     protected $table = 'product_sheet';
+
+    protected $fillable = ['id_product', 'id_sheet'];
+
     public $incrementing = false;
     public $timestamps = false;
 }

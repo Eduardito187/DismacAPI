@@ -10,6 +10,9 @@ class Rol extends Model
     use HasFactory;
 
     protected $table = 'rol';
+
+    protected $fillable = ['name', 'code', 'monto', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
