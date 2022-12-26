@@ -31,7 +31,7 @@ class RegisterAccount extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Registro de cuenta',
+            subject: 'Solicitud de registro',
         );
     }
 
