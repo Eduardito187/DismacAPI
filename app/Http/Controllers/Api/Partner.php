@@ -34,9 +34,8 @@ class Partner extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRequest $request)
+    public function store(Request $request)
     {
-        print_r($request);
         return response()->json(PartnerModel::all());
     }
 
