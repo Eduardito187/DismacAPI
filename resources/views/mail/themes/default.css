@@ -1,0 +1,15 @@
+.column{
+    width: 100%;
+}
+.rowCenter{
+    width: 100%;
+    display: flex;
+    text-align: center;
+}
+.itemRowFlex{
+    display: inline-block;
+    padding: 5px;
+}
+.imgSocial{
+    width: 50px;
+}
