@@ -18,7 +18,17 @@ class Partner extends Controller
     {
         //find(1)->name
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
-        Mail::to("eduardchavez302@gmail.com")->send(new RegisterAccount());
+        //Mail::to("eduardchavez302@gmail.com")->send(new RegisterAccount());
+        ini_set( 'display_errors', 1 );
+        error_reporting( E_ALL );
+        $from = "test@hostinger-tutorials.com";
+        $to = "eduardchavez302@gmail.com";
+        $subject = "Checking PHP mail";
+        $message = "PHP mail works just fine";
+        $headers = "From:" . $from;
+        mail($to,$subject,$message, $headers);
+        echo "The email message was sent.";
+
         return response()->json(PartnerModel::all());
     }
 
