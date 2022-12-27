@@ -12,6 +12,7 @@ class Ip{
 
     public function __construct(string $ip) {
         $this->IP = $ip;
+        $this->getGeo();
     }
 
     /**
