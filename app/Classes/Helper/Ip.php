@@ -18,7 +18,8 @@ class Ip{
      */
     public function getGeo(){
         $data = json_decode(file_get_contents("http://ipinfo.io/".$this->IP."/json"));
-        Log::debug("IP => ".json_encode($data));
+        $localization = explode (",", $data->loc);
+        Log::debug("IP => ".json_encode($localization));
     }
 }
 

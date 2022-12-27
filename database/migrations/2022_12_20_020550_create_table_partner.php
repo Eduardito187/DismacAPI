@@ -25,10 +25,12 @@ return new class extends Migration
             $table->string('legal_representative');
             $table->unsignedBigInteger('picture_profile')->nullable();
             $table->unsignedBigInteger('picture_front')->nullable();
+            $table->unsignedBigInteger('id_address')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('picture_profile')->references('id')->on('picture')->onDelete('cascade');
             $table->foreign('picture_front')->references('id')->on('picture')->onDelete('cascade');
+            $table->foreign('id_address')->references('id')->on('address')->onDelete('cascade');
         });
     }
 
@@ -42,6 +44,7 @@ return new class extends Migration
         Schema::dropIfExists('partner', function (Blueprint $table) {
             $table->dropConstrainedForeignId('picture_profile');
             $table->dropConstrainedForeignId('picture_front');
+            $table->dropConstrainedForeignId('id_address');
         });
     }
 };
