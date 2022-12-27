@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('municipality', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->unsignedBigInteger('id_city')->nullable();
+            $table->foreign('id_city')->references('id')->on('city')->onDelete('cascade');
         });
     }
 
@@ -26,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('municipality');
+        Schema::dropIfExists('municipality', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_city');
+        });
     }
 };

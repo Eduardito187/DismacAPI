@@ -9,6 +9,7 @@ use App\Mail\RegisterAccount;
 use Mail;
 use App\Classes\ListClass;
 use App\Http\Requests\Partner\CreateRequest;
+use App\Classes\Helper\Ip;
 
 class Partner extends Controller
 {
@@ -23,7 +24,7 @@ class Partner extends Controller
         //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
         //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
         echo $request->header('Authorization');
-        $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", "andyaguilera712@gmail.com", "Registro de cuenta", "<h1>HOLA</h1>");
+        $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", null, "Registro de cuenta", "<h1>HOLA</h1>");
         $newEmail->createMail();
         return response()->json(PartnerModel::all());
     }
@@ -36,6 +37,7 @@ class Partner extends Controller
      */
     public function store(Request $request)
     {
+        $api_ip = new Ip(request()->ip());
         return response()->json($request->all());
     }
 
