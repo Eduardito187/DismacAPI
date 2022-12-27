@@ -2,8 +2,6 @@
 
 namespace App\Classes\Helper;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class Ip{
@@ -19,8 +17,7 @@ class Ip{
      * @return array
      */
     public function getGeo(){
-        $url = "http://ipinfo.io/".$this->IP."/json";
-        $data = Http::get($url);
+        $data = json_decode(file_get_contents("http://ipinfo.io/".$this->IP."/json"));
         Log::debug("IP => ".json_encode($data));
     }
 }
