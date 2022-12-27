@@ -19,10 +19,9 @@ class Ip{
      * @return array
      */
     public function getGeo(){
-        $ip = request()->ip();
         $url = "http://ip-api.com/".$this->IP;
         $data = Http::get($url);
-        Log::debug("Rejected => ".json_encode($data));
+        Log::debug("IP => ".json_encode($data));
     }
 }
 
