@@ -19,7 +19,7 @@ class Ip{
      * @return array
      */
     public function getGeo(){
-        $url = "http://ip-api.com/".$this->IP;
+        $url = "http://ipinfo.io/".$this->IP."/json";
         $data = Http::get($url);
         Log::debug("IP => ".json_encode($data));
     }
