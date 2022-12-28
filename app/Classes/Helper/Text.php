@@ -19,6 +19,13 @@ class Text{
     CONST AUTHORIZATION  = "Authorization";
     CONST TOKEN_DECLINE  = "TOKEN decline.";
     CONST ACCESS_DECLINE = "Access decline.";
+    CONST COLUMN_ID      = "id";
+    CONST COLUMN_NAME    = "name";
+    CONST COLUMN_ID_CITY = "id_city";
+    CONST COLUMN_TOKEN   = "token";
+    CONST COLUMN_DOMAIN  = "domain";
+    CONST COLUMN_CREATED = "created_at";
+    CONST COLUMN_UPDATED = "updated_at";
 
     public function __construct() {
         //
@@ -34,6 +41,55 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdated(){
+        return SELF::COLUMN_UPDATED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreated(){
+        return SELF::COLUMN_CREATED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(){
+        return SELF::COLUMN_DOMAIN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(){
+        return SELF::COLUMN_TOKEN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdCity(){
+        return SELF::COLUMN_ID_CITY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(){
+        return SELF::COLUMN_ID;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(){
+        return SELF::COLUMN_NAME;
     }
 
     /**

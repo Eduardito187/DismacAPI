@@ -6,9 +6,16 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Municipality as ModelMunicipality;
 use Illuminate\Support\Facades\DB;
+use App\Classes\Helper\Text;
 
 class Municipality extends Seeder
 {
+    protected $text;
+
+    public function __construct() {
+        $this->text = new Text();
+    }
+    
     /**
      * Run the database seeds.
      *
@@ -18,9 +25,9 @@ class Municipality extends Seeder
     {
         if (ModelMunicipality::count() == 0) {
             DB::table('municipality')->insert([
-                'id' => 1,
-                'name' => 'Santa Cruz de la Sierra',
-                'id_city' => 3
+                $this->text->getId() => 1,
+                $this->text->getName() => 'Santa Cruz de la Sierra',
+                $this->text->getIdCity() => 3
             ]);
         }
     }

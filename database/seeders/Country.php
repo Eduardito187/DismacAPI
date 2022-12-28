@@ -6,9 +6,16 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Country as ModelCountry;
 use Illuminate\Support\Facades\DB;
+use App\Classes\Helper\Text;
 
 class Country extends Seeder
 {
+    protected $text;
+
+    public function __construct() {
+        $this->text = new Text();
+    }
+    
     /**
      * Run the database seeds.
      *
@@ -18,8 +25,8 @@ class Country extends Seeder
     {
         if (ModelCountry::count() == 0) {
             DB::table('country')->insert([
-                'id' => 1,
-                'name' => 'Bolivia'
+                $this->text->getId() => 1,
+                $this->text->getName() => 'Bolivia'
             ]);
         }
     }

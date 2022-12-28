@@ -6,9 +6,16 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\City as ModelCity;
 use Illuminate\Support\Facades\DB;
+use App\Classes\Helper\Text;
 
 class City extends Seeder
 {
+    protected $text;
+
+    public function __construct() {
+        $this->text = new Text();
+    }
+    
     /**
      * Run the database seeds.
      *
@@ -18,40 +25,40 @@ class City extends Seeder
     {
         if (ModelCity::count() == 0) {
             DB::table('city')->insert([
-                'id' => 1,
-                'name' => 'Pando'
+                $this->text->getId() => 1,
+                $this->text->getName() => 'Pando'
             ]);
             DB::table('city')->insert([
-                'id' => 2,
-                'name' => 'Beni'
+                $this->text->getId() => 2,
+                $this->text->getName() => 'Beni'
             ]);
             DB::table('city')->insert([
-                'id' => 3,
-                'name' => 'Santa Cruz'
+                $this->text->getId() => 3,
+                $this->text->getName() => 'Santa Cruz'
             ]);
             DB::table('city')->insert([
-                'id' => 4,
-                'name' => 'La Paz'
+                $this->text->getId() => 4,
+                $this->text->getName() => 'La Paz'
             ]);
             DB::table('city')->insert([
-                'id' => 5,
-                'name' => 'Cochabamba'
+                $this->text->getId() => 5,
+                $this->text->getName() => 'Cochabamba'
             ]);
             DB::table('city')->insert([
-                'id' => 6,
-                'name' => 'Oruro'
+                $this->text->getId() => 6,
+                $this->text->getName() => 'Oruro'
             ]);
             DB::table('city')->insert([
-                'id' => 7,
-                'name' => 'Potosi'
+                $this->text->getId() => 7,
+                $this->text->getName() => 'Potosi'
             ]);
             DB::table('city')->insert([
-                'id' => 8,
-                'name' => 'Chuquisaca'
+                $this->text->getId() => 8,
+                $this->text->getName() => 'Chuquisaca'
             ]);
             DB::table('city')->insert([
-                'id' => 9,
-                'name' => 'Tarija'
+                $this->text->getId() => 9,
+                $this->text->getName() => 'Tarija'
             ]);
         }
     }
