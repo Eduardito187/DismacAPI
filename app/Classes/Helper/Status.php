@@ -15,7 +15,7 @@ class Status{
 
     /**
      * @param int $value
-     * @return boolean
+     * @return bool
      */
     public function convertBool($value){
         if ($value == self::VALUE_DISABLE) {
@@ -26,14 +26,14 @@ class Status{
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getEnable(){
         return self::BOOL_ENABLE;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getDisable(){
         return self::BOOL_DISABLE;

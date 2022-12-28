@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->longText('token')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });

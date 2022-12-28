@@ -10,7 +10,6 @@ class Ip{
 
     public function __construct(string $ip) {
         $this->IP = $ip;
-        $this->getGeo();
     }
 
     /**
@@ -18,8 +17,16 @@ class Ip{
      */
     public function getGeo(){
         $data = json_decode(file_get_contents("http://ipinfo.io/".$this->IP."/json"));
-        $localization = explode (",", $data->loc);
-        Log::debug("IP => ".json_encode($localization));
+        Log::debug("IP => ".$this->IP);
+        if ($this->IP == "127.0.0.1") {
+            $localization = ["0", "0"];
+        }else{
+            $localization = explode (",", $data->loc);
+        }
+        return [
+            "latitude" => $localization[0],
+            "longitude" => $localization[1]
+        ];
     }
 }
 

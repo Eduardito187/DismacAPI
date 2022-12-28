@@ -6,9 +6,19 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Classes\TokenAccess;
+use App\Classes\Helper\Text;
+use App\Classes\Helper\Status;
 
 class CustomValidateToken
 {
+    protected $text;
+    protected $status;
+
+    public function __construct() {
+        $this->text = new Text();
+        $this->status = new Status();
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -18,17 +28,17 @@ class CustomValidateToken
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->header('Authorization') != null) {
-            $tokenAccess = new TokenAccess($request->header('Authorization'));
-            if ($tokenAccess->validateAPI() == true) {
-                Log::debug("Token ON => ".$request->header('Authorization'));
+        if ($request->header($this->text->getAuthorization()) != null) {
+            $tokenAccess = new TokenAccess($request->header($this->text->getAuthorization()));
+            if ($tokenAccess->validateAPI() == $this->status->getEnable()) {
+                Log::debug("Token ON => ".$request->header($this->text->getAuthorization()));
                 return $next($request);
             }else{
-                Log::debug("Rejected => ".$request->header('Authorization'));
-                return abort(403, "TOKEN decline");
+                Log::debug("Rejected => ".$request->header($this->text->getAuthorization()));
+                return abort(403, $this->text->getTokenDecline());
             }
         }else{
-            return abort(403, "Access decline");
+            return abort(403, $this->text->getAccessDecline());
         }
     }
 }
