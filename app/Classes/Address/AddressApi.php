@@ -8,6 +8,7 @@ use App\Models\AddressExtra;
 use App\Models\Localization;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
+use App\Classes\Helper\Text;
 
 class AddressApi{
 
@@ -23,10 +24,15 @@ class AddressApi{
      * @var Status
      */
     protected $status;
+    /**
+     * @var Text
+     */
+    protected $text;
 
     public function __construct() {
         $this->date     = new Date();
         $this->status   = new Status();
+        $this->text     = new Text();
     }
 
     /**
@@ -35,8 +41,8 @@ class AddressApi{
      * @return void
      */
     public function create(array $address, array $geo){
-        $this->createAddressExtra($address["address_extra"]);
-        $ExtraAddress = $this->getAddressExtra($address["address_extra"]);
+        $this->createAddressExtra($address[$this->text->getAddressExtra()]);
+        $ExtraAddress = $this->getAddressExtra($address[$this->text->getAddressExtra()]);
         $this->createGeo($geo);
         $GEO = $this->getLocalization($geo);
         $this->createAddress($address, $ExtraAddress, $GEO);
@@ -57,9 +63,10 @@ class AddressApi{
      * @return void
      */
     private function setAddress(array $address, int $id_address_extra, int $id_localization){
-        $this->address = Address::where('id_municipality', $address["id_municipality"])->
-        where('id_country', $address["id_country"])->where('id_city', $address["id_city"])->
-        where('id_address_extra', $id_address_extra)->where('id_localization', $id_localization)->first();
+        $this->address = Address::where($this->text->getIdMunicipality(), $address[$this->text->getIdMunicipality()])->
+        where($this->text->getIdCountry(), $address[$this->text->getIdCountry()])->
+        where($this->text->getIdCity(), $address[$this->text->getIdCity()])->
+        where($this->text->getIdAddressExtra(), $id_address_extra)->where($this->text->getIdLocalization(), $id_localization)->first();
     }
 
     /**
@@ -67,9 +74,10 @@ class AddressApi{
      * @return int
      */
     private function getLocalization(array $GEO){
-        $GEO = Localization::select('id')->where('latitud', $GEO["latitude"])->where('longitud', $GEO["longitude"])->get()->toArray();
+        $GEO = Localization::select($this->text->getId())->where($this->text->getLatitud(), $GEO[$this->text->getLatitude()])->
+        where($this->text->getLongitud(), $GEO[$this->text->getLongitude()])->get()->toArray();
         if (count($GEO) > 0) {
-            return $GEO[0]["id"];
+            return $GEO[0][$this->text->getId()];
         }else{
             return 0;
         }
@@ -80,9 +88,11 @@ class AddressApi{
      * @return int
      */
     private function getAddressExtra(array $address_extra){
-        $ExtraAddress = AddressExtra::select('id')->where('address', $address_extra["address"])->where('extra', $address_extra["extra"])->get()->toArray();
+        $ExtraAddress = AddressExtra::select($this->text->getId())->
+        where($this->text->getAddress(), $address_extra[$this->text->getAddress()])->
+        where($this->text->getExtra(), $address_extra[$this->text->getExtra()])->get()->toArray();
         if (count($ExtraAddress) > 0) {
-            return $ExtraAddress[0]["id"];
+            return $ExtraAddress[0][$this->text->getId()];
         }else{
             return 0;
         }
@@ -97,9 +107,9 @@ class AddressApi{
     private function createAddress(array $address, int $id_address_extra, int $id_localization){
         try {
             $Address = new Address();
-            $Address->id_municipality = $address["id_municipality"];
-            $Address->id_country = $address["id_country"];
-            $Address->id_city = $address["id_city"];
+            $Address->id_municipality = $address[$this->text->getIdMunicipality()];
+            $Address->id_country = $address[$this->text->getIdCountry()];
+            $Address->id_city = $address[$this->text->getIdCity()];
             $Address->id_address_extra = $id_address_extra;
             $Address->id_localization = $id_localization;
             $Address->created_at = $this->date->getFullDate();
@@ -118,8 +128,8 @@ class AddressApi{
     private function createAddressExtra(array $addresExtra){
         try {
             $AddressExtra = new AddressExtra();
-            $AddressExtra->address = $addresExtra["address"];
-            $AddressExtra->extra = $addresExtra["extra"];
+            $AddressExtra->address = $addresExtra[$this->text->getAddress()];
+            $AddressExtra->extra = $addresExtra[$this->text->getExtra()];
             $AddressExtra->save();
             return true;
         } catch (\Throwable $th) {
@@ -134,8 +144,8 @@ class AddressApi{
     private function createGeo(array $geo){
         try {
             $Localization = new Localization();
-            $Localization->latitud = $geo["latitude"];
-            $Localization->longitud = $geo["longitude"];
+            $Localization->latitud = $geo[$this->text->getLatitude()];
+            $Localization->longitud = $geo[$this->text->getLongitude()];
             $Localization->save();
             return true;
         } catch (\Throwable $th) {

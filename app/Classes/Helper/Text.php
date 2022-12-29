@@ -6,6 +6,7 @@ class Text{
 
     CONST ADD_SUCCESS    = "Registro exitoso.";
     CONST COLUMN_ADDRESS = "address";
+    CONST COLUMN_EXTRA   = "extra";
     CONST COLUMN_PARTNER = "partner";
     CONST COLUMN_ACCOUNT = "account";
     CONST RESPONSE       = "response";
@@ -26,6 +27,29 @@ class Text{
     CONST COLUMN_DOMAIN  = "domain";
     CONST COLUMN_CREATED = "created_at";
     CONST COLUMN_UPDATED = "updated_at";
+    CONST LONGITUD       = "longitud";
+    CONST LONGITUDE      = "longitude";
+    CONST LATITUD        = "latitud";
+    CONST LATITUDE       = "latitude";
+    CONST ADDRESS_EXTRA  = "address_extra";
+    CONST ID_MUNICIPALITY= "id_municipality";
+    CONST ID_COUNTRY     = "id_country";
+    CONST IDADDRESS_EXTRA= "id_address_extra";
+    CONST ID_LOCALIZATION= "id_localization";
+    CONST LOCALHOST      = "127.0.0.1";
+    CONST IP_HOST        = "http://ipinfo.io/";
+    CONST BARRA_JSON     = "/json";
+    CONST CERO           = 0;
+    CONST COMA           = ",";
+    CONST ROUNDS         = "rounds";
+    CONST PARTNER_ALREADY= "Partner already registered.";
+    CONST NIT            = "nit";
+    CONST EMAIL          = "email";
+    CONST RAZON_SOCIAL   = "razon_social";
+    CONST L_REPRESENTA   = "legal_representative";
+    CONST USERNAME       = "username";
+    CONST PASSWORD       = "password";
+    CONST EMAIL_ALREADY  = "Email already registered.";
 
     public function __construct() {
         //
@@ -41,6 +65,167 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailAlready(){
+        return SELF::EMAIL_ALREADY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(){
+        return SELF::USERNAME;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(){
+        return SELF::PASSWORD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRazonSocial(){
+        return SELF::RAZON_SOCIAL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLegalRepresentative(){
+        return SELF::L_REPRESENTA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNit(){
+        return SELF::NIT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(){
+        return SELF::EMAIL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerAlready(){
+        return SELF::PARTNER_ALREADY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRounds(){
+        return SELF::ROUNDS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCero(){
+        return SELF::CERO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComa(){
+        return SELF::COMA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBarraJson(){
+        return SELF::BARRA_JSON;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalhost(){
+        return SELF::LOCALHOST;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpHost(){
+        return SELF::IP_HOST;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdLocalization(){
+        return SELF::ID_LOCALIZATION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdAddressExtra(){
+        return SELF::IDADDRESS_EXTRA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressExtra(){
+        return SELF::ADDRESS_EXTRA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdMunicipality(){
+        return SELF::ID_MUNICIPALITY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdCountry(){
+        return SELF::ID_COUNTRY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongitud(){
+        return SELF::LONGITUD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongitude(){
+        return SELF::LONGITUDE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLatitud(){
+        return SELF::LATITUD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLatitude(){
+        return SELF::LATITUDE;
     }
 
     /**
@@ -162,6 +347,13 @@ class Text{
         return SELF::ADD_SUCCESS;
     }
     
+    /**
+     * @return string
+     */
+    public function getExtra(){
+        return SELF::COLUMN_EXTRA;
+    }
+
     /**
      * @return string
      */

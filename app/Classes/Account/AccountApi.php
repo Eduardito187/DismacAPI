@@ -7,6 +7,7 @@ use App\Models\AccountLogin;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
+use App\Classes\Helper\Text;
 
 class AccountApi{
 
@@ -22,10 +23,15 @@ class AccountApi{
      * @var Status
      */
     protected $status;
+    /**
+     * @var Text
+     */
+    protected $text;
 
     public function __construct() {
         $this->date     = new Date();
         $this->status   = new Status();
+        $this->text     = new Text();
     }
 
     public function byId(){
@@ -63,7 +69,8 @@ class AccountApi{
      * @return void
      */
     private function setAccount(array $account){
-        $this->account = Account::where("email", $account["email"])->where('token', $this->generate64B($account["email"]))->first();
+        $this->account = Account::where($this->text->getEmail(), $account[$this->text->getEmail()])->
+        where($this->text->getToken(), $this->generate64B($account[$this->text->getEmail()]))->first();
     }
 
     /**
@@ -72,11 +79,11 @@ class AccountApi{
      */
     public function createAccount(array $account){
         try {
-            $this->validateEmail($account["email"]);
+            $this->validateEmail($account[$this->text->getEmail()]);
             $Account = new Account();
-            $Account->name = $account["name"];
-            $Account->email = $account["email"];
-            $Account->token = $this->generate64B($account["email"]);
+            $Account->name = $account[$this->text->getName()];
+            $Account->email = $account[$this->text->getEmail()];
+            $Account->token = $this->generate64B($account[$this->text->getEmail()]);
             $Account->created_at = $this->date->getFullDate();
             $Account->updated_at = null;
             $Account->save();
@@ -98,9 +105,9 @@ class AccountApi{
      * @param string $email
      */
     private function validateEmail(string $email){
-        $Emails = Account::select('id')->where('email', $email)->get()->toArray();
+        $Emails = Account::select($this->text->getId())->where($this->text->getEmail(), $email)->get()->toArray();
         if (count($Emails) > 0) {
-            throw new \Throwable('Email already registered');
+            throw new \Throwable($this->text->getEmailAlready());
         }
     }
 
@@ -111,8 +118,8 @@ class AccountApi{
     public function createAccountLoggin(array $account){
         try {
             $AccountLogin = new AccountLogin();
-            $AccountLogin->username = $account["username"];
-            $AccountLogin->password = $this->encriptionPawd($account["password"]);
+            $AccountLogin->username = $account[$this->text->getUsername()];
+            $AccountLogin->password = $this->encriptionPawd($account[$this->text->getPassword()]);
             $AccountLogin->status = $this->status->getEnable();
             $AccountLogin->id_account = $this->account->id;
             $AccountLogin->created_at = $this->date->getFullDate();

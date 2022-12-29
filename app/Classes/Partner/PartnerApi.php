@@ -8,6 +8,7 @@ use App\Models\AccountPartner;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
+use App\Classes\Helper\Text;
 
 class PartnerApi{
 
@@ -23,10 +24,15 @@ class PartnerApi{
      * @var Status
      */
     protected $status;
+    /**
+     * @var Text
+     */
+    protected $text;
 
     public function __construct() {
         $this->date     = new Date();
         $this->status   = new Status();
+        $this->text     = new Text();
     }
 
     /**
@@ -36,7 +42,7 @@ class PartnerApi{
      */
     public function create(array $partner, int $id_address){
         $this->createPartner($partner, $id_address);
-        $this->setByDomain($partner["domain"]);
+        $this->setByDomain($partner[$this->text->getDomain()]);
     }
 
     /**
@@ -50,9 +56,9 @@ class PartnerApi{
      * @param string $domain
      */
     private function validateDomain(string $domain){
-        $Partner = Partner::select('id')->where('domain', $domain)->get()->toArray();
+        $Partner = Partner::select($this->text->getId())->where($this->text->getDomain(), $domain)->get()->toArray();
         if (count($Partner) > 0) {
-            throw new \Throwable('Partner already registered');
+            throw new \Throwable($this->text->getPartnerAlready());
         }
     }
 
@@ -79,7 +85,7 @@ class PartnerApi{
      * @return void
      */
     private function setByDomain($domain){
-        $this->partner = Partner::where("domain", $domain)->first();
+        $this->partner = Partner::where($this->text->getDomain(), $domain)->first();
     }
 
     /**
@@ -89,16 +95,16 @@ class PartnerApi{
      */
     public function createPartner(array $partner, int $id_address){
         try {
-            $this->validateDomain($partner["domain"]);
+            $this->validateDomain($partner[$this->text->getDomain()]);
             $Partner = new Partner();
-            $Partner->name = $partner["name"];
-            $Partner->domain = $partner["domain"];
-            $Partner->email = $partner["email"];
-            $Partner->token = $this->getToken($partner["domain"]);
-            $Partner->nit = $partner["nit"];
-            $Partner->razon_social = $partner["razon_social"];
+            $Partner->name = $partner[$this->text->getName()];
+            $Partner->domain = $partner[$this->text->getDomain()];
+            $Partner->email = $partner[$this->text->getEmail()];
+            $Partner->token = $this->getToken($partner[$this->text->getDomain()]);
+            $Partner->nit = $partner[$this->text->getNit()];
+            $Partner->razon_social = $partner[$this->text->getRazonSocial()];
             $Partner->status = $this->status->getDisable();
-            $Partner->legal_representative = $partner["legal_representative"];
+            $Partner->legal_representative = $partner[$this->text->getLegalRepresentative()];
             $Partner->picture_profile = null;
             $Partner->picture_front = null;
             $Partner->id_address = $id_address;
@@ -117,7 +123,7 @@ class PartnerApi{
      */
     private function getToken(string $domain){
         return Hash::make($domain, [
-            'rounds' => 12,
+            $this->text->getRounds() => 12,
         ]);
     }
 }
