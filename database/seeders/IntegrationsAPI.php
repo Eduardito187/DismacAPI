@@ -24,7 +24,7 @@ class IntegrationsAPI extends Seeder
     public function run()
     {
         if (ModelIntegrations::count() == 0) {
-            DB::table('integrations_api')->insert([
+            DB::table($this->text->getIntegrationsApi())->insert([
                 $this->text->getId() => 1,
                 $this->text->getName() => 'TokenAPP',
                 $this->text->getToken() => 'Bearer eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',
@@ -32,7 +32,7 @@ class IntegrationsAPI extends Seeder
                 $this->text->getCreated() => date("Y-m-d H:i:s"),
                 $this->text->getUpdated() => null
             ]);
-            DB::table('integrations_api')->insert([
+            DB::table($this->text->getIntegrationsApi())->insert([
                 $this->text->getId() => 2,
                 $this->text->getName() => 'WebSockets',
                 $this->text->getToken() => 'Bearer SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',

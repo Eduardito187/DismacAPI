@@ -24,39 +24,39 @@ class City extends Seeder
     public function run()
     {
         if (ModelCity::count() == 0) {
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 1,
                 $this->text->getName() => 'Pando'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 2,
                 $this->text->getName() => 'Beni'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 3,
                 $this->text->getName() => 'Santa Cruz'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 4,
                 $this->text->getName() => 'La Paz'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 5,
                 $this->text->getName() => 'Cochabamba'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 6,
                 $this->text->getName() => 'Oruro'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 7,
                 $this->text->getName() => 'Potosi'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 8,
                 $this->text->getName() => 'Chuquisaca'
             ]);
-            DB::table('city')->insert([
+            DB::table($this->text->getCity())->insert([
                 $this->text->getId() => 9,
                 $this->text->getName() => 'Tarija'
             ]);

@@ -50,6 +50,13 @@ class Text{
     CONST USERNAME       = "username";
     CONST PASSWORD       = "password";
     CONST EMAIL_ALREADY  = "Email already registered.";
+    CONST CITY           = "city";
+    CONST COUNTRY        = "country";
+    CONST MUNICIPALITY   = "municipality";
+    CONST INTEGRATION    = "integrations_api";
+    CONST CODE           = "code";
+    CONST ID_ROL         = "id_rol";
+    CONST ID_PERMISSIONS = "id_permissions";
 
     public function __construct() {
         //
@@ -65,6 +72,55 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdRolPermissions(){
+        return SELF::ID_PERMISSIONS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdRol(){
+        return SELF::ID_ROL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(){
+        return SELF::CODE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIntegrationsApi(){
+        return SELF::INTEGRATION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipality(){
+        return SELF::MUNICIPALITY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry(){
+        return SELF::COUNTRY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity(){
+        return SELF::CITY;
     }
 
     /**

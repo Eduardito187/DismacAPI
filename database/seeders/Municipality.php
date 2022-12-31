@@ -24,7 +24,7 @@ class Municipality extends Seeder
     public function run()
     {
         if (ModelMunicipality::count() == 0) {
-            DB::table('municipality')->insert([
+            DB::table($this->text->getMunicipality())->insert([
                 $this->text->getId() => 1,
                 $this->text->getName() => 'Santa Cruz de la Sierra',
                 $this->text->getIdCity() => 3

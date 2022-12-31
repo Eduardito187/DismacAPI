@@ -24,7 +24,7 @@ class Country extends Seeder
     public function run()
     {
         if (ModelCountry::count() == 0) {
-            DB::table('country')->insert([
+            DB::table($this->text->getCountry())->insert([
                 $this->text->getId() => 1,
                 $this->text->getName() => 'Bolivia'
             ]);
