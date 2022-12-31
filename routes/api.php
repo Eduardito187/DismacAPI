@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Partner;
+use App\Http\Controllers\Api\Partner\Partner;
 use App\Http\Middleware\CustomValidateToken;
 
 /*

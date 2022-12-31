@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Partner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -62,6 +62,7 @@ class Partner extends Controller
             $this->accountApi->create($request->all()[$this->text->getAccount()]);
             $this->partnerApi->create($request->all()[$this->text->getPartner()], $this->addressApi->getAddressId());
             $this->partnerApi->setAccountDomain($this->partnerApi->getPartnerId(), $this->accountApi->getAccountId());
+            $this->partnerApi->setSuperAdminAccount($this->accountApi->getAccountId());
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
         } catch (\Throwable $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());

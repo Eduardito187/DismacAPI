@@ -5,6 +5,7 @@ namespace App\Classes\Partner;
 use Illuminate\Support\Facades\Log;
 use App\Models\Partner;
 use App\Models\AccountPartner;
+use App\Models\RolAccount;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
@@ -74,6 +75,22 @@ class PartnerApi{
             $Partner->id_account = $id_account;
             $Partner->status = $this->status->getEnable();
             $Partner->save();
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    /**
+     * @param int $id_account
+     * @return bool
+     */
+    public function setSuperAdminAccount(int $id_account){
+        try {
+            $RolAccount = new RolAccount();
+            $RolAccount->id_rol = 1;
+            $RolAccount->id_account = $id_account;
+            $RolAccount->save();
             return true;
         } catch (\Throwable $th) {
             return false;
