@@ -8,6 +8,9 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
+use App\Classes\Partner\PartnerApi;
+use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class AccountApi{
 
@@ -27,14 +30,25 @@ class AccountApi{
      * @var Text
      */
     protected $text;
+    /**
+     * @var PartnerApi
+     */
+    protected $partner;
 
     public function __construct() {
         $this->date     = new Date();
         $this->status   = new Status();
         $this->text     = new Text();
+        $this->partner  = new PartnerApi();
     }
 
-    public function byId(){
+    /**
+     * @param int $id
+     * @return array|null
+     */
+    public function byId(int $id){
+        $Account = Account::find($id);
+        return $Account;
     }
 
     public function byEmail(){
@@ -53,8 +67,8 @@ class AccountApi{
      */
     public function create(array $account){
         $this->createAccount($account);
-        $this->createAccountLoggin($account);
         $this->setAccount($account);
+        $this->createAccountLoggin($account);
     }
 
     /**
@@ -112,6 +126,20 @@ class AccountApi{
     }
 
     /**
+     * @param string $username
+     * @return array|null
+     */
+    private function getByUsernameLogin(string $username){
+        $AccountLogin = AccountLogin::select($this->text->getId(), $this->text->getPassword(), $this->text->getStatus(), $this->text->getIdAccount())->
+        where($this->text->getUsername(), $username)->get()->toArray();
+        if (count($AccountLogin) > 0) {
+            return $AccountLogin;
+        }else{
+            return null;
+        }
+    }
+
+    /**
      * @param array $account
      * @return bool
      */
@@ -136,7 +164,51 @@ class AccountApi{
      * @return string
      */
     private function encriptionPawd(string $password){
-        return Hash::make($password);
+        return hash_hmac($this->text->getEncryptMethod(), $password, env($this->text->getEncryptKey()));
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function validateLogin(Request $request){
+        return $this->validateAccountLogin($request->all()[$this->text->getUsername()], $request->all()[$this->text->getPassword()]);
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @return array
+     */
+    private function validateAccountLogin(string $username, string $password){
+        $arrayUser = explode ($this->text->getArroba(), $username);
+        if (count($arrayUser) == 2) {
+            if ($this->partner->issetDomain($arrayUser[0])) {
+                $response = $this->getByUsernameLogin($arrayUser[1]);
+                if ($response != null) {
+                    if ($response[0][$this->text->getStatus()] == 1) {
+                        if ($response[0][$this->text->getPassword()] == $this->encriptionPawd($password)) {
+                            $Account = $this->byId($response[0][$this->text->getIdAccount()]);
+                            if ($Account != null) {
+                                return $this->text->messageLogin(true, 0, $Account["token"]);
+                            }else{
+                                return $this->text->messageLogin(false, 6);
+                            }
+                        }else{
+                            return $this->text->messageLogin(false, 1);
+                        }
+                    }else{
+                        return $this->text->messageLogin(false, 2);
+                    }
+                }else{
+                    return $this->text->messageLogin(false, 3);
+                }
+            }else{
+                return $this->text->messageLogin(false, 4);
+            }
+        }else{
+            return $this->text->messageLogin(false, 5);
+        }
     }
 }
 

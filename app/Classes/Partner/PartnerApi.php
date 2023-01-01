@@ -64,6 +64,19 @@ class PartnerApi{
     }
 
     /**
+     * @param string $domain
+     * @return bool
+     */
+    public function issetDomain(string $domain){
+        $Partner = Partner::select($this->text->getId())->where($this->text->getDomain(), strtoupper($domain))->get()->toArray();
+        if (count($Partner) > 0) {
+            return  true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
      * @param array $id_partner
      * @param int $id_account
      * @return bool

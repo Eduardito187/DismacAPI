@@ -57,6 +57,20 @@ class Text{
     CONST CODE           = "code";
     CONST ID_ROL         = "id_rol";
     CONST ID_PERMISSIONS = "id_permissions";
+    CONST ARROBA         = "@";
+    CONST MESSAGES_LOGN  = [
+        "Bienvenido.",
+        "Contraseña erronea.",
+        "La cuenta se encuentra desactivada.",
+        "El usuario no se encuentra registrado.",
+        "El partner ingresado no existe.",
+        "Formato invalido de usuario.",
+        "La cuenta no existe."
+    ];
+    CONST ENCRYP_METHOD  = "sha256";
+    CONST ENCRYP_KEY     = "ENCRYPTION_KEY";
+    CONST ID_ACCOUNT     = "id_account";
+    CONST STATUS         = "status";
 
     public function __construct() {
         //
@@ -72,6 +86,55 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(){
+        return SELF::STATUS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdAccount(){
+        return SELF::ID_ACCOUNT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEncryptMethod(){
+        return SELF::ENCRYP_METHOD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEncryptKey(){
+        return SELF::ENCRYP_KEY;
+    }
+
+    /**
+     * @param bool $status
+     * @param int $position
+     * @param string $token
+     * @return array
+     */
+    public function messageLogin(bool $status,int $position, string $token = null){
+        return array(
+            "status" => $status,
+            "text" => SELF::MESSAGES_LOGN[$position],
+            "token" => $token
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getArroba(){
+        return SELF::ARROBA;
     }
 
     /**
