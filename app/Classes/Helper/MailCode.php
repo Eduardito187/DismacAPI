@@ -15,7 +15,7 @@ class MailCode{
      * @var Text
      */
     protected $text;
-    public function __construct(string $para, string $title, string $code, string $de = "platformdismac@grazcompany.com") {
+    public function __construct(string $para, string $title, string $code, string $de = "andyaguilera712@gmail.com") {
         $this->text = new Text();
         $this->para = $para;
         $this->de = $de;
@@ -88,7 +88,7 @@ class MailCode{
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
             $this->body = $this->getHeader().$this->getBody();
-            mail($this->para,$this->title,$this->body, $this->headers);
+            mail($this->para, $this->title, $this->body, $this->headers);
         } catch (\Throwable $th) {
             //
         }
