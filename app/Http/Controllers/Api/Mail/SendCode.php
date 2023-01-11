@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\Helper\MailCode;
+use App\Mail\Code;
+use Mail as Mailer;
 
 class SendCode extends Controller
 {
@@ -28,8 +30,11 @@ class SendCode extends Controller
     {
         $response = array();
         if (!is_null($request->all()["email"]) && !is_null($request->all()["code"])) {
+            Mailer::to($request->all()["email"])->send(new Code($request->all()["code"]));
+            /*
             $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
             $newEmail->createMail();
+            */
             $response = array("status" => true);
         }else{
             $response = array("status" => false);
