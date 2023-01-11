@@ -87,7 +87,8 @@ class MailCode{
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->para,$this->title,$this->getHeader().$this->getBody(), $this->headers);
+            $this->body = $this->getHeader().$this->getBody();
+            mail($this->para,$this->title,$this->body, $this->headers);
         } catch (\Throwable $th) {
             //
         }
