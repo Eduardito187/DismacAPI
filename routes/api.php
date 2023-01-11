@@ -37,7 +37,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::delete('partner/{id}', 'destroy');
     });
     Route::controller(SendCode::class)->group(function(){
-        Route::get('sendcode', 'store');
+        Route::post('sendcode', 'store');
     });
     Route::controller(Login::class)->group(function(){
         Route::post('login', 'store');
