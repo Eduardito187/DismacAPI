@@ -31,8 +31,7 @@ class MailCode{
      * @return string
      */
     private function getHeader(){
-        return `
-            <!DOCTYPE html>
+        return `<!DOCTYPE html>
             <html>
             <title`+$this->title+`</title>
             <head>
@@ -49,16 +48,14 @@ class MailCode{
                         padding: 40px;
                     }
                 </style>
-            </head>
-        `;
+            </head>`;
     }
 
     /**
      * @return string
      */
     private function getBody(){
-        return `
-        <body>
+        return `<body>
             <div style="width: 100%;background-color: white;">
                 <img src="https://dismacapi.grazcompany.com/storage/dismac_clasic.png" style="width: 100px;" />
             </div>
@@ -78,8 +75,7 @@ class MailCode{
                 </a>
             </div>
         </body>
-        </html>
-        `;
+        </html>`;
     }
 
 
@@ -88,7 +84,7 @@ class MailCode{
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
             $this->body = $this->getHeader().$this->getBody();
-            mail($this->para, $this->title, "", $this->headers);
+            mail($this->para, $this->title, $this->body, $this->headers);
         } catch (\Throwable $th) {
             //
         }
