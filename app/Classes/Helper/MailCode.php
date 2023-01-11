@@ -5,12 +5,12 @@ namespace App\Classes\Helper;
 use App\Classes\Helper\Text;
 
 class MailCode{
-    private $para = "";
-    private $de = "";
-    private $body = "";
-    private $title = "";
-    private $code = "";
-    protected $headers  = "";
+    private $para;
+    private $de;
+    private $body;
+    private $title;
+    private $code;
+    protected $headers;
     /**
      * @var Text
      */
@@ -88,7 +88,7 @@ class MailCode{
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
             $this->body = $this->getHeader().$this->getBody();
-            mail($this->para, $this->title, $this->body, $this->headers);
+            mail($this->para, $this->title, "", $this->headers);
         } catch (\Throwable $th) {
             //
         }
