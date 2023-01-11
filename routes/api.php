@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Partner\Partner;
+use App\Http\Controllers\Api\Mail\SendCode;
 use App\Http\Controllers\Api\Login\Login;
 use App\Http\Middleware\CustomValidateToken;
 
@@ -34,6 +35,9 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/show/{id}', 'show');
         Route::patch('partner/{id}', 'update');
         Route::delete('partner/{id}', 'destroy');
+    });
+    Route::controller(SendCode::class)->group(function(){
+        Route::get('sendcode', 'store');
     });
     Route::controller(Login::class)->group(function(){
         Route::post('login', 'store');
