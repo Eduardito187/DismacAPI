@@ -28,6 +28,7 @@ class SendCode extends Controller
     {
         $response = array();
         if (!is_null($request->all()["email"]) && !is_null($request->all()["code"])) {
+            print_r($request->all());
             $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
             $newEmail->createMail();
             $response = array("status" => true);
