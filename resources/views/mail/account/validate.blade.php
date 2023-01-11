@@ -17,23 +17,25 @@
     </style>
 </head>
 <body>
-    <div style="width: 100%;background-color: white;">
-        <img src="https://dismacapi.grazcompany.com/storage/dismac_clasic.png" style="width: 100px;" />
-    </div>
-    <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
-        <p>Copie el codigo para poder acceder al siguiente paso en el registro de la cuenta.</p>
-        <h2>{{$code}}</h2>
-    </div>
-    <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
-        <a href="https://www.facebook.com/DismacBolivia/" style="display: inline-block;">
-            <img src="https://dismacapi.grazcompany.com/storage/fbnew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
-        </a>
-        <a href="https://www.instagram.com/dismacbolivia/" style="display: inline-block;">
-            <img src="https://dismacapi.grazcompany.com/storage/instanew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
-        </a>
-        <a href="https://www.youtube.com/channel/UCa_XVvWTrq7C0IIq_Oiswqw/videos" style="display: inline-block;">
-            <img src="https://dismacapi.grazcompany.com/storage/ytnew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
-        </a>
+    <div>
+        <div style="width: 100%;background-color: white;">
+            <img src="https://dismacapi.grazcompany.com/storage/dismac_clasic.png" style="width: 100px;" />
+        </div>
+        <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
+            <p>Copie el codigo para poder acceder al siguiente paso en el registro de la cuenta.</p>
+            <h2>{{$code}}</h2>
+        </div>
+        <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
+            <a href="https://www.facebook.com/DismacBolivia/" style="display: inline-block;">
+                <img src="https://dismacapi.grazcompany.com/storage/fbnew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
+            </a>
+            <a href="https://www.instagram.com/dismacbolivia/" style="display: inline-block;">
+                <img src="https://dismacapi.grazcompany.com/storage/instanew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
+            </a>
+            <a href="https://www.youtube.com/channel/UCa_XVvWTrq7C0IIq_Oiswqw/videos" style="display: inline-block;">
+                <img src="https://dismacapi.grazcompany.com/storage/ytnew.png" style="width: 40px;height: 40px;border-radius: 20px;"/>
+            </a>
+        </div>
     </div>
 </body>
 </html>
