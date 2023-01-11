@@ -23,7 +23,7 @@ class MailCode{
         $this->code = $code;
 
         $this->headers = $this->text->getMailFrom().$this->de.$this->text->getLine();
-        $this->headers = $this->text->getMailReply().$this->de.$this->text->getLine();
+        $this->headers .= $this->text->getMailReply().$this->de.$this->text->getLine();
         $this->headers .= $this->text->getMailHeaders();
     }
 

@@ -23,7 +23,7 @@ class ListClass{
         $this->title = $title;
         $this->message = $message;
         $this->headers = $this->text->getMailFrom().$this->from.$this->text->getLine();
-        $this->headers = $this->text->getMailReply().$this->from.$this->text->getLine();
+        $this->headers .= $this->text->getMailReply().$this->from.$this->text->getLine();
         if ($cc != null) {
             if (is_array($cc)) {
                 $this->headers .= $this->text->getMailCc().implode(', ', $cc).$this->text->getLine();
