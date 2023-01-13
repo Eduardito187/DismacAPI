@@ -11,7 +11,7 @@ class ListClass{
     protected $from     = "";
     protected $title    = "";
     protected $message  = "";
-    protected $headers  = "";
+    protected $headers  = [];
     /**
      * @var Text
      */
