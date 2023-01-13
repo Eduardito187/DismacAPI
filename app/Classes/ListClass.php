@@ -25,10 +25,7 @@ class ListClass{
         $this->title = $title;
         $this->message = $message;
 
-        $this->headers[] = 'MIME-Version: 1.0';
-        $this->headers[] = 'Content-type: text/html; charset=utf-8';
-        $this->headers[] = 'To: User <eduardchavez302@gmail.com>';
-        $this->headers[] = 'From: Birthday Reminder <supportclient@grazcompany.com>';
+        /*
         if ($cc != null) {
             if (is_array($cc)) {
                 $this->headers[] = "Cc: ".$this->text->getMailCc().implode(', ', $cc).$this->text->getLine();
@@ -36,8 +33,15 @@ class ListClass{
                 $this->headers[] = "Cc: ".$this->text->getMailCc().$cc.$this->text->getLine();
             }
         }
-        $this->headers[] = "Date: ".date("r (T)");
-        $this->headers[] = "Sensitivity: Personal";
+        */
+        $this->headers = [
+            'MIME-Version' => 'MIME-Version: 1.0',
+            'Content-type' => 'text/html; charset=UTF-8',
+            'From' => "User <platformdismac@grazcompany.com>",
+            'Reply-To' => "platformdismac@grazcompany.com",
+            'Subject' => $this->title,
+            'X-Mailer' => 'PHP/' . phpversion(),
+        ];
     }
 
     public function createMail() {
