@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Address\City;
+use App\Http\Controllers\Api\Address\Country;
+use App\Http\Controllers\Api\Address\Municipality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Partner\Partner;
@@ -41,5 +44,14 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     });
     Route::controller(Login::class)->group(function(){
         Route::post('login', 'store');
+    });
+    Route::controller(Country::class)->group(function(){
+        Route::get('country', 'index');
+    });
+    Route::controller(City::class)->group(function(){
+        Route::get('city', 'index');
+    });
+    Route::controller(Municipality::class)->group(function(){
+        Route::post('municipality', 'store');
     });
 });
