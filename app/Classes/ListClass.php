@@ -23,24 +23,25 @@ class ListClass{
         $this->from = $from;
         $this->title = $title;
         $this->message = $message;
-        $this->headers = $this->text->getMailFrom().$this->from.$this->text->getLine();
-        $this->headers .= $this->text->getMailReply().$this->from.$this->text->getLine();
-        $this->headers .= 'X-Mailer => PHP/'.phpversion().$this->from.$this->text->getLine();
+
+        $this->headers[] = 'MIME-Version: 1.0';
+        $this->headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        $this->headers[] = 'To: User <eduardchavez302@gmail.com>';
+        $this->headers[] = 'From: Birthday Reminder <birthday@example.com>';
         if ($cc != null) {
             if (is_array($cc)) {
-                $this->headers .= $this->text->getMailCc().implode(', ', $cc).$this->text->getLine();
+                $this->headers[] = "Cc: ".$this->text->getMailCc().implode(', ', $cc).$this->text->getLine();
             }else{
-                $this->headers .= $this->text->getMailCc().$cc.$this->text->getLine();
+                $this->headers[] = "Cc: ".$this->text->getMailCc().$cc.$this->text->getLine();
             }
         }
-        $this->headers .= $this->text->getMailHeaders();
     }
 
     public function createMail() {
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to,$this->title,$this->message, $this->headers);
+            mail($this->to,$this->title,"OK", $this->headers);
         } catch (\Throwable $th) {
             //
         }
