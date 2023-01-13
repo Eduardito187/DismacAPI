@@ -23,8 +23,6 @@ class ListClass{
         $this->from = $from;
         $this->title = $title;
         $this->message = view('mail.account.validate', ['code' => $message]);
-        Log::debug("HTML => ".$this->message);
-
         /*
         if ($cc != null) {
             if (is_array($cc)) {
@@ -47,10 +45,8 @@ class ListClass{
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to, $this->title, "OK", $this->headers);
-            Log::debug("OK Message");
+            mail($this->to, $this->title, (string)$this->message, $this->headers);
         } catch (\Throwable $th) {
-            Log::debug("Message => ".$th->getMessage());
             //
         }
     }
