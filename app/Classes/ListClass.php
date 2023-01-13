@@ -5,6 +5,7 @@ namespace App\Classes;
 use App\Classes\Helper\Text;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Support\Facades\Log;
+use \Illuminate\Support\HtmlString;
 
 class ListClass{
 
@@ -23,7 +24,8 @@ class ListClass{
         $this->to = $to;
         $this->from = $from;
         $this->title = $title;
-        $this->message = $message;
+        $this->message = new HtmlString($message);
+        Log::debug("HTML => ".$this->message);
 
         /*
         if ($cc != null) {
