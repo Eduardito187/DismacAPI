@@ -3,9 +3,7 @@
 namespace App\Classes;
 
 use App\Classes\Helper\Text;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Support\Facades\Log;
-use \Illuminate\Support\HtmlString;
 
 class ListClass{
 
@@ -19,12 +17,12 @@ class ListClass{
      */
     protected $text;
 
-    public function __construct(string $to, string $from, array|string|null $cc, string $title, Content $message) {
+    public function __construct(string $to, string $from, array|string|null $cc, string $title, string $message) {
         $this->text = new Text();
         $this->to = $to;
         $this->from = $from;
         $this->title = $title;
-        $this->message = new HtmlString($message);
+        $this->message = view('mail.account.validate', ['code' => $message]);
         Log::debug("HTML => ".$this->message);
 
         /*
