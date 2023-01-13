@@ -3,9 +3,8 @@
 namespace App\Classes;
 
 use App\Classes\Helper\Text;
-use Illuminate\Support\Facades\Log;
 
-class ListClass{
+class MailCode{
 
     protected $to       = "";
     protected $from     = "";
@@ -35,7 +34,7 @@ class ListClass{
         $this->headers = [
             'MIME-Version' => 'MIME-Version: 1.0',
             'Content-type' => 'text/html; charset=UTF-8',
-            'From' => "User <platformdismac@grazcompany.com>",
+            'From' => "PlatformDismac <platformdismac@grazcompany.com>",
             'Reply-To' => "platformdismac@grazcompany.com",
             'X-Mailer' => 'PHP/' . phpversion()
         ];

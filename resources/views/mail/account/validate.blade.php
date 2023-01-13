@@ -23,7 +23,7 @@
         </div>
         <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
             <p>Copie el codigo para poder acceder al siguiente paso en el registro de la cuenta.</p>
-            <h2>{{$code}}</h2>
+            <h1>{{$code}}</h1>
         </div>
         <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
             <a href="https://www.facebook.com/DismacBolivia/" style="display: inline-block;">

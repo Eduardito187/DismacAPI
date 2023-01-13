@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Partner as PartnerModel;
 use App\Mail\RegisterAccount;
 use Mail;
-use App\Classes\ListClass;
+use App\Classes\MailCode;
 use App\Classes\Helper\Ip;
 use App\Classes\Account\AccountApi;
 use App\Classes\Address\AddressApi;
@@ -43,7 +43,7 @@ class Partner extends Controller
         //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
         echo $request->header('Authorization');
         /*
-        $newEmail = new ListClass("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", null, "Registro de cuenta", "<h1>HOLA</h1>");
+        $newEmail = new MailCode("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", null, "Registro de cuenta", "<h1>HOLA</h1>");
         $newEmail->createMail();
         */
         return response()->json(PartnerModel::all());
