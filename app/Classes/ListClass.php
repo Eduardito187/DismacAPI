@@ -27,7 +27,7 @@ class ListClass{
         $this->headers[] = 'MIME-Version: 1.0';
         $this->headers[] = 'Content-type: text/html; charset=utf-8';
         $this->headers[] = 'To: User <eduardchavez302@gmail.com>';
-        $this->headers[] = 'From: Birthday Reminder <birthday@example.com>';
+        $this->headers[] = 'From: Birthday Reminder <supportclient@grazcompany.com>';
         if ($cc != null) {
             if (is_array($cc)) {
                 $this->headers[] = "Cc: ".$this->text->getMailCc().implode(', ', $cc).$this->text->getLine();
