@@ -32,7 +32,7 @@ class SendCode extends Controller
         $response = array();
         if (!is_null($request->all()["email"]) && !is_null($request->all()["code"])) {
             //Mailer::to($request->all()["email"])->send(new Code($request->all()["code"]));
-            
+            Mail::mailer('sparkpost')->to($request->all()["email"])->send(new Code($request->all()["code"]));
             $newEmail = new ListClass($request->all()["email"], "platformdismac@grazcompany.com", null, "Código de verificación", new Content(view: 'mail.account.validate',with: ['code' => $request->all()["code"]]));
             $newEmail->createMail();
             $response = array("status" => true);
