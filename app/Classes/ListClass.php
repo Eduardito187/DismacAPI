@@ -3,6 +3,7 @@
 namespace App\Classes;
 
 use App\Classes\Helper\Text;
+use Illuminate\Mail\Mailables\Content;
 
 class ListClass{
 
@@ -16,7 +17,7 @@ class ListClass{
      */
     protected $text;
 
-    public function __construct(string $to, string $from, array|string|null $cc, string $title, string $message) {
+    public function __construct(string $to, string $from, array|string|null $cc, string $title, Content $message) {
         $this->text = new Text();
         $this->to = $to;
         $this->from = $from;
@@ -24,6 +25,7 @@ class ListClass{
         $this->message = $message;
         $this->headers = $this->text->getMailFrom().$this->from.$this->text->getLine();
         $this->headers .= $this->text->getMailReply().$this->from.$this->text->getLine();
+        $this->headers .= 'X-Mailer => PHP/'.phpversion().$this->from.$this->text->getLine();
         if ($cc != null) {
             if (is_array($cc)) {
                 $this->headers .= $this->text->getMailCc().implode(', ', $cc).$this->text->getLine();

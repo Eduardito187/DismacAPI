@@ -11,8 +11,8 @@ class Text{
     CONST COLUMN_ACCOUNT = "account";
     CONST RESPONSE       = "response";
     CONST RESPONSE_TEXT  = "responseText";
-    CONST MAIL_FROM      = "From:";
-    CONST MAIL_REPLY     = "Reply-To:";
+    CONST MAIL_FROM      = "From => ";
+    CONST MAIL_REPLY     = "Reply-To => ";
     CONST MAIL_HEADERS   = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n";
     CONST LINE_LINE      = "\r\n";
     CONST MAIL_CC        = "Cc:";
