@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use App\Classes\Helper\Text;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Support\Facades\Log;
 
 class ListClass{
 
@@ -43,8 +44,10 @@ class ListClass{
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to, $this->title, "OK", implode("\r\n", $this->headers));
+            mail($this->to, $this->title, "OK", $this->headers);
+            Log::debug("OK Message");
         } catch (\Throwable $th) {
+            Log::debug("Message => ".$th->getMessage());
             //
         }
     }
