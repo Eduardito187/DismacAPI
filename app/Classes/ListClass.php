@@ -39,8 +39,7 @@ class ListClass{
             'Content-type' => 'text/html; charset=UTF-8',
             'From' => "User <platformdismac@grazcompany.com>",
             'Reply-To' => "platformdismac@grazcompany.com",
-            'Subject' => $this->title,
-            'X-Mailer' => 'PHP/' . phpversion(),
+            'X-Mailer' => 'PHP/' . phpversion()
         ];
     }
 
