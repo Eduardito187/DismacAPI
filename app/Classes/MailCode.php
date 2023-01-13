@@ -7,7 +7,6 @@ use App\Classes\Helper\Text;
 class MailCode{
 
     protected $to       = "";
-    protected $from     = "";
     protected $title    = "";
     protected $message  = "";
     protected $headers  = [];
@@ -16,10 +15,9 @@ class MailCode{
      */
     protected $text;
 
-    public function __construct(string $to, string $from, array|string|null $cc, string $title, string $message) {
+    public function __construct(string $to, string $title, string $message) {
         $this->text = new Text();
         $this->to = $to;
-        $this->from = $from;
         $this->title = $title;
         $this->message = view('mail.account.validate', ['code' => $message]);
         /*
@@ -44,9 +42,9 @@ class MailCode{
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to, $this->title, (string)$this->message, $this->headers);
+            return mail($this->to, $this->title, (string)$this->message, $this->headers);
         } catch (\Throwable $th) {
-            //
+            return false;
         }
     }
 }

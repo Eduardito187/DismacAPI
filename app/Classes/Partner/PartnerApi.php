@@ -54,6 +54,19 @@ class PartnerApi{
     }
 
     /**
+     * @param string $email
+     * @return bool
+     */
+    public function validateEmail(string $email){
+        $Emails = Partner::select($this->text->getId())->where($this->text->getEmail(), $email)->get()->toArray();
+        if (count($Emails) > 0) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
      * @param string $domain
      */
     private function validateDomain(string $domain){

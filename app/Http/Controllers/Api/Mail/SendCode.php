@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Api\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\MailCode;
+use App\Classes\Partner\PartnerApi;
 
 class SendCode extends Controller
 {
+    protected $partnerApi;
+
+    public function __construct() {
+        $this->partnerApi = new PartnerApi();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,14 +33,16 @@ class SendCode extends Controller
      */
     public function store(Request $request)
     {
-        $response = array();
+        $state = null;
         if (!is_null($request->all()["email"]) && !is_null($request->all()["code"])) {
-            $newEmail = new MailCode($request->all()["email"], "platformdismac@grazcompany.com", null, "Código de verificación", $request->all()["code"]);
-            $newEmail->createMail();
-            $response = array("status" => true);
+            if ($this->partnerApi->validateEmail($request->all()["email"])) {
+                $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
+                $state = $newEmail->createMail();
+            }
         }else{
-            $response = array("status" => false);
+            $state = false;
         }
+        $response = array("status" => $state);
         return response()->json($response);
     }
 
