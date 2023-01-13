@@ -36,6 +36,7 @@ class ListClass{
             }
         }
         $this->headers[] = "Date: ".date("r (T)");
+        $this->headers[] = "Sensitivity: Personal";
     }
 
     public function createMail() {
