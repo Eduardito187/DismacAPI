@@ -25,7 +25,7 @@ class ListClass{
         $this->message = $message;
 
         $this->headers[] = 'MIME-Version: 1.0';
-        $this->headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        $this->headers[] = 'Content-type: text/html; charset=utf-8';
         $this->headers[] = 'To: User <eduardchavez302@gmail.com>';
         $this->headers[] = 'From: Birthday Reminder <birthday@example.com>';
         if ($cc != null) {
@@ -35,13 +35,14 @@ class ListClass{
                 $this->headers[] = "Cc: ".$this->text->getMailCc().$cc.$this->text->getLine();
             }
         }
+        $this->headers[] = "Date: ".date("r (T)");
     }
 
     public function createMail() {
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to,$this->title,"OK", implode("\r\n", $this->headers));
+            mail($this->to, $this->title, "OK", implode("\r\n", $this->headers));
         } catch (\Throwable $th) {
             //
         }
