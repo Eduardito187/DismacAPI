@@ -41,7 +41,7 @@ class ListClass{
         try {
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
-            mail($this->to,$this->title,"OK", $this->headers);
+            mail($this->to,$this->title,"OK", implode("\r\n", $this->headers));
         } catch (\Throwable $th) {
             //
         }
