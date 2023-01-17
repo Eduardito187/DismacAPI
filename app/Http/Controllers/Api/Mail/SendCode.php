@@ -37,27 +37,32 @@ class SendCode extends Controller
     public function store(Request $request)
     {
         $state = null;
-        if (!is_null($request->all()["email"]) && !is_null($request->all()["code"]) && !is_null($request->all()["type"])) {
-            $email = null;
-            if ($request->all()["type"] == "partner") {
-                if (!$this->partnerApi->validateEmail($request->all()["email"])) {
-                    $email = true;
-                }else{
-                    $email = false;
+        try {
+            if (!is_null($request->all()["email"]) && !is_null($request->all()["code"]) && !is_null($request->all()["type"])) {
+                $email = null;
+                if ($request->all()["type"] == "partner") {
+                    if (!$this->partnerApi->validateEmail($request->all()["email"])) {
+                        $email = true;
+                    }else{
+                        $email = false;
+                    }
+                }else if ($request->all()["type"] == "account") {
+                    if (!$this->accountApi->verifyEmail($request->all()["email"])) {
+                        $email = true;
+                    }else{
+                        $email = false;
+                    }
                 }
-            }else if ($request->all()["type"] == "account") {
-                if (!$this->accountApi->verifyEmail($request->all()["email"])) {
-                    $email = true;
-                }else{
-                    $email = false;
+                if ($email == false) {
+                    $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
+                    $state = $newEmail->createMail();
                 }
+            }else{
+                $state = false;
             }
-            if ($email == false) {
-                $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
-                $state = $newEmail->createMail();
-            }
-        }else{
-            $state = false;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $state = null;
         }
         $response = array("status" => $state);
         return response()->json($response);
