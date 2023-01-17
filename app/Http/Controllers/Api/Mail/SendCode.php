@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\MailCode;
 use App\Classes\Partner\PartnerApi;
+use App\Classes\Account\AccountApi;
 
 class SendCode extends Controller
 {
+    protected $accountApi;
     protected $partnerApi;
 
     public function __construct() {
+        $this->accountApi = new AccountApi();
         $this->partnerApi = new PartnerApi();
     }
 
@@ -22,7 +25,7 @@ class SendCode extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -34,8 +37,22 @@ class SendCode extends Controller
     public function store(Request $request)
     {
         $state = null;
-        if (!is_null($request->all()["email"]) && !is_null($request->all()["code"])) {
-            if ($this->partnerApi->validateEmail($request->all()["email"])) {
+        if (!is_null($request->all()["email"]) && !is_null($request->all()["code"]) && !is_null($request->all()["type"])) {
+            $email = null;
+            if ($request->all()["type"] == "partner") {
+                if (!$this->partnerApi->validateEmail($request->all()["email"])) {
+                    $email = true;
+                }else{
+                    $email = false;
+                }
+            }else if ($request->all()["type"] == "account") {
+                if (!$this->accountApi->verifyEmail($request->all()["email"])) {
+                    $email = true;
+                }else{
+                    $email = false;
+                }
+            }
+            if ($email == false) {
                 $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
                 $state = $newEmail->createMail();
             }
@@ -54,7 +71,7 @@ class SendCode extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -66,7 +83,7 @@ class SendCode extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -77,6 +94,6 @@ class SendCode extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json([]);
     }
 }

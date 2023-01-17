@@ -38,15 +38,8 @@ class Partner extends Controller
      */
     public function index(Request $request)
     {
-        //find(1)->name
-        //Mail::to("andyaguilera712@gmail.com")->send(new SendLogin());
-        //Mail::to("andyaguilera712@gmail.com")->send(new RegisterAccount());
-        echo $request->header('Authorization');
-        /*
-        $newEmail = new MailCode("eduardchavez302@gmail.com", "platformdismac@grazcompany.com", null, "Registro de cuenta", "<h1>HOLA</h1>");
-        $newEmail->createMail();
-        */
-        return response()->json(PartnerModel::all());
+        //return response()->json(PartnerModel::all());
+        return response()->json([]);
     }
 
     /**
@@ -80,7 +73,7 @@ class Partner extends Controller
      */
     public function show($id)
     {
-        return response()->json(["action" => "show"]);
+        return response()->json([]);
     }
 
     /**
@@ -92,7 +85,7 @@ class Partner extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json(["action" => "update"]);
+        return response()->json([]);
     }
 
     /**
@@ -103,6 +96,6 @@ class Partner extends Controller
      */
     public function destroy($id)
     {
-        return response()->json(["action" => "destroy"]);
+        return response()->json([]);
     }
 }

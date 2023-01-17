@@ -126,6 +126,19 @@ class AccountApi{
     }
 
     /**
+     * @param string $email
+     * @return bool
+     */
+    public function verifyEmail(string $email){
+        $Emails = Account::select($this->text->getId())->where($this->text->getEmail(), $email)->get()->toArray();
+        if (count($Emails) > 0) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
      * @param string $username
      * @return array|null
      */

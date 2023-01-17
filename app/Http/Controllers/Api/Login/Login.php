@@ -20,7 +20,7 @@ class Login extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -43,7 +43,7 @@ class Login extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -55,7 +55,7 @@ class Login extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -66,6 +66,6 @@ class Login extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json([]);
     }
 }
