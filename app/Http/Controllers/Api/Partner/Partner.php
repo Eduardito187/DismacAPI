@@ -39,7 +39,7 @@ class Partner extends Controller
     public function index(Request $request)
     {
         //return response()->json(PartnerModel::all());
-        return response()->json([]);
+        return response()->json(PartnerModel::all());
     }
 
     /**
