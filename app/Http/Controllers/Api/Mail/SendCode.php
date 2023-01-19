@@ -48,13 +48,15 @@ class SendCode extends Controller
                 if ($email == true) {
                     $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
                     $state = $newEmail->createMail();
+                }else{
+                    $state = false;
                 }
             }else{
                 $state = false;
             }
         } catch (\Throwable $th) {
             //throw $th;
-            $state = $th->getMessage();
+            $state = null;
         }
         $response = array("status" => $state);
         return response()->json($response);
