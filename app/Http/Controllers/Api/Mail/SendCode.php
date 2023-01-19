@@ -47,7 +47,8 @@ class SendCode extends Controller
                 }
                 if ($email == true) {
                     $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
-                    $state = $newEmail->createMail();
+                    $newEmail->createMail();
+                    $state = "OK";
                 }else{
                     $state = false;
                 }
