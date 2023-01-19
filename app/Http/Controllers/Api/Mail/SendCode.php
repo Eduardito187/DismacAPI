@@ -54,7 +54,7 @@ class SendCode extends Controller
             }
         } catch (\Throwable $th) {
             //throw $th;
-            $state = null;
+            $state = $th->getMessage();
         }
         $response = array("status" => $state);
         return response()->json($response);
