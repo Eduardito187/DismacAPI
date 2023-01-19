@@ -41,19 +41,11 @@ class SendCode extends Controller
             if (!is_null($request->all()["email"]) && !is_null($request->all()["code"]) && !is_null($request->all()["type"])) {
                 $email = null;
                 if ($request->all()["type"] == "partner") {
-                    if (!$this->partnerApi->validateEmail($request->all()["email"])) {
-                        $email = true;
-                    }else{
-                        $email = false;
-                    }
+                    $email = $this->partnerApi->validateEmail($request->all()["email"]);
                 }else if ($request->all()["type"] == "account") {
-                    if (!$this->accountApi->verifyEmail($request->all()["email"])) {
-                        $email = true;
-                    }else{
-                        $email = false;
-                    }
+                    $email = $this->accountApi->verifyEmail($request->all()["email"]);
                 }
-                if ($email == false) {
+                if ($email == true) {
                     $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
                     $state = $newEmail->createMail();
                 }
