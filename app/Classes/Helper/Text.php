@@ -71,6 +71,7 @@ class Text{
     CONST ENCRYP_KEY     = "ENCRYPTION_KEY";
     CONST ID_ACCOUNT     = "id_account";
     CONST STATUS         = "status";
+    CONST STORE          = "store";
 
     public function __construct() {
         //
@@ -86,6 +87,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getStore(){
+        return SELF::STORE;
     }
 
     /**
