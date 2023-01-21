@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Partner\Account\Activate;
+use App\Http\Controllers\Api\Partner\Account\Disable;
 use App\Http\Controllers\Api\Address\City;
 use App\Http\Controllers\Api\Address\Country;
 use App\Http\Controllers\Api\Address\Municipality;
@@ -81,5 +83,19 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('store/show/{id}', 'show');
         Route::patch('store/{id}', 'update');
         Route::delete('store/{id}', 'destroy');
+    });
+    Route::controller(Activate::class)->group(function(){
+        Route::get('partner/activate', 'index');
+        Route::post('partner/activate', 'store');
+        Route::get('partner/activate/show/{id}', 'show');
+        Route::patch('partner/activate/{id}', 'update');
+        Route::delete('partner/activate/{id}', 'destroy');
+    });
+    Route::controller(Disable::class)->group(function(){
+        Route::get('partner/disable', 'index');
+        Route::post('partner/disable', 'store');
+        Route::get('partner/disable/show/{id}', 'show');
+        Route::patch('partner/disable/{id}', 'update');
+        Route::delete('partner/disable/{id}', 'destroy');
     });
 });
