@@ -72,6 +72,11 @@ class Text{
     CONST ID_ACCOUNT     = "id_account";
     CONST STATUS         = "status";
     CONST STORE          = "store";
+    CONST Enable         = "Cuenta habilitada.";
+    CONST Disable        = "Cuenta deshabilitada.";
+    CONST Type           = "type";
+    CONST Key            = "key";
+    CONST Value          = "value";
 
     public function __construct() {
         //
@@ -87,6 +92,55 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue(){
+        return SELF::Value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey(){
+        return SELF::Key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(){
+        return SELF::Type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountDisable(){
+        return SELF::Disable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountEnable(){
+        return SELF::Enable;
+    }
+
+    /**
+     * @return string
+     */
+    public function invalidFormatUser(){
+        return SELF::MESSAGES_LOGN[5];
+    }
+
+    /**
+     * @return string
+     */
+    public function AccountNotExist(){
+        return SELF::MESSAGES_LOGN[6];
     }
 
     /**

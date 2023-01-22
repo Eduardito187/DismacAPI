@@ -126,6 +126,65 @@ class AccountApi{
     }
 
     /**
+     * @param int $ID
+     * @param bool $status
+     */
+    public function statusAccount(int $ID, bool $status){
+        $Account=Account::find($ID);
+        if ($Account!=null) {
+            $time = date("Y-m-d H:i:s");
+            Account::where($this->text->getId(), $ID)->update([
+                $this->text->getUpdated() => $time
+            ]);
+            AccountLogin::where($this->text->getIdAccount(), $ID)->update([
+                $this->text->getStatus() => $status,
+                $this->text->getUpdated() => $time
+            ]);
+        }else{
+            throw new \Throwable($this->text->AccountNotExist());
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return int $ID
+     */
+    public function getAccountToken(string $value){
+        $Account = Account::select($this->text->getId())->where($this->text->getToken(), $value)->get()->toArray();
+        if (count($Account) > 0) {
+            return $Account[0][$this->text->getId()];
+        }else{
+            throw new \Throwable($this->text->AccountNotExist());
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return int $ID
+     */
+    public function getAccountKey(string $value){
+        $Account = Account::select($this->text->getId())->where($this->text->getId(), $value)->get()->toArray();
+        if (count($Account) > 0) {
+            return $Account[0][$this->text->getId()];
+        }else{
+            throw new \Throwable($this->text->AccountNotExist());
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return int $ID
+     */
+    public function getAccountEmail(string $value){
+        $Account = Account::select($this->text->getId())->where($this->text->getEmail(), $value)->get()->toArray();
+        if (count($Account) > 0) {
+            return $Account[0][$this->text->getId()];
+        }else{
+            throw new \Throwable($this->text->AccountNotExist());
+        }
+    }
+
+    /**
      * @param string $email
      * @return bool
      */
