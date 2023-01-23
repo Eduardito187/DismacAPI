@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Partner\Account\Disable;
 use App\Http\Controllers\Api\Address\City;
 use App\Http\Controllers\Api\Address\Country;
 use App\Http\Controllers\Api\Address\Municipality;
+use App\Http\Controllers\Api\Import\Category;
 use App\Http\Controllers\Api\Store\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -97,5 +98,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/disable/show/{id}', 'show');
         Route::patch('partner/disable/{id}', 'update');
         Route::delete('partner/disable/{id}', 'destroy');
+    });
+    Route::controller(Category::class)->group(function(){
+        Route::get('import/category', 'index');
+        Route::post('import/category', 'store');
+        Route::get('import/category/show/{id}', 'show');
+        Route::patch('import/category/{id}', 'update');
+        Route::delete('import/category/{id}', 'destroy');
     });
 });

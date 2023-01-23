@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Price extends Model
+class MedidasComerciales extends Model
 {
     use HasFactory;
 
-    protected $table = 'prices';
+    protected $table = 'medidas_comerciales';
 
-    protected $fillable = ['price', 'special_price', 'from_date', 'to_date', 'created_at', 'updated_at'];
+    protected $fillable = ['longitud', 'ancho', 'altura', 'volumen', 'peso', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
