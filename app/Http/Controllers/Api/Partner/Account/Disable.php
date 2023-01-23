@@ -48,7 +48,7 @@ class Disable extends Controller
                 $Account = $this->accountApi->getAccountEmail($request->all()[$this->text->getValue()]);
             }
             if ($Account != null) {
-                $this->accountApi->statusAccount($Account, true);
+                $this->accountApi->statusAccount($Account, false);
                 $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAccountDisable());
             }else{
                 $response = $this->text->getResponseApi($this->status->getDisable(), $this->text->invalidFormatUser());
