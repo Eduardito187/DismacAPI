@@ -27,7 +27,7 @@ class Category extends Controller
     {
         $url = 'https://posapi.dismac.com.bo/v2/Product/GetItems';
         $data = array(
-            "GrupoArticulo"  => 113,
+            "GrupoArticulo"  => 119,
             "Disponibilidad" => true,
             "Precios"        => true,
             "SubCategoria"   => 0
