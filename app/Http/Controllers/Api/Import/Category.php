@@ -36,8 +36,7 @@ class Category extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPGET, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Transfer-Encoding: chunked','Content-Type:application/json; charset=utf-8'));
-        curl_setopt($ch, CURLOPT_USERPWD, "Wagento:wagento2021");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json; charset=utf-8','Authorization: Basic '. base64_encode("Wagento:wagento2021")));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         curl_close($ch);
