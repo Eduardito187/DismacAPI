@@ -86,18 +86,18 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::delete('store/{id}', 'destroy');
     });
     Route::controller(Activate::class)->group(function(){
-        Route::get('partner/activate', 'index');
-        Route::post('partner/activate', 'store');
-        Route::get('partner/activate/show/{id}', 'show');
-        Route::patch('partner/activate/{id}', 'update');
-        Route::delete('partner/activate/{id}', 'destroy');
+        Route::get('partner/account/activate', 'index');
+        Route::post('partner/account/activate', 'store');
+        Route::get('partner/account/activate/show/{id}', 'show');
+        Route::patch('partner/account/activate/{id}', 'update');
+        Route::delete('partner/account/activate/{id}', 'destroy');
     });
     Route::controller(Disable::class)->group(function(){
-        Route::get('partner/disable', 'index');
-        Route::post('partner/disable', 'store');
-        Route::get('partner/disable/show/{id}', 'show');
-        Route::patch('partner/disable/{id}', 'update');
-        Route::delete('partner/disable/{id}', 'destroy');
+        Route::get('partner/account/disable', 'index');
+        Route::post('partner/account/disable', 'store');
+        Route::get('partner/account/disable/show/{id}', 'show');
+        Route::patch('partner/account/disable/{id}', 'update');
+        Route::delete('partner/account/disable/{id}', 'destroy');
     });
     Route::controller(Category::class)->group(function(){
         Route::get('import/category', 'index');
