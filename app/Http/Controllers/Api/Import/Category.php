@@ -26,12 +26,12 @@ class Category extends Controller
     public function store(Request $request)
     {
         $url = 'https://posapi.dismac.com.bo/v2/Product/GetItems';
-        $data = array(
+        $data = [
             "GrupoArticulo"  => 119,
             "Disponibilidad" => true,
             "Precios"        => true,
             "SubCategoria"   => 0
-        );
+        ];
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPGET, 1);
