@@ -44,7 +44,7 @@ class Disable extends Controller
             if ($request->all()[$this->text->getType()] == $this->text->getKey()) {
                 $Account = $this->accountApi->getAccountKey($request->all()[$this->text->getValue()]);
             }else if ($request->all()[$this->text->getType()] == $this->text->getToken()) {
-                $Account = $this->accountApi->getAccountToken($request->all()[$this->text->getValue()]);
+                $Account = $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()));
             }else if ($request->all()[$this->text->getType()] == $this->text->getEmail()) {
                 $Account = $this->accountApi->getAccountEmail($request->all()[$this->text->getValue()]);
             }

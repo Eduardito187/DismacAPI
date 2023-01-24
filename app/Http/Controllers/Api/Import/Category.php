@@ -31,7 +31,8 @@ class Category extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json($this->import->importCategory($request->all()));
+        $ApiBlend = $this->import->importCategory($request->all());
+        return response()->json();
     }
 
     /**

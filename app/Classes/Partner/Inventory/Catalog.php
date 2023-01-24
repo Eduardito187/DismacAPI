@@ -54,7 +54,8 @@ class Catalog{
      * @return int|null
      */
     private function getCatalogPartner(int $idAccount, int $id_catalog){
-        $CatalogPartner = CatalogPartner::select($this->text->getId())->where($this->text->getIdCatalog(), $id_catalog)->where($this->text->getIdPartner(), $this->accountApi->getPartnerId($idAccount))->get()->toArray();
+        $CatalogPartner = CatalogPartner::select($this->text->getId())->where($this->text->getIdCatalog(), $id_catalog)->
+        where($this->text->getIdPartner(), $this->accountApi->getPartnerId($idAccount))->get()->toArray();
         if (count($CatalogPartner) > 0) {
             return $CatalogPartner[0][$this->text->getId()];
         }else{
