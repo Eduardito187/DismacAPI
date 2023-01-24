@@ -26,7 +26,7 @@ class TokenAccess{
     }
 
     private function getTokenAccount(){
-        $validateAccount = ModelAccount::select('token')->where('token', 'ZWR1YXJkY2hhdmV6MzAyQGdtYWlsLmNvbQ==')->get()->toArray();
+        $validateAccount = ModelAccount::select('token')->where('token', (string)$this->token)->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAccount));
         if (count($validateAccount) == 0) {
             return false;
