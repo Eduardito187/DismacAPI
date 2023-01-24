@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class TokenAccess{
 
-    protected $token = "";
+    protected $token;
 
 
     public function __construct(string $token) {
@@ -26,7 +26,7 @@ class TokenAccess{
     }
 
     private function getTokenAccount(){
-        $validateAccount = ModelAccount::select('token')->where('token', (string)$this->token)->get()->toArray();
+        $validateAccount = ModelAccount::select('token')->where('token', strval($this->token))->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAccount));
         if (count($validateAccount) == 0) {
             return false;
