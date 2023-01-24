@@ -16,9 +16,9 @@ class TokenAccess{
     }
 
     public function validateAPI() {
-        $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->first()->toArray();
+        $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->first();
         Log::debug("Tokens => ".json_encode($validateAPIS));
-        if (count($validateAPIS) == 0) {
+        if (is_null($validateAPIS)) {
             $this->getTokenAccount();
         }else{
             return true;
@@ -26,9 +26,9 @@ class TokenAccess{
     }
 
     private function getTokenAccount(){
-        $validateAccount = ModelAccount::select('token')->where('token', $this->token)->first()->toArray();
+        $validateAccount = ModelAccount::select('token')->where('token', $this->token)->first();
         Log::debug("Tokens => ".json_encode($validateAccount));
-        if (count($validateAccount) == 0) {
+        if (is_null($validateAccount)) {
             return false;
         }else{
             return true;
