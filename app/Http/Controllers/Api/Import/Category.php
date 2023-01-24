@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Import;
 
+set_time_limit(0);
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\Import\Import;
