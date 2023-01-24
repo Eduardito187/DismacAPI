@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
-use Throwable;
+use Exception;
 
 class Catalog extends Controller
 {
@@ -43,7 +43,7 @@ class Catalog extends Controller
         try {
             $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()));
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
         return response()->json($response);

@@ -9,7 +9,7 @@ use App\Classes\Helper\Status;
 use App\Classes\Helper\Text;
 use App\Classes\Partner\PartnerApi;
 use \Illuminate\Http\Request;
-use Throwable;
+use Exception;
 
 class AccountApi{
 
@@ -101,7 +101,7 @@ class AccountApi{
             $Account->updated_at = null;
             $Account->save();
             return true;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }
@@ -120,7 +120,7 @@ class AccountApi{
     private function validateEmail(string $email){
         $Emails = Account::select($this->text->getId())->where($this->text->getEmail(), $email)->get()->toArray();
         if (count($Emails) > 0) {
-            throw new Throwable($this->text->getEmailAlready());
+            throw new Exception($this->text->getEmailAlready());
         }
     }
 
@@ -140,7 +140,7 @@ class AccountApi{
                 $this->text->getUpdated() => $time
             ]);
         }else{
-            throw new Throwable($this->text->AccountNotExist());
+            throw new Exception($this->text->AccountNotExist());
         }
     }
 
@@ -153,7 +153,7 @@ class AccountApi{
         if (count($Account) > 0) {
             return $Account[0][$this->text->getId()];
         }else{
-            throw new Throwable($this->text->AccountNotExist());
+            throw new Exception($this->text->AccountNotExist());
         }
     }
 
@@ -166,7 +166,7 @@ class AccountApi{
         if (count($Account) > 0) {
             return $Account[0][$this->text->getId()];
         }else{
-            throw new Throwable($this->text->AccountNotExist());
+            throw new Exception($this->text->AccountNotExist());
         }
     }
 
@@ -179,7 +179,7 @@ class AccountApi{
         if (count($Account) > 0) {
             return $Account[0][$this->text->getId()];
         }else{
-            throw new Throwable($this->text->AccountNotExist());
+            throw new Exception($this->text->AccountNotExist());
         }
     }
 
@@ -225,7 +225,7 @@ class AccountApi{
             $AccountLogin->updated_at = null;
             $AccountLogin->save();
             return true;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }

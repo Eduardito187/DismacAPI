@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
-use Throwable;
+use Exception;
 
 class Activate extends Controller
 {
@@ -54,7 +54,7 @@ class Activate extends Controller
             }else{
                 $response = $this->text->getResponseApi($this->status->getDisable(), $this->text->invalidFormatUser());
             }
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
         return response()->json($response);

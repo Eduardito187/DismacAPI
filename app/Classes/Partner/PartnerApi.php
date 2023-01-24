@@ -10,7 +10,7 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
-use Throwable;
+use Exception;
 
 class PartnerApi{
 
@@ -73,7 +73,7 @@ class PartnerApi{
     private function validateDomain(string $domain){
         $Partner = Partner::select($this->text->getId())->where($this->text->getDomain(), $domain)->get()->toArray();
         if (count($Partner) > 0) {
-            throw new Throwable($this->text->getPartnerAlready());
+            throw new Exception($this->text->getPartnerAlready());
         }
     }
 
@@ -103,7 +103,7 @@ class PartnerApi{
             $Partner->status = $this->status->getEnable();
             $Partner->save();
             return true;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }
@@ -119,7 +119,7 @@ class PartnerApi{
             $RolAccount->id_account = $id_account;
             $RolAccount->save();
             return true;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }
@@ -156,7 +156,7 @@ class PartnerApi{
             $Partner->updated_at = null;
             $Partner->save();
             return true;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }
