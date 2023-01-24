@@ -6,14 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\Import\Import;
 use App\Classes\Product\ProductApi;
+use App\Classes\Helper\Text;
+use App\Classes\Helper\Status;
+use Exception;
 
 class Category extends Controller
 {
     protected $import;
+    protected $text;
+    protected $status;
     protected $productApi;
     public function __construct() {
         $this->import     = new Import();
         $this->productApi = new ProductApi();
+        $this->text       = new Text();
+        $this->status     = new Status();
     }
 
     /**
@@ -34,13 +41,18 @@ class Category extends Controller
      */
     public function store(Request $request)
     {
-        $ApiBlend = $this->import->importCategory($request->all());
-        if ($ApiBlend["code"] == 200) {
-            if (is_array($ApiBlend["object"])) {
-                $this->productApi->applyRequestAPI($ApiBlend["object"]);
+        try {
+            $ApiBlend = $this->import->importCategory($request->all());
+            if ($ApiBlend["code"] == 200) {
+                if (is_array($ApiBlend["object"])) {
+                    $this->productApi->applyRequestAPI($ApiBlend["object"]);
+                }
             }
+            $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getImportSuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
-        return response()->json();
+        return response()->json($response);
     }
 
     /**
