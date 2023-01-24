@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Log;
 class TokenAccess{
 
     protected $token;
+    protected $state;
 
 
     public function __construct(string $token) {
         $this->token = $token;
+        $this->state = false;
+        $this->validateAPI();
     }
 
-    public function validateAPI() {
+    public function getState(){
+        return $this->state;
+    }
+
+    private function validateAPI() {
         $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAPIS));
         if (count($validateAPIS) == 0) {
-            return $this->getTokenAccount();
+            $this->state = $this->getTokenAccount();
         }else{
-            return true;
+            $this->state = true;
         }
     }
 
@@ -29,9 +36,9 @@ class TokenAccess{
         $validateAccount = ModelAccount::select('token')->where('token', strval($this->token))->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAccount));
         if (count($validateAccount) == 0) {
-            return false;
+            $this->state = false;
         }else{
-            return true;
+            $this->state = true;
         }
     }
 }
