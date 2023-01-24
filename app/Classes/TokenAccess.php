@@ -23,7 +23,7 @@ class TokenAccess{
         }
     }
 
-    private function getToken(){
+    public function getToken(){
         $token = explode(" ", $this->token);
         if (count($token) == 2) {
             return $token[1];

@@ -77,6 +77,7 @@ class Text{
     CONST Type           = "type";
     CONST Key            = "key";
     CONST Value          = "value";
+    CONST Partner_None   = "La cuenta no esta asignada a un partner.";
 
     public function __construct() {
         //
@@ -92,6 +93,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getNonePartner(){
+        return SELF::Partner_None;
     }
 
     /**

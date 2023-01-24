@@ -10,6 +10,8 @@ use App\Classes\Helper\Text;
 use App\Classes\Partner\PartnerApi;
 use \Illuminate\Http\Request;
 use Exception;
+use App\Classes\TokenAccess;
+use App\Models\AccountPartner;
 
 class AccountApi{
 
@@ -33,12 +35,16 @@ class AccountApi{
      * @var PartnerApi
      */
     protected $partner;
+    /**
+     * @var TokenAccess
+     */
+    protected $tokenAccess;
 
     public function __construct() {
-        $this->date     = new Date();
-        $this->status   = new Status();
-        $this->text     = new Text();
-        $this->partner  = new PartnerApi();
+        $this->date        = new Date();
+        $this->status      = new Status();
+        $this->text        = new Text();
+        $this->partner     = new PartnerApi();
     }
 
     /**
@@ -145,11 +151,25 @@ class AccountApi{
     }
 
     /**
+     * @param int $idAccount
+     * @return int|null
+     */
+    public function getPartnerId(int $idAccount){
+        $AccountPartner = AccountPartner::select($this->text->getId())->where($this->text->getIdAccount(), $idAccount)->get()->toArray();
+        if (count($AccountPartner) > 0) {
+            return $AccountPartner[0][$this->text->getId()];
+        }else{
+            throw new Exception($this->text->getNonePartner());
+        }
+    }
+
+    /**
      * @param string $value
      * @return int $ID
      */
     public function getAccountToken(string $value){
-        $Account = Account::select($this->text->getId())->where($this->text->getToken(), $value)->get()->toArray();
+        $this->tokenAccess = new TokenAccess($value);
+        $Account = Account::select($this->text->getId())->where($this->text->getToken(), $this->tokenAccess->getToken())->get()->toArray();
         if (count($Account) > 0) {
             return $Account[0][$this->text->getId()];
         }else{
