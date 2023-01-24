@@ -11,6 +11,7 @@ use App\Classes\Address\AddressApi;
 use App\Classes\Partner\PartnerApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
+use Throwable;
 
 class Partner extends Controller
 {
@@ -56,7 +57,7 @@ class Partner extends Controller
             $this->partnerApi->setAccountDomain($this->partnerApi->getPartnerId(), $this->accountApi->getAccountId());
             $this->partnerApi->setSuperAdminAccount($this->accountApi->getAccountId());
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
         return response()->json($response);

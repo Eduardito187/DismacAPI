@@ -9,6 +9,7 @@ use App\Models\Localization;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use App\Classes\Helper\Text;
+use Throwable;
 
 class AddressApi{
 
@@ -116,7 +117,7 @@ class AddressApi{
             $Address->updated_at = null;
             $Address->save();
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return false;
         }
     }
@@ -132,7 +133,7 @@ class AddressApi{
             $AddressExtra->extra = $addresExtra[$this->text->getExtra()];
             $AddressExtra->save();
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return false;
         }
     }
@@ -148,7 +149,7 @@ class AddressApi{
             $Localization->longitud = $geo[$this->text->getLongitude()];
             $Localization->save();
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return false;
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Classes;
 
 use App\Classes\Helper\Text;
+use Throwable;
 
 class MailCode{
 
@@ -43,7 +44,7 @@ class MailCode{
             ini_set($this->text->getDisplayError(), 1 );
             error_reporting( E_ALL );
             return mail($this->to, $this->title, (string)$this->message, $this->headers);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return false;
         }
     }

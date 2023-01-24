@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Classes\MailCode;
 use App\Classes\Partner\PartnerApi;
 use App\Classes\Account\AccountApi;
+use Throwable;
 
 class SendCode extends Controller
 {
@@ -54,7 +55,7 @@ class SendCode extends Controller
             }else{
                 $state = false;
             }
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             //throw $th;
             $state = null;
         }
