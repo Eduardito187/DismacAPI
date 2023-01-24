@@ -65,8 +65,8 @@ class ProductApi{
      */
     public function applyRequestAPI(array $response){
         foreach ($response as $res) {
-            if (is_null($this->getCatalogStore($res->codigo, $res->nombre))) {
-                $this->setProduct($res->codigo, $res->nombre);
+            if (is_null($this->getCatalogStore($res["codigo"], $res["nombre"]))) {
+                $this->setProduct($res["codigo"], $res["nombre"]);
             }
         }
     }
