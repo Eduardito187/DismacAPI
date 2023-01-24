@@ -25,7 +25,7 @@ class TokenAccess{
 
     private function getTokenAccount(){
         $validateAccount = ModelAccount::select('id')->where('email', base64_decode($this->token))->get()->toArray();
-        Log::debug("Tokens => ".json_encode($validateAccount));
+        Log::debug(base64_decode($this->token)." => Tokens => ".json_encode($validateAccount));
         if (count($validateAccount) == 0) {
             return false;
         }else{
