@@ -26,7 +26,7 @@ class TokenAccess{
         $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAPIS));
         if (count($validateAPIS) == 0) {
-            $this->state = $this->getTokenAccount();
+            $this->getTokenAccount();
         }else{
             $this->state = true;
         }
