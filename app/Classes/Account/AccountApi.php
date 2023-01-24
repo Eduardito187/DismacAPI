@@ -262,7 +262,7 @@ class AccountApi{
                         if ($response[0][$this->text->getPassword()] == $this->encriptionPawd($password)) {
                             $Account = $this->byId($response[0][$this->text->getIdAccount()]);
                             if ($Account != null) {
-                                return $this->text->messageLogin(true, 0, $Account["token"]);
+                                return $this->text->messageLogin(true, 0, $Account[$this->text->getToken()]);
                             }else{
                                 return $this->text->messageLogin(false, 6);
                             }
