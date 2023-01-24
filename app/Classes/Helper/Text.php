@@ -81,6 +81,7 @@ class Text{
     CONST ID_CATALOG     = "id_catalog";
     CONST ID_PARTNER     = "id_partner";
     CONST ID_STORE       = "id_store";
+    CONST SKU            = "sku";
 
     public function __construct() {
         //
@@ -96,6 +97,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getSku(){
+        return SELF::SKU;
     }
 
     /**

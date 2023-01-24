@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api\Import;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\Import\Import;
+use App\Classes\Product\ProductApi;
 
 class Category extends Controller
 {
     protected $import;
+    protected $productApi;
     public function __construct() {
         $this->import     = new Import();
+        $this->productApi = new ProductApi();
     }
 
     /**
@@ -32,6 +35,11 @@ class Category extends Controller
     public function store(Request $request)
     {
         $ApiBlend = $this->import->importCategory($request->all());
+        if ($ApiBlend["code"] == 200) {
+            if (is_array($ApiBlend["object"])) {
+                $this->productApi->applyRequestAPI($ApiBlend["object"]);
+            }
+        }
         return response()->json();
     }
 

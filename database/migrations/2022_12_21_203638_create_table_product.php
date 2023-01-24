@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->double('price', 10, 2)->nullable();
             $table->string('sku');
             $table->integer('stock');
             $table->unsignedBigInteger('id_brand')->nullable();
