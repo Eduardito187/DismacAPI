@@ -78,6 +78,9 @@ class Text{
     CONST Key            = "key";
     CONST Value          = "value";
     CONST Partner_None   = "La cuenta no esta asignada a un partner.";
+    CONST ID_CATALOG     = "id_catalog";
+    CONST ID_PARTNER     = "id_partner";
+    CONST ID_STORE       = "id_store";
 
     public function __construct() {
         //
@@ -93,6 +96,27 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdStore(){
+        return SELF::ID_STORE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdCatalog(){
+        return SELF::ID_CATALOG;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdPartner(){
+        return SELF::ID_PARTNER;
     }
 
     /**
