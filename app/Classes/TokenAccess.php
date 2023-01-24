@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use App\Models\IntegrationsAPI as ModelIntegrations;
 use App\Models\Account as ModelAccount;
+use Illuminate\Support\Facades\Log;
 
 class TokenAccess{
 
@@ -16,6 +17,7 @@ class TokenAccess{
 
     public function validateAPI() {
         $validateAPIS = ModelIntegrations::select('id')->where('token', $this->token)->get()->toArray();
+        Log::debug("Tokens => ".json_encode($validateAPIS));
         if (count($validateAPIS) == 0) {
             $this->getTokenAccount();
         }else{
@@ -24,8 +26,9 @@ class TokenAccess{
     }
 
     public function getTokenAccount(){
-        $validatePartner = ModelAccount::select('id')->where('token', $this->token)->get()->toArray();
-        if (count($validatePartner) == 0) {
+        $validateAccount = ModelAccount::select('id')->where('token', $this->token)->get()->toArray();
+        Log::debug("Tokens => ".json_encode($validateAccount));
+        if (count($validateAccount) == 0) {
             return false;
         }else{
             return true;
