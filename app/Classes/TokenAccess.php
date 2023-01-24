@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use App\Models\IntegrationsAPI as ModelIntegrations;
-use App\Models\Partner as ModelPartner;
+use App\Models\Account as ModelAccount;
 
 class TokenAccess{
 
@@ -24,7 +24,7 @@ class TokenAccess{
     }
 
     public function getTokenAccount(){
-        $validatePartner = ModelPartner::select('id')->where('token', $this->token)->get()->toArray();
+        $validatePartner = ModelAccount::select('id')->where('token', $this->token)->get()->toArray();
         if (count($validatePartner) == 0) {
             return false;
         }else{
