@@ -18,7 +18,7 @@ class TokenAccess{
     public function validateAPI() {
         $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->first();
         Log::debug("Tokens => ".json_encode($validateAPIS));
-        if (is_null($validateAPIS)) {
+        if (is_null($validateAPIS->token)) {
             $this->getTokenAccount();
         }else{
             return true;
@@ -28,7 +28,7 @@ class TokenAccess{
     private function getTokenAccount(){
         $validateAccount = ModelAccount::select('token')->where('token', $this->token)->first();
         Log::debug("Tokens => ".json_encode($validateAccount));
-        if (is_null($validateAccount)) {
+        if (is_null($validateAccount->token)) {
             return false;
         }else{
             return true;
