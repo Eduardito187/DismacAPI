@@ -8,6 +8,7 @@ use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
 use Exception;
+use App\Classes\Partner\Inventory\Catalog as CatalogApi;
 
 class Catalog extends Controller
 {
@@ -16,11 +17,13 @@ class Catalog extends Controller
     protected $partnerApi;
     protected $text;
     protected $status;
+    protected $catalogApi;
 
     public function __construct() {
         $this->accountApi = new AccountApi();
         $this->text       = new Text();
         $this->status     = new Status();
+        $this->catalogApi = new CatalogApi();
     }
     /**
      * Display a listing of the resource.
@@ -41,7 +44,11 @@ class Catalog extends Controller
     public function store(Request $request)
     {
         try {
-            $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()));
+            $this->catalogApi->newCatalog(
+                $request->all()["name"],
+                $request->all()["code"],
+                $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()))
+            );
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
