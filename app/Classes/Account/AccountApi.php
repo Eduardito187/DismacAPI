@@ -155,7 +155,7 @@ class AccountApi{
      * @return int|null
      */
     public function getPartnerId(int $idAccount){
-        $AccountPartner = AccountPartner::select($this->text->getId())->where($this->text->getIdAccount(), $idAccount)->get()->toArray();
+        $AccountPartner = AccountPartner::select($this->text->getIdPartner())->where($this->text->getIdAccount(), $idAccount)->get()->toArray();
         if (count($AccountPartner) > 0) {
             return $AccountPartner[0][$this->text->getId()];
         }else{
