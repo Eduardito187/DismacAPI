@@ -7,9 +7,7 @@ use App\Models\Account as ModelAccount;
 use Illuminate\Support\Facades\Log;
 
 class TokenAccess{
-
     protected $token;
-
 
     public function __construct(string $token) {
         $this->token = $token;
@@ -19,7 +17,7 @@ class TokenAccess{
         $validateAPIS = ModelIntegrations::select('token')->where('token', $this->token)->get()->toArray();
         Log::debug("Tokens => ".json_encode($validateAPIS));
         if (count($validateAPIS) == 0) {
-            return $this->getTokenAccount();
+            $this->getTokenAccount();
         }else{
             return true;
         }
