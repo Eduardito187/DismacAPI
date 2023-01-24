@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Partner\Partner;
 use App\Http\Controllers\Api\Mail\SendCode;
 use App\Http\Controllers\Api\Login\Login;
 use App\Http\Middleware\CustomValidateToken;
+use App\Http\Controllers\Api\Inventory\Catalog;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,5 +106,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('import/category/show/{id}', 'show');
         Route::patch('import/category/{id}', 'update');
         Route::delete('import/category/{id}', 'destroy');
+    });
+    Route::controller(Catalog::class)->group(function(){
+        Route::get('partner/inventory/catalog', 'index');
+        Route::post('partner/inventory/catalog', 'store');
+        Route::get('partner/inventory/catalog/show/{id}', 'show');
+        Route::patch('partner/inventory/catalog/{id}', 'update');
+        Route::delete('partner/inventory/catalog/{id}', 'destroy');
     });
 });
