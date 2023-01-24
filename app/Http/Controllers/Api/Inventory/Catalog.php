@@ -45,8 +45,8 @@ class Catalog extends Controller
     {
         try {
             $this->catalogApi->newCatalog(
-                $request->all()["name"],
-                $request->all()["code"],
+                $request->all()[$this->text->getName()],
+                $request->all()[$this->text->getCode()],
                 $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()))
             );
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());

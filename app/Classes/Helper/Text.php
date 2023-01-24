@@ -83,6 +83,7 @@ class Text{
     CONST ID_STORE       = "id_store";
     CONST SKU            = "sku";
     CONST IMPORT_SUCCESS = "Importacion exitosa.";
+    CONST OBJECT         = "object";
 
     public function __construct() {
         //
@@ -98,6 +99,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getObject(){
+        return SELF::OBJECT;
     }
 
     /**

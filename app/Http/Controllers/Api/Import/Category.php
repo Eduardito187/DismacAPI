@@ -43,9 +43,9 @@ class Category extends Controller
     {
         try {
             $ApiBlend = $this->import->importCategory($request->all());
-            if ($ApiBlend["code"] == 200) {
-                if (is_array($ApiBlend["object"])) {
-                    $this->productApi->applyRequestAPI($ApiBlend["object"]);
+            if ($ApiBlend[0][$this->text->getCode()] == 200) {
+                if (is_array($ApiBlend[0][$this->text->getObject()])) {
+                    $this->productApi->applyRequestAPI($ApiBlend[0][$this->text->getObject()]);
                 }
             }
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getImportSuccess());
