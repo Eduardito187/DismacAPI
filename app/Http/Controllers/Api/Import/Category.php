@@ -43,7 +43,7 @@ class Category extends Controller
     {
         try {
             $ApiBlend = $this->import->importCategory($request->all());
-            dd($ApiBlend);
+            print_r($ApiBlend);
             if ($ApiBlend[$this->text->getCode()] == 200) {
                 if (is_array($ApiBlend[$this->text->getObject()])) {
                     $this->productApi->applyRequestAPI($ApiBlend[$this->text->getObject()]);
