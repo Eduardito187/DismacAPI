@@ -6,11 +6,9 @@ use App\Models\Account;
 use App\Models\AccountLogin;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
-use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
 use App\Classes\Partner\PartnerApi;
 use \Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class AccountApi{
 
