@@ -67,7 +67,6 @@ class AccountApi{
 
     /**
      * @param array $account
-     * @param string $domain
      * @return void
      */
     public function create(array $account){
