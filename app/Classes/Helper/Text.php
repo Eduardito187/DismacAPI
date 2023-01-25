@@ -85,6 +85,8 @@ class Text{
     CONST IMPORT_SUCCESS = "Importacion exitosa.";
     CONST OBJECT         = "object";
     CONST ERROR_PARAMETRO= "Error de parametros.";
+    CONST SEARCH_ERROR   = "Busqueda erronea.";
+    CONST SEARCH_SUCCESS = "Busqueda exitosa.";
 
     public function __construct() {
         //
@@ -100,6 +102,20 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorSearch(){
+        return SELF::SEARCH_ERROR;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuccessSearch(){
+        return SELF::SEARCH_SUCCESS;
     }
 
     /**

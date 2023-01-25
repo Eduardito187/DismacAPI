@@ -41,7 +41,7 @@ class Search extends Controller
         $accounts = array();
         try {
             $accounts = $this->accountApi->searchAccount($request);
-            $response = $this->text->getResponseApi($accounts, $this->text->getAddSuccess());
+            $response = $this->text->getResponseApi($accounts, $this->text->getSuccessSearch());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($accounts, $th->getMessage());
         }
