@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\AccountPartner;
 
 class Account extends Model
 {
@@ -17,4 +18,8 @@ class Account extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function accountPartner() {
+        return $this->hasOne(AccountPartner::class, 'id_account', 'id');
+    }
 }
