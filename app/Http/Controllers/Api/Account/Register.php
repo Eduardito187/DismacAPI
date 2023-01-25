@@ -44,7 +44,13 @@ class Register extends Controller
         try {
             $this->accountApi->create($request->all());
             $this->partnerApi->setAccountDomain(
-                $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization()))),
+                $this->accountApi->getPartnerId(
+                    $this->accountApi->getAccountToken(
+                        $request->header(
+                            $this->text->getAuthorization()
+                            )
+                        )
+                ),
                 $this->accountApi->getAccountId());
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
         } catch (Exception $th) {
