@@ -140,7 +140,7 @@ class AccountApi{
         $Accounts = Account::where("name", "like", "%".$param."%")->orWhere("email", "like", "%".$param."%")->
         with(['accountPartner' => function ($query) use ($token) {
             $query->where('id_partner', $this->getAccountToken($token));
-        }])->where("account_partner", $this->getAccountToken($token))->get()->toArray();
+        }])->where("account_partner.id_partner", $this->getAccountToken($token))->get()->toArray();
         return $Accounts;
     }
 
