@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Login\Login;
 use App\Http\Middleware\CustomValidateToken;
 use App\Http\Controllers\Api\Inventory\Catalog;
 use App\Http\Controllers\Api\Account\Search;
+use App\Http\Controllers\Api\Login\Register;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,5 +122,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('search/account/show/{id}', 'show');
         Route::patch('search/account/{id}', 'update');
         Route::delete('search/account/{id}', 'destroy');
+    });
+    Route::controller(Register::class)->group(function(){
+        Route::get('register/account', 'index');
+        Route::post('register/account', 'store');
+        Route::get('register/account/show/{id}', 'show');
+        Route::patch('register/account/{id}', 'update');
+        Route::delete('register/account/{id}', 'destroy');
     });
 });
