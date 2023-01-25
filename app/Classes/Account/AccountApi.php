@@ -70,9 +70,25 @@ class AccountApi{
      * @return void
      */
     public function create(array $account){
-        $this->createAccount($account);
+        if (is_null($this->getAccountByEmail($account[$this->text->getEmail()]))) {
+            $this->createAccount($account);
+        }
         $this->setAccount($account);
-        $this->createAccountLoggin($account);
+        if (is_null($this->getAccountLogin())) {
+            $this->createAccountLoggin($account);
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAccountLogin(){
+        $AccountLogin = AccountLogin::select($this->text->getId())->where($this->text->getIdAccount(), $this->account->id)->get()->toArray();
+        if (count($AccountLogin) > 0) {
+            return $AccountLogin[0][$this->text->getId()];
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -198,6 +214,19 @@ class AccountApi{
             return $Account[0][$this->text->getId()];
         }else{
             throw new Exception($this->text->AccountNotExist());
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return int|null
+     */
+    public function getAccountByEmail(string $value){
+        $Account = Account::select($this->text->getId())->where($this->text->getEmail(), $value)->get()->toArray();
+        if (count($Account) > 0) {
+            return $Account[0][$this->text->getId()];
+        }else{
+            return null;
         }
     }
 
