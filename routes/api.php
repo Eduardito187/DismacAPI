@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\Login\Login;
 use App\Http\Middleware\CustomValidateToken;
 use App\Http\Controllers\Api\Inventory\Catalog;
 use App\Http\Controllers\Api\Account\Search;
-use App\Http\Controllers\Api\Login\Register;
+use App\Http\Controllers\Api\Account\Register;
 
 /*
 |--------------------------------------------------------------------------
