@@ -91,20 +91,39 @@ class PartnerApi{
     }
 
     /**
-     * @param array $id_partner
+     * @param int $id_partner
+     * @param int $id_account
+     * @return int|null
+     */
+    public function getAccountPartner(int $id_partner, int $id_account){
+        $AccountPartner = AccountPartner::select($this->text->getId())->where($this->text->getIdPartner(), $id_partner)->
+        where($this->text->getIdAccount(), $id_account)->get()->toArray();
+        if (count($AccountPartner) > 0) {
+            return  $AccountPartner[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param int $id_partner
      * @param int $id_account
      * @return bool
      */
     public function setAccountDomain(int $id_partner, int $id_account){
         try {
-            $Partner = new AccountPartner();
-            $Partner->id_partner = $id_partner;
-            $Partner->id_account = $id_account;
-            $Partner->status = $this->status->getEnable();
-            $Partner->save();
-            return true;
+            if (is_null($this->getAccountPartner($id_partner, $id_account))) {
+                $Partner = new AccountPartner();
+                $Partner->id_partner = $id_partner;
+                $Partner->id_account = $id_account;
+                $Partner->status = $this->status->getEnable();
+                $Partner->save();
+                return true;
+            }else{
+                throw new Exception($this->text->getAccountRegister());
+            }
         } catch (Exception $th) {
-            return false;
+            throw new Exception($th->getMessage());
         }
     }
 
@@ -120,7 +139,7 @@ class PartnerApi{
             $RolAccount->save();
             return true;
         } catch (Exception $th) {
-            return false;
+            throw new Exception($th->getMessage());
         }
     }
 

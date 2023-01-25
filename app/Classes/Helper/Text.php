@@ -87,6 +87,7 @@ class Text{
     CONST ERROR_PARAMETRO= "Error de parametros.";
     CONST SEARCH_ERROR   = "Busqueda erronea.";
     CONST SEARCH_SUCCESS = "Busqueda exitosa.";
+    CONST ACCOUNT_REGIS  = "La cuenta ya se encuentra registrada.";
 
     public function __construct() {
         //
@@ -102,6 +103,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountRegister(){
+        return SELF::ACCOUNT_REGIS;
     }
 
     /**
