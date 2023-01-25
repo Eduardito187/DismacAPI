@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Mail\SendCode;
 use App\Http\Controllers\Api\Login\Login;
 use App\Http\Middleware\CustomValidateToken;
 use App\Http\Controllers\Api\Inventory\Catalog;
+use App\Http\Controllers\Api\Account\Search;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,5 +114,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/inventory/catalog/show/{id}', 'show');
         Route::patch('partner/inventory/catalog/{id}', 'update');
         Route::delete('partner/inventory/catalog/{id}', 'destroy');
+    });
+    Route::controller(Search::class)->group(function(){
+        Route::get('search/account', 'index');
+        Route::post('search/account', 'store');
+        Route::get('search/account/show/{id}', 'show');
+        Route::patch('search/account/{id}', 'update');
+        Route::delete('search/account/{id}', 'destroy');
     });
 });
