@@ -96,10 +96,10 @@ class PartnerApi{
      * @return int|null
      */
     public function getAccountPartner(int $id_partner, int $id_account){
-        $AccountPartner = AccountPartner::select($this->text->getId())->where($this->text->getIdPartner(), $id_partner)->
+        $AccountPartner = AccountPartner::select($this->text->getIdPartner())->where($this->text->getIdPartner(), $id_partner)->
         where($this->text->getIdAccount(), $id_account)->get()->toArray();
         if (count($AccountPartner) > 0) {
-            return  $AccountPartner[0][$this->text->getId()];
+            return  $AccountPartner[0][$this->text->getIdPartner()];
         }else{
             return null;
         }
