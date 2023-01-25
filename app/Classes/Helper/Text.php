@@ -84,6 +84,7 @@ class Text{
     CONST SKU            = "sku";
     CONST IMPORT_SUCCESS = "Importacion exitosa.";
     CONST OBJECT         = "object";
+    CONST ERROR_PARAMETRO= "Error de parametros.";
 
     public function __construct() {
         //
@@ -99,6 +100,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorParametros(){
+        return SELF::ERROR_PARAMETRO;
     }
 
     /**

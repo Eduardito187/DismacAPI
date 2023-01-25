@@ -138,7 +138,7 @@ class AccountApi{
         $this->tokenAccess = new TokenAccess($request->header($this->text->getAuthorization()));
         $param = $request->all()["query"];
         $Accounts = Account::where("name", "like", $param)->orWhere("email", "like", $param)->accountPartner()->where("id_partner", $this->tokenAccess->getToken())->get()->toArray();
-        return $$Accounts;
+        return $Accounts;
     }
 
     /**

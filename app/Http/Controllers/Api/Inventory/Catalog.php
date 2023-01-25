@@ -43,13 +43,18 @@ class Catalog extends Controller
      */
     public function store(Request $request)
     {
+        $response = array();
         try {
-            $this->catalogApi->newCatalog(
-                $request->all()[$this->text->getName()],
-                $request->all()[$this->text->getCode()],
-                $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()))
-            );
-            $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
+            if (!is_null($request->all()["query"])) {
+                $this->catalogApi->newCatalog(
+                    $request->all()[$this->text->getName()],
+                    $request->all()[$this->text->getCode()],
+                    $this->accountApi->getAccountToken($request->header($this->text->getAuthorization()))
+                );
+                $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
+            }else{
+                throw new Exception($this->text->getErrorParametros());
+            }
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
