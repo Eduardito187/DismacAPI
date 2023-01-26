@@ -29,6 +29,6 @@ class Account extends Model
     }
 
     public function accountStatus() {
-        return $this->belongsTo(AccountLogin::class, 'id_account', 'id')->select(['status']);
+        return $this->belongsTo(AccountLogin::class)->select(['status']);
     }
 }
