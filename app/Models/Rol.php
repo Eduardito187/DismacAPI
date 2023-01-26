@@ -14,6 +14,8 @@ class Rol extends Model
 
     protected $fillable = ['name', 'code', 'monto', 'created_at', 'updated_at'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
