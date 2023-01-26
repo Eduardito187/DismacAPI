@@ -38,6 +38,6 @@ class Account extends Model
      * @return bool
      */
     public function accountStatus() {
-        return $this->hasOne(AccountLogin::class, 'id_account', 'id')->select("status");
+        return $this->accountLogin()->status;
     }
 }
