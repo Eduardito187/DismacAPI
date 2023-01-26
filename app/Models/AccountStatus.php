@@ -15,7 +15,7 @@ class AccountStatus extends Model
 
     protected $fillable = ['username', 'password', 'status', 'id_account', 'created_at', 'updated_at'];
 
-    protected $hidden = ['status'];
+    protected $hidden = ['username', 'password', 'id_account', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
