@@ -153,7 +153,7 @@ class AccountApi{
         $param = $request->all()["query"];
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
         $AccountPartner = AccountPartner::select("id_account")->where("id_account", "!=", $id_Account)->where("id_partner", $this->getPartnerId($id_Account))->get()->toArray();
-        $Accounts = Account::select("id","name","email", "account_login.status")->whereIn("id", $AccountPartner)->where("name", "like", "%".$param."%")->
+        $Accounts = Account::select("id","name","email")->whereIn("id", $AccountPartner)->where("name", "like", "%".$param."%")->
         orwhere("email", "like", "%".$param."%")->whereIn("id", $AccountPartner)->with(['accountLogin' => function ($query) {
             $query->select('status');
         }])->get()->toArray();
