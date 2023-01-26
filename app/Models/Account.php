@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\AccountPartner;
 use App\Models\AccountLogin;
 use App\Models\AccountStatus;
+use App\Models\RolAccount;
 
 class Account extends Model
 {
@@ -31,5 +32,9 @@ class Account extends Model
 
     public function accountStatus() {
         return $this->hasOne(AccountStatus::class, 'id_account', 'id');
+    }
+
+    public function rolAccount() {
+        return $this->hasMany(RolAccount::class, 'id_account', 'id');
     }
 }
