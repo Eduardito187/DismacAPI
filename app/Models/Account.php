@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AccountPartner;
 use App\Models\AccountLogin;
+use App\Models\AccountStatus;
 
 class Account extends Model
 {
@@ -26,5 +27,9 @@ class Account extends Model
 
     public function accountLogin() {
         return $this->hasOne(AccountLogin::class, 'id_account', 'id');
+    }
+
+    public function accountStatus() {
+        return $this->hasOne(AccountStatus::class, 'id_account', 'id');
     }
 }
