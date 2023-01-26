@@ -35,6 +35,6 @@ class Account extends Model
     }
 
     public function rolAccount() {
-        return $this->belongsToMany(RolAccount::class, 'id_account', 'id');
+        return $this->hasMany(RolAccount::class, 'id_account', 'id');
     }
 }
