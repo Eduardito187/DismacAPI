@@ -29,6 +29,6 @@ class Account extends Model
     }
 
     public function accountStatus() {
-        return $this->accountLogin()->status;
+        return $this->hasOne(AccountLogin::class, 'id_account', 'id')->select("status");
     }
 }
