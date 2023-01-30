@@ -45,7 +45,7 @@ class Catalog extends Controller
     {
         $response = array();
         try {
-            if (!is_null($request->all()["query"])) {
+            if (!is_null($request->all()[$this->text->getName()]) && !is_null($request->all()[$this->text->getCode()])) {
                 $this->catalogApi->newCatalog(
                     $request->all()[$this->text->getName()],
                     $request->all()[$this->text->getCode()],
