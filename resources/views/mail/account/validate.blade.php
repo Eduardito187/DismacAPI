@@ -22,7 +22,7 @@
             <img src="https://dismacapi.grazcompany.com/storage/dismac_clasic.png" style="width: 100px;" />
         </div>
         <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
-            <p>Copie el codigo para poder acceder al siguiente paso en el registro de la cuenta.</p>
+            <h4>Copie el codigo para poder acceder al siguiente paso.</h4>
             <h1>{{$code}}</h1>
         </div>
         <div style="width: 100%;background-color: white;text-align: center;justify-content: center;">
