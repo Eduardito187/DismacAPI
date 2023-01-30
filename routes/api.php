@@ -89,11 +89,11 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::delete('store/{id}', 'destroy');
     });
     Route::controller(Activate::class)->group(function(){
-        Route::get('partner/account/activate', 'index');
-        Route::post('partner/account/activate', 'store');
-        Route::get('partner/account/activate/show/{id}', 'show');
-        Route::patch('partner/account/activate/{id}', 'update');
-        Route::delete('partner/account/activate/{id}', 'destroy');
+        Route::get('partner/account/enable', 'index');
+        Route::post('partner/account/enable', 'store');
+        Route::get('partner/account/enable/show/{id}', 'show');
+        Route::patch('partner/account/enable/{id}', 'update');
+        Route::delete('partner/account/enable/{id}', 'destroy');
     });
     Route::controller(Disable::class)->group(function(){
         Route::get('partner/account/disable', 'index');
