@@ -125,6 +125,8 @@ class Catalog{
         if (is_null($id_catalog)) {
             $this->setCatalog($name, $code);
             $id_catalog = $this->getCatalogIdByCode($code);
+        }else{
+            throw new Exception($this->text->getCatalogExist());
         }
         $id_catalog_partner = $this->getCatalogPartner($idAccount, $id_catalog);
         if (is_null($id_catalog_partner)) {

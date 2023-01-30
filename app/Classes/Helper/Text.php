@@ -88,6 +88,7 @@ class Text{
     CONST SEARCH_ERROR   = "Busqueda erronea.";
     CONST SEARCH_SUCCESS = "Busqueda exitosa.";
     CONST ACCOUNT_REGIS  = "La cuenta ya se encuentra registrada.";
+    CONST CATALOG_EXIST  = "El catalogo ya existe.";
 
     public function __construct() {
         //
@@ -103,6 +104,13 @@ class Text{
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getCatalogExist(){
+        return SELF::CATALOG_EXIST;
     }
 
     /**
