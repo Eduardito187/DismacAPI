@@ -9,7 +9,7 @@ use App\Classes\Partner\PartnerApi;
 use App\Classes\Account\AccountApi;
 use Exception;
 
-class SendCode extends Controller
+class RestoreCode extends Controller
 {
     protected $accountApi;
     protected $partnerApi;
@@ -46,16 +46,11 @@ class SendCode extends Controller
                 }else if ($request->all()["type"] == "account") {
                     $email = $this->accountApi->verifyEmail($request->all()["email"]);
                 }
-                if ($email == true) {
+                if ($email == false) {
                     $newEmail = new MailCode($request->all()["email"], "Código de verificación", $request->all()["code"]);
                     $state = $newEmail->createMail();
                 }else{
-                    if ($request->all()["restore"] == false) {
-                        $state = false;
-                    }else{
-                        $newEmail = new MailCode($request->all()["email"], "Código de restauración", $request->all()["code"]);
-                        $state = $newEmail->createMail();
-                    }
+                    $state = false;
                 }
             }else{
                 $state = false;
