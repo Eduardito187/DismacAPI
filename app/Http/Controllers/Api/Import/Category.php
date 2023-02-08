@@ -10,6 +10,7 @@ use App\Classes\Product\ProductApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class Category extends Controller
 {
@@ -46,8 +47,13 @@ class Category extends Controller
             $ApiBlend = $this->import->importCategory($request->all());
             if ($ApiBlend[$this->text->getCode()] == 200) {
                 if (is_array($ApiBlend[$this->text->getObject()])) {
+                    Log::debug("ENTRO");
                     $this->productApi->applyRequestAPI($ApiBlend[$this->text->getObject()]);
+                }else{
+                    Log::debug("ERROR 2");
                 }
+            }else{
+                Log::debug("ERROR 1");
             }
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getImportSuccess());
         } catch (Exception $th) {
