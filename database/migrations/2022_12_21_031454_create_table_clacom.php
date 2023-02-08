@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('clacom', function (Blueprint $table) {
             $table->id();
             $table->string('label', 50);
-            $table->string('code', 20);
+            $table->string('code', 50);
             $table->unsignedBigInteger('id_picture')->nullable();
             $table->foreign('id_picture')->references('id')->on('picture')->onDelete('cascade');
             $table->timestamp('created_at');
