@@ -94,7 +94,7 @@ class ProductApi{
      * @param string $id_clacom
      * @param string $id_type
      */
-    private function updateProduct(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type){
+    private function updateProductRelations(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type){
         Product::where('id', $id)->update([
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
@@ -133,7 +133,7 @@ class ProductApi{
             if (is_null($id_product)) {
                 $this->setProduct($res["codigo"], $res["nombre"], $id_brand, $id_clacom, $id_type);
                 $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
-                $this->updateProduct(
+                $this->updateProductRelations(
                     $id_product,
                     $res["codigo"],
                     $res["nombre"],
