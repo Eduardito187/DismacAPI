@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Clacom;
 use App\Models\ProductType;
+use Illuminate\Support\Facades\Log;
 
 class ProductApi{
     /**
@@ -107,6 +108,7 @@ class ProductApi{
      */
     public function applyRequestAPI(array $response){
         foreach ($response as $res) {
+            Log::debug("sku => ".$res["codigo"]);
             $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
             $id_brand = null;
             $id_type = null;
