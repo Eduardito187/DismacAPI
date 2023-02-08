@@ -12,6 +12,8 @@ use \Illuminate\Http\Request;
 use Exception;
 use App\Classes\TokenAccess;
 use App\Models\AccountPartner;
+use App\Models\Catalog;
+use App\Models\CatalogPartner;
 
 class AccountApi{
 
@@ -158,6 +160,19 @@ class AccountApi{
             $query->with(['rol']);
         }])->get()->toArray();
         return $Accounts;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function searchCatalog(Request $request){
+        $param = $request->all()["query"];
+        $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
+        $CatalogPartner = CatalogPartner::select("id_catalog")->where("id_partner", $this->getPartnerId($id_Account))->get()->toArray();
+        $Catalogs = Catalog::select("id","name","code")->whereIn("id", $CatalogPartner)->where("name", "like", "%".$param."%")->
+        orwhere("code", "like", "%".$param."%")->whereIn("id", $CatalogPartner)->get()->toArray();
+        return $Catalogs;
     }
 
     /**
