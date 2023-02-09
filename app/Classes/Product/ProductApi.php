@@ -188,7 +188,9 @@ class ProductApi{
      */
     public function loadbyStores(int $idProduct, array $id_stores, array $id_minicuotas){
         foreach ($id_stores as $id_store) {
-            $this->loadbyStore($idProduct, $id_store, $id_minicuotas);
+            if($id_store != 0){
+                $this->loadbyStore($idProduct, $id_store, $id_minicuotas);
+            }
         }
     }
 
