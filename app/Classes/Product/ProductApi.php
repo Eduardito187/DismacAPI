@@ -421,10 +421,10 @@ class ProductApi{
      */
     public function changeStatusProduct(int $idProduct, array $stores, bool $status){
         foreach ($stores as $store) {
-            if(is_null($this->getProductStoreStatus($idProduct, $store))){
-                $this->setProductStoreStatus($idProduct, $store, $status);
+            if(is_null($this->getProductStoreStatus($idProduct, $store["id"]))){
+                $this->setProductStoreStatus($idProduct, $store["id"], $status);
             }else{
-                $this->updateProductStoreStatus($idProduct, $store, $status);
+                $this->updateProductStoreStatus($idProduct, $store["id"], $status);
             }
         }
     }
@@ -461,8 +461,8 @@ class ProductApi{
     }
 
     /**
-     * @param string $id_product
-     * @param string $id_store
+     * @param int $id_product
+     * @param int $id_store
      */
     public function getProductStoreStatus(int $id_product, int $id_store){
         $ProductStoreStatus = ProductStoreStatus::select($this->text->getId())
