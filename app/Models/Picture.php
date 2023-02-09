@@ -11,7 +11,7 @@ class Picture extends Model
 
     protected $table = 'picture';
 
-    protected $fillable = ['url', 'path', 'created_at', 'updated_at'];
+    protected $fillable = ['url', 'path', 'created_at', 'updated_at', 'id_property'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

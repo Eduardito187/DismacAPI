@@ -11,7 +11,7 @@ class PictureProperty extends Model
 
     protected $table = 'picture_property';
 
-    protected $fillable = ['format', 'id_picture', 'id_dimensions', 'created_at', 'updated_at', 'id_property'];
+    protected $fillable = ['format', 'id_picture', 'id_dimensions', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

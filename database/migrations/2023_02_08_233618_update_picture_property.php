@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('picture_property', function (Blueprint $table) {
+        Schema::table('picture', function (Blueprint $table) {
             $table->unsignedBigInteger('id_property')->nullable();
             $table->foreign('id_property')->references('id')->on('partner')->onDelete('cascade');
         });
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('picture_property', function (Blueprint $table) {
+        Schema::table('picture', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_property');
         });
     }
