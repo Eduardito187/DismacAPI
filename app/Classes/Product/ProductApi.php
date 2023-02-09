@@ -116,20 +116,23 @@ class ProductApi{
             if (!empty($res["marca"]) && is_array($res["marca"])) {
                 $id_brand = $this->getBrand($res["marca"]["nombre"]);
                 if (is_null($id_brand)) {
-                    $this->setBrand($res["marca"]["nombre"]);
-                    $id_brand = $this->getBrand($res["marca"]["nombre"]);
+                    if($this->setBrand($res["marca"]["nombre"])){
+                        $id_brand = $this->getBrand($res["marca"]["nombre"]);
+                    }
                 }
             }
             if (!empty($res["detalle"]) && is_array($res["detalle"])) {
                 $id_type = $this->getType($res["detalle"]["tipoProducto"]);
                 $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
                 if (is_null($id_type)) {
-                    $this->setType($res["detalle"]["tipoProducto"]);
-                    $id_type = $this->getType($res["detalle"]["tipoProducto"]);
+                    if($this->setType($res["detalle"]["tipoProducto"])){
+                        $id_type = $this->getType($res["detalle"]["tipoProducto"]);
+                    }
                 }
                 if (is_null($id_clacom)) {
-                    $this->setClacom($res["detalle"]["clacom"]);
-                    $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
+                    if($this->setClacom($res["detalle"]["clacom"])){
+                        $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
+                    }
                 }
             }
             if (is_null($id_product)) {
@@ -158,12 +161,18 @@ class ProductApi{
 
     /**
      * @param string $name
+     * @return bool
      */
     private function setBrand(string $name){
         try {
-            $Brand = new Brand();
-            $Brand->name = $name;
-            $Brand->save();
+            if(strlen($name) > 0){    
+                $Brand = new Brand();
+                $Brand->name = $name;
+                $Brand->save();
+                return true;
+            }else{
+                return false;
+            }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
@@ -183,14 +192,20 @@ class ProductApi{
     
     /**
      * @param string $type
+     * @return bool
      */
     private function setType(string $type){
         try {
-            $ProductType = new ProductType();
-            $ProductType->type = $type;
-            $ProductType->created_at = $this->date->getFullDate();
-            $ProductType->updated_at = null;
-            $ProductType->save();
+            if(strlen($type)){
+                $ProductType = new ProductType();
+                $ProductType->type = $type;
+                $ProductType->created_at = $this->date->getFullDate();
+                $ProductType->updated_at = null;
+                $ProductType->save();
+                return true;
+            }else{
+                return false;
+            }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
@@ -210,16 +225,22 @@ class ProductApi{
     
     /**
      * @param string $clacom
+     * @return bool
      */
     private function setClacom(string $clacom){
         try {
-            $Clacom = new Clacom();
-            $Clacom->label = $clacom;
-            $Clacom->code = str_replace(" ", "_", $clacom);
-            $Clacom->id_picture = null;
-            $Clacom->created_at = $this->date->getFullDate();
-            $Clacom->updated_at = null;
-            $Clacom->save();
+            if(strlen($clacom) > 0){
+                $Clacom = new Clacom();
+                $Clacom->label = $clacom;
+                $Clacom->code = str_replace(" ", "_", $clacom);
+                $Clacom->id_picture = null;
+                $Clacom->created_at = $this->date->getFullDate();
+                $Clacom->updated_at = null;
+                $Clacom->save();
+                return true;
+            }else{
+                return false;
+            }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
