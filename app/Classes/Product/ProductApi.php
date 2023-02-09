@@ -11,7 +11,9 @@ use App\Models\Brand;
 use App\Models\Clacom;
 use App\Models\MiniCuota;
 use App\Models\ProductMinicuotaStore;
+use App\Models\ProductStoreStatus;
 use App\Models\ProductType;
+use App\Models\Store;
 use Illuminate\Support\Facades\Log;
 
 class ProductApi{
@@ -115,6 +117,7 @@ class ProductApi{
      * @param array $response
      */
     public function applyRequestAPI(array $response){
+        $allStore = $this->getAllStoreID();
         foreach ($response as $res) {
             Log::debug("sku => ".$res["codigo"]);
             $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
@@ -164,7 +167,12 @@ class ProductApi{
                     $id_type
                 );
             }
-            $this->changeMiniCuotas($id_product, $res["minicuotas"]);
+            if (!empty($res["minicuotas"]) && is_array($res["minicuotas"])) {
+                $this->changeMiniCuotas($id_product, $res["minicuotas"]);
+            }
+            if (!empty($res["estado"]) && is_array($res["estado"])) {
+                $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
+            }
         }
     }
 
@@ -403,6 +411,80 @@ class ProductApi{
         }else{
             return null;
         }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param array $stores
+     * @param bool $status
+     * @return bool
+     */
+    public function changeStatusProduct(int $idProduct, array $stores, bool $status){
+        foreach ($stores as $store) {
+            if(is_null($this->getProductStoreStatus($idProduct, $store))){
+                $this->setProductStoreStatus($idProduct, $store, $status);
+            }else{
+                $this->updateProductStoreStatus($idProduct, $store, $status);
+            }
+        }
+    }
+
+    /**
+     * @param array
+     */
+    public function getAllStoreID(){
+        $StoresID = Store::select("id")->get()->toArray();
+        return $StoresID;
+    }
+    
+    /**
+     * @param string $id_product
+     * @param string $id_store
+     * @param string $status
+     * @return bool
+     */
+    public function setProductStoreStatus(int $id_product, int $id_store, bool $status){
+        try {
+            if(!is_null($id_product) && !is_null($id_store)){
+                $ProductStoreStatus = new ProductStoreStatus();
+                $ProductStoreStatus->id_product = $id_product;
+                $ProductStoreStatus->id_store = $id_store;
+                $ProductStoreStatus->status = $status;
+                $ProductStoreStatus->save();
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param string $id_product
+     * @param string $id_store
+     */
+    public function getProductStoreStatus(int $id_product, int $id_store){
+        $ProductStoreStatus = ProductStoreStatus::select($this->text->getId())
+        ->where("id_product", $id_product)->where("id_store", $id_store)->get()->toArray();
+        if (count($ProductStoreStatus) > 0) {
+            return $ProductStoreStatus[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+    
+    /**
+     * @param string $id_product
+     * @param string $id_store
+     * @param string $status
+     */
+    public function updateProductStoreStatus(int $id_product, int $id_store, bool $status){
+        Product::where('id_product', $id_product)->where('id_store', $id_store)->update([
+            "id_product" => $id_product,
+            "id_store" => $id_store,
+            "status" => $status
+        ]);
     }
 }
 
