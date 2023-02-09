@@ -465,10 +465,10 @@ class ProductApi{
      * @param int $id_store
      */
     public function getProductStoreStatus(int $id_product, int $id_store){
-        $ProductStoreStatus = ProductStoreStatus::select($this->text->getId())
+        $ProductStoreStatus = ProductStoreStatus::select("id_product")
         ->where("id_product", $id_product)->where("id_store", $id_store)->get()->toArray();
         if (count($ProductStoreStatus) > 0) {
-            return $ProductStoreStatus[0][$this->text->getId()];
+            return $ProductStoreStatus[0]["id_product"];
         }else{
             return null;
         }
