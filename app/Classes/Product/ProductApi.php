@@ -118,6 +118,7 @@ class ProductApi{
      */
     public function applyRequestAPI(array $response){
         $allStore = $this->getAllStoreID();
+        Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
             Log::debug("sku => ".$res["codigo"]);
             $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
@@ -433,8 +434,7 @@ class ProductApi{
      * @param array
      */
     public function getAllStoreID(){
-        $StoresID = Store::select("id")->get()->toArray();
-        return $StoresID;
+        return Store::select($this->text->getId())->get()->toArray();
     }
     
     /**
