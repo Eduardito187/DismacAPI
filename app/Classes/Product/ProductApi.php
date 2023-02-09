@@ -9,10 +9,18 @@ use Exception;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Clacom;
+use App\Models\MiniCuota;
+use App\Models\ProductMinicuotaStore;
 use App\Models\ProductType;
 use Illuminate\Support\Facades\Log;
 
 class ProductApi{
+    const OPLN_PRECIO_PROPUESTO = 1;
+    const OPLN_TIENDAS_SCZ = 3;
+    const OPLN_TIENDAS_LPZ = 4;
+    const OPLN_TIENDAS_CBA = 5;
+    const OPLN_TIENDAS_TRJ = 22;
+    const OPLN_TIENDAS_SCE = 23;
     /**
      * @var Date
      */
@@ -156,6 +164,143 @@ class ProductApi{
                     $id_type
                 );
             }
+            $this->changeMiniCuotas($id_product, $res["minicuotas"]);
+        }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param array $minicuotas
+     * @return bool
+     */
+    public function changeMiniCuotas(int $idProduct, array $minicuotas){
+        foreach ($minicuotas as $minicuota) {
+            $id_stores = $this->convertListToStore($minicuota["listaPrecio"]);
+            $id_minicuotas = $this->changeCuotas($minicuota["cuotas"]);
+            $this->loadbyStores($idProduct, $id_stores, $id_minicuotas);
+        }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param array $id_stores
+     * @param array $id_minicuotas
+     */
+    public function loadbyStores(int $idProduct, array $id_stores, array $id_minicuotas){
+        foreach ($id_stores as $id_store) {
+            $this->loadbyStore($idProduct, $id_store, $id_minicuotas);
+        }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param int $id_store
+     * @param array $id_minicuotas
+     */
+    public function loadbyStore(int $idProduct, int $id_store, array $id_minicuotas){
+        foreach ($id_minicuotas as $id_minicuota) {
+            $this->setProductMinicuotaStore($idProduct, $id_store, $id_minicuota);
+        }
+    }
+
+    /**
+     * @param string $id_product
+     * @param string $id_store
+     * @param string $id_minicuota
+     * @return bool
+     */
+    private function setProductMinicuotaStore(int $id_product, int $id_store, int $id_minicuota){
+        try {
+            if(!is_null($id_store) > 0 && !is_null($id_product) > 0 && !is_null($id_minicuota) > 0){    
+                $MiniCuota = new ProductMinicuotaStore();
+                $MiniCuota->id_store = $id_store;
+                $MiniCuota->id_product = $id_product;
+                $MiniCuota->id_minicuota = $id_minicuota;
+                $MiniCuota->save();
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param array $minicuotas
+     * @return array
+     */
+    public function changeCuotas(array $minicuotas){
+        $id_minicuotas = array();
+        foreach ($minicuotas as $minicuota) {
+            $id_minicuota = $this->getMiniCuota($minicuota["cuota"], $minicuota["monto"]);
+            if(is_null($id_minicuota)){
+                if($this->setMiniCuota($minicuota["cuota"], $minicuota["monto"])){
+                    $id_minicuota = $this->getMiniCuota($minicuota["cuota"], $minicuota["monto"]);
+                }
+            }
+            if(!is_null($id_minicuota)){
+                $id_minicuotas[] = $id_minicuota;
+            }
+        }
+        return $id_minicuotas;
+    }
+
+    /**
+     * @param int $listaPrecio
+     * @return array
+     */
+    public function convertListToStore(int $listaPrecio){
+        switch ($listaPrecio) {
+            case SELF::OPLN_PRECIO_PROPUESTO:
+                return [0];
+            case SELF::OPLN_TIENDAS_SCZ:
+                return [2,9];
+            case SELF::OPLN_TIENDAS_CBA:
+                return [3];
+            case SELF::OPLN_TIENDAS_LPZ:
+                return [1];
+            case SELF::OPLN_TIENDAS_SCE:
+                return [8];
+            case SELF::OPLN_TIENDAS_TRJ:
+                return [5];
+        }
+    }
+
+    /**
+     * @param string $cuotas
+     * @param string $monto
+     * @return bool
+     */
+    private function setMiniCuota(string $cuotas, string $monto){
+        try {
+            if(strlen($cuotas) > 0 && strlen($monto) > 0){    
+                $MiniCuota = new MiniCuota();
+                $MiniCuota->meses = $cuotas;
+                $MiniCuota->cuotas = $cuotas;
+                $MiniCuota->monto = $monto;
+                $MiniCuota->created_at = $this->date->getFullDate();
+                $MiniCuota->updated_at = null;
+                $MiniCuota->save();
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param string $cuotas
+     * @param string $monto
+     */
+    public function getMiniCuota(string $cuotas, string $monto){
+        $MiniCuota = MiniCuota::select($this->text->getId())->where("cuotas", $cuotas)->where("monto", $monto)->get()->toArray();
+        if (count($MiniCuota) > 0) {
+            return $MiniCuota[0][$this->text->getId()];
+        }else{
+            return null;
         }
     }
 
