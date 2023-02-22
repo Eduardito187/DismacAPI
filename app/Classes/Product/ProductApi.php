@@ -74,6 +74,7 @@ class ProductApi{
             $Product->id_brand = $id_brand;
             $Product->id_clacom = $id_clacom;
             $Product->id_type = $id_type;
+            $Product->created_at = $this->date->getFullDate();
             $Product->save();
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -93,7 +94,9 @@ class ProductApi{
             "name" => $name,
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
-            "id_type" => $id_type
+            "id_type" => $id_type,
+            "created_at" => $this->date->getFullDate(),
+            "updated_at" => $this->date->getFullDate()
         ]);
     }
     
@@ -109,7 +112,9 @@ class ProductApi{
         Product::where('id', $id)->update([
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
-            "id_type" => $id_type
+            "id_type" => $id_type,
+            "created_at" => $this->date->getFullDate(),
+            "updated_at" => $this->date->getFullDate()
         ]);
     }
 
