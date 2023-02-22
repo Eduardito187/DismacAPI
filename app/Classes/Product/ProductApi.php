@@ -95,7 +95,6 @@ class ProductApi{
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
             "id_type" => $id_type,
-            "created_at" => $this->date->getFullDate(),
             "updated_at" => $this->date->getFullDate()
         ]);
     }
@@ -113,7 +112,6 @@ class ProductApi{
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
             "id_type" => $id_type,
-            "created_at" => $this->date->getFullDate(),
             "updated_at" => $this->date->getFullDate()
         ]);
     }
@@ -485,7 +483,7 @@ class ProductApi{
      * @param string $status
      */
     public function updateProductStoreStatus(int $id_product, int $id_store, bool $status){
-        Product::where('id_product', $id_product)->where('id_store', $id_store)->update([
+        ProductStoreStatus::where('id_product', $id_product)->where('id_store', $id_store)->update([
             "id_product" => $id_product,
             "id_store" => $id_store,
             "status" => $status
