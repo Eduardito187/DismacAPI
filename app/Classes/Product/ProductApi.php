@@ -15,18 +15,29 @@ use App\Models\ProductStoreStatus;
 use App\Models\ProductType;
 use App\Models\Store;
 use Illuminate\Support\Facades\Log;
+use App\Classes\Account\AccountApi;
+use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductApi{
-    const OPLN_PRECIO_PROPUESTO = 1;
-    const OPLN_TIENDAS_SCZ = 3;
-    const OPLN_TIENDAS_LPZ = 4;
-    const OPLN_TIENDAS_CBA = 5;
-    const OPLN_TIENDAS_TRJ = 22;
-    const OPLN_TIENDAS_SCE = 23;
+    CONST FILTER_ALL = "ALL";
+    CONST FILTER_LAST_EDIT = "LAST_EDIT";
+    CONST FILTER_LAST_CREATE = "LAST_CREATE";
+
+    CONST OPLN_PRECIO_PROPUESTO = 1;
+    CONST OPLN_TIENDAS_SCZ = 3;
+    CONST OPLN_TIENDAS_LPZ = 4;
+    CONST OPLN_TIENDAS_CBA = 5;
+    CONST OPLN_TIENDAS_TRJ = 22;
+    CONST OPLN_TIENDAS_SCE = 23;
     /**
      * @var Date
      */
     protected $date;
+    /**
+     * @var AccountApi
+     */
+    protected $accountApi;
     /**
      * @var Status
      */
@@ -37,9 +48,10 @@ class ProductApi{
     protected $text;
 
     public function __construct() {
-        $this->date     = new Date();
-        $this->status   = new Status();
-        $this->text     = new Text();
+        $this->date         = new Date();
+        $this->status       = new Status();
+        $this->text         = new Text();
+        $this->accountApi   = new AccountApi();
     }
 
 
@@ -64,8 +76,9 @@ class ProductApi{
      * @param string $id_brand
      * @param string $id_clacom
      * @param string $id_type
+     * @param int $id_Account
      */
-    private function setProduct(string $code, string $name, string $id_brand, string $id_clacom, string $id_type){
+    private function setProduct(string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
         try {
             $Product = new Product();
             $Product->name = $name;
@@ -75,12 +88,74 @@ class ProductApi{
             $Product->id_clacom = $id_clacom;
             $Product->id_type = $id_type;
             $Product->created_at = $this->date->getFullDate();
+            $Product->id_partner = $id_Account;
             $Product->save();
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
     }
+
+    /**
+     * @param string $filter
+     * @return boolean
+     */
+    public function getFilterAll(string $filter){
+        if ($filter == SELF::FILTER_ALL) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * @param string $filter
+     * @param int $step
+     * @return string
+     */
+    public function getFilter(string $filter, int $step){
+        if ($filter == SELF::FILTER_ALL) {
+            if ($step == 0) {
+                return SELF::FILTER_LAST_EDIT;
+            }else{
+                return SELF::FILTER_LAST_CREATE;
+            }
+        }else if ($filter == SELF::FILTER_LAST_CREATE) {
+            return SELF::FILTER_LAST_CREATE;
+        }else if ($filter == SELF::FILTER_LAST_EDIT) {
+            return SELF::FILTER_LAST_EDIT;
+        }else{
+            throw new Exception($this->text->getNoneFilter());
+        }
+    }
     
+    /**
+     * @param string $filter
+     * @return string
+     */
+    public function getColumnFilter(string $filter){
+        if ($filter == SELF::FILTER_LAST_CREATE) {
+            return $this->text->getCreated();
+        }else if ($filter == SELF::FILTER_LAST_EDIT) {
+            return $this->text->getUpdated();
+        }else{
+            throw new Exception($this->text->getNoneFilter());
+        }
+    }
+    
+    /**
+     * @param string $filter
+     * @return string
+     */
+    public function getValueFilter(string $filter){
+        if ($filter == SELF::FILTER_LAST_CREATE) {
+            return "DESC";
+        }else if ($filter == SELF::FILTER_LAST_EDIT) {
+            return "DESC";
+        }else{
+            throw new Exception($this->text->getNoneFilter());
+        }
+    }
+
     /**
      * @param int $id
      * @param string $code
@@ -88,15 +163,39 @@ class ProductApi{
      * @param string $id_brand
      * @param string $id_clacom
      * @param string $id_type
+     * @param int $id_Account
      */
-    private function updateProductALL(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type){
+    private function updateProductALL(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
         Product::where('id', $id)->update([
             "name" => $name,
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
             "id_type" => $id_type,
-            "updated_at" => $this->date->getFullDate()
+            "updated_at" => $this->date->getFullDate(),
+            "id_partner" => $id_Account
         ]);
+    }
+
+    /**
+     * @param string $column
+     * @param string $filter
+     * @param int $partnerID
+     * @param int $maxItems
+     * @param string $minValue
+     * @return array
+     */
+    public function getProductsByDate(string $column, string $filter, int $partnerID, int $maxItems, string $minValue){
+        return DB::table('product')->where(
+            "id_partner", $partnerID
+        )->whereBetween(
+            $column, [
+                $minValue,
+                $this->date->getFullDate()
+            ]
+        )->offset(0)->limit($maxItems)->orderBy(
+            $column,
+            $filter
+        )->get()->toArray();
     }
     
     /**
@@ -106,20 +205,24 @@ class ProductApi{
      * @param string $id_brand
      * @param string $id_clacom
      * @param string $id_type
+     * @param int $id_Account
      */
-    private function updateProductRelations(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type){
+    private function updateProductRelations(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
         Product::where('id', $id)->update([
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
             "id_type" => $id_type,
-            "updated_at" => $this->date->getFullDate()
+            "updated_at" => $this->date->getFullDate(),
+            "id_partner" => $id_Account
         ]);
     }
 
     /**
      * @param array $response
+     * @param Request $request
      */
-    public function applyRequestAPI(array $response){
+    public function applyRequestAPI(array $response, Request $request){
+        $id_Account = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
         $allStore = $this->getAllStoreID();
         Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
@@ -151,15 +254,25 @@ class ProductApi{
                 }
             }
             if (is_null($id_product)) {
-                $this->setProduct($res["codigo"], $res["nombre"], $id_brand, $id_clacom, $id_type);
-                $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
+                $this->setProduct(
+                    $res["codigo"],
+                    $res["nombre"],
+                    $id_brand, $id_clacom,
+                    $id_type,
+                    $id_Account
+                );
+                $id_product = $this->getCatalogStore(
+                    $res["codigo"],
+                    $res["nombre"]
+                );
                 $this->updateProductRelations(
                     $id_product,
                     $res["codigo"],
                     $res["nombre"],
                     $id_brand,
                     $id_clacom,
-                    $id_type
+                    $id_type,
+                    $id_Account
                 );
             }else{
                 $this->updateProductALL(
@@ -168,7 +281,8 @@ class ProductApi{
                     $res["nombre"],
                     $id_brand,
                     $id_clacom,
-                    $id_type
+                    $id_type,
+                    $id_Account
                 );
             }
             if (!empty($res["minicuotas"]) && is_array($res["minicuotas"])) {

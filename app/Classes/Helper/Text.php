@@ -89,9 +89,17 @@ class Text{
     CONST SEARCH_SUCCESS = "Busqueda exitosa.";
     CONST ACCOUNT_REGIS  = "La cuenta ya se encuentra registrada.";
     CONST CATALOG_EXIST  = "El catalogo ya existe.";
+    CONST NONE_FILTER    = "El filtro seleccionado no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoneFilter(){
+        return SELF::NONE_FILTER;
     }
 
     /**

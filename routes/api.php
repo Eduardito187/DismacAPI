@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Inventory\Catalog;
 use App\Http\Controllers\Api\Account\Search as AccountSearch;
 use App\Http\Controllers\Api\Account\Register;
 use App\Http\Controllers\Api\Inventory\Search as InventorySearch;
+use App\Http\Controllers\Api\Products\GetProduct;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,5 +138,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('register/account/show/{id}', 'show');
         Route::patch('register/account/{id}', 'update');
         Route::delete('register/account/{id}', 'destroy');
+    });
+    Route::controller(GetProduct::class)->group(function(){
+        Route::get('GetProduct', 'index');
+        Route::post('GetProduct', 'store');
+        Route::get('GetProduct/show/{id}', 'show');
+        Route::patch('GetProduct/{id}', 'update');
+        Route::delete('GetProduct/{id}', 'destroy');
     });
 });
