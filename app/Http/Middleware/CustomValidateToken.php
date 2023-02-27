@@ -2,12 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use \Closure;
+use \Illuminate\Http\Request;
+use \Illuminate\Support\Facades\Log;
 use App\Classes\TokenAccess;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
+use \Illuminate\Http\Response;
+use \Illuminate\Http\RedirectResponse;
 
 class CustomValidateToken
 {
@@ -22,9 +24,9 @@ class CustomValidateToken
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param  Closure(Request): (Response|RedirectResponse)  $next
+     * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
@@ -35,10 +37,10 @@ class CustomValidateToken
                 return $next($request);
             }else{
                 Log::debug("Rejected => ".$request->header($this->text->getAuthorization()));
-                return abort(403, $this->text->getTokenDecline());
+                return abort(404, $this->text->getTokenDecline());
             }
         }else{
-            return abort(403, $this->text->getAccessDecline());
+            return abort(404, $this->text->getAccessDecline());
         }
     }
 }
