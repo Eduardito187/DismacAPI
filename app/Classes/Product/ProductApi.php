@@ -471,13 +471,13 @@ class ProductApi{
                 $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
                 Log::debug("setClasificacion ERROR #6");
             }
-            $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+            $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
             Log::debug("setClasificacion ERROR #7");
             if (is_null($id_cat)) {
                 Log::debug("setClasificacion ERROR #8");
-                $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $$clasificacion["codigoPadre"]);
+                $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $clasificacion["codigoPadre"]);
                 Log::debug("setClasificacion ERROR #8");
-                $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+                $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
                 Log::debug("setClasificacion ERROR #10");
             }
             if (!is_null($clasificacion["clasificacion"])) {
