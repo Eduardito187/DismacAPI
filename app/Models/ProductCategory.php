@@ -11,7 +11,7 @@ class ProductCategory extends Model
 
     protected $table = 'product_category';
 
-    protected $fillable = ['id_product', 'id_store', 'id_category', 'created_at', 'updated_at'];
+    protected $fillable = ['id_product', 'id_store', 'id_category'];
 
     public $incrementing = false;
     public $timestamps = false;

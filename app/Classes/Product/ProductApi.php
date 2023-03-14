@@ -502,8 +502,6 @@ class ProductApi{
             $ProductCategory->id_product = $id_product;
             $ProductCategory->id_store = $id_store;
             $ProductCategory->id_category = $id_category;
-            $ProductCategory->created_at = $this->date->getFullDate();
-            $ProductCategory->updated_at = null;
             $ProductCategory->save();
         } catch (Exception $th) {
             Log::debug("ERROR #3");
