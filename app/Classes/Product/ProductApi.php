@@ -85,11 +85,11 @@ class ProductApi{
      * @param string $code
      * @param string $name
      * @param string|null $id_brand
-     * @param string $id_clacom
-     * @param string $id_type
-     * @param int $id_Account
+     * @param string|null $id_clacom
+     * @param string|null $id_type
+     * @param int|null $id_Account
      */
-    private function setProduct(string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function setProduct(string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
         try {
             $Product = new Product();
             $Product->name = $name;
@@ -172,11 +172,11 @@ class ProductApi{
      * @param string $code
      * @param string $name
      * @param string|null $id_brand
-     * @param string $id_clacom
-     * @param string $id_type
-     * @param int $id_Account
+     * @param string|null $id_clacom
+     * @param string|null $id_type
+     * @param int|null $id_Account
      */
-    private function updateProductALL(int $id, string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function updateProductALL(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
         Product::where('id', $id)->update([
             "name" => $name,
             "id_brand" => $id_brand,
@@ -214,11 +214,11 @@ class ProductApi{
      * @param string $code
      * @param string $name
      * @param string|null $id_brand
-     * @param string $id_clacom
-     * @param string $id_type
-     * @param int $id_Account
+     * @param string|null $id_clacom
+     * @param string|null $id_type
+     * @param int|null $id_Account
      */
-    private function updateProductRelations(int $id, string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function updateProductRelations(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
         Product::where('id', $id)->update([
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
@@ -296,19 +296,19 @@ class ProductApi{
                     $id_Account
                 );
             }
-            if (!empty($res["minicuotas"]) && is_array($res["minicuotas"])) {
+            if (!empty($res["minicuotas"]) && is_array($res["minicuotas"]) && !is_null($id_product)) {
                 $this->changeMiniCuotas($id_product, $res["minicuotas"]);
             }
-            if (!empty($res["estado"]) && is_array($res["estado"])) {
+            if (!empty($res["estado"]) && is_array($res["estado"]) && !is_null($id_product)) {
                 $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
             }
-            if (!empty($res["clasificacion"]) && is_array($res["clasificacion"])) {
+            if (!empty($res["clasificacion"]) && is_array($res["clasificacion"]) && !is_null($id_product)) {
                 $this->setClasificacion($res["clasificacion"], false, $allStore, $id_product);
             }
-            if (!empty($res["precios"]) && is_array($res["precios"])) {
+            if (!empty($res["precios"]) && is_array($res["precios"]) && !is_null($id_product)) {
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
-            if (!empty($res["disponibilidad"]) && is_array($res["disponibilidad"])) {
+            if (!empty($res["disponibilidad"]) && is_array($res["disponibilidad"]) && !is_null($id_product)) {
                 $this->setDisponibility($res["disponibilidad"], $id_product);
             }
         }
