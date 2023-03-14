@@ -398,7 +398,7 @@ class ProductApi{
     public function setProductAllPrice(array $prices, int $id_product){
         foreach ($prices as $price) {
             $id_stores = $this->convertListToStore($price["listaPrecio"]);
-            $this->loadPricesStores($id_product, $id_stores, $prices);
+            $this->loadPricesStores($id_product, $id_stores, $price);
         }
     }
     
