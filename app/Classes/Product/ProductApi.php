@@ -621,7 +621,7 @@ class ProductApi{
      */
     public function getCategory(string $name_pos, string $code, int $inheritance){
         $Category = Category::select($this->text->getId())->where("name_pos", $name_pos)
-        ->where("code", $code)->where("inheritance", $inheritance)->get()->toArray();
+        ->where("code", $code)->where("inheritance", $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance))->get()->toArray();
         if (count($Category) > 0) {
             return $Category[0][$this->text->getId()];
         }else{
