@@ -831,17 +831,18 @@ class ProductApi{
      * @return array
      */
     public function convertListToStoreName(string $name){
-        switch ($name) {
-            case SELF::NAME_SCZ:
-                return [2,9];
-            case SELF::NAME_CBA:
-                return [3];
-            case SELF::NAME_LPZ:
-                return [1];
-            case SELF::NAME_SCE:
-                return [8];
-            case SELF::NAME_TRJ:
-                return [5];
+        if (str_contains($name, SELF::NAME_SCZ)) {
+            return [2,9];
+        }else if (str_contains($name, SELF::NAME_CBA)) {
+            return [3];
+        }else if (str_contains($name, SELF::NAME_LPZ)) {
+            return [1];
+        }else if (str_contains($name, SELF::NAME_SCE)) {
+            return [8];
+        }else if (str_contains($name, SELF::NAME_TRJ)) {
+            return [5];
+        }else{
+            return [0];
         }
     }
 
