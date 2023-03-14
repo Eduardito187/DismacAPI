@@ -84,12 +84,12 @@ class ProductApi{
     /**
      * @param string $code
      * @param string $name
-     * @param string $id_brand
+     * @param string|null $id_brand
      * @param string $id_clacom
      * @param string $id_type
      * @param int $id_Account
      */
-    private function setProduct(string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function setProduct(string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
         try {
             $Product = new Product();
             $Product->name = $name;
@@ -171,12 +171,12 @@ class ProductApi{
      * @param int $id
      * @param string $code
      * @param string $name
-     * @param string $id_brand
+     * @param string|null $id_brand
      * @param string $id_clacom
      * @param string $id_type
      * @param int $id_Account
      */
-    private function updateProductALL(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function updateProductALL(int $id, string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
         Product::where('id', $id)->update([
             "name" => $name,
             "id_brand" => $id_brand,
@@ -213,12 +213,12 @@ class ProductApi{
      * @param int $id
      * @param string $code
      * @param string $name
-     * @param string $id_brand
+     * @param string|null $id_brand
      * @param string $id_clacom
      * @param string $id_type
      * @param int $id_Account
      */
-    private function updateProductRelations(int $id, string $code, string $name, string $id_brand, string $id_clacom, string $id_type, int $id_Account){
+    private function updateProductRelations(int $id, string $code, string $name, string|null $id_brand, string $id_clacom, string $id_type, int $id_Account){
         Product::where('id', $id)->update([
             "id_brand" => $id_brand,
             "id_clacom" => $id_clacom,
