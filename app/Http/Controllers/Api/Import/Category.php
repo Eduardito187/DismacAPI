@@ -43,6 +43,7 @@ class Category extends Controller
      */
     public function store(Request $request)
     {
+        set_time_limit(0);
         try {
             $ApiBlend = $this->import->importCategory($request->all());
             if ($ApiBlend[$this->text->getCode()] == 200) {
