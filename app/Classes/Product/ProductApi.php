@@ -344,7 +344,7 @@ class ProductApi{
                 if (is_null($this->getProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store))) {
                     $this->setProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store);
                 }else{
-
+                    $this->updateProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store);
                 }
             }
         }
