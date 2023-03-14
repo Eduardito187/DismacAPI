@@ -459,21 +459,34 @@ class ProductApi{
      * @param int $id_product
      */
     public function setClasificacion(array $clasificacion, bool $subcat, array $allStore, int $id_product){
+        Log::debug("setClasificacion ERROR #1");
         if (!is_null($clasificacion) && $clasificacion["codigo"] != -1) {
+            Log::debug("setClasificacion ERROR #2");
             $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+            Log::debug("setClasificacion ERROR #3");
             if (is_null($id_cat_info)) {
+                Log::debug("setClasificacion ERROR #4");
                 $this->setCategoryInfo($clasificacion["codigo"], $subcat);
+                Log::debug("setClasificacion ERROR #5");
                 $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+                Log::debug("setClasificacion ERROR #6");
             }
             $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+            Log::debug("setClasificacion ERROR #7");
             if (is_null($id_cat)) {
+                Log::debug("setClasificacion ERROR #8");
                 $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $$clasificacion["codigoPadre"]);
+                Log::debug("setClasificacion ERROR #8");
                 $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+                Log::debug("setClasificacion ERROR #10");
             }
             if (!is_null($clasificacion["clasificacion"])) {
+                Log::debug("setClasificacion ERROR #11");
                 $this->setClasificacion($clasificacion["clasificacion"], true, $allStore, $id_product);
+                Log::debug("setClasificacion ERROR #12");
             }else{
                 $this->setAllProductCategoryStore($id_product, $allStore, $id_cat);
+                Log::debug("setClasificacion ERROR #13");
             }
         }
     }
