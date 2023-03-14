@@ -96,7 +96,6 @@ class ProductApi{
             $Product->id_partner = $id_Account;
             $Product->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #12");
             throw new Exception($th->getMessage());
         }
     }
@@ -130,7 +129,6 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return SELF::FILTER_LAST_EDIT;
         }else{
-            Log::debug("ERROR #13");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -145,7 +143,6 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return $this->text->getUpdated();
         }else{
-            Log::debug("ERROR #14");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -160,7 +157,6 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return "DESC";
         }else{
-            Log::debug("ERROR #15");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -236,12 +232,10 @@ class ProductApi{
         Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
             Log::debug("sku => ".$res["codigo"]);
-            Log::debug("----0----");
             $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
-            Log::debug("----1----");
             if (!empty($res["marca"]) && is_array($res["marca"])) {
                 $id_brand = $this->getBrand($res["marca"]["nombre"]);
                 if (is_null($id_brand)) {
@@ -250,7 +244,6 @@ class ProductApi{
                     }
                 }
             }
-            Log::debug("----2----");
             if (!empty($res["detalle"]) && is_array($res["detalle"])) {
                 $id_type = $this->getType($res["detalle"]["tipoProducto"]);
                 $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
@@ -265,7 +258,6 @@ class ProductApi{
                     }
                 }
             }
-            Log::debug("----3----");
             if (is_null($id_product)) {
                 $this->setProduct(
                     $res["codigo"],
@@ -299,23 +291,18 @@ class ProductApi{
                     $id_Account
                 );
             }
-            Log::debug("----4----");
             if (!empty($res["minicuotas"]) && is_array($res["minicuotas"])) {
                 $this->changeMiniCuotas($id_product, $res["minicuotas"]);
             }
-            Log::debug("----5----");
             if (!empty($res["estado"]) && is_array($res["estado"])) {
                 $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
             }
-            Log::debug("----6----");
             if (!empty($res["clasificacion"]) && is_array($res["clasificacion"])) {
                 $this->setClasificacion($res["clasificacion"], false, $allStore, $id_product);
             }
-            Log::debug("----7----");
             if (!empty($res["precios"]) && is_array($res["precios"])) {
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
-            Log::debug("----8----");
         }
         Log::debug("FIN => IMPORT");
     }
@@ -333,7 +320,6 @@ class ProductApi{
             $ProductPriceStore->id_product = $id_product;
             $ProductPriceStore->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #1");
             throw new Exception($th->getMessage());
         }
     }
@@ -370,7 +356,6 @@ class ProductApi{
             $Price->updated_at = null;
             $Price->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #2");
             throw new Exception($th->getMessage());
         }
     }
@@ -459,34 +444,21 @@ class ProductApi{
      * @param int $id_product
      */
     public function setClasificacion(array $clasificacion, bool $subcat, array $allStore, int $id_product){
-        Log::debug("setClasificacion ERROR #1");
         if (!is_null($clasificacion) && $clasificacion["codigo"] != -1) {
-            Log::debug("setClasificacion ERROR #2");
             $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
-            Log::debug("setClasificacion ERROR #3");
             if (is_null($id_cat_info)) {
-                Log::debug("setClasificacion ERROR #4");
                 $this->setCategoryInfo($clasificacion["codigo"], $subcat);
-                Log::debug("setClasificacion ERROR #5");
                 $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
-                Log::debug("setClasificacion ERROR #6");
             }
             $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
-            Log::debug("setClasificacion ERROR #7");
             if (is_null($id_cat)) {
-                Log::debug("setClasificacion ERROR #8");
                 $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $clasificacion["codigoPadre"]);
-                Log::debug("setClasificacion ERROR #8");
                 $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
-                Log::debug("setClasificacion ERROR #10");
             }
             if (!is_null($clasificacion["clasificacion"])) {
-                Log::debug("setClasificacion ERROR #11");
                 $this->setClasificacion($clasificacion["clasificacion"], true, $allStore, $id_product);
-                Log::debug("setClasificacion ERROR #12");
             }else{
                 $this->setAllProductCategoryStore($id_product, $allStore, $id_cat);
-                Log::debug("setClasificacion ERROR #13");
             }
         }
     }
@@ -504,7 +476,6 @@ class ProductApi{
             $ProductCategory->id_category = $id_category;
             $ProductCategory->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #3");
             throw new Exception($th->getMessage());
         }
     }
@@ -554,7 +525,6 @@ class ProductApi{
             $CategoryInfo->updated_at = null;
             $CategoryInfo->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #4");
             throw new Exception($th->getMessage());
         }
     }
@@ -607,7 +577,6 @@ class ProductApi{
             $Category->updated_at = null;
             $Category->save();
         } catch (Exception $th) {
-            Log::debug("ERROR #5");
             throw new Exception($th->getMessage());
         }
     }
@@ -683,7 +652,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #6");
             throw new Exception($th->getMessage());
         }
     }
@@ -749,7 +717,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #7");
             throw new Exception($th->getMessage());
         }
     }
@@ -782,7 +749,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #8");
             throw new Exception($th->getMessage());
         }
     }
@@ -816,7 +782,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #9");
             throw new Exception($th->getMessage());
         }
     }
@@ -852,7 +817,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #10");
             throw new Exception($th->getMessage());
         }
     }
@@ -911,7 +875,6 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
-            Log::debug("ERROR #11");
             throw new Exception($th->getMessage());
         }
     }
