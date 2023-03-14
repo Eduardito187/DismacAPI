@@ -303,6 +303,7 @@ class ProductApi{
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
         }
+        Log::debug("FIN => IMPORT");
     }
 
     /**
