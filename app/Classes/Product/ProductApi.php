@@ -576,6 +576,19 @@ class ProductApi{
     }
 
     /**
+     * @param int $id_pos
+     * @param int $sub_category_pos
+     */
+    public function getCategoryIdPos(int $id_pos){
+        $Category = Category::select($this->text->getId())->where("code", $id_pos)->get()->toArray();
+        if (count($Category) > 0) {
+            return $Category[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+
+    /**
      * @param string $name
      * @param string $code
      * @param int $id_info_category
@@ -587,7 +600,7 @@ class ProductApi{
             $Category->name = $name;
             $Category->name_pos = $name;
             $Category->code = $code;
-            $Category->inheritance = $inheritance == 0 ? null : $inheritance;
+            $Category->inheritance = $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance);
             $Category->status = true;
             $Category->in_menu = true;
             $Category->id_info_category = $id_info_category;
