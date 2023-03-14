@@ -236,10 +236,12 @@ class ProductApi{
         Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
             Log::debug("sku => ".$res["codigo"]);
+            Log::debug("----0----");
             $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
+            Log::debug("----1----");
             if (!empty($res["marca"]) && is_array($res["marca"])) {
                 $id_brand = $this->getBrand($res["marca"]["nombre"]);
                 if (is_null($id_brand)) {
@@ -248,6 +250,7 @@ class ProductApi{
                     }
                 }
             }
+            Log::debug("----2----");
             if (!empty($res["detalle"]) && is_array($res["detalle"])) {
                 $id_type = $this->getType($res["detalle"]["tipoProducto"]);
                 $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
@@ -262,6 +265,7 @@ class ProductApi{
                     }
                 }
             }
+            Log::debug("----3----");
             if (is_null($id_product)) {
                 $this->setProduct(
                     $res["codigo"],
@@ -295,18 +299,23 @@ class ProductApi{
                     $id_Account
                 );
             }
+            Log::debug("----4----");
             if (!empty($res["minicuotas"]) && is_array($res["minicuotas"])) {
                 $this->changeMiniCuotas($id_product, $res["minicuotas"]);
             }
+            Log::debug("----5----");
             if (!empty($res["estado"]) && is_array($res["estado"])) {
                 $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
             }
+            Log::debug("----6----");
             if (!empty($res["clasificacion"]) && is_array($res["clasificacion"])) {
                 $this->setClasificacion($res["clasificacion"], false, $allStore, $id_product);
             }
+            Log::debug("----7----");
             if (!empty($res["precios"]) && is_array($res["precios"])) {
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
+            Log::debug("----8----");
         }
         Log::debug("FIN => IMPORT");
     }
