@@ -302,7 +302,6 @@ class ProductApi{
             if (!empty($res["precios"]) && is_array($res["precios"])) {
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
-            
         }
     }
 
