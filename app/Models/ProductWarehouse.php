@@ -11,7 +11,7 @@ class ProductWarehouse extends Model
 
     protected $table = 'product_warehouse';
 
-    protected $fillable = ['id_product', 'id_warehouse', 'stock', 'created_at', 'updated_at'];
+    protected $fillable = ['id_product', 'id_warehouse', 'id_store', 'stock', 'created_at', 'updated_at'];
 
     public $incrementing = false;
     public $timestamps = false;

@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('warehouses', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('code', 20);
-            $table->boolean('base');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at')->nullable();
+        Schema::table('product_warehouse', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_store')->nullable();
+            $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
         });
     }
 
@@ -30,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::table('product_warehouse', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_store');
+        });
     }
 };

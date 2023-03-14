@@ -21,6 +21,8 @@ use App\Models\CategoryInfo;
 use App\Models\Price;
 use App\Models\ProductCategory;
 use App\Models\ProductPriceStore;
+use App\Models\ProductWarehouse;
+use App\Models\Warehouse;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,10 +33,15 @@ class ProductApi{
 
     CONST OPLN_PRECIO_PROPUESTO = 1;
     CONST OPLN_TIENDAS_SCZ = 3;
+    CONST NAME_SCZ         = "SCZ";
     CONST OPLN_TIENDAS_LPZ = 4;
+    CONST NAME_LPZ         = "LPZ";
     CONST OPLN_TIENDAS_CBA = 5;
+    CONST NAME_CBA         = "CBA";
     CONST OPLN_TIENDAS_TRJ = 22;
+    CONST NAME_TRJ         = "TRJ";
     CONST OPLN_TIENDAS_SCE = 23;
+    CONST NAME_SCE         = "SCE";
     /**
      * @var Date
      */
@@ -303,8 +310,131 @@ class ProductApi{
             if (!empty($res["precios"]) && is_array($res["precios"])) {
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
+            if (!empty($res["disponibilidad"]) && is_array($res["disponibilidad"])) {
+                $this->setDisponibility($res["disponibilidad"], $id_product);
+            }
         }
         Log::debug("FIN => IMPORT");
+    }
+
+    /**
+     * @param array $disponibilidades
+     * @param int $id_product
+     */
+    public function setDisponibility(array $disponibilidades, int $id_product){
+        foreach ($disponibilidades as $disponibilidad) {
+            $id_stores = $this->convertListToStoreName($disponibilidad["nombreAlmacen"]);
+            $this->loadbyStoresDisponibility($id_product, $id_stores, $disponibilidad);
+        }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param array $id_stores
+     * @param array $disponibilidad
+     */
+    public function loadbyStoresDisponibility(int $idProduct, array $id_stores, array $disponibilidad){
+        foreach ($id_stores as $id_store) {
+            if($id_store != 0){
+                $id_warehouse = $this->getWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
+                if (is_null($id_warehouse)) {
+                    $this->setWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
+                    $id_warehouse = $this->getWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
+                }
+                if (is_null($this->getProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store))) {
+                    $this->setProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store);
+                }else{
+
+                }
+            }
+        }
+    }
+    
+    /**
+     * @param int $id_product
+     * @param int $id_warehouse
+     * @param int $stock
+     * @param int $id_store
+     */
+    public function updateProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
+        ProductWarehouse::where('id_product', $id_product)->where('id_warehouse', $id_warehouse)->where('id_store', $id_store)->update([
+            "stock" => $stock,
+            "updated_at" => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_warehouse
+     * @param int $stock
+     * @param int $id_store
+     */
+    public function setProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
+        try {
+            $ProductWarehouse = new ProductWarehouse();
+            $ProductWarehouse->id_product = $id_product;
+            $ProductWarehouse->id_warehouse = $id_warehouse;
+            $ProductWarehouse->stock = $stock;
+            $ProductWarehouse->id_store = $id_store;
+            $ProductWarehouse->created_at = $this->date->getFullDate();
+            $ProductWarehouse->updated_at = null;
+            $ProductWarehouse->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_warehouse
+     * @param int $stock
+     * @param int $id_store
+     */
+    public function getProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
+        $ProductWarehouse = ProductWarehouse::select("id_product")->where("id_product", $id_product)->
+        where("id_warehouse", $id_warehouse)->where("stock", $stock)->where("id_store", $id_store)->get()->toArray();
+        if (count($ProductWarehouse) > 0) {
+            return $ProductWarehouse[0]["id_product"];
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param string $code
+     * @param bool $base
+     * @param string $almacen
+     */
+    public function setWarehouse(string $name, string $code, bool $base, string $almacen){
+        try {
+            $Warehouse = new Warehouse();
+            $Warehouse->name = $name;
+            $Warehouse->code = $code;
+            $Warehouse->base = $base;
+            $Warehouse->almacen = $almacen;
+            $Warehouse->created_at = $this->date->getFullDate();
+            $Warehouse->updated_at = null;
+            $Warehouse->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+    
+    /**
+     * @param string $name
+     * @param string $code
+     * @param bool $base
+     * @param string $almacen
+     */
+    public function getWarehouse(string $name, string $code, bool $base, string $almacen){
+        $Warehouse = Warehouse::select($this->text->getId())->where("name", $name)->
+        where("code", $code)->where("base", $base)->where("almacen", $almacen)->get()->toArray();
+        if (count($Warehouse) > 0) {
+            return $Warehouse[0][$this->text->getId()];
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -433,7 +563,8 @@ class ProductApi{
             "price" => $price,
             "special_price" => $special_price,
             "from_date" => $from_date,
-            "to_date" => $to_date
+            "to_date" => $to_date,
+            "updated_at" => $this->date->getFullDate()
         ]);
     }
 
@@ -693,6 +824,25 @@ class ProductApi{
             case SELF::OPLN_TIENDAS_SCE:
                 return [8];
             case SELF::OPLN_TIENDAS_TRJ:
+                return [5];
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function convertListToStoreName(string $name){
+        switch ($name) {
+            case SELF::NAME_SCZ:
+                return [2,9];
+            case SELF::NAME_CBA:
+                return [3];
+            case SELF::NAME_LPZ:
+                return [1];
+            case SELF::NAME_SCE:
+                return [8];
+            case SELF::NAME_TRJ:
                 return [5];
         }
     }
