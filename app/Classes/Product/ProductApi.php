@@ -69,10 +69,9 @@ class ProductApi{
 
     /**
      * @param string $code
-     * @param string $name
      * @return int|null
      */
-    private function getCatalogStore(string $code, string $name){
+    private function getCatalogStore(string $code){
         //->where($this->text->getName(), $name)
         $Product = Product::select($this->text->getId())->where($this->text->getSku(), $code)->get()->toArray();
         if (count($Product) > 0) {
@@ -239,7 +238,7 @@ class ProductApi{
         Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
             Log::debug("sku => ".$res["codigo"]);
-            $id_product = $this->getCatalogStore($res["codigo"], $res["nombre"]);
+            $id_product = $this->getCatalogStore($res["codigo"]);
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
@@ -268,20 +267,19 @@ class ProductApi{
             if (is_null($id_product)) {
                 $this->setProduct(
                     $res["codigo"],
-                    $res["nombre"],
+                    !empty($res["nombre"]) ? $res["nombre"] : "",
                     $id_brand,
                     $id_clacom,
                     $id_type,
                     $id_Account
                 );
                 $id_product = $this->getCatalogStore(
-                    $res["codigo"],
-                    $res["nombre"]
+                    $res["codigo"]
                 );
                 $this->updateProductRelations(
                     $id_product,
                     $res["codigo"],
-                    $res["nombre"],
+                    !empty($res["nombre"]) ? $res["nombre"] : "",
                     $id_brand,
                     $id_clacom,
                     $id_type,
@@ -291,7 +289,7 @@ class ProductApi{
                 $this->updateProductALL(
                     $id_product,
                     $res["codigo"],
-                    $res["nombre"],
+                    !empty($res["nombre"]) ? $res["nombre"] : "",
                     $id_brand,
                     $id_clacom,
                     $id_type,
