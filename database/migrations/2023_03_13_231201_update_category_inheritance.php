@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('product', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_partner')->nullable();
-            $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
+        Schema::table('category', function (Blueprint $table) {
+            $table->unsignedBigInteger('inheritance')->nullable();
+            $table->foreign('inheritance')->references('id')->on('category')->onDelete('cascade');
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('product', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('id_partner');
+        Schema::table('category', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('inheritance');
         });
     }
 };

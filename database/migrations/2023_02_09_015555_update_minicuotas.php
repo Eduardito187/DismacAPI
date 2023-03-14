@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
+        /*
         Schema::table('product', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_mini_cuota');
         });
+        */
         Schema::create('product_minicuota_store', function (Blueprint $table) {
             $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');

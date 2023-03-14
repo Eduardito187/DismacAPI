@@ -16,6 +16,11 @@ use App\Models\ProductType;
 use App\Models\Store;
 use Illuminate\Support\Facades\Log;
 use App\Classes\Account\AccountApi;
+use App\Models\Category;
+use App\Models\CategoryInfo;
+use App\Models\Price;
+use App\Models\ProductCategory;
+use App\Models\ProductPriceStore;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -291,6 +296,291 @@ class ProductApi{
             if (!empty($res["estado"]) && is_array($res["estado"])) {
                 $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
             }
+            if (!empty($res["clasificacion"]) && is_array($res["clasificacion"])) {
+                $this->setClasificacion($res["clasificacion"], false, $allStore, $id_product);
+            }
+            if (!empty($res["precios"]) && is_array($res["precios"])) {
+                $this->setProductAllPrice($res["precios"], $id_product);
+            }
+            
+        }
+    }
+
+    /**
+     * @param int $id_price
+     * @param int $id_store
+     * @param int $id_product
+     */
+    public function setProductPriceStore(int $id_price, int $id_store, int $id_product){
+        try {
+            $ProductPriceStore = new ProductPriceStore();
+            $ProductPriceStore->id_price = $id_price;
+            $ProductPriceStore->id_store = $id_store;
+            $ProductPriceStore->id_product = $id_product;
+            $ProductPriceStore->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_price
+     * @param int $id_store
+     * @param int $id_product
+     */
+    public function getProductPriceStore(int $id_store, int $id_product){
+        $ProductPriceStore = ProductPriceStore::select("id_price")->
+        where("id_store", $id_store)->where("id_product", $id_product)->get()->toArray();
+        if (count($ProductPriceStore) > 0) {
+            return $ProductPriceStore[0]["id_price"];
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param float $price
+     * @param float $special_price
+     * @param string $from_date
+     * @param string $to_date
+     */
+    public function setPrice(float $price, float $special_price, string $from_date, string $to_date){
+        try {
+            $Price = new Price();
+            $Price->price = $price;
+            $Price->special_price = $special_price;
+            $Price->from_date = $from_date;
+            $Price->to_date = $to_date;
+            $Price->created_at = $this->date->getFullDate();
+            $Price->updated_at = null;
+            $Price->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param float $price
+     * @param float $special_price
+     * @param string $from_date
+     * @param string $to_date
+     */
+    public function getPrice(float $price, float $special_price, string $from_date, string $to_date){
+        $Price = Price::select($this->text->getId())->where("price", $price)->
+        where("special_price", $special_price)->where("from_date", $from_date)->where("to_date", $to_date)->get()->toArray();
+        if (count($Price) > 0) {
+            return $Price[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param array $prices
+     * @param int $id_product
+     */
+    public function setProductAllPrice(array $prices, int $id_product){
+        foreach ($prices as $price) {
+            $id_stores = $this->convertListToStore($price["listaPrecio"]);
+            $this->loadPricesStores($id_product, $id_stores, $prices);
+        }
+    }
+    
+    /**
+     * @param int $id_product
+     * @param array $id_stores
+     * @param array $prices
+     */
+    public function loadPricesStores(int $id_product, array $id_stores, array $price){
+        foreach ($id_stores as $id_store) {
+            if($id_store != 0){
+                $this->validatePriceProductStore($id_store, $id_product, $price["precio"], $price["descuento"]);
+            }
+        }
+    }
+
+    /**
+     * @param int $id_store
+     * @param int $id_product
+     * @param string $precio
+     * @param string $descuento
+     */
+    public function validatePriceProductStore(int $id_store, int $id_product, string $precio, string $descuento){
+        $id_price = $this->getProductPriceStore($id_store, $id_product);
+        $_price = floatval($precio);
+        $_special_price = floatval($precio)-floatval($descuento);
+        $from_date = $this->date->getFullDate();
+        $to_date = $this->date->addDateToDate($from_date, ' + 1 years');
+        if (is_null($id_price)) {
+            $this->setPrice($_price, $_special_price, $from_date, $to_date);
+            $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
+            $this->setProductPriceStore($id_price, $id_store, $id_product);
+        }else{
+            $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+        }
+    }
+
+    /**
+     * @param int $id_price
+     * @param float $price
+     * @param float $special_price
+     * @param string $from_date
+     * @param string $to_date
+     */
+    public function updatePriceByID(int $id_price, float $price, float $special_price, string $from_date, string $to_date){
+        Price::where($this->text->getId(), $id_price)->update([
+            "price" => $price,
+            "special_price" => $special_price,
+            "from_date" => $from_date,
+            "to_date" => $to_date
+        ]);
+    }
+
+    /**
+     * @param array $clasificacion
+     * @param bool $subcat
+     * @param array $allStore
+     * @param int $id_product
+     */
+    public function setClasificacion(array $clasificacion, bool $subcat, array $allStore, int $id_product){
+        if (!is_null($clasificacion) && $clasificacion["codigo"] != -1) {
+            $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+            if (is_null($id_cat_info)) {
+                $this->setCategoryInfo($clasificacion["codigo"], $subcat);
+                $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+            }
+            $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+            if (is_null($id_cat)) {
+                $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $$clasificacion["codigoPadre"]);
+                $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $$clasificacion["codigoPadre"]);
+            }
+            if (!is_null($clasificacion["clasificacion"])) {
+                $this->setClasificacion($clasificacion["clasificacion"], true, $allStore, $id_product);
+            }else{
+                $this->setAllProductCategoryStore($id_product, $allStore, $id_cat);
+            }
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_store
+     * @param int $id_category
+     */
+    public function setProductCategory(int $id_product, int $id_store, int $id_category){
+        try {
+            $ProductCategory = new ProductCategory();
+            $ProductCategory->id_product = $id_product;
+            $ProductCategory->id_store = $id_store;
+            $ProductCategory->id_category = $id_category;
+            $ProductCategory->created_at = $this->date->getFullDate();
+            $ProductCategory->updated_at = null;
+            $ProductCategory->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_store
+     * @param int $id_category
+     */
+    public function getProductCategory(int $id_product, int $id_store, int $id_category){
+        $ProductCategory = ProductCategory::select("id_product")->where("id_product", $id_product)->
+        where("id_store", $id_store)->where("id_category", $id_category)->get()->toArray();
+        if (count($ProductCategory) > 0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param array $stores
+     * @param int $id_category
+     */
+    public function setAllProductCategoryStore(int $id_product, array $stores, int $id_category){
+        foreach ($stores as $store) {
+            if (!$this->getProductCategory($id_product, $store[$this->text->getId()], $id_category)) {
+                $this->setProductCategory($id_product, $store[$this->text->getId()], $id_category);
+            }
+        }
+    }
+
+    /**
+     * @param int $id_pos
+     * @param int $sub_category_pos
+     */
+    public function setCategoryInfo(int $id_pos, int $sub_category_pos){
+        try {
+            $CategoryInfo = new CategoryInfo();
+            $CategoryInfo->show_filter = true;
+            $CategoryInfo->id_pos = $id_pos;
+            $CategoryInfo->sub_category_pos = $sub_category_pos;
+            $CategoryInfo->id_picture = null;
+            $CategoryInfo->id_content = null;
+            $CategoryInfo->url = "";
+            $CategoryInfo->created_at = $this->date->getFullDate();
+            $CategoryInfo->updated_at = null;
+            $CategoryInfo->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_pos
+     * @param int $sub_category_pos
+     */
+    public function getCategoryInfo(int $id_pos, int $sub_category_pos){
+        $CategoryInfo = CategoryInfo::select($this->text->getId())->where("id_pos", $id_pos)->
+        where("sub_category_pos", $sub_category_pos)->get()->toArray();
+        if (count($CategoryInfo) > 0) {
+            return $CategoryInfo[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param string $code
+     * @param int $id_info_category
+     * @param int $inheritance
+     */
+    public function setCategory(string $name, string $code, int $id_info_category, int $inheritance){
+        try {
+            $Category = new Category();
+            $Category->name = $name;
+            $Category->name_pos = $name;
+            $Category->code = $code;
+            $Category->inheritance = $inheritance;
+            $Category->status = true;
+            $Category->in_menu = true;
+            $Category->id_info_category = $id_info_category;
+            $Category->id_metadata = null;
+            $Category->created_at = $this->date->getFullDate();
+            $Category->updated_at = null;
+            $Category->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param string $name_pos
+     * @param string $code
+     * @param int $inheritance
+     */
+    public function getCategory(string $name_pos, string $code, int $inheritance){
+        $Category = Category::select($this->text->getId())->where("name_pos", $name_pos)
+        ->where("code", $code)->where("inheritance", $inheritance)->get()->toArray();
+        if (count($Category) > 0) {
+            return $Category[0][$this->text->getId()];
+        }else{
+            return null;
         }
     }
 

@@ -44,6 +44,15 @@ class Date{
     }
 
     /**
+     * @param string $date_time
+     * @param string $date
+     * @return string
+     */
+    public function addDateToDate(string $date_time, string $date){
+        return date('Y-m-d H:i:s', strtotime($date_time.$date));
+    }
+
+    /**
      * @return string
      */
     public function getTime(){
