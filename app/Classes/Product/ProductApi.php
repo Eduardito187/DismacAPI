@@ -96,6 +96,7 @@ class ProductApi{
             $Product->id_partner = $id_Account;
             $Product->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #12");
             throw new Exception($th->getMessage());
         }
     }
@@ -129,6 +130,7 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return SELF::FILTER_LAST_EDIT;
         }else{
+            Log::debug("ERROR #13");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -143,6 +145,7 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return $this->text->getUpdated();
         }else{
+            Log::debug("ERROR #14");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -157,6 +160,7 @@ class ProductApi{
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
             return "DESC";
         }else{
+            Log::debug("ERROR #15");
             throw new Exception($this->text->getNoneFilter());
         }
     }
@@ -262,7 +266,8 @@ class ProductApi{
                 $this->setProduct(
                     $res["codigo"],
                     $res["nombre"],
-                    $id_brand, $id_clacom,
+                    $id_brand,
+                    $id_clacom,
                     $id_type,
                     $id_Account
                 );
@@ -319,6 +324,7 @@ class ProductApi{
             $ProductPriceStore->id_product = $id_product;
             $ProductPriceStore->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #1");
             throw new Exception($th->getMessage());
         }
     }
@@ -355,6 +361,7 @@ class ProductApi{
             $Price->updated_at = null;
             $Price->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #2");
             throw new Exception($th->getMessage());
         }
     }
@@ -477,6 +484,7 @@ class ProductApi{
             $ProductCategory->updated_at = null;
             $ProductCategory->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #3");
             throw new Exception($th->getMessage());
         }
     }
@@ -526,6 +534,7 @@ class ProductApi{
             $CategoryInfo->updated_at = null;
             $CategoryInfo->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #4");
             throw new Exception($th->getMessage());
         }
     }
@@ -565,6 +574,7 @@ class ProductApi{
             $Category->updated_at = null;
             $Category->save();
         } catch (Exception $th) {
+            Log::debug("ERROR #5");
             throw new Exception($th->getMessage());
         }
     }
@@ -640,6 +650,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #6");
             throw new Exception($th->getMessage());
         }
     }
@@ -705,6 +716,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #7");
             throw new Exception($th->getMessage());
         }
     }
@@ -737,6 +749,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #8");
             throw new Exception($th->getMessage());
         }
     }
@@ -770,6 +783,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #9");
             throw new Exception($th->getMessage());
         }
     }
@@ -805,6 +819,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #10");
             throw new Exception($th->getMessage());
         }
     }
@@ -863,6 +878,7 @@ class ProductApi{
                 return false;
             }
         } catch (Exception $th) {
+            Log::debug("ERROR #11");
             throw new Exception($th->getMessage());
         }
     }
