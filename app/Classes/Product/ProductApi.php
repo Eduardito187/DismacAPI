@@ -587,7 +587,7 @@ class ProductApi{
             $Category->name = $name;
             $Category->name_pos = $name;
             $Category->code = $code;
-            $Category->inheritance = $inheritance;
+            $Category->inheritance = $inheritance == 0 ? null : $inheritance;
             $Category->status = true;
             $Category->in_menu = true;
             $Category->id_info_category = $id_info_category;
