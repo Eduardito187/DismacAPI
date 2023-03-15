@@ -22,7 +22,7 @@ class Products extends Controller
      */
     public function index()
     {
-        $Products = Product::skip(10)->take(5)->get();
+        $Products = Product::skip(200)->take(100)->get();
         $repsonse = array();
         $Stores = $this->_ProductApi->getAllStore();
         foreach ($Products as $p) {
@@ -50,7 +50,7 @@ class Products extends Controller
                         $price_array = $this->_ProductApi->getPriceProduct($id_price);
                         if (!is_null($price_array)) {
                             $Product["price"] = $price_array["price"];
-                            $Product["special_price"] = $price_array["special_price"];
+                            $Product["special_price"] = $price_array["special_price"] == null ? "" : $price_array["special_price"];
                         }
                     }
                     $repsonse[] = $Product;
