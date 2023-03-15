@@ -538,6 +538,9 @@ class ProductApi{
         $id_price = $this->getProductPriceStore($id_store, $id_product);
         $_price = floatval($precio);
         $_special_price = floatval($precio)-floatval($descuento);
+        if ($_price == $_special_price) {
+            $_special_price=null;
+        }
         $from_date = $this->date->getFullDate();
         $to_date = $this->date->addDateToDate($from_date, ' + 1 years');
         if (is_null($id_price)) {
