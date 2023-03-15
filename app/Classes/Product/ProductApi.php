@@ -399,6 +399,15 @@ class ProductApi{
     }
 
     /**
+     * @param int $id_product
+     * @param int $id_store
+     * @return int
+     */
+    public function getProductStockStore(int $id_product, int $id_store){
+        return ProductWarehouse::where("id_product", $id_product)->where("id_store", $id_store)->sum('stock');
+    }
+
+    /**
      * @param string $name
      * @param string $code
      * @param bool $base
@@ -499,6 +508,19 @@ class ProductApi{
         where("special_price", $special_price)->where("from_date", $from_date)->where("to_date", $to_date)->get()->toArray();
         if (count($Price) > 0) {
             return $Price[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+    
+    /**
+     * @param int $id
+     * @return array|null
+     */
+    public function getPriceProduct(int $id){
+        $Price = Price::select("price, special_price")->where($this->text->getId(), $id)->get()->toArray();
+        if (count($Price) > 0) {
+            return $Price[0];
         }else{
             return null;
         }
@@ -906,6 +928,18 @@ class ProductApi{
     }
 
     /**
+     * @param int $id
+     */
+    public function getBrandName(int $id){
+        $Brand = Brand::select($this->text->getName())->where($this->text->getId(), $id)->get()->toArray();
+        if (count($Brand) > 0) {
+            return $Brand[0][$this->text->getName()];
+        }else{
+            return "";
+        }
+    }
+
+    /**
      * @param string $name
      */
     public function getBrand(string $name){
@@ -986,6 +1020,18 @@ class ProductApi{
     }
 
     /**
+     * @param int $id
+     */
+    public function getClacomLabel(int $id){
+        $Clacom = Clacom::select("label")->where($this->text->getId(), $id)->get()->toArray();
+        if (count($Clacom) > 0) {
+            return $Clacom[0]["label"];
+        }else{
+            return "";
+        }
+    }
+
+    /**
      * @param int $idProduct
      * @param array $stores
      * @param bool $status
@@ -1002,12 +1048,32 @@ class ProductApi{
     }
 
     /**
-     * @param array
+     * @param array $stores
+     * @param int $id_store
+     */
+    public function readAllStore(array $stores, int $id_store){
+        foreach ($stores as $store) {
+            if ($store["id"] == $id_store) {
+                return $store["name"];
+            }
+        }
+        return "";
+    }
+
+    /**
+     * @return array
      */
     public function getAllStoreID(){
         return Store::select($this->text->getId())->get()->toArray();
     }
     
+    /**
+     * @param array
+     */
+    public function getAllStore(){
+        return Store::all()->toArray();
+    }
+
     /**
      * @param string $id_product
      * @param string $id_store
@@ -1045,6 +1111,19 @@ class ProductApi{
         }
     }
     
+    /**
+     * @param int $id_product
+     * @return array|null
+     */
+    public function getProductStatus(int $id_product){
+        $ProductStoreStatus = ProductStoreStatus::select("id_store, status")->where("id_product", $id_product)->get()->toArray();
+        if (count($ProductStoreStatus) > 0) {
+            return $ProductStoreStatus;
+        }else{
+            return null;
+        }
+    }
+
     /**
      * @param string $id_product
      * @param string $id_store
