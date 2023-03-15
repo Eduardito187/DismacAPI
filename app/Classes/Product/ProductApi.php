@@ -518,7 +518,7 @@ class ProductApi{
      * @return array|null
      */
     public function getPriceProduct(int $id){
-        $Price = Price::select("price, special_price")->where($this->text->getId(), $id)->get()->toArray();
+        $Price = Price::select("price", "special_price")->where($this->text->getId(), $id)->get()->toArray();
         if (count($Price) > 0) {
             return $Price[0];
         }else{
@@ -1116,7 +1116,7 @@ class ProductApi{
      * @return array|null
      */
     public function getProductStatus(int $id_product){
-        $ProductStoreStatus = ProductStoreStatus::select("id_store, status")->where("id_product", $id_product)->get()->toArray();
+        $ProductStoreStatus = ProductStoreStatus::select("id_store", "status")->where("id_product", $id_product)->get()->toArray();
         if (count($ProductStoreStatus) > 0) {
             return $ProductStoreStatus;
         }else{
