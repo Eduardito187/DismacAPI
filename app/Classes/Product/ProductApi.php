@@ -1116,7 +1116,7 @@ class ProductApi{
      * @return array|null
      */
     public function getProductStatus(int $id_product){
-        $ProductStoreStatus = ProductStoreStatus::select("id_store", "status")->where("id_product", $id_product)->get()->toArray();
+        $ProductStoreStatus = ProductStoreStatus::find($id_product)->toArray();
         if (count($ProductStoreStatus) > 0) {
             return $ProductStoreStatus;
         }else{
