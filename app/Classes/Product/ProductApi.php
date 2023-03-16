@@ -999,12 +999,12 @@ class ProductApi{
     }
     
     /**
-     * @param string $clacom
+     * @param string|null $clacom
      * @return bool
      */
-    private function setClacom(string $clacom){
+    private function setClacom(string|null $clacom){
         try {
-            if(strlen($clacom) > 0){
+            if(!is_null($clacom) && strlen($clacom) > 0){
                 $Clacom = new Clacom();
                 $Clacom->label = $clacom;
                 $Clacom->code = str_replace(" ", "_", $clacom);
