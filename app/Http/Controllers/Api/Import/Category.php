@@ -45,7 +45,8 @@ class Category extends Controller
     {
         set_time_limit(0);
         try {
-            $ApiBlend = $this->import->importCategory($request->all());
+            //$ApiBlend = $this->import->importCategory($request->all());
+            $ApiBlend = $request->all();
             if ($ApiBlend[$this->text->getCode()] == 200) {
                 if (is_array($ApiBlend[$this->text->getObject()])) {
                     Log::debug("ENTRO");
