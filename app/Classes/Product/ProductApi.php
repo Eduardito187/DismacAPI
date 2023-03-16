@@ -370,9 +370,8 @@ class ProductApi{
      * @param int $stock
      */
     public function updateProducStock(int $id_product, int $stock){
-        Product::where('id_product', $id_product)->update([
-            "stock" => $stock,
-            "updated_at" => $this->date->getFullDate()
+        Product::where('id', $id_product)->update([
+            "stock" => $stock
         ]);
     }
 
