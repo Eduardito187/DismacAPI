@@ -1022,9 +1022,13 @@ class ProductApi{
     }
 
     /**
-     * @param string $clacom
+     * @param string|null $clacom
+     * @return int|null
      */
-    public function getClacom(string $clacom){
+    public function getClacom(string|null $clacom){
+        if (is_null($clacom)) {
+            return null;
+        }
         $Clacom = Clacom::select($this->text->getId())->where("label", $clacom)->get()->toArray();
         if (count($Clacom) > 0) {
             return $Clacom[0][$this->text->getId()];
