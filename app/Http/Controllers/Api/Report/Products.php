@@ -22,7 +22,7 @@ class Products extends Controller
      */
     public function index()
     {
-        $Products = Product::skip(200)->take(100)->get();
+        $Products = Product::where("stock" > 0)->skip(200)->take(100)->get();
         $repsonse = array();
         $Stores = $this->_ProductApi->getAllStore();
         foreach ($Products as $p) {
