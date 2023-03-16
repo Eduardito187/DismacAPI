@@ -44,7 +44,7 @@ class Products extends Controller
                 for ($i=0; $i < count($ProductStore); $i++) { 
                     $Product["store"] = $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]);
                     $Product["status"] = $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable";
-                    $Product["stock"] = $this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"]);
+                    $Product["stock"] = intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"]));
                     $id_price = $this->_ProductApi->getProductPriceStore($ProductStore[$i]["id_store"], $p->id);
                     if (!is_null($id_price)) {
                         $price_array = $this->_ProductApi->getPriceProduct($id_price);
