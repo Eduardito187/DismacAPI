@@ -309,7 +309,7 @@ class ProductApi{
                 $this->setProductAllPrice($res["precios"], $id_product);
             }
             if (!empty($res["disponibilidad"]) && is_array($res["disponibilidad"]) && !is_null($id_product)) {
-                $this->setDisponibility($res["disponibilidad"], $id_product);
+                $this->updateProducStock($id_product, $this->setDisponibility($res["disponibilidad"], $id_product));
             }
         }
         Log::debug("FIN => IMPORT");
@@ -318,15 +318,16 @@ class ProductApi{
     /**
      * @param array $disponibilidades
      * @param int $id_product
+     * @return int
      */
     public function setDisponibility(array $disponibilidades, int $id_product){
         $stockNacional = 0;
         foreach ($disponibilidades as $disponibilidad) {
+            $stockNacional += intval($disponibilidad["stockDisponible"]);
             $id_stores = $this->convertListToStoreName($disponibilidad["nombreAlmacen"]);
             $this->loadbyStoresDisponibility($id_product, $id_stores, $disponibilidad);
-            $stockNacional += intval($disponibilidad["stockDisponible"]);
         }
-        $this->updateProducStock($id_product, $stockNacional);
+        return $stockNacional;
     }
 
     /**
