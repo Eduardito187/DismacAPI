@@ -320,10 +320,13 @@ class ProductApi{
      * @param int $id_product
      */
     public function setDisponibility(array $disponibilidades, int $id_product){
+        $stockNacional = 0;
         foreach ($disponibilidades as $disponibilidad) {
             $id_stores = $this->convertListToStoreName($disponibilidad["nombreAlmacen"]);
             $this->loadbyStoresDisponibility($id_product, $id_stores, $disponibilidad);
+            $stockNacional += intval($disponibilidad["stockDisponible"]);
         }
+        $this->updateProducStock($id_product, $stockNacional);
     }
 
     /**
@@ -356,6 +359,17 @@ class ProductApi{
      */
     public function updateProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
         ProductWarehouse::where('id_product', $id_product)->where('id_warehouse', $id_warehouse)->where('id_store', $id_store)->update([
+            "stock" => $stock,
+            "updated_at" => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $stock
+     */
+    public function updateProducStock(int $id_product, int $stock){
+        ProductWarehouse::where('id_product', $id_product)->update([
             "stock" => $stock,
             "updated_at" => $this->date->getFullDate()
         ]);
