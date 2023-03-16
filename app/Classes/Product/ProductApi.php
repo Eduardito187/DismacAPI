@@ -492,11 +492,11 @@ class ProductApi{
 
     /**
      * @param float $price
-     * @param float $special_price
+     * @param float|null $special_price
      * @param string $from_date
      * @param string $to_date
      */
-    public function setPrice(float $price, float $special_price, string $from_date, string $to_date){
+    public function setPrice(float $price, float|null $special_price, string $from_date, string $to_date){
         try {
             $Price = new Price();
             $Price->price = $price;
@@ -513,11 +513,11 @@ class ProductApi{
 
     /**
      * @param float $price
-     * @param float $special_price
+     * @param float|null $special_price
      * @param string $from_date
      * @param string $to_date
      */
-    public function getPrice(float $price, float $special_price, string $from_date, string $to_date){
+    public function getPrice(float $price, float|null $special_price, string $from_date, string $to_date){
         $Price = Price::select($this->text->getId())->where("price", $price)->
         where("special_price", $special_price)->where("from_date", $from_date)->where("to_date", $to_date)->get()->toArray();
         if (count($Price) > 0) {
@@ -591,11 +591,11 @@ class ProductApi{
     /**
      * @param int $id_price
      * @param float $price
-     * @param float $special_price
+     * @param float|null $special_price
      * @param string $from_date
      * @param string $to_date
      */
-    public function updatePriceByID(int $id_price, float $price, float $special_price, string $from_date, string $to_date){
+    public function updatePriceByID(int $id_price, float $price, float|null $special_price, string $from_date, string $to_date){
         Price::where($this->text->getId(), $id_price)->update([
             "price" => $price,
             "special_price" => $special_price,
