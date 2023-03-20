@@ -50,6 +50,7 @@ class Products extends Controller
                             $special_price = $price_array["special_price"] == null ? "" : $price_array["special_price"];
                         }
                     }
+                    $Stock = 0;
                     $WarehouseStore = $this->_ProductApi->getStoreWarehouse($p->id, $ProductStore[$i]["id_store"]);
                     foreach ($WarehouseStore as $WS) {
                         $WSInfo = $this->_ProductApi->getWarehouseName($WS["id_warehouse"]);
@@ -63,17 +64,20 @@ class Products extends Controller
                             "id_warehouse" => $WS["id_warehouse"],
                             "name_warehouse" => $name,
                             "code_warehouse" => $code,
-                            "stock" => $WS["stock"]
+                            "stock" => $WS["stock"],
+                            "sumPrice" => $special_price == 0 ? ($price * $WS["stock"]) : ($special_price * $WS["stock"])
                         );
                     }
+                    $Stock = intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"]));
                     $stores[] = array(
                         "id_store" => $ProductStore[$i]["id_store"],
                         "name_store" => $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]),
                         "status" => $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable",
-                        "stock" => intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"])),
+                        "stock" => $Stock,
                         "warehouses" => $warehouses,
                         "price" => $price,
-                        "special_price" => $special_price
+                        "special_price" => $special_price,
+                        "sumPrice" => $special_price == 0 ? ($price * $Stock) : ($special_price * $Stock)
                     );
                 }
                 $Product["store"] = $stores;
