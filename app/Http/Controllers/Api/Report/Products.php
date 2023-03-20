@@ -32,11 +32,7 @@ class Products extends Controller
                 "sku" => $p->sku,
                 "brand" => $p->id_brand == null ? "" : $this->_ProductApi->getBrandName($p->id_brand),
                 "clacom" => $p->id_clacom == null ? "" : $this->_ProductApi->getClacomLabel($p->id_clacom),
-                "store" => "",
-                "status" => "Disable",
-                "stock" => "",
-                "price" => 0,
-                "special_price" => 0
+                "store" => ""
             );
 
             $ProductStore = $this->_ProductApi->getProductStatus($p->id);
