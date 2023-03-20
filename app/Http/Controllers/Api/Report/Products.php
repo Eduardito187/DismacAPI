@@ -67,8 +67,8 @@ class Products extends Controller
                         );
                     }
                     $stores[] = array(
-                        "store" => $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]),
                         "id_store" => $ProductStore[$i]["id_store"],
+                        "name_store" => $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]),
                         "status" => $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable",
                         "stock" => intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"])),
                         "warehouses" => $warehouses,
