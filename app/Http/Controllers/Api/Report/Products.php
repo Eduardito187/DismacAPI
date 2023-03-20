@@ -46,8 +46,8 @@ class Products extends Controller
                     if (!is_null($id_price)) {
                         $price_array = $this->_ProductApi->getPriceProduct($id_price);
                         if (!is_null($price_array)) {
-                            $price = $price_array["price"];
-                            $special_price = $price_array["special_price"] == null ? "" : $price_array["special_price"];
+                            $price = floatval($price_array["price"]);
+                            $special_price = floatval($price_array["special_price"] == null ? 0 : $price_array["special_price"]);
                         }
                     }
                     $Stock = 0;
