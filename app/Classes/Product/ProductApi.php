@@ -415,6 +415,15 @@ class ProductApi{
     /**
      * @param int $id_product
      * @param int $id_store
+     * @return array
+     */
+    public function getStoreWarehouse(int $id_product, int $id_store){
+        return ProductWarehouse::where("id_product", $id_product)->where("id_store", $id_store)->get()->toArray();
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_store
      * @return int
      */
     public function getProductStockStore(int $id_product, int $id_store){
@@ -447,12 +456,26 @@ class ProductApi{
      * @param string $code
      * @param bool $base
      * @param string $almacen
+     * @return int|null
      */
     public function getWarehouse(string $name, string $code, bool $base, string $almacen){
         $Warehouse = Warehouse::select($this->text->getId())->where("name", $name)->
         where("code", $code)->where("base", $base)->where("almacen", $almacen)->get()->toArray();
         if (count($Warehouse) > 0) {
             return $Warehouse[0][$this->text->getId()];
+        }else{
+            return null;
+        }
+    }
+    
+    /**
+     * @param int $id_warehouse
+     * @return array|null
+     */
+    public function getWarehouseName(int $id_warehouse){
+        $Warehouse = Warehouse::select("name", "code")->where("id", $id_warehouse)->get()->toArray();
+        if (count($Warehouse) > 0) {
+            return $Warehouse[0];
         }else{
             return null;
         }

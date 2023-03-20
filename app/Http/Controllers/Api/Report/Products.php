@@ -40,22 +40,49 @@ class Products extends Controller
             );
 
             $ProductStore = $this->_ProductApi->getProductStatus($p->id);
+            $stores = array();
             if (!is_null($ProductStore)) {
-                for ($i=0; $i < count($ProductStore); $i++) { 
-                    $Product["store"] = $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]);
-                    $Product["status"] = $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable";
-                    $Product["stock"] = intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"]));
+                for ($i=0; $i < count($ProductStore); $i++) {
                     $id_price = $this->_ProductApi->getProductPriceStore($ProductStore[$i]["id_store"], $p->id);
+                    $warehouses = [];
+                    $price = 0;
+                    $special_price = 0;
                     if (!is_null($id_price)) {
                         $price_array = $this->_ProductApi->getPriceProduct($id_price);
                         if (!is_null($price_array)) {
-                            $Product["price"] = $price_array["price"];
-                            $Product["special_price"] = $price_array["special_price"] == null ? "" : $price_array["special_price"];
+                            $price = $price_array["price"];
+                            $special_price = $price_array["special_price"] == null ? "" : $price_array["special_price"];
                         }
                     }
-                    $repsonse[] = $Product;
+                    $WarehouseStore = $this->_ProductApi->getStoreWarehouse($p->id, $ProductStore[$i]["id_store"]);
+                    foreach ($WarehouseStore as $WS) {
+                        $WSInfo = $this->_ProductApi->getWarehouseName($WS["id_warehouse"]);
+                        $code = "";
+                        $name = "";
+                        if (!is_null($WSInfo)) {
+                            $name = $WSInfo["name"];
+                            $code = $WSInfo["code"];
+                        }
+                        $warehouses[] = array(
+                            "id_warehouse" => $WS["id_warehouse"],
+                            "name_warehouse" => $name,
+                            "code_warehouse" => $code,
+                            "stock" => $WS["stock"]
+                        );
+                    }
+                    $stores[] = array(
+                        "store" => $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]),
+                        "id_store" => $ProductStore[$i]["id_store"],
+                        "status" => $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable",
+                        "stock" => intval($this->_ProductApi->getProductStockStore($p->id, $ProductStore[$i]["id_store"])),
+                        "warehouses" => $warehouses,
+                        "price" => $price,
+                        "special_price" => $special_price
+                    );
                 }
+                $Product["store"] = $stores;
             }
+            $repsonse[] = $Product;
         }
         return response()->json($repsonse);
     }
