@@ -74,10 +74,10 @@ class Products extends Controller
                         "name_store" => $this->_ProductApi->readAllStore($Stores, $ProductStore[$i]["id_store"]),
                         "status" => $ProductStore[$i]["status"] == 0 ? "Disable" : "Enable",
                         "stock" => $Stock,
-                        "warehouses" => $warehouses,
                         "price" => $price,
                         "special_price" => $special_price,
-                        "sumPrice" => $special_price == 0 ? ($price * $Stock) : ($special_price * $Stock)
+                        "sumPrice" => $special_price == 0 ? ($price * $Stock) : ($special_price * $Stock),
+                        "warehouses" => $warehouses
                     );
                 }
                 $Product["store"] = $stores;
