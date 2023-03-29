@@ -87,12 +87,28 @@ class Text{
     CONST ERROR_PARAMETRO= "Error de parametros.";
     CONST SEARCH_ERROR   = "Busqueda erronea.";
     CONST SEARCH_SUCCESS = "Busqueda exitosa.";
+    CONST QUERY_SUCCESS  = "Datos obtenidos exitosamente.";
     CONST ACCOUNT_REGIS  = "La cuenta ya se encuentra registrada.";
     CONST CATALOG_EXIST  = "El catalogo ya existe.";
+    CONST CATALOG_NOEXIST= "El catalogo no existe.";
     CONST NONE_FILTER    = "El filtro seleccionado no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuerySuccess(){
+        return SELF::QUERY_SUCCESS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCatalogNoExist(){
+        return SELF::CATALOG_NOEXIST;
     }
 
     /**

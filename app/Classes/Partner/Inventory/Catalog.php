@@ -120,6 +120,28 @@ class Catalog{
         }
     }
 
+    /**
+     * @param int|null $id_catalog
+     * @return array
+     */
+    public function getCatalog(int|null $id_catalog){
+        $Catalog = ModelCatalog::find($id_catalog);
+        if (is_null($Catalog)) {
+            throw new Exception($this->text->getCatalogNoExist());
+        }
+        return array(
+            "id" => $Catalog->id,
+            "name" => $Catalog->name,
+            "code" => $Catalog->code
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $code
+     * @param int $idAccoun
+     * @return void
+     */
     public function newCatalog(string $name, string $code, int $idAccount){
         $id_catalog = $this->getCatalogIdByCode($code);
         if (is_null($id_catalog)) {

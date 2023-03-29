@@ -72,7 +72,7 @@ class Catalog extends Controller
     {
         $response = array();
         try {
-            Log::debug("SHOW => ".$id);
+            $response = $this->text->getResponseApi($this->catalogApi->getCatalog($id), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
