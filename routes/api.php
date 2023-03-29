@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\Account\Register;
 use App\Http\Controllers\Api\Inventory\Search as InventorySearch;
 use App\Http\Controllers\Api\Products\GetProduct;
 use App\Http\Controllers\Api\Report\Products as ReportProducts;
+use App\Http\Controllers\Api\Inventory\Category as CategoryInventory;
+use App\Http\Controllers\Api\Inventory\AssignProduct;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,5 +155,19 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('report/product/show/{id}', 'show');
         Route::patch('report/product/{id}', 'update');
         Route::delete('report/product/{id}', 'destroy');
+    });
+    Route::controller(Category::class)->group(function(){
+        Route::get('inventory/category', 'index');
+        Route::post('inventory/category', 'store');
+        Route::get('inventory/category/show/{id}', 'show');
+        Route::patch('inventory/category/{id}', 'update');
+        Route::delete('inventory/category/{id}', 'destroy');
+    });
+    Route::controller(AssignProduct::class)->group(function(){
+        Route::get('inventory/AssignProduct', 'index');
+        Route::post('inventory/AssignProduct', 'store');
+        Route::get('inventory/AssignProduct/show/{id}', 'show');
+        Route::patch('inventory/AssignProduct/{id}', 'update');
+        Route::delete('inventory/AssignProduct/{id}', 'destroy');
     });
 });

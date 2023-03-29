@@ -8,6 +8,7 @@ use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Classes\Partner\Inventory\Catalog as CatalogApi;
 
 class Catalog extends Controller
@@ -69,7 +70,13 @@ class Catalog extends Controller
      */
     public function show($id)
     {
-        return response()->json([]);
+        $response = array();
+        try {
+            Log::debug("SHOW => ".$id);
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
