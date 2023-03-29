@@ -132,7 +132,8 @@ class Catalog{
         return array(
             "id" => $Catalog->id,
             "name" => $Catalog->name,
-            "code" => $Catalog->code
+            "code" => $Catalog->code,
+            "categorias" => $Catalog->Categorias
         );
     }
 
