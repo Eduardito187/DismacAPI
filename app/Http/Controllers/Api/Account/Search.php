@@ -21,14 +21,15 @@ class Search extends Controller
         $this->accountApi = new AccountApi();
         $this->text       = new Text();
         $this->status     = new Status();
-        $this->request    = new Request();
+        $this->request    = new Request;
     }
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $accounts = array();
         try {
