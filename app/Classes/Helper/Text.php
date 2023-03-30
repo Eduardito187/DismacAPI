@@ -119,11 +119,11 @@ class Text{
     }
 
     /**
-     * @param bool|array $status
+     * @param bool|array|null $status
      * @param string $response
      * @return array
      */
-    public function getResponseApi(bool|array $status, string $response){
+    public function getResponseApi(bool|array|null $status, string $response){
         return array(
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response

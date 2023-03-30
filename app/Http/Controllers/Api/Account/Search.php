@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
+use \Illuminate\Support\Facades\Log;
 use Exception;
 
 class Search extends Controller
@@ -14,11 +15,13 @@ class Search extends Controller
     protected $accountApi;
     protected $text;
     protected $status;
+    protected $request;
 
     public function __construct() {
         $this->accountApi = new AccountApi();
         $this->text       = new Text();
         $this->status     = new Status();
+        $this->request    = new Request();
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +30,15 @@ class Search extends Controller
      */
     public function index()
     {
-        return response()->json([]);
+        $accounts = array();
+        try {
+            Log::debug("Token ON => ".$this->request->header($this->text->getAuthorization()));
+            $accounts = [];
+            $response = $this->text->getResponseApi($accounts, $this->text->getSuccessSearch());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
