@@ -171,6 +171,13 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('partner/inventory/category/{id}', 'update');
         Route::delete('partner/inventory/category/{id}', 'destroy');
     });
+    Route::controller(CategoryInventory::class)->group(function(){
+        Route::get('catalog/inventory/category', 'index');
+        Route::post('catalog/inventory/category', 'store');
+        Route::get('catalog/inventory/category/show/{id}', 'show');
+        Route::patch('catalog/inventory/category/{id}', 'update');
+        Route::delete('catalog/inventory/category/{id}', 'destroy');
+    });
     Route::controller(AssignProduct::class)->group(function(){
         Route::get('partner/inventory/AssignProduct', 'index');
         Route::post('partner/inventory/AssignProduct', 'store');

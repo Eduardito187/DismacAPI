@@ -94,9 +94,25 @@ class Text{
     CONST NONE_FILTER    = "El filtro seleccionado no existe.";
     CONST ACCOUNT_NOT    = "La cuenta consultada no existe.";
     CONST ACCOUNT_YES    = "Cuenta obtenida.";
+    CONST NULL_TYPE      = null;
+    CONST CATEGORY_NONE  = "La categoria no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryNone(){
+        return SELF::CATEGORY_NONE;
+    }
+
+    /**
+     * @return null
+     */
+    public function isNullType(){
+        return SELF::NULL_TYPE;
     }
 
     /**

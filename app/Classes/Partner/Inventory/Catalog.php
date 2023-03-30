@@ -7,15 +7,23 @@ use App\Models\CatalogPartner;
 use App\Models\CatalogStore;
 use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
+use App\Models\Category;
 use Exception;
 use App\Models\Store;
+use App\Classes\Helper\Status;
+use App\Classes\Helper\Date;
+use App\Models\CatalogCategory;
 
 class Catalog{
     protected $accountApi;
     protected $text;
+    protected $status;
+    protected $date;
     public function __construct() {
         $this->accountApi = new AccountApi();
         $this->text       = new Text();
+        $this->status     = new Status();
+        $this->date        = new Date();
     }
 
     /**
@@ -27,7 +35,7 @@ class Catalog{
             $catalog = new ModelCatalog();
             $catalog->name = $name;
             $catalog->code = $code;
-            $catalog->created_at = date("Y-m-d H:i:s");
+            $catalog->created_at = $this->date->getFullDate();
             $catalog->updated_at = null;
             $catalog->save();
         } catch (Exception $th) {
@@ -73,7 +81,7 @@ class Catalog{
             $catalogPartner->id_catalog = $id_catalog;
             $catalogPartner->id_partner = $this->accountApi->getPartnerId($idAccount);
             $catalogPartner->id_account = $idAccount;
-            $catalogPartner->created_at = date("Y-m-d H:i:s");
+            $catalogPartner->created_at = $this->date->getFullDate();
             $catalogPartner->updated_at = null;
             $catalogPartner->save();
         } catch (Exception $th) {
@@ -110,7 +118,7 @@ class Catalog{
                     $catalogStore->id_catalog = $idCatalog;
                     $catalogStore->id_store = $store->id;
                     $catalogStore->id_account = $idAccount;
-                    $catalogStore->created_at = date("Y-m-d H:i:s");
+                    $catalogStore->created_at = $this->date->getFullDate();
                     $catalogStore->updated_at = null;
                     $catalogStore->save();
                 }
@@ -135,6 +143,91 @@ class Catalog{
             "code" => $Catalog->code,
             "categorias" => $Catalog->Categorias
         );
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param string $name
+     * @param int $id_account
+     * @param array $id_store
+     * @return 
+     */
+    public function newCategory(int $id_catalog, string $name, int $id_account, array $id_store){
+        try {
+            $code = $this->generateCode();
+            $Category = new Category();
+            $Category->name = $name;
+            $Category->name_pos = "-1";
+            $Category->code = $code;
+            $Category->inheritance = null;
+            $Category->status = $this->status->getEnable();
+            $Category->in_menu = $this->status->getEnable();
+            $Category->id_info_category = null;
+            $Category->created_at = $this->date->getFullDate();
+            $Category->updated_at = null;
+            $Category->id_metadata = null;
+            $Category->save();
+            $this->setListStore($id_catalog, $this->getIdCategory($name, $code), $id_account, $id_store);
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param int $id_account
+     * @param array $listStore
+     */
+    private function setListStore(int $id_catalog, int $id_category, int $id_account, array $listStore){
+        try {
+            $Catalog = ModelCatalog::find($id_catalog);
+            foreach ($listStore as $key => $store) {
+                $this->setCatalogCategory($Catalog->id, $id_category, $id_account, $store);
+            }
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @return int
+     */
+    private function generateCode(){
+        return rand(1000, 1000000);
+    }
+
+    /**
+     * @param string $name
+     * @param int $code
+     */
+    private function getIdCategory(string $name, int $code){
+        $Category = Category::select($this->text->getId())->where("name", $name)->where("code", $code)->get()->toArray();
+        if (count($Category) > 0) {
+            return $Category[0][$this->text->getId()];
+        }
+        throw new Exception($this->text->getCategoryNone());
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param int $id_account
+     * @param int $id_store
+     */
+    public function setCatalogCategory(int $id_catalog, int $id_category, int $id_account, int $id_store){
+        try {
+            $CatalogCategory = new CatalogCategory();
+            $CatalogCategory->id_category = $id_category;
+            $CatalogCategory->id_catalog = $id_catalog;
+            $CatalogCategory->id_account = $id_account;
+            $CatalogCategory->id_store = $id_store;
+            $CatalogCategory->created_at = $this->date->getFullDate();
+            $CatalogCategory->updated_at = null;
+            $CatalogCategory->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
     }
 
     /**
