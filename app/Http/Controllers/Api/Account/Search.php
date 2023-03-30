@@ -15,13 +15,11 @@ class Search extends Controller
     protected $accountApi;
     protected $text;
     protected $status;
-    protected $request;
 
     public function __construct() {
         $this->accountApi = new AccountApi();
         $this->text       = new Text();
         $this->status     = new Status();
-        $this->request    = new Request;
     }
     /**
      * Display a listing of the resource.
@@ -33,7 +31,7 @@ class Search extends Controller
     {
         $accounts = array();
         try {
-            Log::debug("Token ON => ".$this->request->header($this->text->getAuthorization()));
+            Log::debug("Token ON => ".$request->header($this->text->getAuthorization()));
             $accounts = [];
             $response = $this->text->getResponseApi($accounts, $this->text->getSuccessSearch());
         } catch (Exception $th) {
