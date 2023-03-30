@@ -92,9 +92,25 @@ class Text{
     CONST CATALOG_EXIST  = "El catalogo ya existe.";
     CONST CATALOG_NOEXIST= "El catalogo no existe.";
     CONST NONE_FILTER    = "El filtro seleccionado no existe.";
+    CONST ACCOUNT_NOT    = "La cuenta consultada no existe.";
+    CONST ACCOUNT_YES    = "Cuenta obtenida.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountNotExist(){
+        return SELF::ACCOUNT_NOT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountExist(){
+        return SELF::ACCOUNT_YES;
     }
 
     /**

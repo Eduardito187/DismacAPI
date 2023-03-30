@@ -31,11 +31,11 @@ class Account extends Controller
      */
     public function index(Request $request)
     {
-        $accounts = array();
         try {
-            Log::debug("Token ON => ".$request->header($this->text->getAuthorization()));
-            $accounts = [];
-            $response = $this->text->getResponseApi($accounts, $this->text->getSuccessSearch());
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getCurrentAccount($request->header($this->text->getAuthorization())),
+                $this->text->getAccountExist()
+            );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi(null, $th->getMessage());
         }

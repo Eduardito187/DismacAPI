@@ -148,6 +148,15 @@ class AccountApi{
     }
 
     /**
+     * @param string $token
+     * @return array
+     */
+    public function getCurrentAccount($token){
+        $id_Account = $this->getAccountToken($token);
+        return Account::find($id_Account)->toArray();
+    }
+
+    /**
      * @param Request $request
      * @return array
      */
