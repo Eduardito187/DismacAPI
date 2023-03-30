@@ -17,6 +17,8 @@ class Account extends Model
 
     protected $fillable = ['name', 'email', 'token', 'created_at', 'updated_at'];
 
+    protected $hidden = ['token', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
