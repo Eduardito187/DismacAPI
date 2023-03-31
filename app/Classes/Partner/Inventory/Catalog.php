@@ -183,6 +183,7 @@ class Catalog{
 
     /**
      * @param array $products
+     * @return void
      */
     public function changePrices(array $products){
         $allStore = $this->productApi->getAllStoreID();
@@ -191,6 +192,62 @@ class Catalog{
             try {
                 $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
                 $this->productApi->changePriceApi($allStore, $product, $Producto);
+                $status = $this->status->getEnable();
+            } catch (Exception $th) {
+                Log::debug($th->getMessage());
+                $status = $this->status->getDisable();
+            }
+            $this->listResponse[] = array(
+                $this->text->getSku() => $product[$this->text->getSku()],
+                $this->text->getStatus() => $status,
+                $this->text->getStores() => implode($this->text->getComa(), $product[$this->text->getStores()])
+            );
+        }
+    }
+
+    public function removeProductCategory(){
+        
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $products
+     * @return void
+     */
+    public function asignarProductos(int $id_catalog, int $id_category, array $products){
+        $allStore = $this->productApi->getAllStoreID();
+        foreach ($products as $key => $product) {
+            $status = null;
+            try {
+                $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
+                $this->productApi->asignarCategory($id_catalog, $id_category, $allStore, $product, $Producto);
+                $status = $this->status->getEnable();
+            } catch (Exception $th) {
+                Log::debug($th->getMessage());
+                $status = $this->status->getDisable();
+            }
+            $this->listResponse[] = array(
+                $this->text->getSku() => $product[$this->text->getSku()],
+                $this->text->getStatus() => $status,
+                $this->text->getStores() => implode($this->text->getComa(), $product[$this->text->getStores()])
+            );
+        }
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $products
+     * @return void
+     */
+    public function desasignarProductos(int $id_catalog, int $id_category, array $products){
+        $allStore = $this->productApi->getAllStoreID();
+        foreach ($products as $key => $product) {
+            $status = null;
+            try {
+                $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
+                $this->productApi->desasignarCategory($id_catalog, $id_category, $allStore, $product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {
                 Log::debug($th->getMessage());

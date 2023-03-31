@@ -83,6 +83,7 @@ class Text{
     CONST ID_CATALOG     = "id_catalog";
     CONST ID_PARTNER     = "id_partner";
     CONST PRODUCT        = "product";
+    CONST PRODUCTS       = "products";
     CONST PRODUCTOS      = "productos";
     CONST STORES         = "stores";
     CONST ID_STORE       = "id_store";
@@ -169,6 +170,13 @@ class Text{
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getProducts(){
+        return SELF::PRODUCTS;
     }
 
     /**

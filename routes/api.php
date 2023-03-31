@@ -23,6 +23,8 @@ use App\Http\Controllers\Api\Inventory\Category as CategoryInventory;
 use App\Http\Controllers\Api\Inventory\AssignProduct;
 use App\Http\Controllers\Api\Account\Session\Account as CurrentAccount;
 use App\Http\Controllers\Api\Inventory\Prices\ChangePrices;
+use App\Http\Controllers\Api\Inventory\Category\AddProducts;
+use App\Http\Controllers\Api\Inventory\Category\RemoveProducts;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,6 +124,20 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/inventory/catalog/show/{id}', 'show');
         Route::patch('partner/inventory/catalog/{id}', 'update');
         Route::delete('partner/inventory/catalog/{id}', 'destroy');
+    });
+    Route::controller(AddProducts::class)->group(function(){
+        Route::get('partner/inventory/AddProducts', 'index');
+        Route::post('partner/inventory/AddProducts', 'store');
+        Route::get('partner/inventory/AddProducts/show/{id}', 'show');
+        Route::patch('partner/inventory/AddProducts/{id}', 'update');
+        Route::delete('partner/inventory/AddProducts/{id}', 'destroy');
+    });
+    Route::controller(RemoveProducts::class)->group(function(){
+        Route::get('partner/inventory/RemoveProducts', 'index');
+        Route::post('partner/inventory/RemoveProducts', 'store');
+        Route::get('partner/inventory/RemoveProducts/show/{id}', 'show');
+        Route::patch('partner/inventory/RemoveProducts/{id}', 'update');
+        Route::delete('partner/inventory/RemoveProducts/{id}', 'destroy');
     });
     Route::controller(ChangePrices::class)->group(function(){
         Route::get('changePrices', 'index');

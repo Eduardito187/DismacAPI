@@ -661,6 +661,96 @@ class ProductApi{
     }
 
     /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $allStore
+     * @param array $producto
+     * @param Product $Producto
+     */
+    public function asignarCategory(int $id_catalog, int $id_category, array $allStore, array $product, Product $Producto){
+        foreach ($product[$this->text->getStores()] as $key => $store) {
+            if ($store == 0) {
+                $this->asignarAllStore($id_catalog, $id_category, $allStore, $Producto->id);
+            }else{
+                $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $Producto->id);
+                $this->setProductCategoryCatalog($id_catalog, $Producto->id, $store, $id_category);
+            }
+        }
+    }
+    
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $allStore
+     * @param array $producto
+     * @param Product $Producto
+     */
+    public function desasignarCategory(int $id_catalog, int $id_category, array $allStore, array $product, Product $Producto){
+        foreach ($product[$this->text->getStores()] as $key => $store) {
+            if ($store == 0) {
+                $this->deasignarAllStore($id_catalog, $id_category, $allStore, $Producto->id);
+            }else{
+                $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $Producto->id);
+            }
+        }
+    }
+    
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $allStore
+     * @param int $id_product
+     */
+    public function deasignarAllStore(int $id_catalog, int $id_category, array $allStore, int $id_product){
+        foreach ($allStore as $key => $store) {
+            $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $id_product);
+        }
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param array $allStore
+     * @param int $id_product
+     */
+    public function asignarAllStore(int $id_catalog, int $id_category, array $allStore, int $id_product){
+        foreach ($allStore as $key => $store) {
+            $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $id_product);
+            $this->setProductCategoryCatalog($id_catalog, $id_product, $store, $id_category);
+        }
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_store
+     * @param int $id_category
+     * @param int $id_product
+     */
+    public function deleteProductCategoryCatalog(int $id_catalog, int $id_store, int $id_category, int $id_product){
+        ProductCategory::where($this->text->getIdStore(), $id_store)->where($this->text->getIdCategory(), $id_category)->
+        where($this->text->getIdCatalog(), $id_catalog)->where($this->text->getIdProduct(), $id_product)->delete();
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_product
+     * @param int $id_store
+     * @param int $id_category
+     */
+    public function setProductCategoryCatalog(int $id_catalog, int $id_product, int $id_store, int $id_category){
+        try {
+            $ProductCategory = new ProductCategory();
+            $ProductCategory->id_product = $id_product;
+            $ProductCategory->id_store = $id_store;
+            $ProductCategory->id_category = $id_category;
+            $ProductCategory->id_catalog = $id_catalog;
+            $ProductCategory->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
      * @param int $id_price
      * @param array $allStore
      * @param int $Producto_id
