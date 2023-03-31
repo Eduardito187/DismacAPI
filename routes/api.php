@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Report\Products as ReportProducts;
 use App\Http\Controllers\Api\Inventory\Category as CategoryInventory;
 use App\Http\Controllers\Api\Inventory\AssignProduct;
 use App\Http\Controllers\Api\Account\Session\Account as CurrentAccount;
+use App\Http\Controllers\Api\Inventory\Prices\ChangePrices;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,6 +122,13 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/inventory/catalog/show/{id}', 'show');
         Route::patch('partner/inventory/catalog/{id}', 'update');
         Route::delete('partner/inventory/catalog/{id}', 'destroy');
+    });
+    Route::controller(ChangePrices::class)->group(function(){
+        Route::get('changePrices', 'index');
+        Route::post('changePrices', 'store');
+        Route::get('changePrices/show/{id}', 'show');
+        Route::patch('changePrices/{id}', 'update');
+        Route::delete('changePrices/{id}', 'destroy');
     });
     Route::controller(CurrentAccount::class)->group(function(){
         Route::get('currentAccount', 'index');
