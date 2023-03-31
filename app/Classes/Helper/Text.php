@@ -165,7 +165,7 @@ class Text{
     CONST CUOTA          = "cuota";
     CONST MONTO          = "monto";
     CONST NO_EXIST_SKU   = "El sku no se encuenta asignado a un producto.";
-    CONST SKU_NONE       = "El sku %1 no existe.";
+    CONST SKU_NONE       = "El sku % no existe.";
 
     public function __construct() {
         //
@@ -176,7 +176,7 @@ class Text{
      * @return string
      */
     public function getNoneSku(string $sku){
-        return __(SELF::SKU_NONE, $sku);
+        return str_replace($this->getPercent(), $sku, SELF::SKU_NONE);
     }
 
     /**
