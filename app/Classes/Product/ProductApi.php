@@ -703,7 +703,7 @@ class ProductApi{
      */
     public function deasignarAllStore(int $id_catalog, int $id_category, array $allStore, int $id_product){
         foreach ($allStore as $key => $store) {
-            $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $id_product);
+            $this->deleteProductCategoryCatalog($id_catalog, $store[$this->text->getId()], $id_category, $id_product);
         }
     }
 
