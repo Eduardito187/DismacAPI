@@ -645,7 +645,6 @@ class ProductApi{
      * @param Product $Producto
      */
     public function changePriceApi(array $allStore, array $product, Product $Producto){
-        Log::debug(json_encode($product));
         $id_price = $this->getPriceAPI($product);
         if (is_null($id_price)) {
             $this->setPriceAPI($product);
@@ -690,6 +689,7 @@ class ProductApi{
      * @param int $id_product
      */
     public function deleteProductPriceStore(int $id_store, int $id_product){
+        Log::debug("ID STORE => ".json_encode($id_store));
         ProductPriceStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->delete();
     }
 
