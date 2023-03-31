@@ -645,6 +645,7 @@ class ProductApi{
      * @param Product $Producto
      */
     public function changePriceApi(array $allStore, array $product, Product $Producto){
+        Log::debug(json_encode($product));
         $id_price = $this->getPriceAPI($product);
         if (is_null($id_price)) {
             $this->setPriceAPI($product);
