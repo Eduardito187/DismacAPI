@@ -654,6 +654,7 @@ class ProductApi{
             if ($store == 0) {
                 $this->priceAllStore($id_price, $allStore, $Producto->id);
             }else{
+                Log::debug("ID STORE => ".json_encode($store));
                 $this->deleteProductPriceStore($store, $Producto->id);
                 $this->setProductPriceStore($id_price, $store, $Producto->id);
             }
@@ -667,6 +668,7 @@ class ProductApi{
      */
     private function priceAllStore(int $id_price, array $allStore, int $Producto_id){
         foreach ($allStore as $key => $store) {
+            Log::debug("ID STORE => ".json_encode($store));
             $this->deleteProductPriceStore($store, $Producto_id);
             $this->setProductPriceStore($id_price, $store, $Producto_id);
         }
@@ -689,7 +691,6 @@ class ProductApi{
      * @param int $id_product
      */
     public function deleteProductPriceStore(int $id_store, int $id_product){
-        Log::debug("ID STORE => ".json_encode($id_store));
         ProductPriceStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->delete();
     }
 
