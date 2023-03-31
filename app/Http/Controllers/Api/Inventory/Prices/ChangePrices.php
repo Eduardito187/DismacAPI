@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\Inventory;
+namespace App\Http\Controllers\Api\Inventory\Prices;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Classes\Account\AccountApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
-use \Exception;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Classes\Partner\Inventory\Catalog as CatalogApi;
 
-class Category extends Controller
+class ChangePrices extends Controller
 {
     protected $addressApi;
     protected $accountApi;
@@ -34,7 +34,7 @@ class Category extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -47,12 +47,9 @@ class Category extends Controller
     {
         $response = array();
         try {
-            if (!is_null($request->all()[$this->text->getIdCatalog()]) && !is_null($request->all()[$this->text->getName()])) {
-                $this->catalogApi->newCategory(
-                    $request->all()[$this->text->getIdCatalog()],
-                    $request->all()[$this->text->getName()],
-                    $this->accountApi->getAccountToken($request->header($this->text->getAuthorization())),
-                    $request->all()[$this->text->getStores()]
+            if (!is_null($request->all()[$this->text->getProductos()])) {
+                $this->catalogApi->changePrices(
+                    $request->all()[$this->text->getProductos()]
                 );
                 $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
             }else{
@@ -72,7 +69,7 @@ class Category extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -84,7 +81,7 @@ class Category extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json([]);
     }
 
     /**
@@ -95,6 +92,6 @@ class Category extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json([]);
     }
 }

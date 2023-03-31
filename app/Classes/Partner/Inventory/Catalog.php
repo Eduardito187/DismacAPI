@@ -13,14 +13,22 @@ use App\Models\Store;
 use App\Classes\Helper\Status;
 use App\Classes\Helper\Date;
 use App\Models\CatalogCategory;
+use App\Classes\Product\ProductApi;
+use \Illuminate\Support\Facades\Log;
 
 class Catalog{
+    /**
+     * @var array
+     */
+    protected $listResponse = [];
     protected $accountApi;
+    protected $productApi;
     protected $text;
     protected $status;
     protected $date;
     public function __construct() {
         $this->accountApi = new AccountApi();
+        $this->productApi = new ProductApi();
         $this->text       = new Text();
         $this->status     = new Status();
         $this->date        = new Date();
@@ -138,10 +146,10 @@ class Catalog{
             throw new Exception($this->text->getCatalogNoExist());
         }
         return array(
-            "id" => $Catalog->id,
-            "name" => $Catalog->name,
-            "code" => $Catalog->code,
-            "categorias" => $Catalog->Categorias
+            $this->text->getId() => $Catalog->id,
+            $this->text->getName() => $Catalog->name,
+            $this->text->getCode() => $Catalog->code,
+            $this->text->getCategorias() => $Catalog->Categorias
         );
     }
 
@@ -157,7 +165,7 @@ class Catalog{
             $code = $this->generateCode();
             $Category = new Category();
             $Category->name = $name;
-            $Category->name_pos = "-1";
+            $Category->name_pos = $this->text->getNegativeId();
             $Category->code = $code;
             $Category->inheritance = null;
             $Category->status = $this->status->getEnable();
@@ -170,6 +178,29 @@ class Catalog{
             $this->setListStore($id_catalog, $this->getIdCategory($name, $code), $id_account, $id_store);
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param array $products
+     */
+    public function changePrices(array $products){
+        $allStore = $this->productApi->getAllStoreID();
+        foreach ($products as $key => $product) {
+            $status = null;
+            try {
+                $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
+                $this->productApi->changePriceApi($allStore, $product, $Producto);
+                $status = $this->status->getEnable();
+            } catch (Exception $th) {
+                Log::debug($th->getMessage());
+                $status = $this->status->getDisable();
+            }
+            $this->listResponse[] = array(
+                $this->text->getSku() => $product[$this->text->getSku()],
+                $this->text->getStatus() => $status,
+                $this->text->getStores() => implode($this->text->getComa(), $product[$this->text->getStores()])
+            );
         }
     }
 
@@ -202,7 +233,7 @@ class Catalog{
      * @param int $code
      */
     private function getIdCategory(string $name, int $code){
-        $Category = Category::select($this->text->getId())->where("name", $name)->where("code", $code)->get()->toArray();
+        $Category = Category::select($this->text->getId())->where($this->text->getName(), $name)->where($this->text->getCode(), $code)->get()->toArray();
         if (count($Category) > 0) {
             return $Category[0][$this->text->getId()];
         }

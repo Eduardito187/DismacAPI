@@ -35,18 +35,18 @@ class Import{
         
         $url = 'https://posapi.dismac.com.bo/v2/Product/GetItems';
         $data = [
-            "GrupoArticulo"  => $request["GrupoArticulo"],
-            "Disponibilidad" => $request["Disponibilidad"],
-            "Precios"        => $request["Precios"],
-            "SubCategoria"   => $request["SubCategoria"]
+            $this->text->getGrupoArticulo()  => $request[$this->text->getGrupoArticulo()],
+            $this->text->getDisponibilidad() => $request[$this->text->getDisponibilidad()],
+            $this->text->getPrecios()        => $request[$this->text->getPrecios()],
+            $this->text->getSubCategoria()   => $request[$this->text->getSubCategoria()]
         ];
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HTTPGET, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->text->getMethodGet());
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json; charset=utf-8','Authorization: Basic '. base64_encode(SELF::AUTH)));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array($this->text->getPosParamOne(),$this->text->getPosAuth(). base64_encode(SELF::AUTH)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);

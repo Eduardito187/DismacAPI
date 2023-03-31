@@ -56,8 +56,10 @@ class Text{
     CONST INTEGRATION    = "integrations_api";
     CONST CODE           = "code";
     CONST ID_ROL         = "id_rol";
+    CONST ROL            = "rol";
     CONST ID_PERMISSIONS = "id_permissions";
     CONST ARROBA         = "@";
+    CONST SPACE          = " ";
     CONST MESSAGES_LOGN  = [
         "Bienvenido.",
         "Contraseña erronea.",
@@ -74,14 +76,28 @@ class Text{
     CONST STORE          = "store";
     CONST Enable         = "Cuenta habilitada.";
     CONST Disable        = "Cuenta deshabilitada.";
-    CONST Type           = "type";
+    CONST TYPE           = "type";
     CONST Key            = "key";
     CONST Value          = "value";
     CONST Partner_None   = "La cuenta no esta asignada a un partner.";
     CONST ID_CATALOG     = "id_catalog";
     CONST ID_PARTNER     = "id_partner";
+    CONST PRODUCT        = "product";
+    CONST PRODUCTOS      = "productos";
+    CONST STORES         = "stores";
     CONST ID_STORE       = "id_store";
+    CONST ID_BRAND       = "id_brand";
+    CONST ID_CLACOM      = "id_clacom";
+    CONST ID_TYPE      = "id_type";
     CONST SKU            = "sku";
+    CONST QUERY          = "query";
+    CONST LIKE           = "like";
+    CONST CATEGORIAS     = "categorias";
+    CONST ACCOUNT_STATUS = "accountStatus";
+    CONST ROL_ACCOUNT    = "rolAccount";
+    CONST NEGATIVE_ID    = "-1";
+    CONST DISTINCT_SYMBOL= "!=";
+    CONST PERCENT        = "%";
     CONST IMPORT_SUCCESS = "Importacion exitosa.";
     CONST OBJECT         = "object";
     CONST ERROR_PARAMETRO= "Error de parametros.";
@@ -96,9 +112,554 @@ class Text{
     CONST ACCOUNT_YES    = "Cuenta obtenida.";
     CONST NULL_TYPE      = null;
     CONST CATEGORY_NONE  = "La categoria no existe.";
+    CONST GRUPO_ARTICULO = "GrupoArticulo";
+    CONST DISPONIBILIDAD = "Disponibilidad";
+    CONST PRECIOS        = "Precios";
+    CONST PRECIOS_POS    = "precios";
+    CONST SUB_CATEGORIA  = "SubCategoria";
+    CONST METHOD_POST    = "POST";
+    CONST METHOD_GET     = "GET";
+    CONST POS_PARAM_ONE  = "Content-Type:application/json; charset=utf-8";
+    CONST POS_AUTH       = "Authorization: Basic ";
+    CONST ORDER_DESC     = "DESC";
+    CONST ORDER_ASC      = "ASC";
+    CONST CODIGO         = "codigo";
+    CONST MARCA          = "marca";
+    CONST NOMBRE         = "nombre";
+    CONST DETALLE        = "detalle";
+    CONST CLACOM         = "clacom";
+    CONST TIPO_PRODUCTO  = "tipoProducto";
+    CONST TEXT_NONE      = "";
+    CONST MINICUOTAS     = "minicuotas";
+    CONST ESTADO         = "estado";
+    CONST CLASIFICACION  = "clasificacion";
+    CONST VISIBLE        = "visible";
+    CONST DISPONIBILIDAD_= "disponibilidad";
+    CONST STOCKDISPONIBLE= "stockDisponible";
+    CONST NOMBRE_ALMACEN = "nombreAlmacen";
+    CONST ID_PRODUCT     = "id_product";
+    CONST ID_WAREHOUSE   = "id_warehouse";
+    CONST STOCK          = "stock";
+    CONST BASE           = "base";
+    CONST ALMACEN        = "almacen";
+    CONST ID_PRICE       = "id_price";
+    CONST ALMACEN_CENTRAL= "almacenCentral";
+    CONST PRICE          = "price";
+    CONST SPECIAL_PRICE  = "special_price";
+    CONST FROM_DATE      = "from_date";
+    CONST TO_DATE        = "to_date";
+    CONST LISTA_PRECIO   = "listaPrecio";
+    CONST PRECIO         = "precio";
+    CONST DESCUENTO      = "descuento";
+    CONST ADD_ONE_YEAR   = " + 1 years";
+    CONST CODIGO_PADRE   = "codigoPadre";
+    CONST ID_CATEGORY    = "id_category";
+    CONST ID_POS         = "id_pos";
+    CONST POS_SUBCATEGORY= "sub_category_pos";
+    CONST NAME_POS       = "name_pos";
+    CONST INHERITANCE    = "inheritance";
+    CONST CUOTAS         = "cuotas";
+    CONST GUION_BAJO     = "_";
+    CONST LABEL          = "label";
+    CONST TEXT           = "text";
+    CONST CUOTA          = "cuota";
+    CONST MONTO          = "monto";
+    CONST NO_EXIST_SKU   = "El sku no se encuenta asignado a un producto.";
+    CONST SKU_NONE       = "El sku %1 no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @param string $sku
+     * @return string
+     */
+    public function getNoneSku(string $sku){
+        return __(SELF::SKU_NONE, $sku);
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoExisteSku(){
+        return SELF::NO_EXIST_SKU;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCuota(){
+        return SELF::CUOTA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMonto(){
+        return SELF::MONTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(){
+        return SELF::TEXT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(){
+        return SELF::LABEL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuionBajo(){
+        return SELF::GUION_BAJO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCuotas(){
+        return SELF::CUOTAS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePos(){
+        return SELF::NAME_POS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInhitance(){
+        return SELF::INHERITANCE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdPos(){
+        return SELF::ID_POS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosSubCategory(){
+        return SELF::POS_SUBCATEGORY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdCategory(){
+        return SELF::ID_CATEGORY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodigoPadre(){
+        return SELF::CODIGO_PADRE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddOneYear(){
+        return SELF::ADD_ONE_YEAR;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrecio(){
+        return SELF::PRECIO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescuento(){
+        return SELF::DESCUENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getListaPrecio(){
+        return SELF::LISTA_PRECIO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFromDate(){
+        return SELF::FROM_DATE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToDate(){
+        return SELF::TO_DATE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialPrice(){
+        return SELF::SPECIAL_PRICE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrice(){
+        return SELF::PRICE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlmacenCentral(){
+        return SELF::ALMACEN_CENTRAL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdPrice(){
+        return SELF::ID_PRICE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBase(){
+        return SELF::BASE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlmacen(){
+        return SELF::ALMACEN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStock(){
+        return SELF::STOCK;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdWarehouse(){
+        return SELF::ID_WAREHOUSE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdProduct(){
+        return SELF::ID_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStockDisponible(){
+        return SELF::STOCKDISPONIBLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombreAlmacen(){
+        return SELF::NOMBRE_ALMACEN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisponibilidadPos(){
+        return SELF::DISPONIBILIDAD_;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreciosPos(){
+        return SELF::PRECIOS_POS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisible(){
+        return SELF::VISIBLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinicuotas(){
+        return SELF::MINICUOTAS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado(){
+        return SELF::ESTADO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClasificacion(){
+        return SELF::CLASIFICACION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextNone(){
+        return SELF::TEXT_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTipoProducto(){
+        return SELF::TIPO_PRODUCTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClacom(){
+        return SELF::CLACOM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetalle(){
+        return SELF::DETALLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombre(){
+        return SELF::NOMBRE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProduct(){
+        return SELF::PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMarca(){
+        return SELF::MARCA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodigo(){
+        return SELF::CODIGO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdType(){
+        return SELF::ID_TYPE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdClacom(){
+        return SELF::ID_CLACOM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdBrand(){
+        return SELF::ID_BRAND;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDesc(){
+        return SELF::ORDER_DESC;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderAsc(){
+        return SELF::ORDER_ASC;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosAuth(){
+        return SELF::POS_AUTH;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosParamOne(){
+        return SELF::POS_PARAM_ONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodPost(){
+        return SELF::METHOD_POST;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodGet(){
+        return SELF::METHOD_GET;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubCategoria(){
+        return SELF::SUB_CATEGORIA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrecios(){
+        return SELF::PRECIOS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisponibilidad(){
+        return SELF::DISPONIBILIDAD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGrupoArticulo(){
+        return SELF::GRUPO_ARTICULO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpace(){
+        return SELF::SPACE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRol(){
+        return SELF::ROL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountStatus(){
+        return SELF::ACCOUNT_STATUS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRolAccount(){
+        return SELF::ROL_ACCOUNT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDistinctSymbol(){
+        return SELF::DISTINCT_SYMBOL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNegativeId(){
+        return SELF::NEGATIVE_ID;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategorias(){
+        return SELF::CATEGORIAS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPercent(){
+        return SELF::PERCENT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLike(){
+        return SELF::LIKE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuery(){
+        return SELF::QUERY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductos(){
+        return SELF::PRODUCTOS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStores(){
+        return SELF::STORES;
     }
 
     /**
@@ -264,7 +825,7 @@ class Text{
      * @return string
      */
     public function getType(){
-        return SELF::Type;
+        return SELF::TYPE;
     }
 
     /**
@@ -338,9 +899,9 @@ class Text{
      */
     public function messageLogin(bool $status,int $position, string $token = null){
         return array(
-            "status" => $status,
-            "text" => SELF::MESSAGES_LOGN[$position],
-            "token" => $token
+            $this->getStatus() => $status,
+            $this->getText() => SELF::MESSAGES_LOGN[$position],
+            $this->getToken() => $token
         );
     }
 

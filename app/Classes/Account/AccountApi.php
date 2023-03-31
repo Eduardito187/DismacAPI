@@ -161,12 +161,12 @@ class AccountApi{
      * @return array
      */
     public function searchAccount(Request $request){
-        $param = $request->all()["query"];
+        $param = $request->all()[$this->text->getQuery()];
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
-        $AccountPartner = AccountPartner::select("id_account")->where("id_account", "!=", $id_Account)->where("id_partner", $this->getPartnerId($id_Account))->get()->toArray();
-        $Accounts = Account::select("id","name","email")->whereIn("id", $AccountPartner)->where("name", "like", "%".$param."%")->
-        orwhere("email", "like", "%".$param."%")->whereIn("id", $AccountPartner)->with(['accountStatus', 'rolAccount' => function ($query) {
-            $query->with(['rol']);
+        $AccountPartner = AccountPartner::select($this->text->getIdAccount())->where($this->text->getIdAccount(), $this->text->getDistinctSymbol(), $id_Account)->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get()->toArray();
+        $Accounts = Account::select($this->text->getId(),$this->text->getName(),$this->text->getEmail())->whereIn($this->text->getId(), $AccountPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
+        orwhere($this->text->getEmail(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->whereIn($this->text->getId(), $AccountPartner)->with([$this->text->getAccountStatus(), $this->text->getRolAccount() => function ($query) {
+            $query->with([$this->text->getRol()]);
         }])->get()->toArray();
         return $Accounts;
     }
@@ -176,11 +176,11 @@ class AccountApi{
      * @return array
      */
     public function searchCatalog(Request $request){
-        $param = $request->all()["query"];
+        $param = $request->all()[$this->text->getQuery()];
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
-        $CatalogPartner = CatalogPartner::select("id_catalog")->where("id_partner", $this->getPartnerId($id_Account))->get()->toArray();
-        $Catalogs = Catalog::select("id","name","code")->whereIn("id", $CatalogPartner)->where("name", "like", "%".$param."%")->
-        orwhere("code", "like", "%".$param."%")->whereIn("id", $CatalogPartner)->get()->toArray();
+        $CatalogPartner = CatalogPartner::select($this->text->getIdCatalog())->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get()->toArray();
+        $Catalogs = Catalog::select($this->text->getId(),$this->text->getName(),$this->text->getCode())->whereIn($this->text->getId(), $CatalogPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
+        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->whereIn($this->text->getId(), $CatalogPartner)->get()->toArray();
         return $Catalogs;
     }
 
@@ -191,7 +191,7 @@ class AccountApi{
     public function statusAccount(int $ID, bool $status){
         $Account=Account::find($ID);
         if ($Account!=null) {
-            $time = date("Y-m-d H:i:s");
+            $time = $this->date->getFullDate();
             Account::where($this->text->getId(), $ID)->update([
                 $this->text->getUpdated() => $time
             ]);

@@ -159,9 +159,9 @@ class ProductApi{
      */
     public function getValueFilter(string $filter){
         if ($filter == SELF::FILTER_LAST_CREATE) {
-            return "DESC";
+            return $this->text->getOrderDesc();
         }else if ($filter == SELF::FILTER_LAST_EDIT) {
-            return "DESC";
+            return $this->text->getOrderDesc();
         }else{
             throw new Exception($this->text->getNoneFilter());
         }
@@ -177,13 +177,13 @@ class ProductApi{
      * @param int|null $id_Account
      */
     private function updateProductALL(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
-        Product::where('id', $id)->update([
-            "name" => $name,
-            "id_brand" => $id_brand,
-            "id_clacom" => $id_clacom,
-            "id_type" => $id_type,
-            "updated_at" => $this->date->getFullDate(),
-            "id_partner" => $id_Account
+        Product::where($this->text->getId(), $id)->update([
+            $this->text->getName() => $name,
+            $this->text->getIdBrand() => $id_brand,
+            $this->text->getIdClacom() => $id_clacom,
+            $this->text->getIdType() => $id_type,
+            $this->text->getUpdated() => $this->date->getFullDate(),
+            $this->text->getIdPartner() => $id_Account
         ]);
     }
 
@@ -196,8 +196,8 @@ class ProductApi{
      * @return array
      */
     public function getProductsByDate(string $column, string $filter, int $partnerID, int $maxItems, string $minValue){
-        return DB::table('product')->where(
-            "id_partner", $partnerID
+        return DB::table($this->text->getProduct())->where(
+            $this->text->getIdPartner(), $partnerID
         )->whereBetween(
             $column, [
                 $minValue,
@@ -219,12 +219,12 @@ class ProductApi{
      * @param int|null $id_Account
      */
     private function updateProductRelations(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
-        Product::where('id', $id)->update([
-            "id_brand" => $id_brand,
-            "id_clacom" => $id_clacom,
-            "id_type" => $id_type,
-            "updated_at" => $this->date->getFullDate(),
-            "id_partner" => $id_Account
+        Product::where($this->text->getId(), $id)->update([
+            $this->text->getIdBrand() => $id_brand,
+            $this->text->getIdClacom() => $id_clacom,
+            $this->text->getIdType() => $id_type,
+            $this->text->getUpdated() => $this->date->getFullDate(),
+            $this->text->getIdPartner() => $id_Account
         ]);
     }
 
@@ -237,49 +237,49 @@ class ProductApi{
         $allStore = $this->getAllStoreID();
         Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
-            Log::debug("sku => ".$res["codigo"]);
-            $id_product = $this->getCatalogStore($res["codigo"]);
+            Log::debug("sku => ".$res[$this->text->getCodigo()]);
+            $id_product = $this->getCatalogStore($res[$this->text->getCodigo()]);
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
-            if (!empty($res["marca"]) && is_array($res["marca"])) {
-                $id_brand = $this->getBrand($res["marca"]["nombre"]);
+            if (!empty($res[$this->text->getMarca()]) && is_array($res[$this->text->getMarca()])) {
+                $id_brand = $this->getBrand($res[$this->text->getMarca()][$this->text->getNombre()]);
                 if (is_null($id_brand)) {
-                    if($this->setBrand($res["marca"]["nombre"])){
-                        $id_brand = $this->getBrand($res["marca"]["nombre"]);
+                    if($this->setBrand($res[$this->text->getMarca()][$this->text->getNombre()])){
+                        $id_brand = $this->getBrand($res[$this->text->getMarca()][$this->text->getNombre()]);
                     }
                 }
             }
-            if (!empty($res["detalle"]) && is_array($res["detalle"])) {
-                $id_type = $this->getType($res["detalle"]["tipoProducto"]);
-                $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
+            if (!empty($res[$this->text->getDetalle()]) && is_array($res[$this->text->getDetalle()])) {
+                $id_type = $this->getType($res[$this->text->getDetalle()][$this->text->getTipoProducto()]);
+                $id_clacom = $this->getClacom($res[$this->text->getDetalle()][$this->text->getClacom()]);
                 if (is_null($id_type)) {
-                    if($this->setType($res["detalle"]["tipoProducto"])){
-                        $id_type = $this->getType($res["detalle"]["tipoProducto"]);
+                    if($this->setType($res[$this->text->getDetalle()][$this->text->getTipoProducto()])){
+                        $id_type = $this->getType($res[$this->text->getDetalle()][$this->text->getTipoProducto()]);
                     }
                 }
                 if (is_null($id_clacom)) {
-                    if($this->setClacom($res["detalle"]["clacom"])){
-                        $id_clacom = $this->getClacom($res["detalle"]["clacom"]);
+                    if($this->setClacom($res[$this->text->getDetalle()][$this->text->getClacom()])){
+                        $id_clacom = $this->getClacom($res[$this->text->getDetalle()][$this->text->getClacom()]);
                     }
                 }
             }
             if (is_null($id_product)) {
                 $this->setProduct(
-                    $res["codigo"],
-                    !empty($res["nombre"]) ? $res["nombre"] : "",
+                    $res[$this->text->getCodigo()],
+                    !empty($res[$this->text->getNombre()]) ? $res[$this->text->getNombre()] : $this->text->getTextNone(),
                     $id_brand,
                     $id_clacom,
                     $id_type,
                     $id_Account
                 );
                 $id_product = $this->getCatalogStore(
-                    $res["codigo"]
+                    $res[$this->text->getCodigo()]
                 );
                 $this->updateProductRelations(
                     $id_product,
-                    $res["codigo"],
-                    !empty($res["nombre"]) ? $res["nombre"] : "",
+                    $res[$this->text->getCodigo()],
+                    !empty($res[$this->text->getNombre()]) ? $res[$this->text->getNombre()] : $this->text->getTextNone(),
                     $id_brand,
                     $id_clacom,
                     $id_type,
@@ -288,28 +288,28 @@ class ProductApi{
             }else{
                 $this->updateProductALL(
                     $id_product,
-                    $res["codigo"],
-                    !empty($res["nombre"]) ? $res["nombre"] : "",
+                    $res[$this->text->getCodigo()],
+                    !empty($res[$this->text->getNombre()]) ? $res[$this->text->getNombre()] : $this->text->getTextNone(),
                     $id_brand,
                     $id_clacom,
                     $id_type,
                     $id_Account
                 );
             }
-            if (!empty($res["minicuotas"]) && is_array($res["minicuotas"]) && !is_null($id_product)) {
-                $this->changeMiniCuotas($id_product, $res["minicuotas"]);
+            if (!empty($res[$this->text->getMinicuotas()]) && is_array($res[$this->text->getMinicuotas()]) && !is_null($id_product)) {
+                $this->changeMiniCuotas($id_product, $res[$this->text->getMinicuotas()]);
             }
-            if (!empty($res["estado"]) && is_array($res["estado"]) && !is_null($id_product)) {
-                $this->changeStatusProduct($id_product, $allStore, $res["estado"]["visible"]);
+            if (!empty($res[$this->text->getEstado()]) && is_array($res[$this->text->getEstado()]) && !is_null($id_product)) {
+                $this->changeStatusProduct($id_product, $allStore, $res[$this->text->getEstado()][$this->text->getVisible()]);
             }
-            if (!empty($res["clasificacion"]) && is_array($res["clasificacion"]) && !is_null($id_product)) {
-                $this->setClasificacion($res["clasificacion"], false, $allStore, $id_product);
+            if (!empty($res[$this->text->getClasificacion()]) && is_array($res[$this->text->getClasificacion()]) && !is_null($id_product)) {
+                $this->setClasificacion($res[$this->text->getClasificacion()], false, $allStore, $id_product);
             }
-            if (!empty($res["precios"]) && is_array($res["precios"]) && !is_null($id_product)) {
-                $this->setProductAllPrice($res["precios"], $id_product);
+            if (!empty($res[$this->text->getPreciosPos()]) && is_array($res[$this->text->getPreciosPos()]) && !is_null($id_product)) {
+                $this->setProductAllPrice($res[$this->text->getPreciosPos()], $id_product);
             }
-            if (!empty($res["disponibilidad"]) && is_array($res["disponibilidad"]) && !is_null($id_product)) {
-                $this->updateProducStock($id_product, $this->setDisponibility($res["disponibilidad"], $id_product));
+            if (!empty($res[$this->text->getDisponibilidadPos()]) && is_array($res[$this->text->getDisponibilidadPos()]) && !is_null($id_product)) {
+                $this->updateProducStock($id_product, $this->setDisponibility($res[$this->text->getDisponibilidadPos()], $id_product));
             }
         }
         Log::debug("FIN => IMPORT");
@@ -323,8 +323,8 @@ class ProductApi{
     public function setDisponibility(array $disponibilidades, int $id_product){
         $stockNacional = 0;
         foreach ($disponibilidades as $disponibilidad) {
-            $stockNacional += intval($disponibilidad["stockDisponible"]);
-            $id_stores = $this->convertListToStoreName($disponibilidad["nombreAlmacen"]);
+            $stockNacional += intval($disponibilidad[$this->text->getStockDisponible()]);
+            $id_stores = $this->convertListToStoreName($disponibilidad[$this->text->getNombreAlmacen()]);
             $this->loadbyStoresDisponibility($id_product, $id_stores, $disponibilidad);
         }
         return $stockNacional;
@@ -338,15 +338,15 @@ class ProductApi{
     public function loadbyStoresDisponibility(int $idProduct, array $id_stores, array $disponibilidad){
         foreach ($id_stores as $id_store) {
             if($id_store != 0){
-                $id_warehouse = $this->getWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
+                $id_warehouse = $this->getWarehouse($disponibilidad[$this->text->getNombreAlmacen()], $disponibilidad[$this->text->getCode()], $disponibilidad[$this->text->getAlmacenCentral()], $disponibilidad[$this->text->getAlmacen()]);
                 if (is_null($id_warehouse)) {
-                    $this->setWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
-                    $id_warehouse = $this->getWarehouse($disponibilidad["nombreAlmacen"], $disponibilidad["code"], $disponibilidad["almacenCentral"], $disponibilidad["almacen"]);
+                    $this->setWarehouse($disponibilidad[$this->text->getNombreAlmacen()], $disponibilidad[$this->text->getCode()], $disponibilidad[$this->text->getAlmacenCentral()], $disponibilidad[$this->text->getAlmacen()]);
+                    $id_warehouse = $this->getWarehouse($disponibilidad[$this->text->getNombreAlmacen()], $disponibilidad[$this->text->getCode()], $disponibilidad[$this->text->getAlmacenCentral()], $disponibilidad[$this->text->getAlmacen()]);
                 }
-                if (is_null($this->getProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store))) {
-                    $this->setProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store);
+                if (is_null($this->getProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad[$this->text->getStockDisponible()]), $id_store))) {
+                    $this->setProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad[$this->text->getStockDisponible()]), $id_store);
                 }else{
-                    $this->updateProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad["stockDisponible"]), $id_store);
+                    $this->updateProductWarehouse($idProduct, $id_warehouse, intval($disponibilidad[$this->text->getStockDisponible()]), $id_store);
                 }
             }
         }
@@ -359,9 +359,9 @@ class ProductApi{
      * @param int $id_store
      */
     public function updateProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
-        ProductWarehouse::where('id_product', $id_product)->where('id_warehouse', $id_warehouse)->where('id_store', $id_store)->update([
-            "stock" => $stock,
-            "updated_at" => $this->date->getFullDate()
+        ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $id_warehouse)->where($this->text->getIdStore(), $id_store)->update([
+            $this->text->getStock() => $stock,
+            $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
 
@@ -370,8 +370,8 @@ class ProductApi{
      * @param int $stock
      */
     public function updateProducStock(int $id_product, int $stock){
-        Product::where('id', $id_product)->update([
-            "stock" => $stock
+        Product::where($this->text->getId(), $id_product)->update([
+            $this->text->getStock() => $stock
         ]);
     }
 
@@ -403,10 +403,10 @@ class ProductApi{
      * @param int $id_store
      */
     public function getProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
-        $ProductWarehouse = ProductWarehouse::select("id_product")->where("id_product", $id_product)->
-        where("id_warehouse", $id_warehouse)->where("stock", $stock)->where("id_store", $id_store)->get()->toArray();
+        $ProductWarehouse = ProductWarehouse::select($this->text->getIdProduct())->where($this->text->getIdProduct(), $id_product)->
+        where($this->text->getIdWarehouse(), $id_warehouse)->where($this->text->getStock(), $stock)->where($this->text->getIdStore(), $id_store)->get()->toArray();
         if (count($ProductWarehouse) > 0) {
-            return $ProductWarehouse[0]["id_product"];
+            return $ProductWarehouse[0][$this->text->getIdProduct()];
         }else{
             return null;
         }
@@ -418,7 +418,7 @@ class ProductApi{
      * @return array
      */
     public function getStoreWarehouse(int $id_product, int $id_store){
-        return ProductWarehouse::where("id_product", $id_product)->where("id_store", $id_store)->get()->toArray();
+        return ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->get()->toArray();
     }
 
     /**
@@ -427,7 +427,7 @@ class ProductApi{
      * @return int
      */
     public function getProductStockStore(int $id_product, int $id_store){
-        return ProductWarehouse::where("id_product", $id_product)->where("id_store", $id_store)->sum('stock');
+        return ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->sum($this->text->getStock());
     }
 
     /**
@@ -459,8 +459,8 @@ class ProductApi{
      * @return int|null
      */
     public function getWarehouse(string $name, string $code, bool $base, string $almacen){
-        $Warehouse = Warehouse::select($this->text->getId())->where("name", $name)->
-        where("code", $code)->where("base", $base)->where("almacen", $almacen)->get()->toArray();
+        $Warehouse = Warehouse::select($this->text->getId())->where($this->text->getName(), $name)->
+        where($this->text->getCode(), $code)->where($this->text->getBase(), $base)->where($this->text->getAlmacen(), $almacen)->get()->toArray();
         if (count($Warehouse) > 0) {
             return $Warehouse[0][$this->text->getId()];
         }else{
@@ -473,7 +473,7 @@ class ProductApi{
      * @return array|null
      */
     public function getWarehouseName(int $id_warehouse){
-        $Warehouse = Warehouse::select("name", "code")->where("id", $id_warehouse)->get()->toArray();
+        $Warehouse = Warehouse::select($this->text->getName(), $this->text->getCode())->where($this->text->getId(), $id_warehouse)->get()->toArray();
         if (count($Warehouse) > 0) {
             return $Warehouse[0];
         }else{
@@ -504,10 +504,10 @@ class ProductApi{
      * @param int $id_product
      */
     public function getProductPriceStore(int $id_store, int $id_product){
-        $ProductPriceStore = ProductPriceStore::select("id_price")->
-        where("id_store", $id_store)->where("id_product", $id_product)->get()->toArray();
+        $ProductPriceStore = ProductPriceStore::select($this->text->getIdPrice())->
+        where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->get()->toArray();
         if (count($ProductPriceStore) > 0) {
-            return $ProductPriceStore[0]["id_price"];
+            return $ProductPriceStore[0][$this->text->getIdPrice()];
         }else{
             return null;
         }
@@ -539,10 +539,12 @@ class ProductApi{
      * @param float|null $special_price
      * @param string $from_date
      * @param string $to_date
+     * @return int|null
      */
     public function getPrice(float $price, float|null $special_price, string $from_date, string $to_date){
-        $Price = Price::select($this->text->getId())->where("price", $price)->
-        where("special_price", $special_price)->where("from_date", $from_date)->where("to_date", $to_date)->get()->toArray();
+        $Price = Price::select($this->text->getId())->where($this->text->getPrice(), $price)->
+        where($this->text->getSpecialPrice(), $special_price)->where($this->text->getFromDate(), $from_date)->
+        where($this->text->getToDate(), $to_date)->get()->toArray();
         if (count($Price) > 0) {
             return $Price[0][$this->text->getId()];
         }else{
@@ -555,7 +557,7 @@ class ProductApi{
      * @return array|null
      */
     public function getPriceProduct(int $id){
-        $Price = Price::select("price", "special_price")->where($this->text->getId(), $id)->get()->toArray();
+        $Price = Price::select($this->text->getPrice(), $this->text->getSpecialPrice())->where($this->text->getId(), $id)->get()->toArray();
         if (count($Price) > 0) {
             return $Price[0];
         }else{
@@ -569,7 +571,7 @@ class ProductApi{
      */
     public function setProductAllPrice(array $prices, int $id_product){
         foreach ($prices as $price) {
-            $id_stores = $this->convertListToStore($price["listaPrecio"]);
+            $id_stores = $this->convertListToStore($price[$this->text->getListaPrecio()]);
             $this->loadPricesStores($id_product, $id_stores, $price);
         }
     }
@@ -582,7 +584,7 @@ class ProductApi{
     public function loadPricesStores(int $id_product, array $id_stores, array $price){
         foreach ($id_stores as $id_store) {
             if($id_store != 0){
-                $this->validatePriceProductStore($id_store, $id_product, $price["precio"], $price["descuento"]);
+                $this->validatePriceProductStore($id_store, $id_product, $price[$this->text->getPrecio()], $price[$this->text->getDescuento()]);
             }
         }
     }
@@ -601,7 +603,7 @@ class ProductApi{
             $_special_price=null;
         }
         $from_date = $this->date->getFullDate();
-        $to_date = $this->date->addDateToDate($from_date, ' + 1 years');
+        $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
         if (is_null($id_price)) {
             $this->setPrice($_price, $_special_price, $from_date, $to_date);
             $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
@@ -609,6 +611,85 @@ class ProductApi{
         }else{
             $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
         }
+    }
+
+    /**
+     * @param array $product
+     * @return int|null
+     */
+    private function getPriceAPI(array $product){
+        return $this->getPrice(
+            $product[$this->text->getPrice()],
+            $product[$this->text->getSpecialPrice()],
+            $product[$this->text->getFromDate()], 
+            $product[$this->text->getToDate()]
+        );
+    }
+
+    /**
+     * @param array $product
+     * @return void
+     */
+    private function setPriceAPI(array $product){
+        $this->setPrice(
+            $product[$this->text->getPrice()],
+            $product[$this->text->getSpecialPrice()],
+            $product[$this->text->getFromDate()], 
+            $product[$this->text->getToDate()]
+        );
+    }
+
+    /**
+     * @param array $allStore
+     * @param array $producto
+     * @param Product $Producto
+     */
+    public function changePriceApi(array $allStore, array $product, Product $Producto){
+        $id_price = $this->getPriceAPI($product);
+        if (is_null($id_price)) {
+            $this->setPriceAPI($product);
+            $id_price = $this->getPriceAPI($product);
+        }
+        foreach ($product[$this->text->getStores()] as $key => $store) {
+            if ($store == 0) {
+                $this->priceAllStore($id_price, $allStore, $Producto->id);
+            }else{
+                $this->deleteProductPriceStore($store, $Producto->id);
+                $this->setProductPriceStore($id_price, $store, $Producto->id);
+            }
+        }
+    }
+
+    /**
+     * @param int $id_price
+     * @param array $allStore
+     * @param int $Producto_id
+     */
+    private function priceAllStore(int $id_price, array $allStore, int $Producto_id){
+        foreach ($allStore as $key => $store) {
+            $this->deleteProductPriceStore($store, $Producto_id);
+            $this->setProductPriceStore($id_price, $store, $Producto_id);
+        }
+    }
+
+    /**
+     * @param int $id_price
+     * @param int $id_store
+     * @param int $id_product
+     */
+    public function updateProductPriceStore(int $id_price, int $id_store, int $id_product){
+        ProductPriceStore::where($this->text->getIdPrice(), $id_price)->
+        where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->update([
+            $this->text->getIdPrice() => $id_price
+        ]);
+    }
+
+    /**
+     * @param int $id_store
+     * @param int $id_product
+     */
+    public function deleteProductPriceStore(int $id_store, int $id_product){
+        ProductPriceStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->delete();
     }
 
     /**
@@ -620,11 +701,11 @@ class ProductApi{
      */
     public function updatePriceByID(int $id_price, float $price, float|null $special_price, string $from_date, string $to_date){
         Price::where($this->text->getId(), $id_price)->update([
-            "price" => $price,
-            "special_price" => $special_price,
-            "from_date" => $from_date,
-            "to_date" => $to_date,
-            "updated_at" => $this->date->getFullDate()
+            $this->text->getPrice() => $price,
+            $this->text->getSpecialPrice() => $special_price,
+            $this->text->getFromDate() => $from_date,
+            $this->text->getToDate() => $to_date,
+            $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
 
@@ -635,19 +716,19 @@ class ProductApi{
      * @param int $id_product
      */
     public function setClasificacion(array $clasificacion, bool $subcat, array $allStore, int $id_product){
-        if (!is_null($clasificacion) && $clasificacion["codigo"] != -1) {
-            $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+        if (!is_null($clasificacion) && $clasificacion[$this->text->getCodigo()] != -1) {
+            $id_cat_info = $this->getCategoryInfo($clasificacion[$this->text->getCodigo()], $subcat);
             if (is_null($id_cat_info)) {
-                $this->setCategoryInfo($clasificacion["codigo"], $subcat);
-                $id_cat_info = $this->getCategoryInfo($clasificacion["codigo"], $subcat);
+                $this->setCategoryInfo($clasificacion[$this->text->getCodigo()], $subcat);
+                $id_cat_info = $this->getCategoryInfo($clasificacion[$this->text->getCodigo()], $subcat);
             }
-            $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
+            $id_cat = $this->getCategory($clasificacion[$this->text->getNombre()], $clasificacion[$this->text->getCodigo()], $clasificacion[$this->text->getCodigoPadre()]);
             if (is_null($id_cat)) {
-                $this->setCategory($clasificacion["nombre"], $clasificacion["codigo"], $id_cat_info, $clasificacion["codigoPadre"]);
-                $id_cat = $this->getCategory($clasificacion["nombre"], $clasificacion["codigo"], $clasificacion["codigoPadre"]);
+                $this->setCategory($clasificacion[$this->text->getNombre()], $clasificacion[$this->text->getCodigo()], $id_cat_info, $clasificacion[$this->text->getCodigoPadre()]);
+                $id_cat = $this->getCategory($clasificacion[$this->text->getNombre()], $clasificacion[$this->text->getCodigo()], $clasificacion[$this->text->getCodigoPadre()]);
             }
-            if (!is_null($clasificacion["clasificacion"])) {
-                $this->setClasificacion($clasificacion["clasificacion"], true, $allStore, $id_product);
+            if (!is_null($clasificacion[$this->text->getClasificacion()])) {
+                $this->setClasificacion($clasificacion[$this->text->getClasificacion()], true, $allStore, $id_product);
             }else{
                 $this->setAllProductCategoryStore($id_product, $allStore, $id_cat);
             }
@@ -677,8 +758,8 @@ class ProductApi{
      * @param int $id_category
      */
     public function getProductCategory(int $id_product, int $id_store, int $id_category){
-        $ProductCategory = ProductCategory::select("id_product")->where("id_product", $id_product)->
-        where("id_store", $id_store)->where("id_category", $id_category)->get()->toArray();
+        $ProductCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdProduct(), $id_product)->
+        where($this->text->getIdStore(), $id_store)->where($this->text->getIdCategory(), $id_category)->get()->toArray();
         if (count($ProductCategory) > 0) {
             return true;
         }else{
@@ -711,7 +792,7 @@ class ProductApi{
             $CategoryInfo->sub_category_pos = $sub_category_pos;
             $CategoryInfo->id_picture = null;
             $CategoryInfo->id_content = null;
-            $CategoryInfo->url = "";
+            $CategoryInfo->url = $this->text->getTextNone();
             $CategoryInfo->created_at = $this->date->getFullDate();
             $CategoryInfo->updated_at = null;
             $CategoryInfo->save();
@@ -725,8 +806,8 @@ class ProductApi{
      * @param int $sub_category_pos
      */
     public function getCategoryInfo(int $id_pos, int $sub_category_pos){
-        $CategoryInfo = CategoryInfo::select($this->text->getId())->where("id_pos", $id_pos)->
-        where("sub_category_pos", $sub_category_pos)->get()->toArray();
+        $CategoryInfo = CategoryInfo::select($this->text->getId())->where($this->text->getIdPos(), $id_pos)->
+        where($this->text->getPosSubCategory(), $sub_category_pos)->get()->toArray();
         if (count($CategoryInfo) > 0) {
             return $CategoryInfo[0][$this->text->getId()];
         }else{
@@ -739,7 +820,7 @@ class ProductApi{
      * @param int $sub_category_pos
      */
     public function getCategoryIdPos(int $id_pos){
-        $Category = Category::select($this->text->getId())->where("code", $id_pos)->get()->toArray();
+        $Category = Category::select($this->text->getId())->where($this->text->getCode(), $id_pos)->get()->toArray();
         if (count($Category) > 0) {
             return $Category[0][$this->text->getId()];
         }else{
@@ -778,8 +859,8 @@ class ProductApi{
      * @param int $inheritance
      */
     public function getCategory(string $name_pos, string $code, int $inheritance){
-        $Category = Category::select($this->text->getId())->where("name_pos", $name_pos)
-        ->where("code", $code)->where("inheritance", $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance))->get()->toArray();
+        $Category = Category::select($this->text->getId())->where($this->text->getNamePos(), $name_pos)
+        ->where($this->text->getCode(), $code)->where($this->text->getInhitance(), $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance))->get()->toArray();
         if (count($Category) > 0) {
             return $Category[0][$this->text->getId()];
         }else{
@@ -794,8 +875,8 @@ class ProductApi{
      */
     public function changeMiniCuotas(int $idProduct, array $minicuotas){
         foreach ($minicuotas as $minicuota) {
-            $id_stores = $this->convertListToStore($minicuota["listaPrecio"]);
-            $id_minicuotas = $this->changeCuotas($minicuota["cuotas"]);
+            $id_stores = $this->convertListToStore($minicuota[$this->text->getListaPrecio()]);
+            $id_minicuotas = $this->changeCuotas($minicuota[$this->text->getCuotas()]);
             $this->loadbyStores($idProduct, $id_stores, $id_minicuotas);
         }
     }
@@ -854,10 +935,10 @@ class ProductApi{
     public function changeCuotas(array $minicuotas){
         $id_minicuotas = array();
         foreach ($minicuotas as $minicuota) {
-            $id_minicuota = $this->getMiniCuota($minicuota["cuota"], $minicuota["monto"]);
+            $id_minicuota = $this->getMiniCuota($minicuota[$this->text->getCuota()], $minicuota[$this->text->getMonto()]);
             if(is_null($id_minicuota)){
-                if($this->setMiniCuota($minicuota["cuota"], $minicuota["monto"])){
-                    $id_minicuota = $this->getMiniCuota($minicuota["cuota"], $minicuota["monto"]);
+                if($this->setMiniCuota($minicuota[$this->text->getCuota()], $minicuota[$this->text->getMonto()])){
+                    $id_minicuota = $this->getMiniCuota($minicuota[$this->text->getCuota()], $minicuota[$this->text->getMonto()]);
                 }
             }
             if(!is_null($id_minicuota)){
@@ -937,7 +1018,7 @@ class ProductApi{
      * @param string $monto
      */
     public function getMiniCuota(string $cuotas, string $monto){
-        $MiniCuota = MiniCuota::select($this->text->getId())->where("cuotas", $cuotas)->where("monto", $monto)->get()->toArray();
+        $MiniCuota = MiniCuota::select($this->text->getId())->where($this->text->getCuotas(), $cuotas)->where($this->text->getMonto(), $monto)->get()->toArray();
         if (count($MiniCuota) > 0) {
             return $MiniCuota[0][$this->text->getId()];
         }else{
@@ -972,7 +1053,7 @@ class ProductApi{
         if (count($Brand) > 0) {
             return $Brand[0][$this->text->getName()];
         }else{
-            return "";
+            return $this->text->getTextNone();
         }
     }
 
@@ -1013,7 +1094,7 @@ class ProductApi{
      * @param string $type
      */
     public function getType(string $type){
-        $ProductType = ProductType::select($this->text->getId())->where("type", $type)->get()->toArray();
+        $ProductType = ProductType::select($this->text->getId())->where($this->text->getType(), $type)->get()->toArray();
         if (count($ProductType) > 0) {
             return $ProductType[0][$this->text->getId()];
         }else{
@@ -1030,7 +1111,7 @@ class ProductApi{
             if(!is_null($clacom) && strlen($clacom) > 0){
                 $Clacom = new Clacom();
                 $Clacom->label = $clacom;
-                $Clacom->code = str_replace(" ", "_", $clacom);
+                $Clacom->code = str_replace($this->text->getSpace(), $this->text->getGuionBajo(), $clacom);
                 $Clacom->id_picture = null;
                 $Clacom->created_at = $this->date->getFullDate();
                 $Clacom->updated_at = null;
@@ -1052,7 +1133,7 @@ class ProductApi{
         if (is_null($clacom)) {
             return null;
         }
-        $Clacom = Clacom::select($this->text->getId())->where("label", $clacom)->get()->toArray();
+        $Clacom = Clacom::select($this->text->getId())->where($this->text->getLabel(), $clacom)->get()->toArray();
         if (count($Clacom) > 0) {
             return $Clacom[0][$this->text->getId()];
         }else{
@@ -1064,11 +1145,11 @@ class ProductApi{
      * @param int $id
      */
     public function getClacomLabel(int $id){
-        $Clacom = Clacom::select("label")->where($this->text->getId(), $id)->get()->toArray();
+        $Clacom = Clacom::select($this->text->getLabel())->where($this->text->getId(), $id)->get()->toArray();
         if (count($Clacom) > 0) {
-            return $Clacom[0]["label"];
+            return $Clacom[0][$this->text->getLabel()];
         }else{
-            return "";
+            return $this->text->getTextNone();
         }
     }
 
@@ -1080,10 +1161,10 @@ class ProductApi{
      */
     public function changeStatusProduct(int $idProduct, array $stores, bool $status){
         foreach ($stores as $store) {
-            if(is_null($this->getProductStoreStatus($idProduct, $store["id"]))){
-                $this->setProductStoreStatus($idProduct, $store["id"], $status);
+            if(is_null($this->getProductStoreStatus($idProduct, $store[$this->text->getId()]))){
+                $this->setProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
             }else{
-                $this->updateProductStoreStatus($idProduct, $store["id"], $status);
+                $this->updateProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
             }
         }
     }
@@ -1094,11 +1175,11 @@ class ProductApi{
      */
     public function readAllStore(array $stores, int $id_store){
         foreach ($stores as $store) {
-            if ($store["id"] == $id_store) {
-                return $store["name"];
+            if ($store[$this->text->getId()] == $id_store) {
+                return $store[$this->text->getName()];
             }
         }
-        return "";
+        return $this->text->getTextNone();
     }
 
     /**
@@ -1143,10 +1224,10 @@ class ProductApi{
      * @param int $id_store
      */
     public function getProductStoreStatus(int $id_product, int $id_store){
-        $ProductStoreStatus = ProductStoreStatus::select("id_product")
-        ->where("id_product", $id_product)->where("id_store", $id_store)->get()->toArray();
+        $ProductStoreStatus = ProductStoreStatus::select($this->text->getIdProduct())
+        ->where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->get()->toArray();
         if (count($ProductStoreStatus) > 0) {
-            return $ProductStoreStatus[0]["id_product"];
+            return $ProductStoreStatus[0][$this->text->getIdProduct()];
         }else{
             return null;
         }
@@ -1157,7 +1238,7 @@ class ProductApi{
      * @return array|null
      */
     public function getProductStatus(int $id_product){
-        $ProductStoreStatus = ProductStoreStatus::where("id_product", $id_product)->get()->toArray();
+        $ProductStoreStatus = ProductStoreStatus::where($this->text->getIdProduct(), $id_product)->get()->toArray();
         if (count($ProductStoreStatus) > 0) {
             return $ProductStoreStatus;
         }else{
@@ -1171,11 +1252,23 @@ class ProductApi{
      * @param string $status
      */
     public function updateProductStoreStatus(int $id_product, int $id_store, bool $status){
-        ProductStoreStatus::where('id_product', $id_product)->where('id_store', $id_store)->update([
-            "id_product" => $id_product,
-            "id_store" => $id_store,
-            "status" => $status
+        ProductStoreStatus::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->update([
+            $this->text->getIdProduct() => $id_product,
+            $this->text->getIdStore() => $id_store,
+            $this->text->getStatus() => $status
         ]);
+    }
+
+    /**
+     * @param string $sku
+     * @return Product
+     */
+    public function getProductBySku(string $sku){
+        $product = Product::where($this->text->getSku(), $sku)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneSku($sku));
+        }
+        return $product;
     }
 }
 

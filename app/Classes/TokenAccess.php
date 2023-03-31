@@ -5,16 +5,22 @@ namespace App\Classes;
 use App\Models\IntegrationsAPI as ModelIntegrations;
 use App\Models\Account as ModelAccount;
 use Illuminate\Support\Facades\Log;
+use App\Classes\Helper\Text;
 
 class TokenAccess{
+    /**
+     * @var Text
+     */
+    protected $text;
     protected $token;
 
     public function __construct(string $token) {
         $this->token = $token;
+        $this->text  = new Text();
     }
 
     public function validateAPI() {
-        $validateAPIS = ModelIntegrations::select('id')->where('token', $this->token)->get()->toArray();
+        $validateAPIS = ModelIntegrations::select($this->text->getId())->where($this->text->getToken(), $this->token)->get()->toArray();
         if (count($validateAPIS) == 0) {
             return $this->getTokenAccount();
         }else{
@@ -23,7 +29,7 @@ class TokenAccess{
     }
 
     public function getToken(){
-        $token = explode(" ", $this->token);
+        $token = explode($this->text->getSpace(), $this->token);
         if (count($token) == 2) {
             return $token[1];
         }else{
@@ -32,7 +38,7 @@ class TokenAccess{
     }
 
     private function getTokenAccount(){
-        $validateAccount = ModelAccount::select('id')->where('token', $this->getToken())->get()->toArray();
+        $validateAccount = ModelAccount::select($this->text->getId())->where($this->text->getToken(), $this->getToken())->get()->toArray();
         if (count($validateAccount) == 0) {
             return false;
         }else{
