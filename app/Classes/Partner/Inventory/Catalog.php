@@ -205,6 +205,13 @@ class Catalog{
     }
 
     /**
+     * @return array
+     */
+    public function getResponseAPI(){
+        return $this->listResponse;
+    }
+
+    /**
      * @param int $id_catalog
      * @param int $id_category
      * @param int $id_account

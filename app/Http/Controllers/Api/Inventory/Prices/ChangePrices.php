@@ -51,7 +51,7 @@ class ChangePrices extends Controller
                 $this->catalogApi->changePrices(
                     $request->all()[$this->text->getProductos()]
                 );
-                $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
+                $response = $this->text->getResponseApi($this->catalogApi->getResponseAPI(), $this->text->getQuerySuccess());
             }else{
                 throw new Exception($this->text->getErrorParametros());
             }
