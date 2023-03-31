@@ -668,7 +668,7 @@ class ProductApi{
     private function priceAllStore(int $id_price, array $allStore, int $Producto_id){
         foreach ($allStore as $key => $store) {
             $this->deleteProductPriceStore($store[$this->text->getId()], $Producto_id);
-            $this->setProductPriceStore($id_price, $store, $Producto_id);
+            $this->setProductPriceStore($id_price, $store[$this->text->getId()], $Producto_id);
         }
     }
 
