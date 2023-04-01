@@ -8,6 +8,8 @@ class Text{
     CONST COLUMN_ADDRESS = "address";
     CONST COLUMN_EXTRA   = "extra";
     CONST COLUMN_PARTNER = "partner";
+    CONST MED_COMERCIAL  = "medidas_comerciales";
+    CONST INICIAL        = "cuota_inicial";
     CONST COLUMN_ACCOUNT = "account";
     CONST RESPONSE       = "response";
     CONST RESPONSE_TEXT  = "responseText";
@@ -130,6 +132,7 @@ class Text{
     CONST NOMBRE         = "nombre";
     CONST DETALLE        = "detalle";
     CONST CLACOM         = "clacom";
+    CONST ATTRIBUTES     = "attributes";
     CONST TIPO_PRODUCTO  = "tipoProducto";
     CONST TEXT_NONE      = "";
     CONST MINICUOTAS     = "minicuotas";
@@ -468,6 +471,13 @@ class Text{
      */
     public function getClacom(){
         return SELF::CLACOM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributes(){
+        return SELF::ATTRIBUTES;
     }
 
     /**
@@ -1285,6 +1295,20 @@ class Text{
      */
     public function getPartner(){
         return SELF::COLUMN_PARTNER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMedidaComercial(){
+        return SELF::MED_COMERCIAL;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCuotaInicial(){
+        return SELF::INICIAL;
     }
     
     /**

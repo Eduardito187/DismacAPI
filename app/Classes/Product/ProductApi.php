@@ -1385,7 +1385,11 @@ class ProductApi{
             $this->text->getName() => $Product->name,
             $this->text->getSku() => $Product->sku,
             $this->text->getBrand() => $Product->Brand,
-            $this->text->getClacom() => $Product->Clacom
+            $this->text->getClacom() => $Product->Clacom,
+            $this->text->getAttributes() => $Product->Attributes,
+            $this->text->getMedidaComercial() => $Product->MedidasComerciales,
+            $this->text->getCuotaInicial() => $Product->CuotaInicial,
+            $this->text->getPartner() => $Product->Partner
         ];
     }
 }

@@ -13,6 +13,8 @@ class Brand extends Model
 
     protected $fillable = ['name'];
 
+    protected $hidden = ['id'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
