@@ -21,6 +21,5 @@ class Catalog extends Model
 
     public function Categorias(){
         return $this->hasMany(CatalogCategory::class, 'id_category', 'id');
-        
     }
 }

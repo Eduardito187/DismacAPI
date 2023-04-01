@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TypeAttribute;
 
 class Attribute extends Model
 {
@@ -17,4 +18,8 @@ class Attribute extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function Type(){
+        return $this->hasOne(TypeAttribute::class, 'id_type', 'id');
+    }
 }

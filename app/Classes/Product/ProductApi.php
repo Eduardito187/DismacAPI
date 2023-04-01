@@ -67,6 +67,7 @@ class ProductApi{
     }
 
 
+
     /**
      * @param string $code
      * @return int|null
@@ -1360,6 +1361,28 @@ class ProductApi{
         }
         return $product;
     }
-}
 
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function getProductById(int $id){
+        $product = Product::where($this->text->getId(), $id)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneIdProduct($id));
+        }
+        return $product;
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getProductArray(int $id){
+        $Product = $this->getProductById($id);
+        return [
+            $this->text->getId() => $Product->id
+        ];
+    }
+}
 ?>

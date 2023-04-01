@@ -167,6 +167,7 @@ class Text{
     CONST MONTO          = "monto";
     CONST NO_EXIST_SKU   = "El sku no se encuenta asignado a un producto.";
     CONST SKU_NONE       = "El sku % no existe.";
+    CONST ID_NONE        = "El id % no existe.";
 
     public function __construct() {
         //
@@ -185,6 +186,14 @@ class Text{
      */
     public function getNoneSku(string $sku){
         return str_replace($this->getPercent(), $sku, SELF::SKU_NONE);
+    }
+
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function getNoneIdProduct(int $id){
+        return str_replace($this->getPercent(), $id, SELF::ID_NONE);
     }
 
     /**

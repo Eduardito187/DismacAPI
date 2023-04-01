@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductAttribute;
 
 class Product extends Model
 {
@@ -17,4 +18,8 @@ class Product extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+    
+    public function Attributes(){
+        return $this->hasMany(ProductAttribute::class, 'id', 'id_product');
+    }
 }
