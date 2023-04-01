@@ -37,7 +37,7 @@ class CustomValidateToken
                 return $next($request);
             }else{
                 Log::debug("Rejected => ".$request->header($this->text->getAuthorization()));
-                return abort(404, $this->text->getTokenDecline());
+                return abort(402, $this->text->getTokenDecline());
             }
         }else{
             return abort(404, $this->text->getAccessDecline());
