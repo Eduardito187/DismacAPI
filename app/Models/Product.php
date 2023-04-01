@@ -22,14 +22,14 @@ class Product extends Model
     public $timestamps = false;
     
     public function Attributes(){
-        return $this->hasMany(ProductAttribute::class, 'id', 'id_product');
+        return $this->hasMany(ProductAttribute::class, 'id_product', 'id');
     }
 
     public function Brand(){
-        return $this->hasOne(Brand::class, 'id_brand', 'id');
+        return $this->hasOne(Brand::class, 'id', 'id_brand');
     }
 
     public function Clacom(){
-        return $this->hasOne(Clacom::class, 'id_clacom', 'id');
+        return $this->hasOne(Clacom::class, 'id', 'id_clacom');
     }
 }
