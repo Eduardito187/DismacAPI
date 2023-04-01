@@ -88,8 +88,9 @@ class Text{
     CONST STORES         = "stores";
     CONST ID_STORE       = "id_store";
     CONST ID_BRAND       = "id_brand";
+    CONST BRAND          = "brand";
     CONST ID_CLACOM      = "id_clacom";
-    CONST ID_TYPE      = "id_type";
+    CONST ID_TYPE        = "id_type";
     CONST SKU            = "sku";
     CONST QUERY          = "query";
     CONST LIKE           = "like";
@@ -467,6 +468,13 @@ class Text{
      */
     public function getClacom(){
         return SELF::CLACOM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand(){
+        return SELF::BRAND;
     }
 
     /**

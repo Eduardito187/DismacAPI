@@ -1381,7 +1381,11 @@ class ProductApi{
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         return [
-            $this->text->getId() => $Product->id
+            $this->text->getId() => $Product->id,
+            $this->text->getName() => $Product->name,
+            $this->text->getSku() => $Product->sku,
+            $this->text->getBrand() => $Product->Brand,
+            $this->text->getClacom() => $Product->Clacom
         ];
     }
 }

@@ -55,7 +55,7 @@ class Product extends Controller
         try {
             $response = $this->text->getResponseApi(
                 $this->productApi->getProductArray($id),
-                $this->text->getAccountExist()
+                $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi(null, $th->getMessage());

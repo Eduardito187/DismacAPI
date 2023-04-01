@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductAttribute;
+use App\Models\Brand;
+use App\Models\Clacom;
 
 class Product extends Model
 {
@@ -21,5 +23,13 @@ class Product extends Model
     
     public function Attributes(){
         return $this->hasMany(ProductAttribute::class, 'id', 'id_product');
+    }
+
+    public function Brand(){
+        return $this->hasOne(Brand::class, 'id_brand', 'id');
+    }
+
+    public function Clacom(){
+        return $this->hasOne(Clacom::class, 'id_clacom', 'id');
     }
 }
