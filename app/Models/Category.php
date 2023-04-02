@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductCategory;
 
 class Category extends Model
 {
@@ -17,4 +18,13 @@ class Category extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+    
+    public function GetCounProduct(){
+        return $this->name_pos;
+        /*$this->hasMayne(ProductCategory::class, 'id_catalog', 'id_catalog');
+        ->join('amenity_master','amenity_icon_url','=','image_url')
+        ->where('amenity_master.status',1)
+        ->where('outlet_amenities.status',1);
+        */
+    }
 }

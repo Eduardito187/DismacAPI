@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\Catalog;
 use App\Models\Account;
 use App\Models\Store;
-use App\Models\ProductCategory;
 
 class CatalogCategory extends Model
 {
@@ -37,14 +36,5 @@ class CatalogCategory extends Model
     
     public function Store(){
         return $this->hasOne(Store::class, 'id', 'id_store');
-    }
-
-    public function GetCounProduct(){
-        return $this->id_catalog;
-        /*$this->hasMayne(ProductCategory::class, 'id_catalog', 'id_catalog');
-        ->join('amenity_master','amenity_icon_url','=','image_url')
-        ->where('amenity_master.status',1)
-        ->where('outlet_amenities.status',1);
-        */
     }
 }
