@@ -149,7 +149,7 @@ class Catalog{
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->Categorias)
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->Categorias->groupBy('id_category')->get())
         );
     }
 
@@ -158,7 +158,7 @@ class Catalog{
      */
     public function getCategoryByCatalog($CatalogCategory){
         $Items = array();
-        foreach ($CatalogCategory->distinct('id_category') as $key => $ItemCategory) {
+        foreach ($CatalogCategory as $key => $ItemCategory) {
             $Items[] = $ItemCategory->Category;
         }
         return $Items;
