@@ -149,27 +149,29 @@ class Catalog{
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->Categorias->unique())
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $Catalog->Categorias->unique())
         );
         //->distinct('id_category')
     }
 
-    private function getUniqueCategory($Item, $categorys){
-        foreach ($categorys as $key => $category) {
-            if ($category->id == $Item->id_category) {
-                # code...
-            }
-        }
+    private function getUniqueCategoryCatalog($id_catalog, $Category){
+        return array(
+            $this->text->getId() => $Category->id,
+            $this->text->getName() => $Category->name,
+            $this->text->getCode() => $Category->code,
+            $this->text->getStatus() => $Category->status,
+            $this->text->getStores() => []
+        );
     }
 
     /**
      * @return array
      */
-    public function getCategoryByCatalog($CatalogCategory){
+    public function getCategoryByCatalog($id_catalog, $CatalogCategory){
         $Items = array();
         $Category = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
-            $Items[] = $ItemCategory->Category;
+            $Items[] = $this->getUniqueCategoryCatalog($id_catalog, $ItemCategory->Category);
         }
         return $Items;
     }
