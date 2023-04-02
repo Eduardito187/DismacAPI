@@ -158,11 +158,10 @@ class Catalog{
      */
     public function getCategoryByCatalog($CatalogCategory){
         $Items = array();
-        foreach ($CatalogCategory as $key => $ItemCategory) {
+        foreach ($CatalogCategory->distinct('id_category') as $key => $ItemCategory) {
             $Items[] = $ItemCategory->Category;
         }
-        echo json_encode($Items);
-        $Items;
+        return $Items;
     }
 
     /**
