@@ -23,7 +23,7 @@ class CatalogCategory extends Model
     public $timestamps = false;
 
     public function Category(){
-        return $this->hasOne(Category::class, 'id_category', 'id');
+        return $this->hasOne(Category::class, 'id', 'id_category');
     }
     
     public function Catalog(){
