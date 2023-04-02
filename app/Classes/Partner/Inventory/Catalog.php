@@ -164,7 +164,7 @@ class Catalog{
      * @return int
      */
     private function countProductsInCatalog(int $id_catalog){
-        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->unique()->count();
+        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->distinct()->count('id_product');
     }
 
     /**
@@ -173,7 +173,7 @@ class Catalog{
      * @return int
      */
     private function countProductsInCategory(int $id_catalog, int $id_category){
-        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->where('id_category', $id_category)->unique()->count();
+        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->where('id_category', $id_category)->distinct()->count('id_product');
     }
 
     /**
@@ -183,7 +183,7 @@ class Catalog{
      * @return int
      */
     private function countProductsInCategoryStore(int $id_catalog, int $id_category, int $id_store){
-        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->where('id_category', $id_category)->where('id_store', $id_store)->unique()->count();
+        return ProductCategory::select('id_product')->where('id_catalog', $id_catalog)->where('id_category', $id_category)->where('id_store', $id_store)->distinct()->count('id_product');
     }
 
     private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
