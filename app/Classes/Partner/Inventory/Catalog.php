@@ -14,6 +14,7 @@ use App\Classes\Helper\Status;
 use App\Classes\Helper\Date;
 use App\Models\CatalogCategory;
 use App\Classes\Product\ProductApi;
+use App\Models\ProductCategory;
 use \Illuminate\Support\Facades\Log;
 
 class Catalog{
@@ -152,18 +153,46 @@ class Catalog{
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
             $this->text->getCantidad() => count($UNIQUE),
-            $this->text->getCategorias() => $this->getCategoryByCatalog($UNIQUE, $NO_UNIQUE)
+            "products" => $this->countProductsInCatalog($Catalog->id),
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE, $NO_UNIQUE)
         );
         //->distinct('id_category')
     }
 
-    private function getUniqueCategoryCatalog($NO_UNIQUE, $Category){
+    /**
+     * @param int $id_catalog
+     * @return int
+     */
+    private function countProductsInCatalog(int $id_catalog){
+        return ProductCategory::where('id_catalog', $id_catalog)->count();
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @return int
+     */
+    private function countProductsInCategory(int $id_catalog, int $id_category){
+        return ProductCategory::where('id_catalog', $id_catalog)->where('id_category', $id_category)->count();
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param int $id_store
+     * @return int
+     */
+    private function countProductsInCategoryStore(int $id_catalog, int $id_category, int $id_store){
+        return ProductCategory::where('id_catalog', $id_catalog)->where('id_category', $id_category)->where('id_store', $id_store)->count();
+    }
+
+    private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
             $this->text->getStatus() => $Category->status,
-            "products" => $Category->GetCounProduct,
+            "products" => $this->countProductsInCategory($id_catalog, $Category->i),
             $this->text->getStores() => $this->searchStoreNoUnique($Category->id, $NO_UNIQUE)
         );
     }
@@ -181,10 +210,10 @@ class Catalog{
     /**
      * @return array
      */
-    public function getCategoryByCatalog($CatalogCategory, $NO_UNIQUE){
+    public function getCategoryByCatalog(int $id_catalog, $CatalogCategory, $NO_UNIQUE){
         $Items = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
-            $Items[] = $this->getUniqueCategoryCatalog($NO_UNIQUE, $ItemCategory->Category);
+            $Items[] = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $ItemCategory->Category);
         }
         return $Items;
     }
