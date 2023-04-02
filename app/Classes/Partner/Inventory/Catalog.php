@@ -152,7 +152,7 @@ class Catalog{
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
             $this->text->getCantidad() => count($UNIQUE),
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE, $NO_UNIQUE)
+            $this->text->getCategorias() => $this->getCategoryByCatalog($UNIQUE, $NO_UNIQUE)
         );
         //->distinct('id_category')
     }
@@ -169,6 +169,7 @@ class Catalog{
 
     private function searchStoreNoUnique($id_Category, $NO_UNIQUE){
         $stores = array();
+        print_r($NO_UNIQUE);
         foreach ($NO_UNIQUE as $key => $ItemCategory) {
             if ($id_Category == $ItemCategory->id_category) {
                 $stores[] = $ItemCategory->Store;
@@ -180,9 +181,8 @@ class Catalog{
     /**
      * @return array
      */
-    public function getCategoryByCatalog($id_catalog, $CatalogCategory, $NO_UNIQUE){
+    public function getCategoryByCatalog($CatalogCategory, $NO_UNIQUE){
         $Items = array();
-        $Category = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
             $Items[] = $this->getUniqueCategoryCatalog($NO_UNIQUE, $ItemCategory->Category);
         }
