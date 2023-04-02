@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Inventory\Products;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductAlmacen extends Controller
+class ProductCatalog extends Controller
 {
     /**
      * Display a listing of the resource.

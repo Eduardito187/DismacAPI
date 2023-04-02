@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
+use App\Models\Catalog;
+use App\Models\Account;
+use App\Models\Store;
 
 class CatalogCategory extends Model
 {
@@ -15,4 +19,20 @@ class CatalogCategory extends Model
 
     public $incrementing = false;
     public $timestamps = false;
+
+    public function Category(){
+        return $this->hasOne(Category::class, 'id', 'id_category');
+    }
+    
+    public function Catalog(){
+        return $this->hasOne(Catalog::class, 'id', 'id_catalog');
+    }
+    
+    public function Account(){
+        return $this->hasOne(Account::class, 'id', 'id_account');
+    }
+    
+    public function Store(){
+        return $this->hasOne(Store::class, 'id', 'id_store');
+    }
 }
