@@ -159,9 +159,9 @@ class Catalog{
     public function getCategoryByCatalog($CatalogCategory){
         $Items = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
-            echo json_encode($ItemCategory->Category);
             $Items[] = $ItemCategory->Category;
         }
+        echo json_encode($Items);
         $Items;
     }
 
