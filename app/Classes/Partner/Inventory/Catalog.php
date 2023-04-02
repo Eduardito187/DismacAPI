@@ -169,7 +169,6 @@ class Catalog{
 
     private function searchStoreNoUnique($id_Category, $NO_UNIQUE){
         $stores = array();
-        print_r($NO_UNIQUE);
         foreach ($NO_UNIQUE as $key => $ItemCategory) {
             if ($id_Category == $ItemCategory->id_category) {
                 $stores[] = $ItemCategory->Store;
