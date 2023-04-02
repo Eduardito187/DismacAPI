@@ -152,29 +152,39 @@ class Catalog{
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
             $this->text->getCantidad() => count($UNIQUE),
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE)
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE, $NO_UNIQUE)
         );
         //->distinct('id_category')
     }
 
-    private function getUniqueCategoryCatalog($id_catalog, $Category){
+    private function getUniqueCategoryCatalog($NO_UNIQUE, $Category){
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
             $this->text->getStatus() => $Category->status,
-            $this->text->getStores() => []
+            $this->text->getStores() => $this->searchStoreNoUnique($Category->id, $NO_UNIQUE)
         );
+    }
+
+    private function searchStoreNoUnique($id_Category, $NO_UNIQUE){
+        $stores = array();
+        foreach ($NO_UNIQUE as $key => $ItemCategory) {
+            if ($id_Category == $ItemCategory->id_category) {
+                $stores[] = $ItemCategory->Store;
+            }
+        }
+        return $stores;
     }
 
     /**
      * @return array
      */
-    public function getCategoryByCatalog($id_catalog, $CatalogCategory){
+    public function getCategoryByCatalog($id_catalog, $CatalogCategory, $NO_UNIQUE){
         $Items = array();
         $Category = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
-            $Items[] = $this->getUniqueCategoryCatalog($id_catalog, $ItemCategory->Category);
+            $Items[] = $this->getUniqueCategoryCatalog($NO_UNIQUE, $ItemCategory->Category);
         }
         return $Items;
     }
