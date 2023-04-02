@@ -158,9 +158,8 @@ class Catalog{
      */
     public function getCategoryByCatalog($CatalogCategory){
         $Items = array();
-        print_r($CatalogCategory);
         foreach ($CatalogCategory as $key => $ItemCategory) {
-            $Items[] = $ItemCategory->Category();
+            $Items[] = $ItemCategory->Category;
         }
         $Items;
     }
