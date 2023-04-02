@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Picture;
+use App\Models\Address;
 
 class Partner extends Model
 {
@@ -11,10 +13,27 @@ class Partner extends Model
 
     protected $table = 'partner';
 
-    protected $fillable = ['name', 'domain', 'email', 'token', 'nit', 'razon_social', 'status', 'legal_representative', 'picture_profile', 'picture_front', 'id_address', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'name', 'domain', 'email', 'token', 'nit', 'razon_social', 'status', 'legal_representative', 'picture_profile', 'picture_front', 
+        'id_address', 'created_at', 'updated_at'
+    ];
+
+    protected $hidden = ['id', 'token', 'id_address', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function Profile(){
+        return $this->hasOne(Picture::class, 'id', 'picture_profile');
+    }
+
+    public function Front(){
+        return $this->hasOne(Picture::class, 'id', 'picture_front');
+    }
+
+    public function Address(){
+        return $this->hasOne(Address::class, 'id', 'id_address');
+    }
 }
