@@ -17,6 +17,8 @@ class CatalogCategory extends Model
 
     protected $fillable = ['id_category', 'id_catalog', 'id_account', 'id_store', 'created_at', 'updated_at'];
 
+    protected $hidden = ['id_category', 'id_catalog', 'id_account', 'id_store', 'created_at', 'updated_at'];
+
     public $incrementing = false;
     public $timestamps = false;
 

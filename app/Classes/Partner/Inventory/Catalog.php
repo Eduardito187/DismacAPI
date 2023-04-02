@@ -149,7 +149,7 @@ class Catalog{
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
-            $this->text->getCategorias() => $Catalog->Categorias->Category
+            $this->text->getCategorias() => $Catalog->Categorias->Category()
         );
     }
 
