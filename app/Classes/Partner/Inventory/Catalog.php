@@ -192,7 +192,7 @@ class Catalog{
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
             $this->text->getStatus() => $Category->status,
-            "products" => $this->countProductsInCategory($id_catalog, $Category->i),
+            "products" => $this->countProductsInCategory($id_catalog, $Category->id),
             $this->text->getStores() => $this->searchStoreNoUnique($Category->id, $NO_UNIQUE)
         );
     }
