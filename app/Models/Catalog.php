@@ -20,6 +20,6 @@ class Catalog extends Model
     public $timestamps = false;
 
     public function Categorias(){
-        return $this->hasMany(CatalogCategory::class, 'id_category', 'id');
+        return $this->hasMany(CatalogCategory::class, 'id_catalog', 'id');
     }
 }
