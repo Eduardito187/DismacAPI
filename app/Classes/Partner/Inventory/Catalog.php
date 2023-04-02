@@ -149,8 +149,17 @@ class Catalog{
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->Categorias->groupBy('id_category')->get())
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->Categorias->distinct())
         );
+        //->distinct('id_category')
+    }
+
+    private function getUniqueCategory($Item, $categorys){
+        foreach ($categorys as $key => $category) {
+            if ($category->id == $Item->id_category) {
+                # code...
+            }
+        }
     }
 
     /**
@@ -158,6 +167,7 @@ class Catalog{
      */
     public function getCategoryByCatalog($CatalogCategory){
         $Items = array();
+        $Category = array();
         foreach ($CatalogCategory as $key => $ItemCategory) {
             $Items[] = $ItemCategory->Category;
         }
