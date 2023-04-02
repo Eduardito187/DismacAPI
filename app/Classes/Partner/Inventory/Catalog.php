@@ -145,11 +145,14 @@ class Catalog{
         if (is_null($Catalog)) {
             throw new Exception($this->text->getCatalogNoExist());
         }
+        $NO_UNIQUE = $Catalog->Categorias;
+        $UNIQUE = $Catalog->Categorias->unique();
         return array(
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
-            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $Catalog->Categorias->unique())
+            $this->text->getCantidad() => count($UNIQUE),
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE)
         );
         //->distinct('id_category')
     }

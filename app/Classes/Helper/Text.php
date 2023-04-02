@@ -172,9 +172,14 @@ class Text{
     CONST NO_EXIST_SKU   = "El sku no se encuenta asignado a un producto.";
     CONST SKU_NONE       = "El sku % no existe.";
     CONST ID_NONE        = "El id % no existe.";
+    CONST CANTIDAD       = "cantidad";
 
     public function __construct() {
         //
+    }
+
+    public function getCantidad(){
+        return SELF::CANTIDAD;
     }
 
     /**
