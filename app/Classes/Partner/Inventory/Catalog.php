@@ -163,6 +163,7 @@ class Catalog{
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
             $this->text->getStatus() => $Category->status,
+            "products" => $Category->GetCounProduct,
             $this->text->getStores() => $this->searchStoreNoUnique($Category->id, $NO_UNIQUE)
         );
     }
