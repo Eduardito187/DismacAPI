@@ -255,6 +255,17 @@ class Catalog{
     }
 
     /**
+     * @param int $id_category
+     * @param int $id_catalog
+     * @return array
+     */
+    public function getCategory(int $id_category, int $id_catalog){
+        $Category = $this->getCategoryById($id_category);
+        $NO_UNIQUE = $Category->CatalogCategory;
+        return $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
+    }
+
+    /**
      * @param array $products
      * @return void
      */
@@ -418,6 +429,18 @@ class Catalog{
             $id_catalog_partner = $this->getCatalogPartner($idAccount, $id_catalog);
         }
         $this->setCatalogStore($id_catalog, $idAccount);
+    }
+
+    /**
+     * @param int $id
+     * @return Category
+     */
+    public function getCategoryById(int $id){
+        $product = Category::where($this->text->getId(), $id)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneIdProduct($id));
+        }
+        return $product;
     }
 }
 

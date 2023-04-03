@@ -75,15 +75,11 @@ class Category extends Controller
     {
         $response = array();
         try {
-            if (!is_null($id_catalog) && !is_null($id_category)) {
-                /*
-                $this->catalogApi->newCategory(
-                    $request->all()[$this->text->getIdCatalog()],
-                    $request->all()[$this->text->getName()],
-                    $this->accountApi->getAccountToken($request->header($this->text->getAuthorization())),
-                    $request->all()[$this->text->getStores()]
+            if (!is_null($id_category) && !is_null($id_catalog)) {
+                $this->catalogApi->getCategory(
+                    $id_category,
+                    $id_catalog
                 );
-                */
                 $response = $this->text->getResponseApi([], $this->text->getAddSuccess());
             }else{
                 throw new Exception($this->text->getErrorParametros());
