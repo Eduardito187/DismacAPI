@@ -24,6 +24,11 @@ class Product extends Model
         'id_medidas_comerciales', 'id_cuota_inicial', 'id_partner'
     ];
 
+    protected $hidden = [
+        'stock', 'id_brand', 'id_clacom', 'id_metadata', 'created_at', 'updated_at', 'id_description', 'id_type', 
+        'id_medidas_comerciales', 'id_cuota_inicial', 'id_partner'
+    ];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
