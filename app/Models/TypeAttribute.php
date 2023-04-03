@@ -12,6 +12,8 @@ class TypeAttribute extends Model
     protected $table = 'type_attributes';
 
     protected $fillable = ['type', 'extension', 'created_at', 'updated_at'];
+    
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

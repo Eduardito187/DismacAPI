@@ -1401,13 +1401,23 @@ class ProductApi{
         ];
     }
 
+    private function getCustomValueAttribute($Attribute){
+        return array(
+            $this->text->getId() => $Attribute->id,
+            $this->text->getName() => $Attribute->name,
+            $this->text->getCode() => $Attribute->code,
+            $this->text->getLabel() => $Attribute->label,
+            $this->text->getType() => $Attribute->Type
+        );
+    }
+
     private function getAttributesInProduct($Attributes){
         $attributes_Array = array();
         foreach ($Attributes as $key => $Attribute) {
             print_r($Attributes);
             $attributes_Array[] = array(
                 $this->text->getValue() => $Attribute->value,
-                $this->text->getCustom() => $Attribute->Attribute
+                $this->text->getCustom() => $this->getCustomValueAttribute($Attribute->Attribute)
             );
         }
         return $attributes_Array;
