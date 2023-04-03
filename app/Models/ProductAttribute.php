@@ -20,7 +20,7 @@ class ProductAttribute extends Model
     public $incrementing = false;
     public $timestamps = false;
     
-    public function Attibute(){
+    public function Attribute(){
         return $this->hasOne(Attribute::class, 'id', 'id_attribute');
     }
     
