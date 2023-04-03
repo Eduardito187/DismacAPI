@@ -206,7 +206,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     Route::controller(CategoryInventory::class)->group(function(){
         Route::get('catalog/inventory/category', 'index');
         Route::post('catalog/inventory/category', 'store');
-        Route::get('catalog/inventory/category/show/{id}', 'show');
+        Route::get('catalog/inventory/category/show/{id_category}/{id_catalog}', 'show');
         Route::patch('catalog/inventory/category/{id}', 'update');
         Route::delete('catalog/inventory/category/{id}', 'destroy');
     });

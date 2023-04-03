@@ -67,12 +67,32 @@ class Category extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int  $id_category
+     * @param int $id_catalog
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int  $id_category, int $id_catalog, Request $request)
     {
-        //
+        $response = array();
+        try {
+            if (!is_null($request->all()[$this->text->getIdCatalog()]) && !is_null($request->all()[$this->text->getIdCategory()])) {
+                /*
+                $this->catalogApi->newCategory(
+                    $request->all()[$this->text->getIdCatalog()],
+                    $request->all()[$this->text->getName()],
+                    $this->accountApi->getAccountToken($request->header($this->text->getAuthorization())),
+                    $request->all()[$this->text->getStores()]
+                );
+                */
+                $response = $this->text->getResponseApi([], $this->text->getAddSuccess());
+            }else{
+                throw new Exception($this->text->getErrorParametros());
+            }
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
