@@ -1402,15 +1402,15 @@ class ProductApi{
     }
 
     private function getAttributesInProduct($Attributes){
-        $attributes = array();
-        print_r($Attributes);
+        $attributes_Array = array();
         foreach ($Attributes as $key => $Attribute) {
-            $attributes[] = array(
+            print_r($Attributes);
+            $attributes_Array[] = array(
                 $this->text->getValue() => $Attribute->value,
                 $this->text->getCustom() => $Attribute->Attribute
             );
         }
-        return $attributes;
+        return $attributes_Array;
     }
 
     private function cuotaInicial($stores, $CuotasIniciales){
