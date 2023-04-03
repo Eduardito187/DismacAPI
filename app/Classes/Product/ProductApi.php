@@ -1407,10 +1407,19 @@ class ProductApi{
             $cuotasInicial = array(
                 $this->text->getIdStore() => $store->id,
                 $this->text->getStoreName() => $store->name,
-                $this->text->getMonto() => 150
+                $this->text->getMonto() => $this->existStoreInicial($store->id, $CuotasIniciales)
             );
         }
         return $cuotasInicial;
+    }
+
+    private function existStoreInicial($store_id, $CuotasIniciales){
+        foreach ($CuotasIniciales as $key => $cuotaInicial) {
+            if ($store_id == $cuotaInicial->id_store) {
+                return $cuotaInicial->inicial;
+            }
+        }
+        return 0;
     }
 }
 ?>

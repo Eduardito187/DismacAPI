@@ -13,6 +13,8 @@ class CuotaInicial extends Model
 
     protected $fillable = ['inicial', 'id_store', 'id_product', 'created_at', 'updated_at'];
 
+    protected $hidden = ['id_product', 'created_at', 'updated_at'];
+    
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
