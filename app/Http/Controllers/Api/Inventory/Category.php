@@ -67,16 +67,15 @@ class Category extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int  $id_category
-     * @param int $id_catalog
-     * @param  \Illuminate\Http\Request $request
+     * @param int|null  $id_category
+     * @param int|null $id_catalog
      * @return \Illuminate\Http\Response
      */
-    public function show(int  $id_category, int $id_catalog, Request $request)
+    public function show(int|null $id_category, int|null $id_catalog)
     {
         $response = array();
         try {
-            if (!is_null($request->all()[$this->text->getIdCatalog()]) && !is_null($request->all()[$this->text->getIdCategory()])) {
+            if (!is_null($id_catalog) && !is_null($id_category)) {
                 /*
                 $this->catalogApi->newCategory(
                     $request->all()[$this->text->getIdCatalog()],
