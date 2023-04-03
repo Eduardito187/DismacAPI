@@ -15,6 +15,9 @@ use App\Models\Partner;
 use App\Models\ProductPriceStore;
 use App\Models\ProductMinicuotaStore;
 use App\Models\ProductCategory;
+use App\Models\ProductStoreStatus;
+use App\Models\ProductSheet;
+use App\Models\ProductWarehouse;
 
 class Product extends Model
 {
@@ -36,6 +39,10 @@ class Product extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+    
+    public function Status(){
+        return $this->hasMany(ProductStoreStatus::class, 'id_product', 'id');
+    }
     
     public function Categorys(){
         return $this->hasMany(ProductCategory::class, 'id_product', 'id');
@@ -83,5 +90,13 @@ class Product extends Model
 
     public function MinicuotaStore(){
         return $this->hasMany(ProductMinicuotaStore::class, 'id_product', 'id');
+    }
+
+    public function Sheet(){
+        return $this->hasMany(ProductSheet::class, 'id_product', 'id');
+    }
+
+    public function Warehouse(){
+        return $this->hasMany(ProductWarehouse::class, 'id_product', 'id');
     }
 }

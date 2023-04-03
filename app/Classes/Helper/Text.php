@@ -76,6 +76,8 @@ class Text{
     CONST ID_ACCOUNT     = "id_account";
     CONST STATUS         = "status";
     CONST STORE          = "store";
+    CONST SHEETS         = "sheets";
+    CONST WAREHOUSES     = "warehouses";
     CONST Enable         = "Cuenta habilitada.";
     CONST Disable        = "Cuenta deshabilitada.";
     CONST TYPE           = "type";
@@ -176,9 +178,31 @@ class Text{
     CONST CANTIDAD       = "cantidad";
     CONST CUSTOM         = "custom";
     CONST PRICES         = "prices";
+    CONST WAREHOUSE      = "warehouse";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getWarehouse(){
+        return SELF::WAREHOUSE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSheets(){
+        return SELF::SHEETS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWarehouses(){
+        return SELF::WAREHOUSES;
     }
 
     /**

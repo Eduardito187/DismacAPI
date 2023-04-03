@@ -12,6 +12,8 @@ class ProductType extends Model
     protected $table = 'product_type';
 
     protected $fillable = ['type', 'created_at', 'updated_at'];
+    
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

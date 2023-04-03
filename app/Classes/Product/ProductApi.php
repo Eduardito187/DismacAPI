@@ -1388,24 +1388,55 @@ class ProductApi{
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
-        //categorias
-        //stores
         //stock
-        //warehouse
         return [
             $this->text->getId() => $Product->id,
             $this->text->getName() => $Product->name,
             $this->text->getSku() => $Product->sku,
             $this->text->getBrand() => $Product->Brand,
             $this->text->getClacom() => $Product->Clacom,
+            $this->text->getType() => $Product->Type,
             $this->text->getAttributes() => $this->getAttributesInProduct($Product->Attributes),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner,
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
-            $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique())
+            $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
+            $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
+            $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse)
         ];
+    }
+
+    private function getProductSheet($Sheets){
+        $Sheet = array();
+        foreach ($Sheets as $key => $Sheet) {
+            $Sheet[] = $Sheet->DataSheet;
+        }
+        return $Sheet;
+    }
+    private function getProductWarehouses($Stores, $Warehouses){
+        $Warehouse = array();
+        foreach ($Stores as $key => $store) {
+            $Warehouse[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getWarehouse() => $this->warehouseStoreProduct($store->id, $Warehouses)
+            );
+        }
+        return $Warehouse;
+    }
+
+    private function warehouseStoreProduct($store_id, $Warehouses){
+        $Warehouses_Array = array();
+        foreach ($Warehouses as $key => $Warehouse) {
+            if ($store_id == $Warehouse->id_store) {
+                $WarehouseDB = $Warehouse->Warehouse;
+                $WarehouseDB[$this->text->getStock()] = $Warehouse->stock;
+                $Warehouses_Array[] = $WarehouseDB;
+            }
+        }
+        return $Warehouses_Array;
     }
 
     private function getCustomValueAttribute($Attribute){
