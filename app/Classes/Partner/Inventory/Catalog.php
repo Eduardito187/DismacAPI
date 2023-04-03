@@ -296,8 +296,16 @@ class Catalog{
         $Category = $this->getCategoryById($id_category);
         $NO_UNIQUE = $Category->CatalogCategory;
         $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
-        $CategoryArray[$this->text->getProducts()] = $this->getProductsInCategory($id_catalog, $id_category);
+        $CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
         return $CategoryArray;
+    }
+
+    private function getProductsCategory($ProductsInCategory){
+        $products = array();
+        foreach ($ProductsInCategory as $key => $ProductCategory) {
+            $products[] = $ProductCategory->Product;
+        }
+        return $products;
     }
 
     /**
