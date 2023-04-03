@@ -1396,7 +1396,7 @@ class ProductApi{
             $this->text->getClacom() => $Product->Clacom,
             $this->text->getAttributes() => $Product->Attributes,
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
-            $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
+            $this->text->getCuotaInicial()."1" => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner
         ];
     }
