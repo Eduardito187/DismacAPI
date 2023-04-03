@@ -1404,7 +1404,7 @@ class ProductApi{
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
             $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
             $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
-            $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse)
+            $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id)
         ];
     }
 
@@ -1415,16 +1415,27 @@ class ProductApi{
         }
         return $Sheet;
     }
-    private function getProductWarehouses($Stores, $Warehouses){
+    private function getProductWarehouses($Stores, $Warehouses, $id_product){
         $Warehouse = array();
         foreach ($Stores as $key => $store) {
             $Warehouse[] = array(
                 $this->text->getIdStore() => $store->id,
                 $this->text->getStoreName() => $store->name,
+                $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
                 $this->text->getWarehouse() => $this->warehouseStoreProduct($store->id, $Warehouses)
             );
         }
         return $Warehouse;
+    }
+    
+    /**
+     * @param int $id_product
+     * @param int $id_waid_storerehouse
+     * @return int
+     */
+    private function countProductsWarehouses(int $id_product, int $id_store){
+        return ProductWarehouse::select($this->text->getStock())->where($this->text->getIdProduct(), $id_product)->
+        where($this->text->getIdStore(), $id_store)->distinct()->sum($this->text->getStock());
     }
 
     private function warehouseStoreProduct($store_id, $Warehouses){
