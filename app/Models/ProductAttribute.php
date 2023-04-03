@@ -15,16 +15,16 @@ class ProductAttribute extends Model
 
     protected $fillable = ['value', 'id_product', 'id_attribute', 'created_at', 'updated_at'];
 
-    protected $hidden = ['id_product', 'created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public $incrementing = false;
     public $timestamps = false;
     
     public function Attibute(){
-        return $this->hasOne(Attribute::class, 'id_attribute', 'id');
+        return $this->hasOne(Attribute::class, 'id', 'id_attribute');
     }
     
     public function Product(){
-        return $this->hasOne(Product::class, 'id_product', 'id');
+        return $this->hasOne(Product::class, 'id', 'id_product');
     }
 }

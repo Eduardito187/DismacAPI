@@ -22,6 +22,6 @@ class Attribute extends Model
     public $timestamps = false;
 
     public function Type(){
-        return $this->hasOne(TypeAttribute::class, 'id_type', 'id');
+        return $this->hasOne(TypeAttribute::class, 'id', 'id_type');
     }
 }
