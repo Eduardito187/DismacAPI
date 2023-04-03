@@ -1432,12 +1432,13 @@ class ProductApi{
     }
 
     private function getProductSheet($Sheets){
-        $Sheet = array();
+        $Sheet_Array = array();
         foreach ($Sheets as $key => $Sheet) {
-            $Sheet[] = $Sheet->DataSheet;
+            $Sheet_Array[] = $Sheet->DataSheet;
         }
-        return $Sheet;
+        return $Sheet_Array;
     }
+    
     private function getProductWarehouses($Stores, $Warehouses, $id_product){
         $Warehouse = array();
         foreach ($Stores as $key => $store) {
