@@ -1404,7 +1404,7 @@ class ProductApi{
             $this->text->getPartner() => $Product->Partner,
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
-            $this->text->getCategorias() => $this->categoriasProducts($Stores, $Product->Categorys)
+            $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys)
         ];
     }
 
@@ -1429,25 +1429,12 @@ class ProductApi{
         return $attributes_Array;
     }
 
-    private function categoriasProducts($stores, $Categorys){
-        $MinicuotaStore = array();
-        foreach ($stores as $key => $store) {
-            $MinicuotaStore[] = array(
-                $this->text->getIdStore() => $store->id,
-                $this->text->getStoreName() => $store->name,
-                $this->text->getPrice() => $this->categoryProduct($store->id, $Categorys)
-            );
-        }
-        return $MinicuotaStore;
-    }
-    
-    private function categoryProduct($store_id, $Categorys){
+    private function categoriasProducts($Categorys){
+        $Categorias = array();
         foreach ($Categorys as $key => $Category) {
-            if ($store_id == $Category->id_store) {
-                return $Category->Category;
-            }
+            $Categorias[] = $Category->Category;
         }
-        return 0;
+        return $Categorias;
     }
 
     private function minicuotasProducts($stores, $MinicuotaStores){
