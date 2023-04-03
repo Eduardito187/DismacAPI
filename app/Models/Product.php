@@ -14,6 +14,7 @@ use App\Models\CuotaInicial;
 use App\Models\Partner;
 use App\Models\ProductPriceStore;
 use App\Models\ProductMinicuotaStore;
+use App\Models\ProductCategory;
 
 class Product extends Model
 {
@@ -36,6 +37,10 @@ class Product extends Model
     protected $keyType = 'integer';
     public $timestamps = false;
     
+    public function Categorys(){
+        return $this->hasMany(ProductCategory::class, 'id_product', 'id');
+    }
+
     public function Attributes(){
         return $this->hasMany(ProductAttribute::class, 'id_product', 'id');
     }

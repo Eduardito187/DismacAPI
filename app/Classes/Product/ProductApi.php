@@ -1403,7 +1403,8 @@ class ProductApi{
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner,
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
-            $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore)
+            $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
+            $this->text->getCategorias() => $this->categoriasProducts($Stores, $Product->Categorys)
         ];
     }
 
@@ -1426,6 +1427,27 @@ class ProductApi{
             );
         }
         return $attributes_Array;
+    }
+
+    private function categoriasProducts($stores, $Categorys){
+        $MinicuotaStore = array();
+        foreach ($stores as $key => $store) {
+            $MinicuotaStore[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getPrice() => $this->categoryProduct($store->id, $Categorys)
+            );
+        }
+        return $MinicuotaStore;
+    }
+    
+    private function categoryProduct($store_id, $Categorys){
+        foreach ($Categorys as $key => $Category) {
+            if ($store_id == $Category->id_store) {
+                return $Category->Category;
+            }
+        }
+        return 0;
     }
 
     private function minicuotasProducts($stores, $MinicuotaStores){

@@ -14,6 +14,8 @@ class Category extends Model
 
     protected $fillable = ['name', 'name_pos', 'code', 'inheritance', 'status', 'in_menu', 'id_info_category', 'created_at', 'updated_at', 'id_metadata'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
