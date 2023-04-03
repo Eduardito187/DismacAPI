@@ -21,10 +21,10 @@ class ProductAttribute extends Model
     public $timestamps = false;
     
     public function Attibute(){
-        return $this->hasOne(Attribute::class, 'id', 'id_attribute');
+        return $this->hasOne(Attribute::class, 'id_attribute', 'id');
     }
     
     public function Product(){
-        return $this->hasOne(Product::class, 'id', 'id_product');
+        return $this->hasOne(Product::class, 'id_product', 'id');
     }
 }
