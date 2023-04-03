@@ -13,6 +13,7 @@ use App\Models\MedidasComerciales;
 use App\Models\CuotaInicial;
 use App\Models\Partner;
 use App\Models\ProductPriceStore;
+use App\Models\ProductMinicuotaStore;
 
 class Product extends Model
 {
@@ -73,5 +74,9 @@ class Product extends Model
 
     public function PriceStore(){
         return $this->hasMany(ProductPriceStore::class, 'id_product', 'id');
+    }
+
+    public function MinicuotaStore(){
+        return $this->hasMany(ProductMinicuotaStore::class, 'id_product', 'id');
     }
 }

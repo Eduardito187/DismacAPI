@@ -1388,10 +1388,8 @@ class ProductApi{
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
-        //minicuota
         //categorias
         //stores
-        //precios
         //stock
         //warehouse
         return [
@@ -1404,7 +1402,8 @@ class ProductApi{
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner,
-            $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore)
+            $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
+            $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore)
         ];
     }
 
@@ -1429,16 +1428,37 @@ class ProductApi{
         return $attributes_Array;
     }
 
-    private function pricesProducts($stores, $PriceStores){
-        $cuotasInicial = array();
+    private function minicuotasProducts($stores, $MinicuotaStores){
+        $MinicuotaStore = array();
         foreach ($stores as $key => $store) {
-            $cuotasInicial[] = array(
+            $MinicuotaStore[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getPrice() => $this->minicuotaStorePrice($store->id, $MinicuotaStores)
+            );
+        }
+        return $MinicuotaStore;
+    }
+    
+    private function minicuotaStorePrice($store_id, $MinicuotaStores){
+        foreach ($MinicuotaStores as $key => $PriceStore) {
+            if ($store_id == $PriceStore->id_store) {
+                return $PriceStore->MiniCuota;
+            }
+        }
+        return 0;
+    }
+
+    private function pricesProducts($stores, $PriceStores){
+        $priceProduct = array();
+        foreach ($stores as $key => $store) {
+            $priceProduct[] = array(
                 $this->text->getIdStore() => $store->id,
                 $this->text->getStoreName() => $store->name,
                 $this->text->getPrice() => $this->existStorePrice($store->id, $PriceStores)
             );
         }
-        return $cuotasInicial;
+        return $priceProduct;
     }
 
     private function existStorePrice($store_id, $PriceStores){

@@ -13,6 +13,8 @@ class Price extends Model
 
     protected $fillable = ['price', 'special_price', 'from_date', 'to_date', 'created_at', 'updated_at'];
 
+    protected $hidden = ['from_date', 'to_date', 'created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
