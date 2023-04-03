@@ -167,6 +167,15 @@ class Catalog{
         return ProductCategory::select($this->text->getIdProduct())->
         where($this->text->getIdCatalog(), $id_catalog)->distinct()->count($this->text->getIdProduct());
     }
+    
+    /**
+     * @param int $id_catalog
+     * @return int
+     */
+    private function getProductsInCatalog(int $id_catalog){
+        return ProductCategory::select($this->text->getIdProduct())->
+        where($this->text->getIdCatalog(), $id_catalog)->distinct()->get();
+    }
 
     /**
      * @param int $id_catalog
@@ -182,6 +191,17 @@ class Catalog{
     /**
      * @param int $id_catalog
      * @param int $id_category
+     * @return int
+     */
+    private function getProductsInCategory(int $id_catalog, int $id_category){
+        return ProductCategory::select($this->text->getIdProduct())->
+        where($this->text->getIdCatalog(), $id_catalog)->
+        where($this->text->getIdCategory(), $id_category)->distinct()->get();
+    }
+
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
      * @param int $id_store
      * @return int
      */
@@ -190,6 +210,19 @@ class Catalog{
         where($this->text->getIdCatalog(), $id_catalog)->
         where($this->text->getIdCategory(), $id_category)->
         where($this->text->getIdStore(), $id_store)->distinct()->count($this->text->getIdProduct());
+    }
+    
+    /**
+     * @param int $id_catalog
+     * @param int $id_category
+     * @param int $id_store
+     * @return int
+     */
+    private function getProductsInCategoryStore(int $id_catalog, int $id_category, int $id_store){
+        return ProductCategory::select($this->text->getIdProduct())->
+        where($this->text->getIdCatalog(), $id_catalog)->
+        where($this->text->getIdCategory(), $id_category)->
+        where($this->text->getIdStore(), $id_store)->distinct()->get();
     }
 
     private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
@@ -262,7 +295,9 @@ class Catalog{
     public function getCategory(int $id_category, int $id_catalog){
         $Category = $this->getCategoryById($id_category);
         $NO_UNIQUE = $Category->CatalogCategory;
-        return $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
+        $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
+        $CategoryArray[$this->text->getProducts()] = $this->getProductsInCategory($id_catalog, $id_category);
+        return $CategoryArray;
     }
 
     /**
