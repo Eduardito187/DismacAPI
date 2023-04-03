@@ -1403,6 +1403,7 @@ class ProductApi{
 
     private function getAttributesInProduct($Attributes){
         $attributes = array();
+        print_r($Attributes);
         foreach ($Attributes as $key => $Attribute) {
             $attributes[] = array(
                 $this->text->getValue() => $Attribute->value,
