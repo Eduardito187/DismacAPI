@@ -79,8 +79,8 @@ class Text{
     CONST Enable         = "Cuenta habilitada.";
     CONST Disable        = "Cuenta deshabilitada.";
     CONST TYPE           = "type";
-    CONST Key            = "key";
-    CONST Value          = "value";
+    CONST KEY            = "key";
+    CONST VALUE          = "value";
     CONST Partner_None   = "La cuenta no esta asignada a un partner.";
     CONST ID_CATALOG     = "id_catalog";
     CONST ID_PARTNER     = "id_partner";
@@ -174,6 +174,7 @@ class Text{
     CONST SKU_NONE       = "El sku % no existe.";
     CONST ID_NONE        = "El id % no existe.";
     CONST CANTIDAD       = "cantidad";
+    CONST CUSTOM         = "custom";
 
     public function __construct() {
         //
@@ -859,14 +860,14 @@ class Text{
      * @return string
      */
     public function getValue(){
-        return SELF::Value;
+        return SELF::VALUE;
     }
 
     /**
      * @return string
      */
     public function getKey(){
-        return SELF::Key;
+        return SELF::KEY;
     }
 
     /**
@@ -1322,6 +1323,13 @@ class Text{
      */
     public function getCuotaInicial(){
         return SELF::INICIAL;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCustom(){
+        return SELF::CUSTOM;
     }
     
     /**

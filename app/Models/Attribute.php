@@ -14,6 +14,8 @@ class Attribute extends Model
 
     protected $fillable = ['name', 'code', 'label', 'id_type', 'created_at', 'updated_at'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';

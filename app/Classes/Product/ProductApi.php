@@ -1394,11 +1394,22 @@ class ProductApi{
             $this->text->getSku() => $Product->sku,
             $this->text->getBrand() => $Product->Brand,
             $this->text->getClacom() => $Product->Clacom,
-            $this->text->getAttributes() => $Product->Attributes,
+            $this->text->getAttributes() => $this->getAttributesInProduct($Product->Attributes),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner
         ];
+    }
+
+    private function getAttributesInProduct($Attributes){
+        $attributes = array();
+        foreach ($Attributes as $key => $Attribute) {
+            $attributes[] = array(
+                $this->text->getValue() => $Attribute->value,
+                $this->text->getCustom() => $Attribute->Attribute
+            );
+        }
+        return $attributes;
     }
 
     private function cuotaInicial($stores, $CuotasIniciales){
