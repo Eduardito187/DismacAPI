@@ -1388,6 +1388,12 @@ class ProductApi{
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
+        //minicuota
+        //categorias
+        //stores
+        //precios
+        //stock
+        //warehouse
         return [
             $this->text->getId() => $Product->id,
             $this->text->getName() => $Product->name,
@@ -1397,7 +1403,8 @@ class ProductApi{
             $this->text->getAttributes() => $this->getAttributesInProduct($Product->Attributes),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
-            $this->text->getPartner() => $Product->Partner
+            $this->text->getPartner() => $Product->Partner,
+            $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore)
         ];
     }
 
@@ -1420,6 +1427,27 @@ class ProductApi{
             );
         }
         return $attributes_Array;
+    }
+
+    private function pricesProducts($stores, $PriceStores){
+        $cuotasInicial = array();
+        foreach ($stores as $key => $store) {
+            $cuotasInicial[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getPrice() => $this->existStorePrice($store->id, $PriceStores)
+            );
+        }
+        return $cuotasInicial;
+    }
+
+    private function existStorePrice($store_id, $PriceStores){
+        foreach ($PriceStores as $key => $PriceStore) {
+            if ($store_id == $PriceStore->id_store) {
+                return $PriceStore->Price;
+            }
+        }
+        return 0;
     }
 
     private function cuotaInicial($stores, $CuotasIniciales){

@@ -12,6 +12,7 @@ use App\Models\ProductType;
 use App\Models\MedidasComerciales;
 use App\Models\CuotaInicial;
 use App\Models\Partner;
+use App\Models\ProductPriceStore;
 
 class Product extends Model
 {
@@ -68,5 +69,9 @@ class Product extends Model
 
     public function Partner(){
         return $this->hasOne(Partner::class, 'id', 'id_partner');
+    }
+
+    public function PriceStore(){
+        return $this->hasMany(ProductPriceStore::class, 'id_product', 'id');
     }
 }

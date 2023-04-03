@@ -175,11 +175,22 @@ class Text{
     CONST ID_NONE        = "El id % no existe.";
     CONST CANTIDAD       = "cantidad";
     CONST CUSTOM         = "custom";
+    CONST PRICES         = "prices";
 
     public function __construct() {
         //
     }
 
+    /**
+     * @return string
+     */
+    public function getPrices(){
+        return SELF::PRICES;
+    }
+
+    /**
+     * @return string
+     */
     public function getCantidad(){
         return SELF::CANTIDAD;
     }
