@@ -1388,7 +1388,7 @@ class ProductApi{
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
-        //stock
+        //status
         return [
             $this->text->getId() => $Product->id,
             $this->text->getName() => $Product->name,
@@ -1396,6 +1396,8 @@ class ProductApi{
             $this->text->getBrand() => $Product->Brand,
             $this->text->getClacom() => $Product->Clacom,
             $this->text->getType() => $Product->Type,
+            $this->text->getDescripcion() => $Product->Description,
+            $this->text->getStatus() => $this->statusProducts($Stores, $Product->Status),
             $this->text->getAttributes() => $this->getAttributesInProduct($Product->Attributes),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
@@ -1406,6 +1408,27 @@ class ProductApi{
             $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
             $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id)
         ];
+    }
+
+    private function statusProducts($stores, $Status){
+        $statusProduct = array();
+        foreach ($stores as $key => $store) {
+            $statusProduct[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getStatus() => $this->statusStore($store->id, $Status)
+            );
+        }
+        return $statusProduct;
+    }
+    
+    private function statusStore($store_id, $Status){
+        foreach ($Status as $key => $State) {
+            if ($store_id == $State->id_store) {
+                return $State->status;
+            }
+        }
+        return false;
     }
 
     private function getProductSheet($Sheets){

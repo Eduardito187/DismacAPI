@@ -12,6 +12,8 @@ class Warehouse extends Model
     protected $table = 'warehouses';
 
     protected $fillable = ['name', 'code', 'base', 'almacen', 'created_at', 'updated_at'];
+    
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;

@@ -179,9 +179,17 @@ class Text{
     CONST CUSTOM         = "custom";
     CONST PRICES         = "prices";
     CONST WAREHOUSE      = "warehouse";
+    CONST DESCRIPTION    = "descripcion";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescripcion(){
+        return SELF::DESCRIPTION;
     }
 
     /**

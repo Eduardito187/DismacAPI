@@ -12,6 +12,8 @@ class ProductDescription extends Model
     protected $table = 'product_description';
 
     protected $fillable = ['description', 'created_at', 'updated_at'];
+    
+    protected $hidde = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
