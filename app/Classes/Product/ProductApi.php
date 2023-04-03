@@ -1404,7 +1404,7 @@ class ProductApi{
             $this->text->getPartner() => $Product->Partner,
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
-            $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys)
+            $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique())
         ];
     }
 
