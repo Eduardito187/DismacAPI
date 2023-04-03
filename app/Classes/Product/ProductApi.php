@@ -1288,6 +1288,13 @@ class ProductApi{
     }
 
     /**
+     * @param Store[]
+     */
+    public function getAllStoreEntity(){
+        return Store::all();
+    }
+
+    /**
      * @param string $id_product
      * @param string $id_store
      * @param string $status
@@ -1380,6 +1387,7 @@ class ProductApi{
      */
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
+        $Stores = $this->getAllStoreEntity();
         return [
             $this->text->getId() => $Product->id,
             $this->text->getName() => $Product->name,
@@ -1391,6 +1399,18 @@ class ProductApi{
             $this->text->getCuotaInicial() => $Product->CuotaInicial,
             $this->text->getPartner() => $Product->Partner
         ];
+    }
+
+    private function cuotaInicial($stores, $CuotasIniciales){
+        $cuotasInicial = array();
+        foreach ($stores as $key => $store) {
+            $cuotasInicial = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getMonto() => 150
+            );
+        }
+        return $cuotasInicial;
     }
 }
 ?>

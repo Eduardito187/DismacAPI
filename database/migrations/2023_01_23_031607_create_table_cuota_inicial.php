@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cuota_inicial', function (Blueprint $table) {
-            $table->bigIncrements("id");
             $table->decimal('inicial', 10,2);
             $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
+            $table->unsignedBigInteger('id_product')->nullable();
+            $table->foreign('id_product')->references('id')->on('product')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
@@ -32,6 +33,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('cuota_inicial', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_store');
+            $table->dropConstrainedForeignId('id_product');
         });
     }
 };

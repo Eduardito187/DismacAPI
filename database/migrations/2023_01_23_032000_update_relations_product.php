@@ -20,8 +20,6 @@ return new class extends Migration
             $table->foreign('id_type')->references('id')->on('product_type')->onDelete('cascade');
             $table->unsignedBigInteger('id_medidas_comerciales')->nullable();
             $table->foreign('id_medidas_comerciales')->references('id')->on('medidas_comerciales')->onDelete('cascade');
-            $table->unsignedBigInteger('id_cuota_inicial')->nullable();
-            $table->foreign('id_cuota_inicial')->references('id')->on('cuota_inicial')->onDelete('cascade');
         });
     }
 
@@ -36,7 +34,6 @@ return new class extends Migration
             $table->dropConstrainedForeignId('product_description');
             $table->dropConstrainedForeignId('id_type');
             $table->dropConstrainedForeignId('id_medidas_comerciales');
-            $table->dropConstrainedForeignId('cuota_inicial');
         });
     }
 };

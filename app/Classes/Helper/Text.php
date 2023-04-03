@@ -89,6 +89,7 @@ class Text{
     CONST PRODUCTOS      = "productos";
     CONST STORES         = "stores";
     CONST ID_STORE       = "id_store";
+    CONST STORE_NAME     = "store_name";
     CONST ID_BRAND       = "id_brand";
     CONST BRAND          = "brand";
     CONST ID_CLACOM      = "id_clacom";
@@ -824,6 +825,13 @@ class Text{
      */
     public function getIdStore(){
         return SELF::ID_STORE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreName(){
+        return SELF::STORE_NAME;
     }
 
     /**

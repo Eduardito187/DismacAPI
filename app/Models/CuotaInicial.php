@@ -11,9 +11,8 @@ class CuotaInicial extends Model
 
     protected $table = 'cuota_inicial';
 
-    protected $fillable = ['inicial', 'id_store', 'created_at', 'updated_at'];
+    protected $fillable = ['inicial', 'id_store', 'id_product', 'created_at', 'updated_at'];
 
-    protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;

@@ -21,12 +21,12 @@ class Product extends Model
 
     protected $fillable = [
         'name', 'sku', 'stock', 'id_brand', 'id_clacom', 'id_metadata', 'created_at', 'updated_at', 'id_description', 'id_type', 
-        'id_medidas_comerciales', 'id_cuota_inicial', 'id_partner'
+        'id_medidas_comerciales', 'id_partner'
     ];
 
     protected $hidden = [
         'stock', 'id_brand', 'id_clacom', 'id_metadata', 'created_at', 'updated_at', 'id_description', 'id_type', 
-        'id_medidas_comerciales', 'id_cuota_inicial', 'id_partner'
+        'id_medidas_comerciales', 'id_partner'
     ];
 
     protected $primaryKey = 'id';
@@ -63,7 +63,7 @@ class Product extends Model
     }
 
     public function CuotaInicial(){
-        return $this->hasOne(CuotaInicial::class, 'id', 'id_cuota_inicial');
+        return $this->hasMany(CuotaInicial::class, 'id_product', 'id');
     }
 
     public function Partner(){
