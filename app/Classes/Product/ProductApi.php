@@ -216,7 +216,19 @@ class ProductApi{
      * @return array
      */
     public function getProductsBySku(int $id_Partner, array $SKU){
-
+        $products = array();
+        foreach ($SKU as $key => $sku) {
+            try {
+                $product = $this->getProductBySku($sku);
+                $products[] = array(
+                    $this->text->getSku() => $product->sku,
+                    $this->text->getStock() => 5
+                );
+            } catch (\Throwable $th) {
+                Log::debug("Sku no existe => ".$sku);
+            }
+        }
+        return $products;
     }
     
     /**
