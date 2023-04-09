@@ -49,8 +49,10 @@ class Validate extends Controller
                 throw new Exception($this->text->getErrorParametros());
             }
             $id_Partner = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
-            $products = $this->productApi->getProductsBySku($id_Partner,$request->all()[$this->text->getSku()]);
-            $response = $this->text->getResponseApi($products, $this->text->getQuerySuccess());
+            $response = $this->text->getResponseApi(
+                $this->productApi->getProductsBySku($id_Partner,$request->all()[$this->text->getSku()]),
+                $this->text->getQuerySuccess()
+            );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi([], $th->getMessage());
         }
