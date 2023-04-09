@@ -211,6 +211,14 @@ class ProductApi{
     }
 
     /**
+     * @param int $id_Product
+     * @return int
+     */
+    public function getStockWareHosue(int $id_Product){
+        return ProductWarehouse::where($this->text->getIdProduct(), $id_Product)->sum($this->text->getStock());
+    }
+
+    /**
      * @param int $id_Partner
      * @param array $SKU
      * @return array
@@ -219,10 +227,10 @@ class ProductApi{
         $products = array();
         foreach ($SKU as $key => $sku) {
             try {
-                $product = $this->getProductBySku($sku);
+                $product = $this->getProductBySkuPartner($sku, $id_Partner);
                 $products[] = array(
                     $this->text->getSku() => $product->sku,
-                    $this->text->getStock() => 5
+                    $this->text->getStock() => $this->getStockWareHosue($product->id)
                 );
             } catch (\Throwable $th) {
                 Log::debug("Sku no existe => ".$sku);
@@ -1384,6 +1392,19 @@ class ProductApi{
      */
     public function getProductBySku(string $sku){
         $product = Product::where($this->text->getSku(), $sku)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneSku($sku));
+        }
+        return $product;
+    }
+
+    /**
+     * @param string $sku
+     * @param int $id_Partner
+     * @return Product
+     */
+    public function getProductBySkuPartner(string $sku, int $id_Partner){
+        $product = Product::where($this->text->getSku(), $sku)->where($this->text->getIdPartner(), $id_Partner)->first();
         if (!$product) {
             throw new Exception($this->text->getNoneSku($sku));
         }
