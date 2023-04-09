@@ -45,9 +45,12 @@ class Validate extends Controller
     public function store(Request $request)
     {
         try {
+            if (empty($request->all()[$this->text->getSku()]) || !is_array($request->all()[$this->text->getSku()])) {
+                throw new Exception($this->text->getErrorParametros());
+            }
             $id_Partner = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
             $products = $this->productApi->getProductsBySku($id_Partner,$request->all()[$this->text->getSku()]);
-            $response = $this->text->getResponseApi($products, $this->text->getImportSuccess());
+            $response = $this->text->getResponseApi($products, $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi([], $th->getMessage());
         }
