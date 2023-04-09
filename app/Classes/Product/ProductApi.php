@@ -209,6 +209,15 @@ class ProductApi{
             $filter
         )->get()->toArray();
     }
+
+    /**
+     * @param int $id_Partner
+     * @param array $SKU
+     * @return array
+     */
+    public function getProductsBySku(int $id_Partner, array $SKU){
+
+    }
     
     /**
      * @param int $id

@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Inventory\Prices\ChangePrices;
 use App\Http\Controllers\Api\Inventory\Category\AddProducts;
 use App\Http\Controllers\Api\Inventory\Category\RemoveProducts;
 use App\Http\Controllers\Api\Inventory\Products\Product as PRODUCT_CATALOG;
+use App\Http\Controllers\Api\Inventory\Products\Validate as VALIDATE_PRODUCT;
 
 /*
 |--------------------------------------------------------------------------
@@ -216,5 +217,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/inventory/AssignProduct/show/{id}', 'show');
         Route::patch('partner/inventory/AssignProduct/{id}', 'update');
         Route::delete('partner/inventory/AssignProduct/{id}', 'destroy');
+    });
+    Route::controller(VALIDATE_PRODUCT::class)->group(function(){
+        Route::get('partner/inventory/Validate', 'index');
+        Route::post('partner/inventory/Validate', 'store');
+        Route::get('partner/inventory/Validate/show/{id}', 'show');
+        Route::patch('partner/inventory/Validate/{id}', 'update');
+        Route::delete('partner/inventory/Validate/{id}', 'destroy');
     });
 });
