@@ -180,9 +180,17 @@ class Text{
     CONST PRICES         = "prices";
     CONST WAREHOUSE      = "warehouse";
     CONST DESCRIPTION    = "descripcion";
+    CONST NO_RESPONSE    = "Sin resultados.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoResponse(){
+        return SELF::NO_RESPONSE;
     }
 
     /**

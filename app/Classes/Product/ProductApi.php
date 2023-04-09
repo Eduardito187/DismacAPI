@@ -236,6 +236,9 @@ class ProductApi{
                 Log::debug("Sku no existe => ".$sku);
             }
         }
+        if (count($products) == 0) {
+            throw new Exception($this->text->getNoResponse());
+        }
         return $products;
     }
     
