@@ -215,7 +215,7 @@ class ProductApi{
      * @return int
      */
     public function getStockWareHosue(int $id_Product){
-        return ProductWarehouse::where($this->text->getIdProduct(), $id_Product)->sum($this->text->getStock());
+        return intval(ProductWarehouse::where($this->text->getIdProduct(), $id_Product)->sum($this->text->getStock()));
     }
 
     /**
@@ -457,7 +457,7 @@ class ProductApi{
      * @return int
      */
     public function getProductStockStore(int $id_product, int $id_store){
-        return ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->sum($this->text->getStock());
+        return intval(ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->sum($this->text->getStock()));
     }
 
     /**
@@ -1500,8 +1500,8 @@ class ProductApi{
      * @return int
      */
     private function countProductsWarehouses(int $id_product, int $id_store){
-        return ProductWarehouse::select($this->text->getStock())->where($this->text->getIdProduct(), $id_product)->
-        where($this->text->getIdStore(), $id_store)->distinct()->sum($this->text->getStock());
+        return intval(ProductWarehouse::select($this->text->getStock())->where($this->text->getIdProduct(), $id_product)->
+        where($this->text->getIdStore(), $id_store)->distinct()->sum($this->text->getStock()));
     }
 
     private function warehouseStoreProduct($store_id, $Warehouses){
