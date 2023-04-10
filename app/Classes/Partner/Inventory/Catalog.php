@@ -157,7 +157,7 @@ class Catalog{
             $this->text->getCode() => $Catalog->code,
             $this->text->getCantidad() => count($UNIQUE),
             $this->text->getProducts() => $this->countProductsInCatalog($Catalog->id),
-            $this->text->getCategorias() => $UNIQUE
+            $this->text->getCategorias() => $NO_UNIQUE
         );
         //->distinct($this->text->getIdCategory())
     }
