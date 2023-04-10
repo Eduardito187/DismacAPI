@@ -150,7 +150,7 @@ class Catalog{
             throw new Exception($this->text->getCatalogNoExist());
         }
         $NO_UNIQUE = $Catalog->Categorias;
-        $UNIQUE = $Catalog->Categorias->groupBy("id_category");
+        $UNIQUE = $Catalog->Categorias->unique($this->text->getIdCategory());
         return array(
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
