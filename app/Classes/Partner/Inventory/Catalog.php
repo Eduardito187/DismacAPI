@@ -150,14 +150,14 @@ class Catalog{
             throw new Exception($this->text->getCatalogNoExist());
         }
         $NO_UNIQUE = $Catalog->Categorias;
-        $UNIQUE = $Catalog->Categorias->unique();
+        $UNIQUE = $Catalog->Categorias->groupBy("id_category");
         return array(
             $this->text->getId() => $Catalog->id,
             $this->text->getName() => $Catalog->name,
             $this->text->getCode() => $Catalog->code,
             $this->text->getCantidad() => count($UNIQUE),
             $this->text->getProducts() => $this->countProductsInCatalog($Catalog->id),
-            $this->text->getCategorias() => $NO_UNIQUE
+            $this->text->getCategorias() => $this->getCategoryByCatalog($Catalog->id, $UNIQUE, $NO_UNIQUE)
         );
         //->distinct($this->text->getIdCategory())
     }
