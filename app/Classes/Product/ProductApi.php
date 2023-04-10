@@ -756,6 +756,20 @@ class ProductApi{
 
     /**
      * @param int $id_catalog
+     * @param int $id_category
+     * @param array $allStore
+     * @param int $id_product
+     * @return void
+     */
+    public function asignarAllStoreId(int $id_catalog, int $id_category, array $allStore, int $id_product){
+        foreach ($allStore as $key => $store) {
+            $this->deleteProductCategoryCatalog($id_catalog, $store, $id_category, $id_product);
+            $this->setProductCategoryCatalog($id_catalog, $id_product, $store, $id_category);
+        }
+    }
+
+    /**
+     * @param int $id_catalog
      * @param int $id_store
      * @param int $id_category
      * @param int $id_product

@@ -377,8 +377,19 @@ class Catalog{
             $Category->id_metadata = $id_metadata;
             $Category->save();
             $this->setListStore($id_catalog, $Category->id, $id_account, $id_store);
+            $this->asignarProductosInCategory($id_catalog, $Category->id, $id_store, $productos);
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param array $stores
+     * @return void
+     */
+    public function asignarProductosInCategory(int $id_catalog, int $id_category, array $stores, array $productos){
+        foreach ($productos as $key => $producto) {
+            $this->productApi->asignarAllStoreId($id_catalog, $id_category, $stores, $producto);
         }
     }
 
