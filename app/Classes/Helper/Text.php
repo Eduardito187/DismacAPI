@@ -142,6 +142,7 @@ class Text{
     CONST ESTADO         = "estado";
     CONST CLASIFICACION  = "clasificacion";
     CONST VISIBLE        = "visible";
+    CONST FILTROS        = "filtros";
     CONST DISPONIBILIDAD_= "disponibilidad";
     CONST STOCKDISPONIBLE= "stockDisponible";
     CONST NOMBRE_ALMACEN = "nombreAlmacen";
@@ -165,7 +166,6 @@ class Text{
     CONST ID_POS         = "id_pos";
     CONST POS_SUBCATEGORY= "sub_category_pos";
     CONST NAME_POS       = "name_pos";
-    CONST INHERITANCE    = "inheritance";
     CONST CUOTAS         = "cuotas";
     CONST GUION_BAJO     = "_";
     CONST LABEL          = "label";
@@ -181,9 +181,66 @@ class Text{
     CONST WAREHOUSE      = "warehouse";
     CONST DESCRIPTION    = "descripcion";
     CONST NO_RESPONSE    = "Sin resultados.";
+    CONST URL            = "url";
+    CONST LANDING        = "landing";
+    CONST METADATA       = "metadata";
+    CONST TITULO         = "titulo";
+    CONST INHERITANCE    = "inheritance";
+    CONST SUB_CAT_POS    = "sub_category_pos";
+    CONST TITLE          = "title";
+    CONST BODY           = "body";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(){
+        return SELF::TITLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(){
+        return SELF::BODY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubCategoryPos(){
+        return SELF::SUB_CAT_POS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitulo(){
+        return SELF::TITULO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanding(){
+        return SELF::LANDING;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetadata(){
+        return SELF::METADATA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(){
+        return SELF::URL;
     }
 
     /**
@@ -487,6 +544,13 @@ class Text{
      */
     public function getVisible(){
         return SELF::VISIBLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFiltros(){
+        return SELF::FILTROS;
     }
 
     /**

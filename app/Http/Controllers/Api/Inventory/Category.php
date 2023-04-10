@@ -52,7 +52,18 @@ class Category extends Controller
                     $request->all()[$this->text->getIdCatalog()],
                     $request->all()[$this->text->getName()],
                     $this->accountApi->getAccountToken($request->header($this->text->getAuthorization())),
-                    $request->all()[$this->text->getStores()]
+                    $request->all()[$this->text->getStores()],
+                    $request->all()[$this->text->getEstado()],
+                    $request->all()[$this->text->getVisible()],
+                    $request->all()[$this->text->getFiltros()],
+                    $request->all()[$this->text->getIdPos()],
+                    $request->all()[$this->text->getUrl()],
+                    $request->all()[$this->text->getInhitance()],
+                    $request->all()[$this->text->getSubCategoryPos()],
+                    $request->all()[$this->text->getProductos()],
+                    $request->all()[$this->text->getLanding()],
+                    $request->all()[$this->text->getMetadata()],
+                    $request->all()[$this->text->getCustom()]
                 );
                 $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
             }else{

@@ -14,6 +14,9 @@ use App\Classes\Helper\Status;
 use App\Classes\Helper\Date;
 use App\Models\CatalogCategory;
 use App\Classes\Product\ProductApi;
+use App\Models\CategoryInfo;
+use App\Models\Content;
+use App\Models\Metadata;
 use App\Models\ProductCategory;
 use \Illuminate\Support\Facades\Log;
 
@@ -260,28 +263,120 @@ class Catalog{
     }
 
     /**
+     * @param array|null $metadata
+     * @return int|null
+     */
+    public function createMetadata(array|null $metadata){
+        $id = null;
+        try {
+            if (!is_null($metadata)) {
+                $Metadata = new Metadata();
+                $Metadata->title = $metadata[$this->text->getTitulo()];
+                $Metadata->description = $metadata[$this->text->getDescripcion()];
+                $Metadata->keywords = $metadata[$this->text->getMetadata()];
+                $Metadata->created_at = $this->date->getFullDate();
+                $Metadata->updated_at = null;
+                $Metadata->save();
+                $id = $Metadata->id;
+            }
+        } catch (Exception $th) {
+            Log::debug($th->getMessage());
+        }
+        return $id;
+    }
+
+    /**
+     * @param bool $show_filter
+     * @param int $id_pos
+     * @param string $url
+     * @param bool $sub_category_pos
+     * @param array|null $landing
+     * @return int|null
+     */
+    public function createCateogryInfo(bool $show_filter, int $id_pos, string $url, bool $sub_category_pos, array|null $landing){
+        $id = null;
+        try {
+            $id_picture = null;
+            $id_content = $this->createContent($landing);
+            $CategoryInfo = new CategoryInfo();
+            $CategoryInfo->show_filter = $show_filter;
+            $CategoryInfo->id_pos = $id_pos;
+            $CategoryInfo->sub_category_pos = $sub_category_pos;
+            $CategoryInfo->id_picture = $id_picture;
+            $CategoryInfo->id_content = $id_content;
+            $CategoryInfo->url = $url;
+            $CategoryInfo->created_at = $this->date->getFullDate();
+            $CategoryInfo->updated_at = null;
+            $CategoryInfo->save();
+            $id = $CategoryInfo->id;
+        } catch (Exception $th) {
+            Log::debug($th->getMessage());
+        }
+        return $id;
+    }
+
+    /**
+     * @param array|null $landing
+     * @return int|null
+     */
+    public function createContent(array|null $landing){
+        $id = null;
+        try {
+            if (!is_null($landing)) {
+                $Content = new Content();
+                $Content->title = $landing[$this->text->getTitle()];
+                $Content->code = $landing[$this->text->getCode()];
+                $Content->body = $landing[$this->text->getBody()];
+                $Content->created_at = $this->date->getFullDate();
+                $Content->updated_at = null;
+                $Content->save();
+                $id = $Content->id;
+            }
+        } catch (Exception $th) {
+            Log::debug($th->getMessage());
+        }
+        return $id;
+    }
+
+    /**
      * @param int $id_catalog
      * @param string $name
      * @param int $id_account
      * @param array $id_store
+     * @param bool $estado
+     * @param bool $visible
+     * @param bool $filtros
+     * @param int $id_pos
+     * @param string $url
+     * @param bool $sub_category_pos
+     * @param int|null $inheritance
+     * @param array $productos
+     * @param array|null $landing
+     * @param array|null $metadata
+     * @param array $custom
      * @return 
      */
-    public function newCategory(int $id_catalog, string $name, int $id_account, array $id_store){
+    public function newCategory(
+        int $id_catalog, string $name, int $id_account, array $id_store, bool $estado, bool $visible, bool $filtros,
+        int $id_pos, string $url, bool $sub_category_pos, int|null $inheritance, array $productos, array|null $landing, array|null $metadata, array $custom
+    ){
         try {
+            $id_metadata = $this->createMetadata($metadata);
+            $id_category_info = $this->createCateogryInfo($filtros, $id_pos, $url, $sub_category_pos, $landing);
             $code = $this->generateCode();
             $Category = new Category();
             $Category->name = $name;
             $Category->name_pos = $this->text->getNegativeId();
             $Category->code = $code;
-            $Category->inheritance = null;
-            $Category->status = $this->status->getEnable();
-            $Category->in_menu = $this->status->getEnable();
-            $Category->id_info_category = null;
+            $Category->inheritance = $inheritance;
+            $Category->status = $estado;
+            $Category->in_menu = $visible;
+            $Category->id_info_category = $id_category_info;
             $Category->created_at = $this->date->getFullDate();
             $Category->updated_at = null;
-            $Category->id_metadata = null;
+            $Category->id_metadata = $id_metadata;
             $Category->save();
-            $this->setListStore($id_catalog, $this->getIdCategory($name, $code), $id_account, $id_store);
+            $this->setListStore($id_catalog, $Category->id, $id_account, $id_store);
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
