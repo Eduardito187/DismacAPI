@@ -229,6 +229,7 @@ class ProductApi{
             try {
                 $product = $this->getProductBySkuPartner($sku, $id_Partner);
                 $products[] = array(
+                    $this->text->getId() => $product->id,
                     $this->text->getSku() => $product->sku,
                     $this->text->getStock() => $this->getStockWareHosue($product->id)
                 );
