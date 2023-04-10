@@ -409,7 +409,7 @@ class Catalog{
     private function getProductsCategory($ProductsInCategory){
         $products = array();
         foreach ($ProductsInCategory as $key => $ProductCategory) {
-            $Product = $ProductCategory->Product;
+            $Product = $ProductCategory->Product->toArray();
             $Product[$this->text->getStock()] = $this->productApi->getStockWareHosue($Product[$this->text->getId()]);
             $products[] = $Product;
         }
