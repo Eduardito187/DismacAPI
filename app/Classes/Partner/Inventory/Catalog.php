@@ -411,7 +411,7 @@ class Catalog{
         foreach ($ProductsInCategory as $key => $ProductCategory) {
             $Product = $ProductCategory->Product;
             $Product[$this->text->getStock()] = $this->productApi->getStockWareHosue($Product[$this->text->getId()]);
-            $products[] = $Product;
+            $products[] = null;
         }
         return $products;
     }
