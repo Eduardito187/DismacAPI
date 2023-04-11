@@ -240,7 +240,7 @@ class Catalog{
             $this->text->getFiltros() => $Info->show_filter ?? false,
             $this->text->getIdPos() => $Info->id_pos ?? "",
             $this->text->getSubCategoryPos() => $Info->sub_category_pos ?? "",
-            $this->text->getInMenu() => $Category->in_menu,
+            $this->text->getInMenu() => $Category->in_menu == 1 ? true : false,
             $this->text->getUrl() => $Info->url ?? "",
             $this->text->getProducts() => $this->countProductsInCategory($id_catalog, $Category->id),
             $this->text->getStores() => $this->searchStoreNoUnique($id_catalog, $Category->id, $NO_UNIQUE),
