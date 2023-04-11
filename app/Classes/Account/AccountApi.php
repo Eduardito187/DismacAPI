@@ -153,7 +153,26 @@ class AccountApi{
      */
     public function getCurrentAccount($token){
         $id_Account = $this->getAccountToken($token);
-        return Account::find($id_Account)->toArray();
+        $Account = Account::find($id_Account);
+        if (!$Account) {
+            throw new Exception($this->text->AccountNotExist());
+        }
+        return $this->requestAccount($Account);
+    }
+
+    /**
+     * @param Account $Account
+     * @return array
+     */
+    public function requestAccount(Account $Account){
+        $Partner = $Account->accountPartner;
+        return array(
+            "id" => $Account->id,
+            "name" => $Account->name,
+            "email" => $Account->email,
+            "profile" => $Partner->Profile->url,
+            "cover" => $Partner->Front->url
+        );
     }
 
     /**
