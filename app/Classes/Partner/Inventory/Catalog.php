@@ -230,6 +230,7 @@ class Catalog{
 
     private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
         $Info = $Category->Info;
+        return $Info->toArray();
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
