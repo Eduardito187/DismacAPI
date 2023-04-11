@@ -189,9 +189,25 @@ class Text{
     CONST SUB_CAT_POS    = "sub_category_pos";
     CONST TITLE          = "title";
     CONST BODY           = "body";
+    CONST IN_MENU        = "in_menu";
+    CONST INFO           = "info";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getInfo(){
+        return SELF::INFO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInMenu(){
+        return SELF::IN_MENU;
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Picture;
+use App\Models\Content;
 
 class CategoryInfo extends Model
 {
@@ -17,4 +19,12 @@ class CategoryInfo extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function Picture(){
+        return $this->hasOne(Picture::class, 'id', 'id_picture');
+    }
+
+    public function Content(){
+        return $this->hasOne(Content::class, 'id', 'id_content');
+    }
 }

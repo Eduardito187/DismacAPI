@@ -229,13 +229,40 @@ class Catalog{
     }
 
     private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
+        $Info = $Category->Info;
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
             $this->text->getStatus() => $Category->status,
+            $this->text->getNamePos() => $Category->name_pos,
+            $this->text->getInhitance() => $Category->inheritance,
+            $this->text->getFiltros() => $Info->show_filter,
+            $this->text->getIdPos() => $Info->id_pos,
+            $this->text->getSubCategoryPos() => $Info->sub_category_pos,
+            $this->text->getInMenu() => $Category->in_menu,
+            $this->text->getUrl() => $Info->url,
             $this->text->getProducts() => $this->countProductsInCategory($id_catalog, $Category->id),
-            $this->text->getStores() => $this->searchStoreNoUnique($id_catalog, $Category->id, $NO_UNIQUE)
+            $this->text->getStores() => $this->searchStoreNoUnique($id_catalog, $Category->id, $NO_UNIQUE),
+            $this->text->getMetadata() => $this->getMetadata($Category->Metadata),
+            $this->text->getLanding() => $this->getLanding($Info->Content),
+            $this->text->getCustom() => []
+        );
+    }
+
+    private function getLanding($Content){
+        return array(
+            $this->text->getTitle() => $Content->title,
+            $this->text->getCode() => $Content->code,
+            $this->text->getBody() => $Content->body
+        );
+    }
+
+    private function getMetadata($Metadata){
+        return array(
+            $this->text->getTitulo() => $Metadata->title,
+            $this->text->getDescripcion() => $Metadata->description,
+            $this->text->getMetadata() => $Metadata->keywords
         );
     }
 
@@ -400,7 +427,6 @@ class Catalog{
      */
     public function getCategory(int $id_category, int $id_catalog){
         $Category = $this->getCategoryById($id_category);
-        return $Category->toArray();
         $NO_UNIQUE = $Category->CatalogCategory;
         $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
         $CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
