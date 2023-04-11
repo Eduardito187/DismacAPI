@@ -18,7 +18,7 @@ class Partner extends Model
         'id_address', 'created_at', 'updated_at'
     ];
 
-    protected $hidden = ['id', 'token', 'id_address', 'created_at', 'updated_at'];
+    protected $hidden = ['id', 'token', 'id_address', 'picture_profile', 'picture_front', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
