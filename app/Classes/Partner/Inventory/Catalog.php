@@ -251,10 +251,13 @@ class Catalog{
     }
 
     private function getLanding($Content){
+        $title = $Content == null ? "" : $Content->title;
+        $code = $Content == null ? "" : $Content->code;
+        $body = $Content == null ? "" : $Content->body;
         return array(
-            $this->text->getTitle() => $Content->title ?? "",
-            $this->text->getCode() => $Content->code ?? "",
-            $this->text->getBody() => $Content->body ?? ""
+            $this->text->getTitle() => $title,
+            $this->text->getCode() => $code,
+            $this->text->getBody() => $body
         );
     }
 
