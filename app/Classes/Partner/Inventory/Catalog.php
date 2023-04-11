@@ -400,6 +400,7 @@ class Catalog{
      */
     public function getCategory(int $id_category, int $id_catalog){
         $Category = $this->getCategoryById($id_category);
+        return $Category->toArray();
         $NO_UNIQUE = $Category->CatalogCategory;
         $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
         $CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
@@ -587,11 +588,11 @@ class Catalog{
      * @return Category
      */
     public function getCategoryById(int $id){
-        $product = Category::where($this->text->getId(), $id)->first();
-        if (!$product) {
+        $Category = Category::where($this->text->getId(), $id)->first();
+        if (!$Category) {
             throw new Exception($this->text->getNoneIdProduct($id));
         }
-        return $product;
+        return $Category;
     }
 }
 

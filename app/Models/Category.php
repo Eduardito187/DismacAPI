@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CatalogCategory;
+use App\Models\CategoryInfo;
+use App\Models\Metadata;
 
 class Category extends Model
 {
@@ -23,5 +25,13 @@ class Category extends Model
     
     public function CatalogCategory(){
         return $this->hasMany(CatalogCategory::class, 'id_category', 'id');
+    }
+
+    public function Info(){
+        return $this->hasOne(CategoryInfo::class, 'id', 'id_info_category');
+    }
+
+    public function Metadata(){
+        return $this->hasOne(Metadata::class, 'id', 'id_metadata');
     }
 }
