@@ -92,7 +92,7 @@ class Category extends Controller
                         $id_category,
                         $id_catalog
                     ),
-                    $this->text->getAddSuccess()
+                    $this->text->getQuerySuccess()
                 );
             }else{
                 throw new Exception($this->text->getErrorParametros());
