@@ -244,7 +244,7 @@ class Catalog{
             $this->text->getUrl() => $Info->url ?? "",
             $this->text->getProducts() => $this->countProductsInCategory($id_catalog, $Category->id),
             $this->text->getStores() => $this->searchStoreNoUnique($id_catalog, $Category->id, $NO_UNIQUE),
-            $this->text->getMetadata() => $this->getMetadata($Category->Metadata),
+            $this->text->getMetadata() => $this->getMetadata($Category->Metadata ?? null),
             $this->text->getLanding() => $this->getLanding($Info->Content ?? null),
             $this->text->getCustom() => []
         );
@@ -262,10 +262,13 @@ class Catalog{
     }
 
     private function getMetadata($Metadata){
+        $title = $Metadata == null ? "" : $Metadata->title;
+        $description = $Metadata == null ? "" : $Metadata->description;
+        $keywords = $Metadata == null ? "" : $Metadata->keywords;
         return array(
-            $this->text->getTitulo() => $Metadata->title,
-            $this->text->getDescripcion() => $Metadata->description,
-            $this->text->getMetadata() => $Metadata->keywords
+            $this->text->getTitulo() => $title,
+            $this->text->getDescripcion() => $description,
+            $this->text->getMetadata() => $keywords
         );
     }
 
