@@ -27,7 +27,7 @@ class Category extends Model
         return $this->hasMany(CatalogCategory::class, 'id_category', 'id');
     }
 
-    public function Info(){
+    public function CatInfo(){
         return $this->hasOne(CategoryInfo::class, 'id', 'id_info_category');
     }
 
