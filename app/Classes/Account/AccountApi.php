@@ -165,7 +165,7 @@ class AccountApi{
      * @return array
      */
     public function requestAccount(Account $Account){
-        $Partner = $Account->accountPartner;
+        $Partner = $Account->accountPartner->Partner;
         return $Partner->toArray();
         return array(
             "id" => $Account->id,
