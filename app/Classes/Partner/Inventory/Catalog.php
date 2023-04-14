@@ -399,7 +399,7 @@ class Catalog{
             $code = $this->generateCode();
             $Category = new Category();
             $Category->name = $name;
-            $Category->name_pos = $this->text->getNegativeId();
+            $Category->name_pos = $name;
             $Category->code = $code;
             $Category->inheritance = $inheritance;
             $Category->status = $estado;
