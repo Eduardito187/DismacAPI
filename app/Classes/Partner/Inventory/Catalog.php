@@ -229,7 +229,7 @@ class Catalog{
     }
 
     private function getUniqueCategoryCatalog(int $id_catalog, $NO_UNIQUE, $Category){
-        $Info = $Category->Info;
+        $Info = $Category->CatInfo;
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
@@ -435,7 +435,7 @@ class Catalog{
         $Category = $this->getCategoryById($id_category);
         $NO_UNIQUE = $Category->CatalogCategory;
         $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
-        $CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
+        //$CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
         return $CategoryArray;
     }
 
