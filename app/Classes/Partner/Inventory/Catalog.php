@@ -238,7 +238,7 @@ class Catalog{
             $this->text->getNamePos() => $Category->name_pos,
             $this->text->getInhitance() => $Category->inheritance,
             $this->text->getFiltros() => $Info->show_filter ?? 0,
-            $this->text->getIdPos() => $Info->id_pos ?? "",
+            $this->text->getIdPos() => (string)$Info->id_pos ?? "",
             $this->text->getSubCategoryPos() => $Info->sub_category_pos ?? "",
             $this->text->getInMenu() => $Category->in_menu,
             $this->text->getUrl() => $Info->url ?? "",
