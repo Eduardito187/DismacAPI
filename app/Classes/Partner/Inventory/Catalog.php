@@ -414,6 +414,53 @@ class Catalog{
             throw new Exception($th->getMessage());
         }
     }
+    
+    /**
+     * @param int $id_category
+     * @param int $id_catalog
+     * @param string $name
+     * @param int $id_account
+     * @param array $id_store
+     * @param bool $estado
+     * @param bool $visible
+     * @param bool $filtros
+     * @param int $id_pos
+     * @param string $url
+     * @param bool $sub_category_pos
+     * @param int|null $inheritance
+     * @param array $productos
+     * @param array|null $landing
+     * @param array|null $metadata
+     * @param array $custom
+     * @return 
+     */
+    public function updateCategory(
+        int $id_category, int $id_catalog, string $name, int $id_account, array $id_store, bool $estado, bool $visible, bool $filtros,
+        int $id_pos, string $url, bool $sub_category_pos, int|null $inheritance, array $productos, array|null $landing, array|null $metadata, array $custom
+    ){
+        try {
+            /*
+            $id_metadata = $this->createMetadata($metadata);
+            $id_category_info = $this->createCateogryInfo($filtros, $id_pos, $url, $sub_category_pos, $landing);
+            */
+            $Category = Category::find($id_category);
+            
+            Category::where($this->text->getId(), $id_category)->update([
+                $this->text->getName() => $name,
+                $this->text->getNamePos() => $name,
+                $this->text->getInhitance() => $inheritance,
+                $this->text->getStatus() => $estado,
+                $this->text->getInMenu() => $visible,
+                $this->text->getUpdated() => $this->date->getFullDate()
+            ]);
+            /*
+            $this->setListStore($id_catalog, $Category->id, $id_account, $id_store);
+            $this->asignarProductosInCategory($id_catalog, $Category->id, $id_store, $productos);
+            */
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
 
     /**
      * @param array $stores
