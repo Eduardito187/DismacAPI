@@ -234,15 +234,14 @@ class Catalog{
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
-            $this->text->getStatus() => $Category->status == 1 ? true : false,
+            $this->text->getStatus() => $Category->statuse,
             $this->text->getNamePos() => $Category->name_pos,
             $this->text->getInhitance() => $Category->inheritance,
-            $this->text->getFiltros() => $Info->show_filter ?? false,
+            $this->text->getFiltros() => $Info->show_filter ?? 0,
             $this->text->getIdPos() => $Info->id_pos ?? "",
             $this->text->getSubCategoryPos() => $Info->sub_category_pos ?? "",
-            $this->text->getInMenu() => $Category->in_menu == 1 ? true : false,
+            $this->text->getInMenu() => $Category->in_menu,
             $this->text->getUrl() => $Info->url ?? "",
-            $this->text->getProducts() => $this->countProductsInCategory($id_catalog, $Category->id),
             $this->text->getStores() => $this->searchStoreNoUnique($id_catalog, $Category->id, $NO_UNIQUE),
             $this->text->getMetadata() => $this->getMetadata($Category->Metadata ?? null),
             $this->text->getLanding() => $this->getLanding($Info->Content ?? null),
@@ -435,7 +434,7 @@ class Catalog{
         $Category = $this->getCategoryById($id_category);
         $NO_UNIQUE = $Category->CatalogCategory;
         $CategoryArray = $this->getUniqueCategoryCatalog($id_catalog, $NO_UNIQUE, $Category);
-        //$CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
+        $CategoryArray[$this->text->getProducts()] = $this->getProductsCategory($this->getProductsInCategory($id_catalog, $id_category));
         return $CategoryArray;
     }
 
