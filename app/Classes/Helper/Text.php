@@ -191,9 +191,17 @@ class Text{
     CONST BODY           = "body";
     CONST IN_MENU        = "in_menu";
     CONST INFO           = "info";
+    CONST UPDATE_SUCCESS = "Datos actualizados exitosamente.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdateSuccess(){
+        return SELF::UPDATE_SUCCESS;
     }
 
     /**

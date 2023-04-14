@@ -135,7 +135,7 @@ class Category extends Controller
                     $request->all()[$this->text->getMetadata()],
                     $request->all()[$this->text->getCustom()]
                 );
-                $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
+                $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getUpdateSuccess());
             }else{
                 throw new Exception($this->text->getErrorParametros());
             }
