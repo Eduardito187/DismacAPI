@@ -234,7 +234,7 @@ class Catalog{
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
             $this->text->getCode() => $Category->code,
-            $this->text->getStatus() => $Category->statuse,
+            $this->text->getStatus() => $Category->status,
             $this->text->getNamePos() => $Category->name_pos,
             $this->text->getInhitance() => $Category->inheritance,
             $this->text->getFiltros() => $Info->show_filter ?? 0,
