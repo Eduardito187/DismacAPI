@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Picture;
 use App\Models\Address;
 use App\Models\AccountPartner;
+use App\Models\StorePartner;
 
 class Partner extends Model
 {
@@ -40,5 +41,9 @@ class Partner extends Model
 
     public function Address(){
         return $this->hasOne(Address::class, 'id', 'id_address');
+    }
+
+    public function Stores(){
+        return $this->hasMany(StorePartner::class, 'id_partner', 'id');
     }
 }

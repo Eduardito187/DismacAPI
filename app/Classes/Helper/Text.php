@@ -196,9 +196,59 @@ class Text{
     CONST ID_CAT_INFO    = "id_category_info";
     CONST PROFILE        = "profile";
     CONST COVER          = "cover";
+    CONST RELATION_WH_P  = [
+        "product_warehouse.id_warehouse",
+        "product_warehouse",
+        "product.id",
+        "=",
+        "product_warehouse.id_product",
+        "product_warehouse.id_warehouse"
+    ];
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getTablePWIdWarehouse(){
+        return SELF::RELATION_WH_P[0];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTablePW(){
+        return SELF::RELATION_WH_P[1];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTablePWProductId(){
+        return SELF::RELATION_WH_P[2];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPwhIdWarehouse(){
+        return SELF::RELATION_WH_P[5];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPwhIdProduct(){
+        return SELF::RELATION_WH_P[4];
+    }
+
+    /**
+     * @return string
+     */
+    public function getEquals(){
+        return SELF::RELATION_WH_P[3];
     }
 
     /**
