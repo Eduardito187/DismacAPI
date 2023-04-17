@@ -39,7 +39,7 @@ class Partner extends Controller
         $response = array();
         try {
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
-            $response = $this->text->getResponseApi($Account->accountPartner->Partner, $this->text->getAccountEnable());
+            $response = $this->text->getResponseApi($Account->accountPartner->Partner->toArray(), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
