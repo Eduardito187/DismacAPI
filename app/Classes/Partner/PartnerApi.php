@@ -11,6 +11,7 @@ use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
 use App\Models\Product;
+use App\Models\StorePartner;
 use Exception;
 
 class PartnerApi{
@@ -195,6 +196,22 @@ class PartnerApi{
      */
     public function countProductPartner(int $id_partner){
         return Product::select($this->text->getId())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getId());
+    }
+    
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function getCountStorePartner(Partner $partner){
+        return $this->countStorePartner($partner->id);
+    }
+    
+    /**
+     * @param int $id_partner
+     * @return int
+     */
+    public function countStorePartner(int $id_partner){
+        return StorePartner::select($this->text->getIdStore())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getIdStore());
     }
     
     /**
