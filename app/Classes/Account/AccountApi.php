@@ -263,6 +263,14 @@ class AccountApi{
         }
         return $Account;
     }
+    
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function getAccountsPartner(Partner $partner){
+        return $partner->AccountPartner->unique($this->text->getIdAccount());
+    }
 
     /**
      * @param Partner $partner

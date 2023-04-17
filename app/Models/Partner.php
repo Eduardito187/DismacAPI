@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Picture;
 use App\Models\Address;
+use App\Models\AccountPartner;
 
 class Partner extends Model
 {
@@ -24,6 +25,10 @@ class Partner extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function AccountPartner(){
+        return $this->hasOne(AccountPartner::class, 'id_partner', 'id');
+    }
 
     public function Profile(){
         return $this->hasOne(Picture::class, 'id', 'picture_profile');
