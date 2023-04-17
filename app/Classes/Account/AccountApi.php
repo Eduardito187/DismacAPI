@@ -238,7 +238,7 @@ class AccountApi{
 
     /**
      * @param string $value
-     * @return int $ID
+     * @return int
      */
     public function getAccountToken(string $value){
         $this->tokenAccess = new TokenAccess($value);
@@ -252,7 +252,20 @@ class AccountApi{
 
     /**
      * @param string $value
-     * @return int $ID
+     * @return Account
+     */
+    public function getAccountByToken(string $value){
+        $this->tokenAccess = new TokenAccess($value);
+        $Account = Account::where($this->text->getToken(), $this->tokenAccess->getToken())->first();
+        if (!$Account) {
+            throw new Exception($this->text->AccountNotExist());
+        }
+        return $Account;
+    }
+
+    /**
+     * @param string $value
+     * @return int
      */
     public function getAccountKey(string $value){
         $Account = Account::select($this->text->getId())->where($this->text->getId(), $value)->get()->toArray();
@@ -278,7 +291,7 @@ class AccountApi{
 
     /**
      * @param string $value
-     * @return int $ID
+     * @return int
      */
     public function getAccountEmail(string $value){
         $Account = Account::select($this->text->getId())->where($this->text->getEmail(), $value)->get()->toArray();
