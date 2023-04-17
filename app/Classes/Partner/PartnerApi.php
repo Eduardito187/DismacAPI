@@ -196,6 +196,23 @@ class PartnerApi{
     public function countProductPartner(int $id_partner){
         return Product::select($this->text->getId())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getId());
     }
+    
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function getCountWareHouse(Partner $partner){
+        return $this->countWarehousesPartner($partner->id);
+    }
+    
+    /**
+     * @param int $id_partner
+     * @return int
+     */
+    public function countWarehousesPartner(int $id_partner){
+        return Product::select("product_warehouse.id_warehouse")->where($this->text->getIdPartner(), $id_partner)
+        ->join('product_warehouse', 'product.id', '=', 'product_warehouse.id_product')->distinct()->count("product_warehouse.id_warehouse");
+    }
 
     /**
      * @param string $domain

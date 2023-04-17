@@ -58,6 +58,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::delete('partner/{id}', 'destroy');
         Route::get('partner/countAccount', 'countAccount');
         Route::get('partner/countProduct', 'countProduct');
+        Route::get('partner/countWarehouse', 'countWarehouse');
     });
     Route::controller(SendCode::class)->group(function(){
         Route::get('sendcode', 'index');
