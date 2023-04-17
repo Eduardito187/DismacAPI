@@ -269,7 +269,7 @@ class AccountApi{
      * @return int
      */
     public function getAccountsPartner(Partner $partner){
-        return $partner->AccountPartner->unique($this->text->getIdAccount());
+        return $partner->AccountPartner->distinct();
     }
 
     /**
