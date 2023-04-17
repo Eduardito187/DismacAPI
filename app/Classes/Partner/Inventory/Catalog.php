@@ -439,18 +439,23 @@ class Catalog{
         int $id_pos, string $url, bool $sub_category_pos, int|null $inheritance, array $productos, array|null $landing, array|null $metadata, array $custom
     ){
         try {
-            /*
-            $id_metadata = $this->createMetadata($metadata);
-            $id_category_info = $this->createCateogryInfo($filtros, $id_pos, $url, $sub_category_pos, $landing);
-            */
             $Category = Category::find($id_category);
-            
-            Category::where($this->text->getId(), $id_category)->update([
+            $id_metadata = $Category->id_metadata;
+            $id_category_info = $Category->id_category_info;
+            if (is_null($id_metadata)) {
+                $id_metadata = $this->createMetadata($metadata);
+            }
+            if (is_null($id_category_info)) {
+                $id_category_info = $this->createCateogryInfo($filtros, $id_pos, $url, $sub_category_pos, $landing);
+            }
+            Category::where($this->text->getId(), $Category->id)->update([
                 $this->text->getName() => $name,
                 $this->text->getNamePos() => $name,
                 $this->text->getInhitance() => $inheritance,
                 $this->text->getStatus() => $estado,
                 $this->text->getInMenu() => $visible,
+                $this->text->getIdMetadata() => $id_metadata,
+                $this->text->getCatInfo() => $id_category_info,
                 $this->text->getUpdated() => $this->date->getFullDate()
             ]);
             /*

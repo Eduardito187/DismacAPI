@@ -192,9 +192,25 @@ class Text{
     CONST IN_MENU        = "in_menu";
     CONST INFO           = "info";
     CONST UPDATE_SUCCESS = "Datos actualizados exitosamente.";
+    CONST ID_METADATA    = "id_metadata";
+    CONST ID_CAT_INFO    = "id_category_info";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdMetadata(){
+        return SELF::ID_METADATA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCatInfo(){
+        return SELF::ID_CAT_INFO;
     }
 
     /**
