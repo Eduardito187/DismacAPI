@@ -269,7 +269,7 @@ class AccountApi{
      * @return int
      */
     public function getAccountsPartner(Partner $partner){
-        return $partner->AccountPartner->distinct();
+        return count($partner->AccountPartner->distinct());
     }
 
     /**
