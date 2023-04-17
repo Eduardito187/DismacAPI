@@ -10,6 +10,7 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
+use App\Models\Product;
 use Exception;
 
 class PartnerApi{
@@ -178,6 +179,22 @@ class PartnerApi{
         } catch (Exception $th) {
             return false;
         }
+    }
+    
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function getCountProduct(Partner $partner){
+        return $this->countProductPartner($partner->id);
+    }
+    
+    /**
+     * @param int $id_partner
+     * @return int
+     */
+    public function countProductPartner(int $id_partner){
+        return Product::select($this->text->getId())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getId());
     }
 
     /**

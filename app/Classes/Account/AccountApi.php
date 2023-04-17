@@ -269,14 +269,14 @@ class AccountApi{
      * @return int
      */
     public function getAccountsPartner(Partner $partner){
-        return $this->countAccountPArtner($partner->id);
+        return $this->countAccountPartner($partner->id);
     }
 
     /**
      * @param int $id_partner
      * @return int
      */
-    public function countAccountPArtner(int $id_partner){
+    public function countAccountPartner(int $id_partner){
         return AccountPartner::select($this->text->getIdAccount())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getIdAccount());
     }
 
