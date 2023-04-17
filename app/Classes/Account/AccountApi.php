@@ -14,6 +14,7 @@ use App\Classes\TokenAccess;
 use App\Models\AccountPartner;
 use App\Models\Catalog;
 use App\Models\CatalogPartner;
+use App\Models\Partner;
 
 class AccountApi{
 
@@ -170,8 +171,8 @@ class AccountApi{
             "id" => $Account->id,
             "name" => $Account->name,
             "email" => $Account->email,
-            "profile" => $Partner->Profile->url,
-            "cover" => $Partner->Front->url
+            $this->text->getProfile() => $Partner->Profile->url,
+            $this->text->getCover() => $Partner->Front->url
         );
     }
 
@@ -261,6 +262,22 @@ class AccountApi{
             throw new Exception($this->text->AccountNotExist());
         }
         return $Account;
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getPartner(Partner $partner){
+        return array(
+            $this->text->getId() => $partner->id,
+            $this->text->getName() => $partner->name,
+            $this->text->getDomain() => $partner->domain,
+            $this->text->getEmail() => $partner->email,
+            $this->text->getProfile() => $partner->Profile->url,
+            $this->text->getCover() => $partner->Front->url,
+            $this->text->getToken() => $partner->token
+        );
     }
 
     /**

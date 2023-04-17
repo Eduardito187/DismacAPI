@@ -194,9 +194,25 @@ class Text{
     CONST UPDATE_SUCCESS = "Datos actualizados exitosamente.";
     CONST ID_METADATA    = "id_metadata";
     CONST ID_CAT_INFO    = "id_category_info";
+    CONST PROFILE        = "profile";
+    CONST COVER          = "cover";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfile(){
+        return SELF::PROFILE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCover(){
+        return SELF::COVER;
     }
 
     /**
