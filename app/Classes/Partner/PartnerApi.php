@@ -229,7 +229,7 @@ class PartnerApi{
      * @return int
      */
     public function countStorePartner(int $id_partner){
-        return 2;
+        return StorePartner::select($this->text->getIdStore())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getIdStore());
     }
 
     /**
