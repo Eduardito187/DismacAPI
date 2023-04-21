@@ -205,9 +205,17 @@ class Text{
         "product_warehouse.id_warehouse"
     ];
     CONST STORES_ID      = "stores_id";
+    CONST SOCIAL_NETWORK = "id_social_network";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getSocialNetwork(){
+        return SELF::SOCIAL_NETWORK;
     }
 
     /**

@@ -172,6 +172,23 @@ class Partner extends Controller
     }
     
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function countSocialNetworkPartner(Request $request)
+    {
+        $response = array();
+        try {
+            $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $response = $this->text->getResponseApi($this->partnerApi->getCountStorePartner($Account->accountPartner->Partner), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

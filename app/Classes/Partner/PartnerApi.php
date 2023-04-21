@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
 use App\Models\Account;
 use App\Models\Product;
+use App\Models\SocialPartner;
 use App\Models\StorePartner;
 use Exception;
 
@@ -205,6 +206,22 @@ class PartnerApi{
      */
     public function getCountStorePartner(Partner $partner){
         return $this->countStorePartner($partner->id);
+    }
+
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function countSocialNetworkPartner(Partner $partner){
+        return $this->countSocialPartner($partner->id);
+    }
+    
+    /**
+     * @param int $id_partner
+     * @return int
+     */
+    public function countSocialPartner(int $id_partner){
+        return SocialPartner::select($this->text->getSocialNetwork())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getSocialNetwork());
     }
     
     /**
