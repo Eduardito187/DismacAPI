@@ -10,6 +10,7 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
+use App\Models\Account;
 use App\Models\Product;
 use App\Models\StorePartner;
 use Exception;
@@ -212,6 +213,52 @@ class PartnerApi{
      */
     public function countStorePartner(int $id_partner){
         return StorePartner::select($this->text->getIdStore())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getIdStore());
+    }
+
+    /**
+     * @param Account $Account
+     * @param array $stores_id
+     */
+    public function setStores(Account $Account, array $stores_id){
+        $id_partner = $Account->accountPartner->id_partner;
+        $this->clearStoresPartner($id_partner);
+        $this->setMultipleStorePartner($id_partner, $stores_id);
+    }
+
+    /**
+     * @param int $id_partner
+     * @return void
+     */
+    public function clearStoresPartner(int $id_partner){
+        StorePartner::where($this->text->getIdPartner(), $id_partner)->delete();
+    }
+
+    /**
+     * @param int $id_partner
+     * @param array $stores_id
+     * @return void
+     */
+    public function setMultipleStorePartner(int $id_partner, array $stores_id){
+        foreach ($stores_id as $key => $store) {
+            $this->setStorePartner($store, $id_partner);
+        }
+    }
+
+    /**
+     * @param int $id_store
+     * @param int $id_partner
+     * @return bool
+     */
+    public function setStorePartner(int $id_store, int $id_partner){
+        try {
+            $StorePartner = new StorePartner();
+            $StorePartner->id_store = $id_store;
+            $StorePartner->id_partner = $id_partner;
+            $StorePartner->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
     }
     
     /**

@@ -204,9 +204,17 @@ class Text{
         "product_warehouse.id_product",
         "product_warehouse.id_warehouse"
     ];
+    CONST STORES_ID      = "stores_id";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoresId(){
+        return SELF::STORES_ID;
     }
 
     /**

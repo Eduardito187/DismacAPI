@@ -170,4 +170,25 @@ class Partner extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setStorePartner(Request $request)
+    {
+        $response = array();
+        try {
+            $this->partnerApi->setStores(
+                $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization())), 
+                $request->all()[$this->text->getStoresId()]
+            );
+            $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
 }

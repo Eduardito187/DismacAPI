@@ -60,6 +60,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/countProduct', 'countProduct');
         Route::get('partner/countWarehouse', 'countWarehouse');
         Route::get('partner/countStorePartner', 'countStorePartner');
+        Route::post('partner/setStorePartner', 'setStorePartner');
     });
     Route::controller(SendCode::class)->group(function(){
         Route::get('sendcode', 'index');
