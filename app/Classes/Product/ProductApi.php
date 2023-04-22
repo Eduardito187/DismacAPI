@@ -239,6 +239,7 @@ class ProductApi{
         foreach ($products as $key => $product) {
             /** @var Product $product */
             $data[] = array(
+                "id" => $product->id,
                 "sku" => $product->sku,
                 "name" => $product->name
             );
