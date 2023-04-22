@@ -229,20 +229,29 @@ class ProductApi{
     }
 
     /**
+     * @param Product $Product
+     * @return array
+     */
+    private function getArrayproduct(Product $Product){
+        return array(
+            $this->text->getId() => $Product->id,
+            $this->text->getSku() => $Product->sku,
+            $this->text->getName() => $Product->name,
+            $this->text->getCreated() => $Product->created_at,
+            $this->text->getUpdated() => $Product->updated_at
+        );
+    }
+
+    /**
      * @param string $query
      * @param int $id_partner
      * @return array
      */
     public function getSearchProduct(string $query, int $id_partner){
-        $products = $this->searchProduct($query, $id_partner);
         $data = array();
-        foreach ($products as $key => $product) {
+        foreach ($this->searchProduct($query, $id_partner) as $key => $product) {
             /** @var Product $product */
-            $data[] = array(
-                "id" => $product->id,
-                "sku" => $product->sku,
-                "name" => $product->name
-            );
+            $data[] = $this->getArrayproduct($product);
         }
         return $data;
     }
