@@ -40,7 +40,7 @@ class CustomValidateToken
                 return abort(402, $this->text->getTokenDecline());
             }
         }else{
-            return abort(404, $this->text->getAccessDecline());
+            return abort(400, $this->text->getAccessDecline());
         }
     }
 }
