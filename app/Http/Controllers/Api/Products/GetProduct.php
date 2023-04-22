@@ -132,7 +132,7 @@ class GetProduct extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function searchProduc(Request $request)
+    public function searchProduct(Request $request)
     {
         $params = $request->all();
         try {
