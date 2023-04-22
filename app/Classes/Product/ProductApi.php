@@ -219,6 +219,34 @@ class ProductApi{
     }
 
     /**
+     * @param string $query
+     * @param int $id_partner
+     * @return Product[]
+     */
+    public function searchProduct(string $query, int $id_partner){
+        return Product::where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->
+        orwhere($this->text->getSku(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->get();
+    }
+
+    /**
+     * @param string $query
+     * @param int $id_partner
+     * @return array
+     */
+    public function getSearchProduct(string $query, int $id_partner){
+        $products = $this->searchProduct($query, $id_partner);
+        $data = array();
+        foreach ($products as $key => $product) {
+            /** @var Product $product */
+            $data[] = array(
+                "sku" => $product->sku,
+                "name" => $product->name
+            );
+        }
+        return $data;
+    }
+
+    /**
      * @param int $id_Partner
      * @param array $SKU
      * @return array

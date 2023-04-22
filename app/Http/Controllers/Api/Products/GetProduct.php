@@ -125,4 +125,25 @@ class GetProduct extends Controller
     {
         return response()->json([]);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function searchProduc(Request $request)
+    {
+        $params = $request->all();
+        try {
+            $id_Partner = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
+            $response = $this->text->getResponseApi(
+                $this->productApi->getSearchProduct($params["query"], $id_Partner),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi([], $th->getMessage());
+        }
+        return response()->json($response);
+    }
 }

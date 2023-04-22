@@ -195,6 +195,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('GetProduct/show/{id}', 'show');
         Route::patch('GetProduct/{id}', 'update');
         Route::delete('GetProduct/{id}', 'destroy');
+        Route::post('searchProduc', 'searchProduc');
     });
     Route::controller(ReportProducts::class)->group(function(){
         Route::get('report/product', 'index');
