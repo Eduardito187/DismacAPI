@@ -20,7 +20,7 @@ class Date{
      * @param string|null $date_
      * @return string|null
      */
-    public function getDiferenceInDates(string $date, string $date_){
+    public function getDiferenceInDates(string $date, string|null $date_){
         if (is_null($date_) || strlen($date_) == 0) {
             return null;
         }
