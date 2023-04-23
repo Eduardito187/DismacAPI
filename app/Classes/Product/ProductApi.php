@@ -261,7 +261,7 @@ class ProductApi{
      * @return Price
      */
     public function getPriceById(int $id){
-        return Price::fint($id);
+        return Price::find($id);
     }
 
     /**
