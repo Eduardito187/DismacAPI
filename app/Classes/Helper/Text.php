@@ -235,19 +235,21 @@ class Text{
     }
 
     /**
+     * @param string $text
      * @param int $days
      * @return string
      */
-    public function getDiferenceDays(int $days){
-        return str_replace($this->getPercent(), $days, $days > 1 ? SELF::DAYS_DIFENCENS : SELF::DAY_DIFENCENS);
+    public function getDiferenceDays(string $text, int $days){
+        return $text.str_replace($this->getPercent(), $days, $days > 1 ? SELF::DAYS_DIFENCENS : SELF::DAY_DIFENCENS);
     }
 
     /**
+     * @param string $text
      * @param int $month
      * @return string
      */
-    public function getDiferenceMonth(int $month){
-        return str_replace($this->getPercent(), $month, $month > 1 ? SELF::MOTHS_DIFENCENS : SELF::MONTH_DIFENCENS);
+    public function getDiferenceMonth(string $text, int $month){
+        return $text.str_replace($this->getPercent(), $month, $month > 1 ? SELF::MOTHS_DIFENCENS : SELF::MONTH_DIFENCENS);
     }
 
     /**
