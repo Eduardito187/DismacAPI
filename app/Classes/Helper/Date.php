@@ -24,6 +24,7 @@ class Date{
         if (is_null($date_) || strlen($date_) == 0) {
             return null;
         }
+        
         $Year = $this->getDiferenceYear($date, $date_);
         $Month = $this->getDiferenceMonth($date, $date_);
         $Days = $this->getDiferenceDays($date, $date_);
