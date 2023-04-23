@@ -237,14 +237,15 @@ class ProductApi{
      * @return array
      */
     private function getArrayproduct(Product $Product){
+        $date = $this->date->getFullDate();
         return array(
             $this->text->getId() => $Product->id,
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
             $this->text->getImage() => $this->productFirstPicture($Product->id),
             $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_STORE, $Product->id),
-            $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($this->date->getFullDate(), $Product->created_at, true),
-            $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($this->date->getFullDate(), $Product->updated_at, false)
+            $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($date, $Product->created_at, true),
+            $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($date, $Product->updated_at, false)
         );
     }
 
