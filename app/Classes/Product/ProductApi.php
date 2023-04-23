@@ -287,8 +287,8 @@ class ProductApi{
      */
     public function priceByPrice(Price $Price){
         return array(
-            $this->text->getPrice() => $Price->price,
-            $this->text->getSpecialPrice() => $Price->special_price
+            $this->text->getPrice() => $Price->price ?? 0,
+            $this->text->getSpecialPrice() => $Price->special_price ?? 0
         );
     }
 
