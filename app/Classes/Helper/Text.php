@@ -207,9 +207,55 @@ class Text{
     CONST STORES_ID      = "stores_id";
     CONST SOCIAL_NETWORK = "id_social_network";
     CONST IMAGE          = "image";
+    CONST DAYS_DIFENCENS = "Modificado hace % dias.";
+    CONST DAY_DIFENCENS  = "Modificado hace % dia.";
+    CONST MONTH_DIFENCENS= "Modificado hace % mes.";
+    CONST MOTHS_DIFENCENS= "Modificado hace % meses.";
+    CONST YEAR_DIFENCENS = "Modificado hace % año.";
+    CONST YEARS_DIFENCENS= "Modificado hace % años.";
+    CONST CREATED_DIF    = "frecuence_created";
+    CONST UPDATED_DIF    = "frecuence_updated";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedDiference(){
+        return SELF::CREATED_DIF;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedDiference(){
+        return SELF::UPDATED_DIF;
+    }
+
+    /**
+     * @param int $days
+     * @return string
+     */
+    public function getDiferenceDays(int $days){
+        return str_replace($this->getPercent(), $days, $days > 1 ? SELF::DAYS_DIFENCENS : SELF::DAY_DIFENCENS);
+    }
+
+    /**
+     * @param int $month
+     * @return string
+     */
+    public function getDiferenceMonth(int $month){
+        return str_replace($this->getPercent(), $month, $month > 1 ? SELF::MOTHS_DIFENCENS : SELF::MONTH_DIFENCENS);
+    }
+
+    /**
+     * @param int $year
+     * @return string
+     */
+    public function getDiferenceYear(int $year){
+        return str_replace($this->getPercent(), $year, $year > 1 ? SELF::YEARS_DIFENCENS : SELF::YEAR_DIFENCENS);
     }
 
     /**

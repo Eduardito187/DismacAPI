@@ -2,10 +2,75 @@
 
 namespace App\Classes\Helper;
 
+use Carbon\Carbon;
+use App\Classes\Helper\Text;
+
 class Date{
+    /**
+     * @var Text
+     */
+    protected $text;
 
     public function __construct() {
-        //
+        $this->text = new Text();
+    }
+    
+    /**
+     * @param string $date
+     * @param string|null $date_
+     * @return string|null
+     */
+    public function getDiferenceInDates(string $date, string $date_){
+        if (is_null($date_) || strlen($date_) == 0) {
+            return null;
+        }
+        $Year = $this->getDiferenceYear($date, $date_);
+        $Month = $this->getDiferenceMonth($date, $date_);
+        $Days = $this->getDiferenceDays($date, $date_);
+        if ($Year > 0) {
+            return $this->text->getDiferenceYear($Year);
+        }else if ($Month > 0){
+            return $this->text->getDiferenceMonth($Month);
+        }else {
+            if ($Days > 0) {
+                return $this->text->getDiferenceDays($Days);
+            }else{
+                return "Modificado recientemente.";
+            }
+        }
+    }
+
+    /**
+     * @param string $date
+     * @param string $date_
+     * @return string
+     */
+    public function getDiferenceYear(string $date, string $date_){
+        $toDate = Carbon::parse($date);
+        $fromDate = Carbon::parse($date_);
+        return $toDate->diffInYears($fromDate);  
+    }
+
+    /**
+     * @param string $date
+     * @param string $date_
+     * @return string
+     */
+    public function getDiferenceMonth(string $date, string $date_){
+        $toDate = Carbon::parse($date);
+        $fromDate = Carbon::parse($date_);
+        return $toDate->diffInMonths($fromDate);  
+    }
+
+    /**
+     * @param string $date
+     * @param string $date_
+     * @return string
+     */
+    public function getDiferenceDays(string $date, string $date_){
+        $toDate = Carbon::parse($date);
+        $fromDate = Carbon::parse($date_);
+        return $toDate->diffInDays($fromDate);  
     }
 
     /**
