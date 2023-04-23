@@ -207,12 +207,12 @@ class Text{
     CONST STORES_ID      = "stores_id";
     CONST SOCIAL_NETWORK = "id_social_network";
     CONST IMAGE          = "image";
-    CONST DAYS_DIFENCENS = "Modificado hace % dias.";
-    CONST DAY_DIFENCENS  = "Modificado hace % dia.";
-    CONST MONTH_DIFENCENS= "Modificado hace % mes.";
-    CONST MOTHS_DIFENCENS= "Modificado hace % meses.";
-    CONST YEAR_DIFENCENS = "Modificado hace % año.";
-    CONST YEARS_DIFENCENS= "Modificado hace % años.";
+    CONST DAYS_DIFENCENS = " hace % dias.";
+    CONST DAY_DIFENCENS  = " hace % dia.";
+    CONST MONTH_DIFENCENS= " hace % mes.";
+    CONST MOTHS_DIFENCENS= " hace % meses.";
+    CONST YEAR_DIFENCENS = " hace % año.";
+    CONST YEARS_DIFENCENS= " hace % años.";
     CONST CREATED_DIF    = "frecuence_created";
     CONST UPDATED_DIF    = "frecuence_updated";
 
@@ -251,11 +251,12 @@ class Text{
     }
 
     /**
+     * @param string $text
      * @param int $year
      * @return string
      */
-    public function getDiferenceYear(int $year){
-        return str_replace($this->getPercent(), $year, $year > 1 ? SELF::YEARS_DIFENCENS : SELF::YEAR_DIFENCENS);
+    public function getDiferenceYear(string $text, int $year){
+        return $text.str_replace($this->getPercent(), $year, $year > 1 ? SELF::YEARS_DIFENCENS : SELF::YEAR_DIFENCENS);
     }
 
     /**
