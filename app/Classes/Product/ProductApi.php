@@ -29,6 +29,7 @@ use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductApi{
+    CONST DEFAULT_PRICE = 24948;
     CONST FILTER_ALL = "ALL";
     CONST FILTER_LAST_EDIT = "LAST_EDIT";
     CONST FILTER_LAST_CREATE = "LAST_CREATE";
@@ -240,8 +241,53 @@ class ProductApi{
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
             $this->text->getImage() => $this->productFirstPicture($Product->id),
+            $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_PRICE, $Product->id),
             $this->text->getCreated() => $Product->created_at,
             $this->text->getUpdated() => $Product->updated_at
+        );
+    }
+
+    /**
+     * @param int $id_store
+     * @param int $id_product
+     * @return ProductPriceStore
+     */
+    public function getPriceByStore(int $id_store, int $id_product){
+        return ProductPriceStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->first();
+    }
+
+    /**
+     * @param int $id
+     * @return Price
+     */
+    public function getPriceById(int $id){
+        return Price::fint($id);
+    }
+
+    /**
+     * @param int $id_store
+     * @param int $id_product
+     * @return array
+     */
+    public function getProductPriceByStore(int $id_store, int $id_product){
+        $ProductPriceStore = $this->getPriceByStore($id_store, $id_product);
+        $Price = null;
+        if (!$ProductPriceStore) {
+            $Price = $this->getPriceById(self::DEFAULT_PRICE);
+        }else{
+            $Price = $ProductPriceStore->Price;
+        }
+        return $this->priceByPrice($Price);
+    }
+
+    /**
+     * @param Price $Price
+     * @return array
+     */
+    public function priceByPrice(Price $Price){
+        return array(
+            $this->text->getPrice() => $Price->price,
+            $this->text->getSpecialPrice() => $Price->special_price
         );
     }
 
