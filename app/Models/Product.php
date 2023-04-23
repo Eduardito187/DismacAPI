@@ -18,6 +18,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductStoreStatus;
 use App\Models\ProductSheet;
 use App\Models\ProductWarehouse;
+use App\Models\ProductPicture;
 
 class Product extends Model
 {
@@ -98,5 +99,9 @@ class Product extends Model
 
     public function Warehouse(){
         return $this->hasMany(ProductWarehouse::class, 'id_product', 'id');
+    }
+
+    public function Pictures(){
+        return $this->hasMany(ProductPicture::class, 'id_product', 'id');
     }
 }

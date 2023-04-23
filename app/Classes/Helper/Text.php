@@ -206,9 +206,17 @@ class Text{
     ];
     CONST STORES_ID      = "stores_id";
     CONST SOCIAL_NETWORK = "id_social_network";
+    CONST IMAGE          = "image";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(){
+        return SELF::IMAGE;
     }
 
     /**

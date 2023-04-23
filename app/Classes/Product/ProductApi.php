@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Log;
 use App\Classes\Account\AccountApi;
 use App\Models\Category;
 use App\Models\CategoryInfo;
+use App\Models\Picture;
 use App\Models\Price;
 use App\Models\ProductCategory;
+use App\Models\ProductPicture;
 use App\Models\ProductPriceStore;
 use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
@@ -30,7 +32,7 @@ class ProductApi{
     CONST FILTER_ALL = "ALL";
     CONST FILTER_LAST_EDIT = "LAST_EDIT";
     CONST FILTER_LAST_CREATE = "LAST_CREATE";
-
+    CONST DEFAULT_IMAGE = 3;
     CONST OPLN_PRECIO_PROPUESTO = 1;
     CONST OPLN_TIENDAS_SCZ = 3;
     CONST NAME_SCZ         = "SCZ";
@@ -237,9 +239,57 @@ class ProductApi{
             $this->text->getId() => $Product->id,
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
+            $this->text->getImage() => $this->productFirstPicture($Product->id),
             $this->text->getCreated() => $Product->created_at,
             $this->text->getUpdated() => $Product->updated_at
         );
+    }
+
+    /**
+     * @param int $id
+     * @return Picture
+     */
+    public function getImageById(int $id){
+        return Picture::find($id);
+    }
+
+    /**
+     * @param Picture $Picture
+     * @return string
+     */
+    public function getPublicUrlImage(Picture $Picture){
+        return $Picture->url;
+    }
+
+    /**
+     * @param Picture $Picture
+     * @return string
+     */
+    public function getPatchImage(Picture $Picture){
+        return $Picture->path;
+    }
+
+    /**
+     * @param int $id_product
+     * @return string
+     */
+    public function productFirstPicture(int $id_product){
+        $productPicture = $this->getFirstImage($id_product);
+        $Picture = null;
+        if (!$productPicture) {
+            $Picture = $this->getImageById(self::DEFAULT_IMAGE);
+        }else{
+            $Picture = $productPicture->Picture;
+        }
+        return $this->getPublicUrlImage($Picture);
+    }
+
+    /**
+     * @param int $id_product
+     * @return ProductPicture
+     */
+    public function getFirstImage(int $id_product){
+        return ProductPicture::where($this->text->getIdProduct(), $id_product)->first();
     }
 
     /**
