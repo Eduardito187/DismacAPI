@@ -30,10 +30,6 @@ class Date{
         $Month = $this->getDiferenceMonth($date, $date_);
         $Days = $this->getDiferenceDays($date, $date_);
         if ($status === true){
-            echo $date."--".$date_;
-            print_r($Year);
-            print_r($Month);
-            print_r($Days);
             return $this->getDiferenceCreated($Year, $Month, $Days);
         }else{
             return $this->getDiferenceUpdated($Year, $Month, $Days);
