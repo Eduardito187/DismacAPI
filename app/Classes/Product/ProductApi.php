@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductApi{
     CONST DEFAULT_PRICE = 24948;
+    CONST DEFAULT_STORE = 3;
     CONST FILTER_ALL = "ALL";
     CONST FILTER_LAST_EDIT = "LAST_EDIT";
     CONST FILTER_LAST_CREATE = "LAST_CREATE";
@@ -241,7 +242,7 @@ class ProductApi{
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
             $this->text->getImage() => $this->productFirstPicture($Product->id),
-            $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_PRICE, $Product->id),
+            $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_STORE, $Product->id),
             $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($this->date->getFullDate(), $Product->created_at, true),
             $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($this->date->getFullDate(), $Product->updated_at, false)
         );
