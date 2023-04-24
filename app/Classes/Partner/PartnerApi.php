@@ -285,13 +285,6 @@ class PartnerApi{
      */
     public function categoryFirstPicture(Category $Category){
         $Picture = null;
-        echo 1;
-        if ($Category->id_info_category != null) {
-            if ($Category->CatInfo->id_picture != null){
-                $Picture = $Category->CatInfo->Picture;
-            }
-        }
-        echo "-2";
         if (!$Picture) {
             $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
         }
