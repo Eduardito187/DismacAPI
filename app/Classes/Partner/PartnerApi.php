@@ -285,8 +285,8 @@ class PartnerApi{
      */
     public function categoryFirstPicture(Category $Category){
         $Picture = null;
-        if (!$Picture) {
             $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
+        if (!$Picture) {
         }
         return $this->productApi->getPublicUrlImage($Picture);
     }
