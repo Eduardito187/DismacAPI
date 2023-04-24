@@ -15,6 +15,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\SocialPartner;
 use App\Models\StorePartner;
+use App\Classes\Product\ProductApi;
 use Exception;
 
 class PartnerApi{
@@ -35,11 +36,16 @@ class PartnerApi{
      * @var Text
      */
     protected $text;
+    /**
+     * @var ProductApi
+     */
+    protected $productApi;
 
     public function __construct() {
-        $this->date     = new Date();
-        $this->status   = new Status();
-        $this->text     = new Text();
+        $this->date       = new Date();
+        $this->status     = new Status();
+        $this->text       = new Text();
+        $this->productApi = new ProductApi();
     }
 
     /**
@@ -267,10 +273,24 @@ class PartnerApi{
      */
     public function convertCategoryToArray(Category $Category){
         return array(
-            $this->text->getId() => $Category->id
+            $this->text->getId() => $Category->id,
+            $this->text->getName() => $Category->name,
+            $this->text->getImage() => $this->categoryFirstPicture($Category)
         );
     }
     
+    /**
+     * @param Category $Category
+     * @return string
+     */
+    public function categoryFirstPicture(Category $Category){
+        $Picture = $Category->CatInfo->Picture;
+        if (!$Picture) {
+            $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
+        }
+        return $this->productApi->getPublicUrlImage($Picture);
+    }
+
     /**
      * @param int $id_partner
      * @return int
