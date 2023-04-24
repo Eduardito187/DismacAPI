@@ -228,12 +228,16 @@ class PartnerApi{
      * @return array
      */
     public function getLastHistoryCategory(Partner $partner){
-        $response = array();
-        $response = $this->getCategoryLastModify($partner->id);
-        if (count($response) == 0) {
-            $response = $this->getCategoryLastCreate($partner->id);
+        try {
+            $response = array();
+            $response = $this->getCategoryLastModify($partner->id);
+            if (count($response) == 0) {
+                $response = $this->getCategoryLastCreate($partner->id);
+            }
+            return $response;
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
         }
-        return $response;
         //HISTOY_LAST
     }
 
@@ -256,6 +260,7 @@ class PartnerApi{
     }
 
     /**
+     * @param Category[] $Categorys
      * @return array
      */
     public function convertListCategoryToArray($Categorys){
