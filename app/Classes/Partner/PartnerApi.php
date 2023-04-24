@@ -290,9 +290,6 @@ class PartnerApi{
                 $Picture = $Category->CatInfo->Picture;
             }
         }
-        if (!$Picture) {
-            $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
-        }
         return "";
     }
 
