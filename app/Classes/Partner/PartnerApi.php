@@ -274,8 +274,7 @@ class PartnerApi{
     public function convertCategoryToArray(Category $Category){
         return array(
             $this->text->getId() => $Category->id,
-            $this->text->getName() => $Category->name,
-            $this->text->getImage() => $this->categoryFirstPicture($Category)
+            $this->text->getName() => $Category->name
         );
     }
     
