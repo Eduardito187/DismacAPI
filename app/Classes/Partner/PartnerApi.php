@@ -19,7 +19,7 @@ use App\Classes\Picture\PictureApi;
 use Exception;
 
 class PartnerApi{
-    CONST HISTOY_LAST = 5;
+    CONST HISTOY_LAST = 8;
     /**
      * @var Partner
      */
