@@ -11,13 +11,14 @@ use App\Classes\Helper\Status;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Text;
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\SocialPartner;
 use App\Models\StorePartner;
 use Exception;
 
 class PartnerApi{
-
+    CONST HISTOY_LAST = 5;
     /**
      * @var Partner
      */
@@ -214,6 +215,60 @@ class PartnerApi{
      */
     public function countSocialNetworkPartner(Partner $partner){
         return $this->countSocialPartner($partner->id);
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getLastHistoryCategory(Partner $partner){
+        $response = array();
+        $response = $this->getCategoryLastModify($partner->id);
+        if (count($response) == 0) {
+            $response = $this->getCategoryLastCreate($partner->id);
+        }
+        return $response;
+        //HISTOY_LAST
+    }
+
+    /**
+     * @param int $id_partner
+     * @return array
+     */
+    public function getCategoryLastModify(int $id_partner){
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->skip(self::HISTOY_LAST)->take(self::HISTOY_LAST)->get();
+        return $this->convertListCategoryToArray($Category);
+    }
+
+    /**
+     * @param int $id_partner
+     * @return array
+     */
+    public function getCategoryLastCreate(int $id_partner){
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->skip(self::HISTOY_LAST)->take(self::HISTOY_LAST)->get();
+        return $this->convertListCategoryToArray($Category);
+    }
+
+    /**
+     * @param Category[] $Categorys
+     * @return array
+     */
+    public function convertListCategoryToArray($Categorys){
+        $response = array();
+        foreach ($Categorys as $key => $Category) {
+            $response[] = $this->convertCategoryToArray($Category);
+        }
+        return $response;
+    }
+
+    /**
+     * @param Category $Category
+     * @return array
+     */
+    public function convertCategoryToArray(Category $Category){
+        return array(
+            $this->text->getId() => $Category->id
+        );
     }
     
     /**

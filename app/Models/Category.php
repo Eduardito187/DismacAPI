@@ -14,7 +14,7 @@ class Category extends Model
 
     protected $table = 'category';
 
-    protected $fillable = ['name', 'name_pos', 'code', 'inheritance', 'status', 'in_menu', 'id_info_category', 'created_at', 'updated_at', 'id_metadata'];
+    protected $fillable = ['name', 'name_pos', 'code', 'inheritance', 'status', 'in_menu', 'id_info_category', 'created_at', 'updated_at', 'id_metadata', 'id_partner'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
