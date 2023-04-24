@@ -230,6 +230,12 @@ class PartnerApi{
     public function getLastHistoryCategory(Partner $partner){
         try {
             $response = array();
+            Log::debug("1");
+            $response = $this->getCategoryLastModify($partner->id);
+            if (count($response) == 0) {
+                Log::debug("2");
+                $response = $this->getCategoryLastCreate($partner->id);
+            }
             return $response;
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
