@@ -25,6 +25,7 @@ use App\Models\ProductPicture;
 use App\Models\ProductPriceStore;
 use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
+use App\Classes\Picture\PictureApi;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +35,6 @@ class ProductApi{
     CONST FILTER_ALL = "ALL";
     CONST FILTER_LAST_EDIT = "LAST_EDIT";
     CONST FILTER_LAST_CREATE = "LAST_CREATE";
-    CONST DEFAULT_IMAGE = 3;
     CONST OPLN_PRECIO_PROPUESTO = 1;
     CONST OPLN_TIENDAS_SCZ = 3;
     CONST NAME_SCZ         = "SCZ";
@@ -62,12 +62,17 @@ class ProductApi{
      * @var Text
      */
     protected $text;
+    /**
+     * @var PictureApi
+     */
+    protected $pictureApi;
 
     public function __construct() {
         $this->date         = new Date();
         $this->status       = new Status();
         $this->text         = new Text();
         $this->accountApi   = new AccountApi();
+        $this->pictureApi   = new PictureApi();
     }
 
 
@@ -294,22 +299,6 @@ class ProductApi{
     }
 
     /**
-     * @param int $id
-     * @return Picture
-     */
-    public function getImageById(int $id){
-        return Picture::find($id);
-    }
-
-    /**
-     * @param Picture $Picture
-     * @return string
-     */
-    public function getPublicUrlImage(Picture $Picture){
-        return $Picture->url;
-    }
-
-    /**
      * @param Picture $Picture
      * @return string
      */
@@ -325,11 +314,11 @@ class ProductApi{
         $productPicture = $this->getFirstImage($id_product);
         $Picture = null;
         if (!$productPicture) {
-            $Picture = $this->getImageById(self::DEFAULT_IMAGE);
+            $Picture = $this->pictureApi->getImageById($this->pictureApi::DEFAULT_IMAGE);
         }else{
             $Picture = $productPicture->Picture;
         }
-        return $this->getPublicUrlImage($Picture);
+        return $this->pictureApi->getPublicUrlImage($Picture);
     }
 
     /**
