@@ -12,6 +12,7 @@ use App\Classes\Partner\PartnerApi;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class Partner extends Controller
 {
@@ -218,6 +219,7 @@ class Partner extends Controller
     {
         $response = array();
         try {
+            Log::debug("0");
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
             $response = $this->text->getResponseApi($this->partnerApi->getLastHistoryCategory($Account->accountPartner->Partner), $this->text->getQuerySuccess());
         } catch (Exception $th) {
