@@ -242,7 +242,7 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastModify(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListCategoryToArray($Category);
     }
 
@@ -251,12 +251,11 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastCreate(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListCategoryToArray($Category);
     }
 
     /**
-     * @param Category[] $Categorys
      * @return array
      */
     public function convertListCategoryToArray($Categorys){
