@@ -219,9 +219,25 @@ class Partner extends Controller
     {
         $response = array();
         try {
-            Log::debug("0");
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
             $response = $this->text->getResponseApi($this->partnerApi->getLastHistoryCategory($Account->accountPartner->Partner), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lastHistoryProducts(Request $request)
+    {
+        $response = array();
+        try {
+            $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $response = $this->text->getResponseApi($this->partnerApi->getLastHistoryProducts($Account->accountPartner->Partner), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }

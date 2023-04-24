@@ -230,17 +230,73 @@ class PartnerApi{
     public function getLastHistoryCategory(Partner $partner){
         try {
             $response = array();
-            Log::debug("1");
             $response = $this->getCategoryLastModify($partner->id);
             if (count($response) == 0) {
-                Log::debug("2");
                 $response = $this->getCategoryLastCreate($partner->id);
             }
             return $response;
         } catch (\Throwable $th) {
-            Log::debug($th->getMessage());
+            //
         }
-        //HISTOY_LAST
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getLastHistoryProducts(Partner $partner){
+        try {
+            $response = array();
+            $response = $this->getProductLastModify($partner->id);
+            if (count($response) == 0) {
+                $response = $this->getProductLastCreate($partner->id);
+            }
+            return $response;
+        } catch (\Throwable $th) {
+            //
+        }
+    }
+
+    /**
+     * @param Product[] $Products
+     * @return array
+     */
+    public function convertListProductToArray($Products){
+        $response = array();
+        foreach ($Products as $key => $Product) {
+            $response[] = $this->convertProductToArray($Product);
+        }
+        return $response;
+    }
+
+    /**
+     * @param Product $Product
+     * @return array
+     */
+    public function convertProductToArray(Product $Product){
+        return array(
+            $this->text->getId() => $Product->id,
+            $this->text->getSku() => $Product->sku,
+            $this->text->getImage() =>$this->pictureApi->productFirstPicture($Product->id)
+        );
+    }
+
+    /**
+     * @param int $id_partner
+     * @return array
+     */
+    public function getProductLastModify(int $id_partner){
+        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        return $this->convertListProductToArray($Product);
+    }
+
+    /**
+     * @param int $id_partner
+     * @return array
+     */
+    public function getProductLastCreate(int $id_partner){
+        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        return $this->convertListProductToArray($Product);
     }
 
     /**

@@ -63,6 +63,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('partner/setStorePartner', 'setStorePartner');
         Route::get('partner/countSocialNetworkPartner', 'countSocialNetworkPartner');
         Route::get('partner/lastHistoryCategory', 'lastHistoryCategory');
+        Route::get('partner/lastHistoryProducts', 'lastHistoryProducts');
     });
     Route::controller(SendCode::class)->group(function(){
         Route::get('sendcode', 'index');

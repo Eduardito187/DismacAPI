@@ -247,7 +247,7 @@ class ProductApi{
             $this->text->getId() => $Product->id,
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
-            $this->text->getImage() => $this->productFirstPicture($Product->id),
+            $this->text->getImage() => $this->pictureApi->productFirstPicture($Product->id),
             $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_STORE, $Product->id),
             $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($date, $Product->created_at, true),
             $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($date, $Product->updated_at, false)
@@ -304,29 +304,6 @@ class ProductApi{
      */
     public function getPatchImage(Picture $Picture){
         return $Picture->path;
-    }
-
-    /**
-     * @param int $id_product
-     * @return string
-     */
-    public function productFirstPicture(int $id_product){
-        $productPicture = $this->getFirstImage($id_product);
-        $Picture = null;
-        if (!$productPicture) {
-            $Picture = $this->pictureApi->getImageById($this->pictureApi::DEFAULT_IMAGE);
-        }else{
-            $Picture = $productPicture->Picture;
-        }
-        return $this->pictureApi->getPublicUrlImage($Picture);
-    }
-
-    /**
-     * @param int $id_product
-     * @return ProductPicture
-     */
-    public function getFirstImage(int $id_product){
-        return ProductPicture::where($this->text->getIdProduct(), $id_product)->first();
     }
 
     /**
