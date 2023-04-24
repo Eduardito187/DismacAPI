@@ -242,7 +242,7 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastModify(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->get();
         return $this->convertListCategoryToArray($Category);
     }
 
@@ -251,7 +251,7 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastCreate(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->get();
         return $this->convertListCategoryToArray($Category);
     }
 
@@ -274,7 +274,8 @@ class PartnerApi{
     public function convertCategoryToArray(Category $Category){
         return array(
             $this->text->getId() => $Category->id,
-            $this->text->getName() => $Category->name
+            $this->text->getName() => $Category->name,
+            $this->text->getImage() => $this->categoryFirstPicture($Category)
         );
     }
     
@@ -284,7 +285,15 @@ class PartnerApi{
      */
     public function categoryFirstPicture(Category $Category){
         $Picture = null;
-        return "";
+        if ($Category->id_info_category != null) {
+            if ($Category->CatInfo->id_picture != null){
+                $Picture = $Category->CatInfo->Picture;
+            }
+        }
+        if (!$Picture) {
+            $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
+        }
+        return $this->productApi->getPublicUrlImage($Picture);
     }
 
     /**
