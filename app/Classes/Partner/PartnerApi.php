@@ -291,9 +291,9 @@ class PartnerApi{
             }
         }
         if (!$Picture) {
-            $Picture = $this->productApi->getImageById(3);
+            $Picture = $this->productApi->getImageById($this->productApi::DEFAULT_IMAGE);
         }
-        return $this->productApi->getPublicUrlImage($Picture);
+        return "";
     }
 
     /**
