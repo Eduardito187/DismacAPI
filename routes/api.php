@@ -42,6 +42,7 @@ use App\Http\Controllers\Api\Inventory\Products\Validate as VALIDATE_PRODUCT;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 //params in api
 // / => index <= get
 // / => store <= post
