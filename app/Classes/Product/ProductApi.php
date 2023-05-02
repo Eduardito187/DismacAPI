@@ -1565,7 +1565,7 @@ class ProductApi{
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner,
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
-            $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->MinicuotaStore),
+            $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->id),
             $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
             $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
             $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id)
@@ -1665,25 +1665,25 @@ class ProductApi{
         return $Categorias;
     }
 
-    private function minicuotasProducts($stores, $MinicuotaStores){
+    private function minicuotasProducts($stores, $product_id){
         $MinicuotaStore = array();
         foreach ($stores as $key => $store) {
             $MinicuotaStore[] = array(
                 $this->text->getIdStore() => $store->id,
                 $this->text->getStoreName() => $store->name,
-                $this->text->getPrice() => $this->minicuotaStorePrice($store->id, $MinicuotaStores)
+                $this->text->getMinicuotas() => $this->minicuotaProductStorePrice($store->id, $product_id)
             );
         }
         return $MinicuotaStore;
     }
     
-    private function minicuotaStorePrice($store_id, $MinicuotaStores){
-        foreach ($MinicuotaStores as $key => $PriceStore) {
-            if ($store_id == $PriceStore->id_store) {
-                return $PriceStore->MiniCuota;
-            }
+    private function minicuotaProductStorePrice($store_id, $product_id){
+        $ProductMinicuotaStore = ProductMinicuotaStore::where($this->text->getIdStore(), $store_id)->where($this->text->getIdProduct(), $product_id)->get();
+        $res = array();
+        foreach ($ProductMinicuotaStore as $key => $minicuota) {
+            $res[] = $minicuota->MiniCuota;
         }
-        return 0;
+        return $res;
     }
 
     private function pricesProducts($stores, $PriceStores){
