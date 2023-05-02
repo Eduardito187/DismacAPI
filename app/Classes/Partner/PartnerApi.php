@@ -268,7 +268,7 @@ class PartnerApi{
 
     /**
      * @param Partner $partner
-     * @return float
+     * @return float|string
      */
     public function valuePartner(Partner $partner){
         $Stores = $this->getAllStoreEntity();
@@ -279,7 +279,7 @@ class PartnerApi{
         } catch (\Throwable $th) {
             //
         }
-        return $value;
+        return $this->text->convertNumberFormat($value);
     }
 
     /**
@@ -316,7 +316,6 @@ class PartnerApi{
         $value = 0;
         foreach ($stores as $s => $store) {
             foreach ($products as $p => $product) {
-                Log::debug($product->id);
                 $value += $this->calculoPriceProduct($store->id, $product->id) * $product->stock;
             }
         }

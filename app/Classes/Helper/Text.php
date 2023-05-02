@@ -677,6 +677,14 @@ class Text{
     }
 
     /**
+     * @param int|string|float $value
+     * @return int|string|float
+     */
+    public function convertNumberFormat($value){
+        return number_format($value,2,",",".");
+    }
+
+    /**
      * @return string
      */
     public function getIdWarehouse(){
