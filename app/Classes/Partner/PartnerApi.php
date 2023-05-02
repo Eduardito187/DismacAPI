@@ -273,7 +273,6 @@ class PartnerApi{
     public function valuePartner(Partner $partner){
         $Stores = $this->getAllStoreEntity();
         $Products = $this->listProductPartnerStock($partner->id);
-        Log::debug(count($Products));
         $value = 0;
         try {
             $value = $this->getPricesProducts($Stores, $Products);
@@ -317,6 +316,7 @@ class PartnerApi{
         $value = 0;
         foreach ($stores as $s => $store) {
             foreach ($products as $p => $product) {
+                Log::debug($product->id);
                 $value += $this->calculoPriceProduct($store->id, $product->id) * $product->stock;
             }
         }
