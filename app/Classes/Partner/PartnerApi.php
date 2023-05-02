@@ -291,11 +291,11 @@ class PartnerApi{
     }
 
     /**
-     * @param int $id_partner
+     * @param int $id_store
      * @param int $id_product
      */
-    public function calculoPriceProduct(int $id_partner, int $id_product){
-        $ProductPriceStore = ProductPriceStore::where($this->text->getIdPartner(), $id_partner)->where($this->text->getIdProduct(), $id_product)->first();
+    public function calculoPriceProduct(int $id_store, int $id_product){
+        $ProductPriceStore = ProductPriceStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->first();
         if (!$ProductPriceStore) {
             return 0;
         }else{
