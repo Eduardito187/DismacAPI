@@ -13,7 +13,7 @@ class MiniCuota extends Model
 
     protected $fillable = ['meses', 'cuotas', 'monto', 'created_at', 'updated_at'];
     
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['id', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
