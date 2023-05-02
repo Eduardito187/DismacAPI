@@ -16,6 +16,8 @@ use App\Models\Product;
 use App\Models\SocialPartner;
 use App\Models\StorePartner;
 use App\Classes\Picture\PictureApi;
+use App\Models\ProductPriceStore;
+use App\Models\Store;
 use Exception;
 
 class PartnerApi{
@@ -255,6 +257,69 @@ class PartnerApi{
         } catch (\Throwable $th) {
             //
         }
+    }
+
+    /**
+     * @return Store[]
+     */
+    public function getAllStoreEntity(){
+        return Store::all();
+    }
+
+    /**
+     * @param Partner $partner
+     * @return float
+     */
+    public function valuePartner(Partner $partner){
+        $Stores = $this->getAllStoreEntity();
+        $Products = $this->listProductPartnerStock($partner->id);
+        $value = 0;
+        try {
+            $value = $this->getPricesProducts($Stores, $Products);
+        } catch (\Throwable $th) {
+            //
+        }
+        return $value;
+    }
+
+    /**
+     * @param int $id_partner
+     * @return Product[]
+     */
+    public function listProductPartnerStock(int $id_partner){
+        return Product::select("id", "stock")->where($this->text->getIdPartner(), $id_partner)->where($this->text->getStock(), ">", 0)->get();
+    }
+
+    /**
+     * @param int $id_partner
+     * @param int $id_product
+     */
+    public function calculoPriceProduct(int $id_partner, int $id_product){
+        $ProductPriceStore = ProductPriceStore::where($this->text->getIdPartner(), $id_partner)->where($this->text->getIdProduct(), $id_product)->first();
+        if (!$ProductPriceStore) {
+            return 0;
+        }else{
+            $Price = $ProductPriceStore->Price;
+            if (!$Price) {
+                return 0;
+            }else{
+                if (is_null($Price->special_price)) {
+                    return floatval($Price->price);
+                }else{
+                    return floatval($Price->special_price);
+                }
+            }
+        }
+    }
+
+    public function getPricesProducts($stores, $products){
+        $value = 0;
+        foreach ($stores as $s => $store) {
+            foreach ($products as $p => $product) {
+                $value += $this->calculoPriceProduct($store->id, $product->id) * $product->stock;
+            }
+        }
+        return $value;
     }
 
     /**

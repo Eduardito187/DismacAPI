@@ -1437,7 +1437,7 @@ class ProductApi{
     }
 
     /**
-     * @param Store[]
+     * @return Store[]
      */
     public function getAllStoreEntity(){
         return Store::all();

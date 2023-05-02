@@ -1048,11 +1048,11 @@ class Text{
     }
 
     /**
-     * @param bool|array|null|int|string $status
+     * @param bool|array|null|int|string|float $status
      * @param string $response
      * @return array
      */
-    public function getResponseApi(bool|array|null|int|string $status, string $response){
+    public function getResponseApi(bool|array|null|int|string|float $status, string $response){
         return array(
             SELF::RESPONSE => $status,
             SELF::RESPONSE_TEXT => $response
