@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\SocialPartner;
 use App\Models\StorePartner;
 use App\Classes\Picture\PictureApi;
+use App\Models\Campaign;
 use App\Models\ProductPriceStore;
 use App\Models\Store;
 use Exception;
@@ -223,6 +224,22 @@ class PartnerApi{
      */
     public function countSocialNetworkPartner(Partner $partner){
         return $this->countSocialPartner($partner->id);
+    }
+
+    /**
+     * @param Partner $partner
+     * @return int
+     */
+    public function countCampaignsPartner(Partner $partner){
+        return $this->countCampaignsSocialPartner($partner->id);
+    }
+
+    /**
+     * @param int $id_partner
+     * @return int
+     */
+    public function countCampaignsSocialPartner(int $id_partner){
+        return Campaign::select($this->text->getSocialNetwork())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getSocialNetwork());
     }
 
     /**
