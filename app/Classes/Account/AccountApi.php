@@ -204,7 +204,7 @@ class AccountApi{
     public function convertSupportTechnical($Supports){
         $data = array();
         foreach ($Supports as $key => $support) {
-            $data = array(
+            $data[] = array(
                 $this->text->getId() => $support->id,
                 $this->text->getAccount() => $this->accountSimple($support->Account),
                 $this->text->getPartner() => $this->getPartner($support->Partner),
@@ -248,7 +248,7 @@ class AccountApi{
     public function convertImprovementArray($Mejoras, Account $Account){
         $data = array();
         foreach ($Mejoras as $key => $mejora) {
-            $data = array(
+            $data[] = array(
                 $this->text->getId() => $mejora->id,
                 $this->text->getAccount() => $this->accountSimple($Account),
                 $this->text->getTitle() => $mejora->title,
