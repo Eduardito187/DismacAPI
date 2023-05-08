@@ -283,7 +283,7 @@ class AccountApi{
             $Mejora->id_account = $idAccount;
             $Mejora->title = $data[$this->text->getTitle()];
             $Mejora->description = $data[$this->text->getDescription()];
-            $Mejora->status = $this->status->getDisable();
+            $Mejora->status = $this->status->getEnable();
             $Mejora->created_at = $this->date->getFullDate();
             $Mejora->updated_at = null;
             $Mejora->save();
@@ -318,7 +318,7 @@ class AccountApi{
             $SupportTechnical->id_partner = $id_partner;
             $SupportTechnical->title = $data[$this->text->getTitle()];
             $SupportTechnical->description = $data[$this->text->getDescription()];
-            $SupportTechnical->status = $this->status->getDisable();
+            $SupportTechnical->status = $this->status->getEnable();
             $SupportTechnical->created_at = $this->date->getFullDate();
             $SupportTechnical->updated_at = null;
             $SupportTechnical->save();
