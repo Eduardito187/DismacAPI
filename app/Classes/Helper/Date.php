@@ -5,8 +5,6 @@ namespace App\Classes\Helper;
 use Carbon\Carbon;
 use App\Classes\Helper\Text;
 
-date_default_timezone_set('America/La_Paz');
-
 class Date{
     /**
      * @var Text
@@ -14,6 +12,7 @@ class Date{
     protected $text;
 
     public function __construct() {
+        date_default_timezone_set('America/La_Paz');
         $this->text = new Text();
     }
     
