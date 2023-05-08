@@ -179,7 +179,7 @@ class Text{
     CONST CUSTOM         = "custom";
     CONST PRICES         = "prices";
     CONST WAREHOUSE      = "warehouse";
-    CONST DESCRIPTION    = "descripcion";
+    CONST DESCRIPCION    = "descripcion";
     CONST NO_RESPONSE    = "Sin resultados.";
     CONST URL            = "url";
     CONST LANDING        = "landing";
@@ -215,9 +215,17 @@ class Text{
     CONST YEARS_DIFENCENS= " hace % años.";
     CONST CREATED_DIF    = "frecuence_created";
     CONST UPDATED_DIF    = "frecuence_updated";
+    CONST DESCRIPTION    = "description";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(){
+        return SELF::DESCRIPTION;
     }
 
     /**
@@ -433,7 +441,7 @@ class Text{
      * @return string
      */
     public function getDescripcion(){
-        return SELF::DESCRIPTION;
+        return SELF::DESCRIPCION;
     }
 
     /**

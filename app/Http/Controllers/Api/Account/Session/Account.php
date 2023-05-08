@@ -33,7 +33,7 @@ class Account extends Controller
     {
         try {
             $response = $this->text->getResponseApi(
-                $this->accountApi->getCurrentAccount($request->header($this->text->getAuthorization())),
+                $this->accountApi->currentAccountArray($request->header($this->text->getAuthorization())),
                 $this->text->getAccountExist()
             );
         } catch (Exception $th) {
@@ -51,6 +51,120 @@ class Account extends Controller
     public function store(Request $request)
     {
         return response()->json([]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function improvements(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->createImprovement($request->header($this->text->getAuthorization()), $request->all()),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getImprovementsActive(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getImprovementsApi($request->header($this->text->getAuthorization()), $this->status->getEnable()),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getImprovementsInactive(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getImprovementsApi($request->header($this->text->getAuthorization()), $this->status->getDisable()),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getTicketsAccount(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getTicketsAccount($request->header($this->text->getAuthorization())),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getTicketsPartner(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getTicketsPartner($request->header($this->text->getAuthorization())),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function support(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->createSupport($request->header($this->text->getAuthorization()), $request->all()),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

@@ -13,22 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('campaign', function (Blueprint $table) {
+        Schema::create('support_technical', function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->unsignedBigInteger('id_social_network')->nullable();
-            $table->foreign('id_social_network')->references('id')->on('social_network')->onDelete('cascade');
+            $table->unsignedBigInteger('id_account')->nullable();
+            $table->foreign('id_account')->references('id')->on('account')->onDelete('cascade');
             $table->unsignedBigInteger('id_partner')->nullable();
             $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
-            $table->unsignedBigInteger('id_category')->nullable();
-            $table->foreign('id_category')->references('id')->on('category')->onDelete('cascade');
-            $table->string('name', 100);
-            $table->string('url', 250);
+            $table->string('title', 100);
+            $table->text('description');
             $table->boolean('status');
-            $table->integer('products');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('from_at')->nullable();
-            $table->timestamp('to_at')->nullable();
         });
     }
 
@@ -39,6 +34,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campaign');
+        Schema::dropIfExists('support_technical', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_account');
+            $table->dropConstrainedForeignId('id_partner');
+        });
     }
 };

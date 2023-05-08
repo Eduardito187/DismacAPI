@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Account;
 
-class MiniCuota extends Model
+class Mejoras extends Model
 {
     use HasFactory;
 
-    protected $table = 'mini_cuotas';
+    protected $table = 'mejoras';
 
-    protected $fillable = ['meses', 'cuotas', 'monto'];
+    protected $fillable = ['id_account', 'title', 'description', 'status'];
     
     protected $hidden = ['id', 'created_at', 'updated_at'];
 
@@ -19,4 +20,8 @@ class MiniCuota extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function Account(){
+        return $this->hasOne(Account::class, 'id', 'id_account');
+    }
 }

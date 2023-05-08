@@ -172,6 +172,12 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('currentAccount/show/{id}', 'show');
         Route::patch('currentAccount/{id}', 'update');
         Route::delete('currentAccount/{id}', 'destroy');
+        Route::post('currentAccount/new/improvements', 'improvements');
+        Route::post('currentAccount/new/support', 'support');
+        Route::get('currentAccount/getImprovementsActive', 'getImprovementsActive');
+        Route::get('currentAccount/getImprovementsInactive', 'getImprovementsInactive');
+        Route::get('currentAccount/getTicketsAccount', 'getTicketsAccount');
+        Route::get('currentAccount/getTicketsPartner', 'getTicketsPartner');
     });
     Route::controller(AccountSearch::class)->group(function(){
         Route::get('search/account', 'index');

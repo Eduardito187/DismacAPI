@@ -14,7 +14,9 @@ use App\Classes\TokenAccess;
 use App\Models\AccountPartner;
 use App\Models\Catalog;
 use App\Models\CatalogPartner;
+use App\Models\Mejoras;
 use App\Models\Partner;
+use App\Models\SupportTechnical;
 
 class AccountApi{
 
@@ -150,15 +152,178 @@ class AccountApi{
 
     /**
      * @param string $token
-     * @return array
+     * @return Account
      */
-    public function getCurrentAccount($token){
+    public function getCurrentAccount(string $token){
         $id_Account = $this->getAccountToken($token);
         $Account = Account::find($id_Account);
         if (!$Account) {
             throw new Exception($this->text->AccountNotExist());
         }
-        return $this->requestAccount($Account);
+        return $Account;
+    }
+
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function currentAccountArray(string $token){
+        return $this->requestAccount($this->getCurrentAccount($token));
+    }
+
+    /**
+     * @param string $token
+     * @param array $data
+     * @return bool
+     */
+    public function createImprovement(string $token, array $data){
+        $Account = $this->getCurrentAccount($token);
+        return $this->newImprovement($Account->id, $data);
+    }
+
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function getTicketsAccount(string $token){
+        $Account = $this->getCurrentAccount($token);
+        $Support = $this->getTicketByAccount($Account->id);
+        return $this->convertSupportTechnical($Support);
+    }
+
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function getTicketsPartner(string $token){
+        $Account = $this->getCurrentAccount($token);
+        $Support = $this->getTicketByPartner($Account->accountPartner->id_partner);
+        return $this->convertSupportTechnical($Support);
+    }
+
+    public function convertSupportTechnical($Supports){
+        $data = array();
+        foreach ($Supports as $key => $support) {
+            $data = array(
+                $this->text->getId() => $support->id,
+                $this->text->getAccount() => $this->accountSimple($support->Account),
+                $this->text->getPartner() => $this->getPartner($support->Partner),
+                $this->text->getTitle() => $support->title,
+                $this->text->getDescription() => $support->description,
+                $this->text->getStatus() => $support->status,
+                $this->text->getCreated() => $support->created_at,
+                $this->text->getUpdated() => $support->updated_at
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $id_account
+     * @return SupportTechnical[]
+     */
+    public function getTicketByAccount(int $id_account){
+        return SupportTechnical::where($this->text->getIdAccount(), $id_account)->get();
+    }
+
+    /**
+     * @param int $id_partner
+     * @return SupportTechnical[]
+     */
+    public function getTicketByPartner(int $id_partner){
+        return SupportTechnical::where($this->text->getIdPartner(), $id_partner)->get();
+    }
+
+    /**
+     * @param string $token
+     * @param bool $status
+     * @return array
+     */
+    public function getImprovementsApi(string $token, bool $status){
+        $Account = $this->getCurrentAccount($token);
+        $Mejoras = $this->getImprovement($Account->id, $status);
+        return $this->convertImprovementArray($Mejoras, $Account);
+    }
+
+    public function convertImprovementArray($Mejoras, Account $Account){
+        $data = array();
+        foreach ($Mejoras as $key => $mejora) {
+            $data = array(
+                $this->text->getId() => $mejora->id,
+                $this->text->getAccount() => $this->accountSimple($Account),
+                $this->text->getTitle() => $mejora->title,
+                $this->text->getDescription() => $mejora->description,
+                $this->text->getStatus() => $mejora->status,
+                $this->text->getCreated() => $mejora->created_at,
+                $this->text->getUpdated() => $mejora->updated_at
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $id_account
+     * @param bool $status
+     * @return Mejoras[]
+     */
+    public function getImprovement(int $id_account, bool $status){
+        return Mejoras::where($this->text->getIdAccount(), $id_account)->where($this->text->getStatus(), $status)->get();
+    }
+
+    /**
+     * @param int $idAccount
+     * @param array $data
+     * @return bool
+     */
+    public function newImprovement(int $idAccount, array $data){
+        try {
+            $Mejora = new Mejoras();
+            $Mejora->id_account = $idAccount;
+            $Mejora->title = $data[$this->text->getTitle()];
+            $Mejora->description = $data[$this->text->getDescription()];
+            $Mejora->status = $this->status->getDisable();
+            $Mejora->created_at = $this->date->getFullDate();
+            $Mejora->updated_at = null;
+            $Mejora->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+    
+    /**
+     * @param string $token
+     * @param array $data
+     * @return bool
+     */
+    public function createSupport(string $token, array $data){
+        $Account = $this->getCurrentAccount($token);
+        $id_partner = $Account->accountPartner->id_partner;
+        return $this->newSupport($Account->id, $id_partner, $data);
+    }
+
+    
+    /**
+     * @param int $idAccount
+     * @param int $id_partner
+     * @param array $data
+     * @return bool
+     */
+    public function newSupport(int $idAccount, int $id_partner, array $data){
+        try {
+            $SupportTechnical = new SupportTechnical();
+            $SupportTechnical->id_account = $idAccount;
+            $SupportTechnical->id_partner = $id_partner;
+            $SupportTechnical->title = $data[$this->text->getTitle()];
+            $SupportTechnical->description = $data[$this->text->getDescription()];
+            $SupportTechnical->status = $this->status->getDisable();
+            $SupportTechnical->created_at = $this->date->getFullDate();
+            $SupportTechnical->updated_at = null;
+            $SupportTechnical->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
     }
 
     /**
@@ -168,11 +333,23 @@ class AccountApi{
     public function requestAccount(Account $Account){
         $Partner = $Account->accountPartner->Partner;
         return array(
-            "id" => $Account->id,
-            "name" => $Account->name,
-            "email" => $Account->email,
+            $this->text->getId() => $Account->id,
+            $this->text->getName() => $Account->name,
+            $this->text->getEmail() => $Account->email,
             $this->text->getProfile() => $Partner->Profile->url,
             $this->text->getCover() => $Partner->Front->url
+        );
+    }
+
+    /**
+     * @param Account $Account
+     * @return array
+     */
+    public function accountSimple(Account $Account){
+        return array(
+            $this->text->getId() => $Account->id,
+            $this->text->getName() => $Account->name,
+            $this->text->getEmail() => $Account->email
         );
     }
 
