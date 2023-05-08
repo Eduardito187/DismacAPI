@@ -216,9 +216,17 @@ class Text{
     CONST CREATED_DIF    = "frecuence_created";
     CONST UPDATED_DIF    = "frecuence_updated";
     CONST DESCRIPTION    = "description";
+    CONST TIME           = "time";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getTime(){
+        return SELF::TIME;
     }
 
     /**

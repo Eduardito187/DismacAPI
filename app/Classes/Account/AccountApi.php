@@ -211,6 +211,7 @@ class AccountApi{
                 $this->text->getTitle() => $support->title,
                 $this->text->getDescription() => $support->description,
                 $this->text->getStatus() => $support->status,
+                $this->text->getTime() => "1 D",
                 $this->text->getCreated() => $support->created_at,
                 $this->text->getUpdated() => $support->updated_at
             );
@@ -254,6 +255,7 @@ class AccountApi{
                 $this->text->getTitle() => $mejora->title,
                 $this->text->getDescription() => $mejora->description,
                 $this->text->getStatus() => $mejora->status,
+                $this->text->getTime() => "1 D",
                 $this->text->getCreated() => $mejora->created_at,
                 $this->text->getUpdated() => $mejora->updated_at
             );
