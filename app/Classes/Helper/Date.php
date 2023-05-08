@@ -18,10 +18,10 @@ class Date{
     /**
      * @param string $date
      * @param string|null $date_
-     * @param bool $status
+     * @param bool|null $status
      * @return string|null
      */
-    public function getDiferenceInDates(string $date, string|null $date_, bool $status){
+    public function getDiferenceInDates(string $date, string|null $date_, bool|null $status){
         if (is_null($date_) || strlen($date_) == 0) {
             return null;
         }
@@ -31,8 +31,12 @@ class Date{
         $Days = $this->getDiferenceDays($date, $date_);
         if ($status === true){
             return $this->getDiferenceCreated($Year, $Month, $Days);
-        }else{
+        }else if($status === false) {
             return $this->getDiferenceUpdated($Year, $Month, $Days);
+        }else{
+            $Hours = $this->getDiferenceHours($date, $date_);
+            $Minutes = $this->getDiferenceMinutes($date, $date_);
+            return $this->getDiferenceUpdatedInit($Year, $Month, $Days, $Hours, $Minutes);
         }
     }
 
@@ -77,6 +81,32 @@ class Date{
     }
 
     /**
+     * @param int $Year
+     * @param int $Month
+     * @param int $Days
+     * @param int $Hours
+     * @param int $Minutes
+     * @return string
+     */
+    public function getDiferenceUpdatedInit(int $Year, int $Month, int $Days, int $Hours, int $Minutes){
+        if ($Year > 0) {
+            return $this->text->concatTwoString($Year, "Y");
+        }else if ($Month > 0){
+            return $this->text->concatTwoString($Month, "M");
+        }else {
+            if ($Days > 0) {
+                return $this->text->concatTwoString($Days, "D");
+            }else{
+                if ($Hours > 0) {
+                    return $this->text->concatTwoString($Hours, "H");
+                }else{
+                    return $this->text->concatTwoString($Minutes, "min");
+                }
+            }
+        }
+    }
+
+    /**
      * @param string $date
      * @param string $date_
      * @return string
@@ -107,6 +137,28 @@ class Date{
         $toDate = Carbon::parse($date);
         $fromDate = Carbon::parse($date_);
         return $toDate->diffInDays($fromDate);  
+    }
+
+    /**
+     * @param string $date
+     * @param string $date_
+     * @return string
+     */
+    public function getDiferenceHours(string $date, string $date_){
+        $toDate = Carbon::parse($date);
+        $fromDate = Carbon::parse($date_);
+        return $toDate->diffInHours($fromDate);  
+    }
+
+    /**
+     * @param string $date
+     * @param string $date_
+     * @return string
+     */
+    public function getDiferenceMinutes(string $date, string $date_){
+        $toDate = Carbon::parse($date);
+        $fromDate = Carbon::parse($date_);
+        return $toDate->diffInMinutes($fromDate);  
     }
 
     /**

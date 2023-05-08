@@ -223,6 +223,15 @@ class Text{
     }
 
     /**
+     * @param string|int $number
+     * @param string $label
+     * @return string
+     */
+    public function concatTwoString(string|int $number, string $label){
+        return $number." ".$label;
+    }
+
+    /**
      * @return string
      */
     public function getTime(){
