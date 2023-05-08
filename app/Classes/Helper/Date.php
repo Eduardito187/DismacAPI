@@ -5,6 +5,8 @@ namespace App\Classes\Helper;
 use Carbon\Carbon;
 use App\Classes\Helper\Text;
 
+date_default_timezone_set('America/La_Paz');
+
 class Date{
     /**
      * @var Text
