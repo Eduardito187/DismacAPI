@@ -358,6 +358,7 @@ class PartnerApi{
     public function convertProductToArray(Product $Product){
         return array(
             $this->text->getId() => $Product->id,
+            $this->text->getName() => $Product->name,
             $this->text->getSku() => $Product->sku,
             $this->text->getImage() =>$this->pictureApi->productFirstPicture($Product->id)
         );
