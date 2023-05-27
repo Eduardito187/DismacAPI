@@ -28,8 +28,6 @@ return new class extends Migration
             $table->double('percent', 10, 2)->nullable();
             $table->timestamp('from_date')->nullable();
             $table->timestamp('to_date')->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at')->nullable();
         });
     }
 
