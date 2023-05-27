@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('name', 100)->nullable();
             $table->longText("description");
             $table->string('coupon_code', 50)->nullable();
-            $table->string('type_discount', 20)->nullable();
             $table->unsignedBigInteger('id_partner')->nullable();
             $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
+            $table->unsignedBigInteger('type_discount')->nullable();
+            $table->foreign('type_discount')->references('id')->on('tipo_coupon')->onDelete('cascade');
             $table->integer('limit_client');
             $table->integer('limit_usage');
             $table->boolean('status');
@@ -41,6 +42,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('coupon', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_partner');
+            $table->dropConstrainedForeignId('type_discount');
         });
     }
 };
