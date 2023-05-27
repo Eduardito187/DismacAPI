@@ -14,7 +14,7 @@ class Coupon extends Model
 
     protected $table = 'coupon';
 
-    protected $fillable = ['name', 'description', 'coupon_code', 'type_discount', 'id_partner', 'limit_client', 'limit_usage', 'status', 'percent', 'from_date', 'to_date', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'description', 'coupon_code', 'id_partner', 'type_discount', 'limit_client', 'limit_usage', 'status', 'percent', 'from_date', 'to_date', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
