@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('customers_dis', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre')->nullable();
             $table->string('apellido_paterno')->nullable();
@@ -35,7 +35,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers', function (Blueprint $table) {
+        Schema::dropIfExists('customers_dis', function (Blueprint $table) {
             $table->dropConstrainedForeignId('tipo_documento');
         });
     }
