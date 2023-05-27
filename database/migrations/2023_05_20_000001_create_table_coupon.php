@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('coupon', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100)->nullable();
-            $table->longText("description");
+            $table->longText('description');
             $table->string('coupon_code', 50)->nullable();
             $table->unsignedBigInteger('id_partner')->nullable();
             $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
