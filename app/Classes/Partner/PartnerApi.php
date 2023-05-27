@@ -60,7 +60,6 @@ class PartnerApi{
     }
 
     public function verifySHippingAddress($clientAddress){
-
     }
 
     /**
