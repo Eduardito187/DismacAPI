@@ -15,13 +15,11 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->unsignedBigInteger('id_partner')->nullable();
+            $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
             $table->integer('products');
-            $table->unsignedBigInteger('account')->nullable();
-            $table->foreign('account')->references('id')->on('account')->onDelete('cascade');
             $table->unsignedBigInteger('status')->nullable();
             $table->foreign('status')->references('id')->on('status_order')->onDelete('cascade');
-            $table->unsignedBigInteger('shipping_address')->nullable();
-            $table->foreign('shipping_address')->references('id')->on('shipping_address')->onDelete('cascade');
             $table->double('discount', 10, 2)->nullable();
             $table->double('subtotal', 10, 2)->nullable();
             $table->double('total', 10, 2)->nullable();
@@ -42,9 +40,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('sales', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('account');
+            $table->dropConstrainedForeignId('id_partner');
             $table->dropConstrainedForeignId('status');
-            $table->dropConstrainedForeignId('shipping_address');
         });
     }
 };

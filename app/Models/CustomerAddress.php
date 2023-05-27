@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Customer;
 use App\Models\Address;
-use App\Models\Sales;
 
-class ShippingAddress extends Model
+class CustomerAddress extends Model
 {
     use HasFactory;
 
-    protected $table = 'shipping_address';
+    protected $table = 'customer_address';
 
-    protected $fillable = ['customer', 'address',  'sale'];
+    protected $fillable = ['customer', 'address'];
 
     public $incrementing = false;
     public $timestamps = false;
@@ -25,9 +24,5 @@ class ShippingAddress extends Model
     
     public function Address(){
         return $this->hasOne(Address::class, 'id', 'address');
-    }
-    
-    public function Sales(){
-        return $this->hasOne(Sales::class, 'id', 'sale');
     }
 }

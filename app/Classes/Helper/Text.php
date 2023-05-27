@@ -217,9 +217,25 @@ class Text{
     CONST UPDATED_DIF    = "frecuence_updated";
     CONST DESCRIPTION    = "description";
     CONST TIME           = "time";
+    CONST PARTNER_NONE   = "El partner no existe.";
+    CONST TOKEN_NONE     = "El token del partner no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerTokenNone(){
+        return SELF::TOKEN_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerNone(){
+        return SELF::PARTNER_NONE;
     }
 
     /**

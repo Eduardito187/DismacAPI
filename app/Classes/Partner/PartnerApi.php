@@ -51,6 +51,18 @@ class PartnerApi{
         $this->pictureApi = new PictureApi();
     }
 
+    public function createOrder($request){
+        if ($this->existTokenPartner($request["TokenPartner"])) {
+            $Partner = $this->getById($request["IdPartner"]);
+        }else{
+            throw new Exception($this->text->getPartnerTokenNone());
+        }
+    }
+
+    public function verifySHippingAddress($clientAddress){
+
+    }
+
     /**
      * @param array $partner
      * @param int $id_address
@@ -59,6 +71,31 @@ class PartnerApi{
     public function create(array $partner, int $id_address){
         $this->createPartner($partner, $id_address);
         $this->setByDomain($partner[$this->text->getDomain()]);
+    }
+
+    /**
+     * @param string $token
+     * @return bool
+     */
+    public function existTokenPartner(string $token){
+        $partner = Partner::select($this->text->getToken())->where($this->text->getToken(), $token)->get()->toArray();
+        if (count($partner) == 0) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return Partner
+     */
+    public function getById(int $id){
+        $partner = Partner::where($this->text->getId(), $id)->first();
+        if (!$partner) {
+            throw new Exception($this->text->getPartnerNone());
+        }
+        return $partner;
     }
 
     /**

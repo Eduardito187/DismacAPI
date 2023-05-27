@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales_details', function (Blueprint $table) {
+        Schema::create('detail_discount', function (Blueprint $table) {
             $table->unsignedBigInteger('sales')->nullable();
             $table->foreign('sales')->references('id')->on('sales')->onDelete('cascade');
             $table->unsignedBigInteger('product')->nullable();
             $table->foreign('product')->references('id')->on('product')->onDelete('cascade');
-            $table->integer('qty');
-            $table->double('discount', 10, 2)->nullable();
-            $table->double('subtotal', 10, 2)->nullable();
-            $table->double('total', 10, 2)->nullable();
+            $table->unsignedBigInteger('id_coupon')->nullable();
+            $table->foreign('id_coupon')->references('id')->on('coupon')->onDelete('cascade');
+            $table->double('monto', 10, 2)->nullable();
+            $table->double('porcentaje', 10, 2)->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
         });
@@ -34,9 +34,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales_details', function (Blueprint $table) {
+        Schema::dropIfExists('detail_discount', function (Blueprint $table) {
             $table->dropConstrainedForeignId('product');
             $table->dropConstrainedForeignId('sales');
+            $table->dropConstrainedForeignId('coupon');
         });
     }
 };

@@ -33,10 +33,8 @@ class CustomValidateToken
         if ($request->header($this->text->getAuthorization()) != null) {
             $tokenAccess = new TokenAccess($request->header($this->text->getAuthorization()));
             if ($tokenAccess->validateAPI() == $this->status->getEnable()) {
-                Log::debug("Token ON => ".$request->header($this->text->getAuthorization()));
                 return $next($request);
             }else{
-                Log::debug("Rejected => ".$request->header($this->text->getAuthorization()));
                 return abort(402, $this->text->getTokenDecline());
             }
         }else{

@@ -13,7 +13,7 @@ class SalesDetails extends Model
 
     protected $table = 'sales_details';
 
-    protected $fillable = ['sales', 'product', 'qty', 'subtotal', 'total', 'created_at', 'updated_at'];
+    protected $fillable = ['sales', 'product', 'qty', 'discount', 'subtotal', 'total', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 

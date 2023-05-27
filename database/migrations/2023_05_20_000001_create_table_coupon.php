@@ -19,9 +19,12 @@ return new class extends Migration
             $table->longText("description");
             $table->string('coupon_code', 50)->nullable();
             $table->string('type_discount', 20)->nullable();
+            $table->unsignedBigInteger('id_partner')->nullable();
+            $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
             $table->integer('limit_client');
             $table->integer('limit_usage');
             $table->boolean('status');
+            $table->double('percent', 10, 2)->nullable();
             $table->timestamp('from_date');
             $table->timestamp('to_date');
             $table->timestamp('created_at');
@@ -36,6 +39,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupon');
+        Schema::dropIfExists('coupon', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_partner');
+        });
     }
 };

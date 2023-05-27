@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Account;
+use App\Models\Partner;
 use App\Models\StatusOrder;
 use App\Models\ShippingAddress;
 use App\Models\SalesDetails;
@@ -15,7 +15,7 @@ class Sales extends Model
 
     protected $table = 'sales';
 
-    protected $fillable = ['products', 'account', 'status', 'shipping_address', 'discount', 'subtotal', 'total', 'nro_factura', 'nro_proforma', 'nro_control', 'ip_client', 'created_at', 'updated_at'];
+    protected $fillable = ['id_partner', 'products', 'status', 'discount', 'subtotal', 'total', 'nro_factura', 'nro_proforma', 'nro_control', 'ip_client', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -24,8 +24,8 @@ class Sales extends Model
     protected $keyType = 'integer';
     public $timestamps = false;
 
-    public function Account(){
-        return $this->hasOne(Account::class, 'id', 'account');
+    public function Partner(){
+        return $this->hasOne(Partner::class, 'id', 'id_partner');
     }
 
     public function StatusOrder(){
@@ -33,7 +33,7 @@ class Sales extends Model
     }
 
     public function ShippingAddress(){
-        return $this->hasOne(ShippingAddress::class, 'id', 'shipping_address');
+        return $this->hasMany(ShippingAddress::class, 'sale', 'id');
     }
 
     public function SalesDetails(){

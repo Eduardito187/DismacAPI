@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Inventory\Category\AddProducts;
 use App\Http\Controllers\Api\Inventory\Category\RemoveProducts;
 use App\Http\Controllers\Api\Inventory\Products\Product as PRODUCT_CATALOG;
 use App\Http\Controllers\Api\Inventory\Products\Validate as VALIDATE_PRODUCT;
+use App\Http\Controllers\Api\Sales\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /{id} => destroy <= delete
 
 Route::middleware([CustomValidateToken::class])->group(function () {
+    Route::controller(Order::class)->group(function(){
+        Route::get('order', 'index');
+        Route::post('order/register', 'store');
+        Route::get('order/show/{id}', 'show');
+        Route::patch('order/{id}', 'update');
+        Route::delete('order/{id}', 'destroy');
+    });
+
     Route::controller(Partner::class)->group(function(){
         Route::get('partner', 'index');
         Route::post('partner', 'store');
