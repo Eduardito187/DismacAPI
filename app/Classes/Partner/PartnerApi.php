@@ -171,7 +171,7 @@ class PartnerApi{
      * @param array $DetalleOrden
      */
     public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden, array $DetalleCliente){
-        $CiudadId = $this->addressApi->getStoreByName($DetalleCliente[$this->text->getStoreMAgento()])->id;
+        $CiudadId = $this->addressApi->getStoreByName($DetalleCliente[$this->text->getStoreMagento()])->id;
         foreach ($DetalleOrden as $key => $Detalle) {
             $idProduct = $this->createDetailSales($Partner, $Detalle);
             $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
@@ -487,7 +487,7 @@ class PartnerApi{
      * @param Partner $Partner
      */
     public function verifyStockProforma(array $DetailProforma, array $DatosClientes, Partner $Partner){
-        $CiudadId = $this->addressApi->getStoreByName($DatosClientes[$this->text->getStoreMAgento()])->id;
+        $CiudadId = $this->addressApi->getStoreByName($DatosClientes[$this->text->getStoreMagento()])->id;
         foreach ($DetailProforma as $key => $Detail) {
             $idProduct = $this->getProductBySkuPartner($Detail[$this->text->getSkuApi()], $Partner->id)->id;
             $this->validateStock($CiudadId, $idProduct, $Detail[$this->text->getAlmacenApi()], $Detail[$this->text->getQty()]);

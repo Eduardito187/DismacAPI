@@ -102,7 +102,7 @@ class AddressApi{
      * @return Store
      */
     public function getStoreByName(string $name){
-        $Store = Store::where($this->text->getName(), $name)->first();
+        $Store = Store::where($this->text->getId(), $name)->first();
         if (!$Store) {
             throw new Exception($this->text->getStoreNone());
         }

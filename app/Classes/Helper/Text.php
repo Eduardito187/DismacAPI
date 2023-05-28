@@ -298,7 +298,7 @@ class Text{
     /**
      * @return string
      */
-    public function getStoreMAgento(){
+    public function getStoreMagento(){
         return SELF::STORE_MAGENTO;
     }
 
