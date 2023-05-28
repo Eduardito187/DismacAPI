@@ -222,8 +222,8 @@ class Text{
     CONST PARTNER_NONE        = "El partner no existe.";
     CONST TOKEN_NONE          = "El token del partner no existe.";
     CONST COUNTRY_NONE        = "No disponemos de covertura en el país solicitado.";
-    CONST CITY_NONE           = "No disponemos de covertura en el país solicitado.";
-    CONST MUNICIPALITY_NONE   = "No disponemos de covertura en el país solicitado.";
+    CONST CITY_NONE           = "No disponemos de covertura en la ciudad solicitada.";
+    CONST MUNICIPALITY_NONE   = "No disponemos de covertura en el municipio solicitado.";
     CONST COLUMN_CUSTOMER     = "customer";
     CONST PAIS                = "Pais";
     CONST CIUDAD              = "Ciudad";
