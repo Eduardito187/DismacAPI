@@ -275,9 +275,17 @@ class Text{
     CONST COLUMN_NRO_PROFORMA = "nro_proforma";
     CONST COLUMN_NRO_CONTROL  = "nro_control";
     CONST EXIST_SALE          = "Lo sentimos no se pueden registrar ordenes duplicadas.";
+    CONST ORDEN_SUCCESS       = "La orden fue registrada exitosamente.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderSuccess(){
+        return SELF::ORDEN_SUCCESS;
     }
 
     /**
