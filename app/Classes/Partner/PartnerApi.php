@@ -99,6 +99,7 @@ class PartnerApi{
                     $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
                 }
             }
+            return true;
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
         }
