@@ -237,6 +237,9 @@ class PartnerApi{
         if (!$Coupon) {
             throw new Exception($this->text->getCouponNone());
         }
+        if ($Coupon->status == false) {
+            throw new Exception($this->text->getCouponDisable());
+        }
         if ($Coupon->limit_usage >= $this->verifyUsageCoupon($Coupon->id, $customer)){
             throw new Exception($this->text->getColumnLimitCoupon());
         }

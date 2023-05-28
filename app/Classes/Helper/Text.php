@@ -276,9 +276,17 @@ class Text{
     CONST COLUMN_NRO_CONTROL  = "nro_control";
     CONST EXIST_SALE          = "Lo sentimos no se pueden registrar ordenes duplicadas.";
     CONST ORDEN_SUCCESS       = "La orden fue registrada exitosamente.";
+    CONST COUPON_DISABLE      = "El cupon se encuentra desactivado.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouponDisable(){
+        return SELF::COUPON_DISABLE;
     }
 
     /**
