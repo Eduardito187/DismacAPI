@@ -147,7 +147,6 @@ class AddressApi{
         try {
             $addressM = $this->getAddress($address, $id_address_extra, $id_localization);
             if (!$addressM) {
-                Log::debug("###***###");
                 Log::debug("getIdMunicipality => ".$address[$this->text->getIdMunicipality()]);
                 Log::debug("getIdCountry => ".$address[$this->text->getIdCountry()]);
                 Log::debug("getIdCity => ".$address[$this->text->getIdCity()]);
