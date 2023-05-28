@@ -87,24 +87,41 @@ class PartnerApi{
 
     public function createOrder(array $request, string $ip){
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
-            $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
-            if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
-                $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
-                $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
-                $this->validateCoupons($idCustomer);
-                $this->saveCustomerAddress($idCustomer, $idAddress);
-                $this->registerOrder($Partner, $request, $ip);
-                if (!is_null($this->lastIdOrder)) {
-                    $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
-                    $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
+            if (!$this->verifyOrder($request)) {
+                $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
+                if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
+                    $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
+                    $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
+                    $this->validateCoupons($idCustomer);
+                    $this->saveCustomerAddress($idCustomer, $idAddress);
+                    $this->registerOrder($Partner, $request, $ip);
+                    if (!is_null($this->lastIdOrder)) {
+                        $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
+                        $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
+                    }
                 }
+                return true;
+            }else{
+                throw new Exception($this->text->getExistSale());
             }
-            return true;
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
         }
     }
 
+    /**
+     * @param array $request
+     * @return Sales
+     */
+    public function verifyOrder(array $request){
+        return Sales::where($this->text->getColumnNroFactura(), $request[$this->text->getNroFactura()])->
+        where($this->text->getColumnNroProforma(), $request[$this->text->getNroProforma()])->
+        where($this->text->getColumnNroControl(), $request[$this->text->getNroControl()])->first();
+    }
+
+    /**
+     * @param int $customer
+     */
     public function validateCoupons(int $customer){
         foreach ($this->listDiscount as $key => $discount) {
             $Coupon = $this->validateCouponCode($discount, $customer);

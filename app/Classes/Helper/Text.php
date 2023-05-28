@@ -271,9 +271,41 @@ class Text{
     CONST COLUMN_COUPON       = "coupon";
     CONST LIMIT_USAGE_COUPON  = "Se excedio el límite del cupon.";
     CONST CODIGO_DESCUENTO    = "CodigoDescuento";
+    CONST COLUMN_NRO_FACTURA  = "nro_factura";
+    CONST COLUMN_NRO_PROFORMA = "nro_proforma";
+    CONST COLUMN_NRO_CONTROL  = "nro_control";
+    CONST EXIST_SALE          = "Lo sentimos no se pueden registrar ordenes duplicadas.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getExistSale(){
+        return SELF::EXIST_SALE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnNroFactura(){
+        return SELF::COLUMN_NRO_FACTURA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnNroProforma(){
+        return SELF::COLUMN_NRO_PROFORMA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnNroControl(){
+        return SELF::COLUMN_NRO_CONTROL;
     }
 
     /**
