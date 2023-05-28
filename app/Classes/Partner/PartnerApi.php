@@ -194,7 +194,7 @@ class PartnerApi{
             throw new Exception($this->text->getStockNoneProduct());
         }
         ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->update([
-            $this->text->getStock() => $Qty,
+            $this->text->getStock() => $ProductWarehouse->stock - $Qty,
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
