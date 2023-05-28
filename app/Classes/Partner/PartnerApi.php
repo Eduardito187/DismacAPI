@@ -171,7 +171,7 @@ class PartnerApi{
      * @param array $DetalleOrden
      */
     public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden, array $DetalleCliente){
-        $CiudadId = $this->addressApi->getStoreByName($DetalleCliente[$this->text->getCiudad()])->id;
+        $CiudadId = $this->addressApi->getStoreByName($DetalleCliente[$this->text->getStoreMAgento()])->id;
         foreach ($DetalleOrden as $key => $Detalle) {
             $idProduct = $this->createDetailSales($Partner, $Detalle);
             $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
