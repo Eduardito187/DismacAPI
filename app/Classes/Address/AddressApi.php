@@ -156,7 +156,7 @@ class AddressApi{
                 $Address->created_at = $this->date->getFullDate();
                 $Address->updated_at = null;
                 $Address->save();
-                $this->address = $Address;
+                $this->address = $this->getAddress($address, $id_address_extra, $id_localization);
             }else{
                 $this->address = $address;
             }
