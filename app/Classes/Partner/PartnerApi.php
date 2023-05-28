@@ -117,7 +117,9 @@ class PartnerApi{
      * @return int
      */
     public function verifyCustomer(array $clientAddress){
+        Log::debug("###01###");
         $TipoDocumento = $this->getTipoDocumentoId($clientAddress[$this->text->getTipoDocumento()]);
+        Log::debug("###02###");
         $customer = $this->validateCustomer(
             $clientAddress[$this->text->getNombreApi()],
             $clientAddress[$this->text->getApellidoPaternoApi()],
