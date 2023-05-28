@@ -260,7 +260,12 @@ class PartnerApi{
     public function verifySubTotal(array $DetailProforma){
         $SubTotal = 0;
         foreach ($DetailProforma as $key => $Detail) {
-            $SubTotal += $Detail[$this->text->getQty()] * $Detail[$this->text->getPrecioUnitario()];
+            $sub = $Detail[$this->text->getQty()] * $Detail[$this->text->getPrecioUnitario()];
+            if ($Detail[$this->text->getSubTotal()] != $sub){
+                throw new Exception($this->text->getErrorSubTotalProforma());
+            }else{
+                $SubTotal += $Detail[$this->text->getQty()] * $Detail[$this->text->getPrecioUnitario()];
+            }
         }
         return $SubTotal;
     }
