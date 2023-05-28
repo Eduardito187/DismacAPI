@@ -64,9 +64,13 @@ class PartnerApi{
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
             $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
             if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
+                Log::debug("###1###");
                 $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
+                Log::debug("###2###");
                 $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
+                Log::debug("###3###");
                 $this->saveCustomerAddress($idCustomer, $idAddress);
+                Log::debug("###4###");
             }
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
