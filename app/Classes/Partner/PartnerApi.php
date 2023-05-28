@@ -180,9 +180,9 @@ class PartnerApi{
      */
     public function convertAddress($Pais, $Ciudad, $Municipio){
         return [
-            $this->text->getIdCountry() => $this->addressApi->getCountryByName($Pais),
-            $this->text->getIdMunicipality() => $this->addressApi->getCityByName($Ciudad),
-            $this->text->getIdCity() => $this->addressApi->getMunicipalityByName($Municipio)
+            $this->text->getIdCountry() => $this->addressApi->getCountryByName($Pais)->id,
+            $this->text->getIdMunicipality() => $this->addressApi->getCityByName($Ciudad)->id,
+            $this->text->getIdCity() => $this->addressApi->getMunicipalityByName($Municipio)->id
         ];
     }
 
