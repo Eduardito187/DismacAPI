@@ -172,6 +172,7 @@ class AddressApi{
             Log::debug("######");
             return true;
         } catch (Exception $th) {
+            Log::debug("Error -> ".$th->getMessage());
             return false;
         }
     }
