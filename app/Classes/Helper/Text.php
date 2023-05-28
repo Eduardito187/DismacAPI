@@ -152,6 +152,7 @@ class Text{
     CONST STOCK               = "stock";
     CONST BASE                = "base";
     CONST ALMACEN             = "almacen";
+    CONST ALMACEN_API         = "Almacen";
     CONST ID_PRICE            = "id_price";
     CONST ALMACEN_CENTRAL     = "almacenCentral";
     CONST PRICE               = "price";
@@ -277,9 +278,40 @@ class Text{
     CONST EXIST_SALE          = "Lo sentimos no se pueden registrar ordenes duplicadas.";
     CONST ORDEN_SUCCESS       = "La orden fue registrada exitosamente.";
     CONST COUPON_DISABLE      = "El cupon se encuentra desactivado.";
+    CONST WAREHOUSE_NONE      = "El almacen seleccionado no existe.";
+    CONST WAREHOUSE_PRODUCT   = "El producto no existe en el almacen.";
+    CONST STOCK_PRODUCT_NONE  = "El producto cuenta con un stock insuficiente.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getStockNoneProduct(){
+        return SELF::STOCK_PRODUCT_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWarehouseProductNone(){
+        return SELF::WAREHOUSE_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlmacenApi(){
+        return SELF::ALMACEN_API;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getWarehouseNone(){
+        return SELF::WAREHOUSE_NONE;
     }
 
     /**

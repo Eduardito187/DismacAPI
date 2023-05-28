@@ -28,7 +28,9 @@ use App\Models\ShippingAddress;
 use App\Models\StatusOrder;
 use App\Models\TipoDocumento;
 use App\Models\Coupon;
+use App\Models\ProductWarehouse;
 use App\Models\SalesCoupon;
+use App\Models\Warehouse;
 use Exception;
 
 class PartnerApi{
@@ -85,29 +87,19 @@ class PartnerApi{
      * @return bool
      */
     public function createOrder(array $request, string $ip){
-        Log::debug("###00");
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
-            Log::debug("###0");
             if (!$this->verifyOrder($request)) {
-                Log::debug("###1");
                 $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
-                Log::debug("###2");
-                if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
-                    Log::debug("###3");
+                if ($this->validateDetailProforma($request[$this->text->getDatosClientes()], $request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()], $Partner)){
                     $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
                     $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
-                    Log::debug("###4");
                     $this->validateCoupons($idCustomer);
-                    Log::debug("###5");
                     $this->saveCustomerAddress($idCustomer, $idAddress);
-                    Log::debug("###6");
                     $this->registerOrder($Partner, $request, $ip);
-                    Log::debug("###7");
                     if (!is_null($this->lastIdOrder)) {
                         $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
-                        $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
+                        $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()], $request[$this->text->getDatosClientes()]);
                     }
-                    Log::debug("###8");
                 }
                 return true;
             }else{
@@ -156,9 +148,10 @@ class PartnerApi{
      */
     public function createDetailSales(Partner $Partner, array $Detalle){
         try {
+            $idProduct = $this->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
             $SalesDetails = new SalesDetails();
             $SalesDetails->sales = $this->lastIdOrder;
-            $SalesDetails->product = $this->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
+            $SalesDetails->product = $idProduct;
             $SalesDetails->qty = $Detalle[$this->text->getQty()];
             $SalesDetails->discount = $Detalle[$this->text->getTotalDescuento()];
             $SalesDetails->subtotal = $Detalle[$this->text->getSubTotal()];
@@ -166,6 +159,7 @@ class PartnerApi{
             $SalesDetails->created_at = $this->date->getFullDate();
             $SalesDetails->updated_at = null;
             $SalesDetails->save();
+            return $idProduct;
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
@@ -176,11 +170,45 @@ class PartnerApi{
      * @param Partner $Partner
      * @param array $DetalleOrden
      */
-    public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden){
+    public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden, array $DetalleCliente){
+        $CiudadId = $this->addressApi->getCityByName($DetalleCliente[$this->text->getCiudad()])->id;
         foreach ($DetalleOrden as $key => $Detalle) {
-            $this->createDetailSales($Partner, $Detalle);
+            $idProduct = $this->createDetailSales($Partner, $Detalle);
             $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
+            $this->validateStockSku($CiudadId, $idProduct, $Detalle[$this->text->getAlmacenApi()], $Detalle[$this->text->getQty()]);
         }
+    }
+
+    /**
+     * @param int $idCity
+     * @param int $id_product
+     * @param string $almacen
+     */
+    public function validateStockSku(int $idCity, int $id_product, string $almacen, int $Qty) {
+        $idAlmacen = $this->getWarehouseByAlmacen($almacen)->id;
+        $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->first();
+        if (!$ProductWarehouse) {
+            throw new Exception($this->text->getWarehouseProductNone());
+        }
+        if ($ProductWarehouse->stock < $Qty) {
+            throw new Exception($this->text->getStockNoneProduct());
+        }
+        ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->update([
+            $this->text->getStock() => $Qty,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $almacen
+     * @return Warehouse
+     */
+    public function getWarehouseByAlmacen(string $almacen){
+        $Warehouse = Warehouse::where($this->text->getAlmacen(), $almacen)->first();
+        if (!$Warehouse){
+            throw new Exception($this->text->getWarehouseNone());
+        }
+        return $Warehouse;
     }
 
     /**
@@ -427,6 +455,7 @@ class PartnerApi{
     }
     
     /**
+     * @param array $DatosClientes
      * @param float $Total
      * @param float $SubTotal
      * @param float $TotalDescuento
@@ -434,7 +463,7 @@ class PartnerApi{
      * @param array $DetailProforma
      * @return bool
      */
-    public function validateDetailProforma(float $Total, float $SubTotal, float $TotalDescuento, int $CantidadProductos, array $DetailProforma){
+    public function validateDetailProforma(array $DatosClientes, float $Total, float $SubTotal, float $TotalDescuento, int $CantidadProductos, array $DetailProforma, Partner $Partner){
         if ($CantidadProductos != $this->verifyQtyDetailProforma($DetailProforma)) {
             throw new Exception($this->text->getErrorQtyProforma());
         }
@@ -447,7 +476,37 @@ class PartnerApi{
         if ($TotalDescuento != $this->verifyDiscountProforma($DetailProforma)) {
             throw new Exception($this->text->getErrorTotalProforma());
         }
+        $this->verifyStockProforma($DetailProforma, $DatosClientes, $Partner);
         return true;
+    }
+
+    /**
+     * @param array $DetailProforma
+     * @param array $DatosClientes
+     * @param Partner $Partner
+     */
+    public function verifyStockProforma(array $DetailProforma, array $DatosClientes, Partner $Partner){
+        $CiudadId = $this->addressApi->getCityByName($DatosClientes[$this->text->getCiudad()])->id;
+        foreach ($DetailProforma as $key => $Detail) {
+            $idProduct = $this->getProductBySkuPartner($Detail[$this->text->getSkuApi()], $Partner->id)->id;
+            $this->validateStock($CiudadId, $idProduct, $Detail[$this->text->getAlmacenApi()], $Detail[$this->text->getQty()]);
+        }
+    }
+    
+    /**
+     * @param int $idCity
+     * @param int $id_product
+     * @param string $almacen
+     */
+    public function validateStock(int $idCity, int $id_product, string $almacen, int $Qty) {
+        $idAlmacen = $this->getWarehouseByAlmacen($almacen)->id;
+        $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->first();
+        if (!$ProductWarehouse) {
+            throw new Exception($this->text->getWarehouseProductNone());
+        }
+        if ($ProductWarehouse->stock < $Qty) {
+            throw new Exception($this->text->getStockNoneProduct());
+        }
     }
 
     /**
