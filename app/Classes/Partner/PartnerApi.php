@@ -461,6 +461,7 @@ class PartnerApi{
      * @param float $TotalDescuento
      * @param int $CantidadProductos
      * @param array $DetailProforma
+     * @param Partner $Partner
      * @return bool
      */
     public function validateDetailProforma(array $DatosClientes, float $Total, float $SubTotal, float $TotalDescuento, int $CantidadProductos, array $DetailProforma, Partner $Partner){
@@ -497,9 +498,13 @@ class PartnerApi{
      * @param int $idCity
      * @param int $id_product
      * @param string $almacen
+     * @param int $Qty
      */
     public function validateStock(int $idCity, int $id_product, string $almacen, int $Qty) {
         $idAlmacen = $this->getWarehouseByAlmacen($almacen)->id;
+        Log::debug("id_product => ".$id_product);
+        Log::debug("idAlmacen => ".$idAlmacen);
+        Log::debug("idCity => ".$idCity);
         $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->first();
         if (!$ProductWarehouse) {
             throw new Exception($this->text->getWarehouseProductNone());
