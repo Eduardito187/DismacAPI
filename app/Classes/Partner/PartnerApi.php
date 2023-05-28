@@ -22,11 +22,19 @@ use App\Models\Store;
 use App\Classes\Address\AddressApi;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
+use App\Models\Sales;
+use App\Models\SalesDetails;
+use App\Models\ShippingAddress;
+use App\Models\StatusOrder;
 use App\Models\TipoDocumento;
+use App\Classes\Product\ProductApi;
+use App\Models\Coupon;
+use App\Models\SalesCoupon;
 use Exception;
 
 class PartnerApi{
     CONST HISTOY_LAST = 8;
+    CONST PENDIENTE = "PENDIENTE";
     /**
      * @var Partner
      */
@@ -51,6 +59,22 @@ class PartnerApi{
      * @var AddressApi
      */
     protected $addressApi;
+    /**
+     * @var int
+     */
+    protected $lastIdOrder = null;
+    /**
+     * @var ProductApi
+     */
+    protected $productApi;
+    /**
+     * @var array
+     */
+    protected $listDiscount = [];
+    /**
+     * @var array
+     */
+    protected $validCoupons = [];
 
     public function __construct() {
         $this->date       = new Date();
@@ -58,22 +82,176 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
+        $this->productApi = new ProductApi();
     }
 
-    public function createOrder($request){
+    public function createOrder(array $request, string $ip){
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
             $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
             if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
-                Log::debug("###1###");
                 $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
-                Log::debug("###2###");
                 $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
-                Log::debug("###3###");
+                $this->validateCoupons($idCustomer);
                 $this->saveCustomerAddress($idCustomer, $idAddress);
-                Log::debug("###4###");
+                $this->registerOrder($Partner, $request, $ip);
+                if (!is_null($this->lastIdOrder)) {
+                    $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
+                    $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
+                }
             }
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
+        }
+    }
+
+    public function validateCoupons(int $customer){
+        foreach ($this->listDiscount as $key => $discount) {
+            $Coupon = $this->validateCouponCode($discount, $customer);
+            $this->validCoupons[$Coupon->id] = $discount;
+        }
+    }
+
+    /**
+     * @param array $Detalle
+     */
+    public function createDetailSales(Partner $Partner, array $Detalle){
+        try {
+            $SalesDetails = new SalesDetails();
+            $SalesDetails->sales = $this->lastIdOrder;
+            $SalesDetails->product = $this->productApi->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
+            $SalesDetails->qty = $Detalle[$this->text->getQty()];
+            $SalesDetails->discount = $Detalle[$this->text->getTotalDescuento()];
+            $SalesDetails->subtotal = $Detalle[$this->text->getSubTotal()];
+            $SalesDetails->total = $Detalle[$this->text->getTotal()];
+            $SalesDetails->created_at = $this->date->getFullDate();
+            $SalesDetails->updated_at = null;
+            $SalesDetails->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $idCustomer
+     * @param Partner $Partner
+     * @param array $DetalleOrden
+     */
+    public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden){
+        foreach ($DetalleOrden as $key => $Detalle) {
+            $this->createDetailSales($Partner, $Detalle);
+            $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
+        }
+    }
+
+    /**
+     * @param int $idCustomer
+     * @param int $idPartner
+     * @param array $Descuentos
+     */
+    public function registerDiscountSale(int $idCustomer, int $idPartner, array $Descuentos){
+        foreach ($Descuentos as $key => $Descuento) {
+            $this->createSalesCoupon($idCustomer, $Descuento);
+        }
+    }
+
+    /**
+     * @param int $idCustomer
+     * @param array $Descuento
+     */
+    public function createSalesCoupon(int $idCustomer, array $Descuento){
+        try {
+            $SalesCoupon = new SalesCoupon();
+            $SalesCoupon->sales = $this->lastIdOrder;
+            $SalesCoupon->coupon = $this->getCouponDetail($Descuento[$this->text->getCodigoDescuento()]);
+            $SalesCoupon->customer = $idCustomer;
+            $SalesCoupon->monto = $Descuento[$this->text->getMontoApi()];
+            $SalesCoupon->percent = $Descuento[$this->text->getPorcentajeApi()];
+            $SalesCoupon->created_at = $this->date->getFullDate();
+            $SalesCoupon->updated_at = null;
+            $SalesCoupon->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param string $cupon
+     * @return int|null
+     */
+    public function getCouponDetail(string $cupon){
+        foreach ($this->validCoupons as $key => $Coupon) {
+            if ($cupon == $Coupon) {
+                return $key;
+            }
+        }
+        throw new Exception($this->text->getCouponNone());
+        return null;
+    }
+
+    /**
+     * @param string $Codigo
+     * @param int $customer
+     */
+    public function validateCouponCode(string $Codigo, int $customer){
+        $Coupon = Coupon::where($this->text->getCouponCode(), $Codigo)->first();
+        if (!$Coupon) {
+            throw new Exception($this->text->getCouponNone());
+        }
+        if ($Coupon->limit_usage >= $this->verifyUsageCoupon($Coupon->id, $customer)){
+            throw new Exception($this->text->getColumnLimitCoupon());
+        }
+        return $Coupon;
+    }
+
+    /**
+     * @param int $customer
+     * @param int $coupon
+     */
+    public function verifyUsageCoupon(int $coupon, int $customer){
+        return intval(SalesCoupon::where($this->text->getCustomer(), $customer)->where($this->text->getColumnCoupon(), $coupon)->sum($this->text->getCustomer()));
+    }
+
+    /**
+     * @param Partner $Partner
+     * @param array $request
+     * @param string $ip
+     */
+    public function registerOrder(Partner $Partner, array $request, string $ip){
+        try {
+            $Sales = new Sales();
+            $Sales->id_partner = $Partner->id;
+            $Sales->products = $request[$this->text->getCantidadProductos()];
+            $Sales->status = $this->getStatusOrderId(self::PENDIENTE);
+            $Sales->discount = $request[$this->text->getTotalDescuento()];
+            $Sales->subtotal = $request[$this->text->getSubTotal()];
+            $Sales->total = $request[$this->text->getTotal()];
+            $Sales->nro_factura = $request[$this->text->getNroFactura()];
+            $Sales->nro_proforma = $request[$this->text->getNroProforma()];
+            $Sales->nro_control = $request[$this->text->getNroControl()];
+            $Sales->ip_client = $ip;
+            $Sales->created_at = $this->date->getFullDate();
+            $Sales->updated_at = null;
+            $Sales->save();
+            $this->lastIdOrder = $Sales->id;
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $customer
+     * @param int $address
+     * @param int $sale
+     */
+    public function createShippingAddress(int $customer, int $address, int $sale){
+        try {
+            $ShippingAddress = new ShippingAddress();
+            $ShippingAddress->customer = $customer;
+            $ShippingAddress->address = $address;
+            $ShippingAddress->sale = $sale;
+            $ShippingAddress->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
         }
     }
 
@@ -109,7 +287,6 @@ class PartnerApi{
         $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
         $GEO = $this->addressApi->getLocalization($clientAddress[$this->text->getLocalizacion()]);
         $this->addressApi->createAddress($this->convertAddress($clientAddress[$this->text->getPais()], $clientAddress[$this->text->getCiudad()], $clientAddress[$this->text->getMunicipio()]), $ExtraAddress, $GEO);
-        Log::debug("###FIN###");
         return $this->addressApi->getAddressId();
     }
 
@@ -118,9 +295,7 @@ class PartnerApi{
      * @return int
      */
     public function verifyCustomer(array $clientAddress){
-        Log::debug("###01###");
         $TipoDocumento = $this->getTipoDocumentoId($clientAddress[$this->text->getTipoDocumento()]);
-        Log::debug("###02###");
         $customer = $this->validateCustomer(
             $clientAddress[$this->text->getNombreApi()],
             $clientAddress[$this->text->getApellidoPaternoApi()],
@@ -142,10 +317,8 @@ class PartnerApi{
             $Customer->created_at = $this->date->getFullDate();
             $Customer->updated_at = null;
             $Customer->save();
-            Log::debug("###11###");
             return $Customer->id;
         }else{
-            Log::debug("###12###");
             return $customer->id;
         }
     }
@@ -170,6 +343,18 @@ class PartnerApi{
             throw new Exception($this->text->getErrorTipoDocumento());
         }
         return $TipoDoc->id;
+    }
+
+    /**
+     * @param string $status
+     * @return StatusOrder
+     */
+    public function getStatusOrderId(string $status){
+        $StatusOrder = StatusOrder::where($this->text->getStatus(), $status)->first();
+        if (!$StatusOrder) {
+            throw new Exception($this->text->getStatusSaleNone());
+        }
+        return $StatusOrder->id;
     }
 
     /**
@@ -234,8 +419,20 @@ class PartnerApi{
             }else{
                 $TotalDescuento += $Detail[$this->text->getTotalDescuento()];
             }
+            $this->preSaveDiscount($Detail[$this->text->getDescuentos()]);
         }
         return $TotalDescuento;
+    }
+
+    /**
+     * @param array $Descuentos
+     */
+    public function preSaveDiscount(array $Descuentos){
+        foreach ($Descuentos as $key => $Descuento) {
+            if (!in_array($Descuento[$this->text->getCodigoDescuento()], $this->listDiscount)) {
+                $this->listDiscount[] = $Descuento[$this->text->getCodigoDescuento()];
+            }
+        }
     }
 
     /**

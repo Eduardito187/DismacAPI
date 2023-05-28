@@ -40,7 +40,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $order = $this->partnerApi->createOrder($request->all());
+            $order = $this->partnerApi->createOrder($request->all(), $request()->ip());
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getAddSuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());

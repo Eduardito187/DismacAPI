@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sales;
 use App\Models\Coupon;
+use App\Models\Customer;
 
 class SalesCoupon extends Model
 {
@@ -13,7 +14,7 @@ class SalesCoupon extends Model
 
     protected $table = 'sales_coupon';
 
-    protected $fillable = ['sales', 'coupon', 'monto', 'percent', 'created_at', 'updated_at'];
+    protected $fillable = ['sales', 'coupon', 'customer', 'monto', 'percent', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -26,5 +27,9 @@ class SalesCoupon extends Model
 
     public function Coupon(){
         return $this->hasOne(Coupon::class, 'id', 'coupon');
+    }
+
+    public function Customer(){
+        return $this->hasOne(Customer::class, 'id', 'customer');
     }
 }

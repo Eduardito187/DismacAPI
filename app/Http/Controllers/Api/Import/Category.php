@@ -49,13 +49,12 @@ class Category extends Controller
             $ApiBlend = $request->all();
             if ($ApiBlend[$this->text->getCode()] == 200) {
                 if (is_array($ApiBlend[$this->text->getObject()])) {
-                    Log::debug("ENTRO");
                     $this->productApi->applyRequestAPI($ApiBlend[$this->text->getObject()], $request);
                 }else{
-                    Log::debug("ERROR 2");
+                    //
                 }
             }else{
-                Log::debug("ERROR 1");
+                //
             }
             $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getImportSuccess());
         } catch (Exception $th) {

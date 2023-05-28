@@ -336,7 +336,7 @@ class ProductApi{
                     $this->text->getStock() => $this->getStockWareHosue($product->id)
                 );
             } catch (\Throwable $th) {
-                Log::debug("Sku no existe => ".$sku);
+                //
             }
         }
         if (count($products) == 0) {
@@ -371,9 +371,7 @@ class ProductApi{
     public function applyRequestAPI(array $response, Request $request){
         $id_Account = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
         $allStore = $this->getAllStoreID();
-        Log::debug("all store => ".json_encode($allStore));
         foreach ($response as $res) {
-            Log::debug("sku => ".$res[$this->text->getCodigo()]);
             $id_product = $this->getCatalogStore($res[$this->text->getCodigo()]);
             $id_brand = null;
             $id_type = null;
@@ -448,7 +446,6 @@ class ProductApi{
                 $this->updateProducStock($id_product, $this->setDisponibility($res[$this->text->getDisponibilidadPos()], $id_product));
             }
         }
-        Log::debug("FIN => IMPORT");
     }
 
     /**

@@ -97,6 +97,7 @@ class Text{
     CONST ID_CLACOM           = "id_clacom";
     CONST ID_TYPE             = "id_type";
     CONST SKU                 = "sku";
+    CONST SKU_API             = "Sku";
     CONST QUERY               = "query";
     CONST LIKE                = "like";
     CONST CATEGORIAS          = "categorias";
@@ -249,6 +250,7 @@ class Text{
     CONST TOTAL_DESCUENTO     = "TotalDescuento";
     CONST DESCUENTOS          = "Descuentos";
     CONST MONTO_API           = "Monto";
+    CONST PORCENTAJE_API      = "Porcentaje";
     CONST ERROR_PROFORMA_QTY  = "La cantidad de los productos no coincide con el detalle de la proforma.";
     CONST ERROR_PROFORMA_SUBT = "El subtotal de los productos no coincide con el detalle de la proforma.";
     CONST ERROR_PROFORMA_MONTO= "El monto total de los productos no coincide con el detalle de la proforma.";
@@ -259,9 +261,96 @@ class Text{
     CONST SUB_TOTAL           = "SubTotal";
     CONST CANTIDAD_PRODUCTOS  = "CantidadProductos";
     CONST DETALLE_ORDEN       = "DetalleOrden";
+    CONST STATUS_SALES_NONE   = "El estado de la orden no existe.";
+    CONST NRO_FACTURA         = "NroFactura";
+    CONST NRO_PROFORMA        = "NroProforma";
+    CONST NRO_CONTROL         = "NroControl";
+    CONST COUPON_CODE         = "coupon_code";
+    CONST COUPON_NONE         = "El cupon no se encuentra registrado.";
+    CONST COLUMN_SALES        = "sales";
+    CONST COLUMN_COUPON       = "coupon";
+    CONST LIMIT_USAGE_COUPON  = "Se excedio el límite del cupon.";
+    CONST CODIGO_DESCUENTO    = "CodigoDescuento";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPorcentajeApi(){
+        return SELF::PORCENTAJE_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodigoDescuento(){
+        return SELF::CODIGO_DESCUENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnLimitCoupon(){
+        return SELF::LIMIT_USAGE_COUPON;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumSale(){
+        return SELF::COLUMN_SALES;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnCoupon(){
+        return SELF::COLUMN_COUPON;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouponNone(){
+        return SELF::COUPON_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouponCode(){
+        return SELF::COUPON_CODE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNroControl(){
+        return SELF::NRO_CONTROL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNroFactura(){
+        return SELF::NRO_FACTURA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNroProforma(){
+        return SELF::NRO_PROFORMA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusSaleNone(){
+        return SELF::STATUS_SALES_NONE;
     }
 
     /**
@@ -1482,6 +1571,13 @@ class Text{
      */
     public function getSku(){
         return SELF::SKU;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSkuApi(){
+        return SELF::SKU_API;
     }
 
     /**

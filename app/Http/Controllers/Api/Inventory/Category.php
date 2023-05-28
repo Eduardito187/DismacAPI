@@ -48,7 +48,6 @@ class Category extends Controller
         $response = array();
         try {
             if (!is_null($request->all()[$this->text->getIdCatalog()]) && !is_null($request->all()[$this->text->getName()])) {
-                Log::debug(json_encode($request->all()));
                 $this->catalogApi->newCategory(
                     $request->all()[$this->text->getIdCatalog()],
                     $request->all()[$this->text->getName()],
@@ -116,7 +115,6 @@ class Category extends Controller
         $response = array();
         try {
             if (!is_null($request->all()[$this->text->getIdCatalog()]) && !is_null($request->all()[$this->text->getName()])) {
-                Log::debug("Edit ".json_encode($request->all()));
                 $this->catalogApi->updateCategory(
                     $id,
                     $request->all()[$this->text->getIdCatalog()],

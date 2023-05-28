@@ -312,7 +312,7 @@ class Catalog{
                 $id = $Metadata->id;
             }
         } catch (Exception $th) {
-            Log::debug($th->getMessage());
+            //
         }
         return $id;
     }
@@ -342,7 +342,7 @@ class Catalog{
             $CategoryInfo->save();
             $id = $CategoryInfo->id;
         } catch (Exception $th) {
-            Log::debug($th->getMessage());
+            //
         }
         return $id;
     }
@@ -365,7 +365,7 @@ class Catalog{
                 $id = $Content->id;
             }
         } catch (Exception $th) {
-            Log::debug($th->getMessage());
+            //
         }
         return $id;
     }
@@ -513,7 +513,6 @@ class Catalog{
                 $this->productApi->changePriceApi($allStore, $product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {
-                Log::debug($th->getMessage());
                 $status = $this->status->getDisable();
             }
             $this->listResponse[] = array(
@@ -543,7 +542,6 @@ class Catalog{
                 $this->productApi->asignarCategory($id_catalog, $id_category, $allStore, $product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {
-                Log::debug($th->getMessage());
                 $status = $this->status->getDisable();
             }
             $this->listResponse[] = array(
@@ -569,7 +567,6 @@ class Catalog{
                 $this->productApi->desasignarCategory($id_catalog, $id_category, $allStore, $product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {
-                Log::debug($th->getMessage());
                 $status = $this->status->getDisable();
             }
             $this->listResponse[] = array(

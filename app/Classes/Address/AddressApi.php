@@ -149,30 +149,19 @@ class AddressApi{
             if (!$addressM) {
                 $Address = new Address();
                 $Address->id_municipality = $address[$this->text->getIdMunicipality()];
-                Log::debug("@1");
                 $Address->id_country = $address[$this->text->getIdCountry()];
-                Log::debug("@2");
                 $Address->id_city = $address[$this->text->getIdCity()];
-                Log::debug("@3");
                 $Address->id_address_extra = $id_address_extra;
-                Log::debug("@4");
                 $Address->id_localization = $id_localization;
-                Log::debug("@5");
                 $Address->created_at = $this->date->getFullDate();
-                Log::debug("@6"); 
                 $Address->updated_at = null;
-                Log::debug("@7");
                 $Address->save();
-                Log::debug("@8");
                 $this->address = $Address;
             }else{
-                Log::debug("###---###");
                 $this->address = $addressM;
             }
-            Log::debug("######");
             return true;
         } catch (Exception $th) {
-            Log::debug("Error -> ".$th->getMessage());
             return false;
         }
     }

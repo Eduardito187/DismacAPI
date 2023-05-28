@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreign('sales')->references('id')->on('sales')->onDelete('cascade');
             $table->unsignedBigInteger('coupon')->nullable();
             $table->foreign('coupon')->references('id')->on('coupon')->onDelete('cascade');
+            $table->unsignedBigInteger('customer')->nullable();
+            $table->foreign('customer')->references('id')->on('customers_dis')->onDelete('cascade');
             $table->double('monto', 10, 2)->nullable();
             $table->double('percent', 10, 2)->nullable();
             $table->timestamp('created_at');
@@ -35,6 +37,7 @@ return new class extends Migration
         Schema::dropIfExists('sales_coupon', function (Blueprint $table) {
             $table->dropConstrainedForeignId('coupon');
             $table->dropConstrainedForeignId('sales');
+            $table->dropConstrainedForeignId('customer');
         });
     }
 };
