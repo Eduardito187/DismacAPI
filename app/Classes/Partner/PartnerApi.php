@@ -91,6 +91,7 @@ class PartnerApi{
      */
     public function createOrder(array $request, string $ip){
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
+            Log::debug("###0");
             if (!$this->verifyOrder($request)) {
                 Log::debug("###1");
                 $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
