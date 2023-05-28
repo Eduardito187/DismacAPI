@@ -12,6 +12,7 @@ use App\Classes\Helper\Text;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Municipality;
+use App\Models\Store;
 use Exception;
 
 class AddressApi{
@@ -94,6 +95,18 @@ class AddressApi{
             throw new Exception($this->text->getCityNone());
         }
         return $City;
+    }
+
+    /**
+     * @param string $name
+     * @return Store
+     */
+    public function getStoreByName(string $name){
+        $Store = Store::where($this->text->getName(), $name)->first();
+        if (!$Store) {
+            throw new Exception($this->text->getCityNone());
+        }
+        return $Store;
     }
 
     /**
