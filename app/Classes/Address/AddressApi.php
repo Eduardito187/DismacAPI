@@ -147,6 +147,7 @@ class AddressApi{
         try {
             $addressM = $this->getAddress($address, $id_address_extra, $id_localization);
             if (!$addressM) {
+                Log::debug("###***###");
                 $Address = new Address();
                 $Address->id_municipality = $address[$this->text->getIdMunicipality()];
                 $Address->id_country = $address[$this->text->getIdCountry()];
@@ -158,6 +159,7 @@ class AddressApi{
                 $Address->save();
                 $this->address = $Address;
             }else{
+                Log::debug("###---###");
                 $this->address = $addressM;
             }
             Log::debug("######");
