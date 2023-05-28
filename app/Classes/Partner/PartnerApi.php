@@ -88,6 +88,7 @@ class PartnerApi{
     /**
      * @param array $request
      * @param string $ip
+     * @return bool
      */
     public function createOrder(array $request, string $ip){
         Log::debug("###00");
