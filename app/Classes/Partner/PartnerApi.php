@@ -85,6 +85,10 @@ class PartnerApi{
         $this->productApi = new ProductApi();
     }
 
+    /**
+     * @param array $request
+     * @param string $ip
+     */
     public function createOrder(array $request, string $ip){
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
             if (!$this->verifyOrder($request)) {
