@@ -93,31 +93,27 @@ class PartnerApi{
         Log::debug("###00");
         if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
             Log::debug("###0");
-            if (!$this->verifyOrder($request)) {
-                Log::debug("###1");
-                $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
-                Log::debug("###2");
-                if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
-                    Log::debug("###3");
-                    $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
-                    $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
-                    Log::debug("###4");
-                    $this->validateCoupons($idCustomer);
-                    Log::debug("###5");
-                    $this->saveCustomerAddress($idCustomer, $idAddress);
-                    Log::debug("###6");
-                    $this->registerOrder($Partner, $request, $ip);
-                    Log::debug("###7");
-                    if (!is_null($this->lastIdOrder)) {
-                        $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
-                        $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
-                    }
-                    Log::debug("###8");
+            Log::debug("###1");
+            $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
+            Log::debug("###2");
+            if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
+                Log::debug("###3");
+                $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
+                $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
+                Log::debug("###4");
+                $this->validateCoupons($idCustomer);
+                Log::debug("###5");
+                $this->saveCustomerAddress($idCustomer, $idAddress);
+                Log::debug("###6");
+                $this->registerOrder($Partner, $request, $ip);
+                Log::debug("###7");
+                if (!is_null($this->lastIdOrder)) {
+                    $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
+                    $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()]);
                 }
-                return true;
-            }else{
-                throw new Exception($this->text->getExistSale());
+                Log::debug("###8");
             }
+            return true;
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
         }
