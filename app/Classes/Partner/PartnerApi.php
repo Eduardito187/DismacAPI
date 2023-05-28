@@ -54,12 +54,107 @@ class PartnerApi{
     public function createOrder($request){
         if ($this->existTokenPartner($request["TokenPartner"])) {
             $Partner = $this->getById($request["IdPartner"]);
+            $this->validateDetailProforma(
+                $request["Total"],
+                $request["SubTotal"],
+                $request["TotalDescuento"],
+                $request["CantidadProductos"],
+                $request["DetalleOrden"]
+            );
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
         }
     }
 
     public function verifySHippingAddress($clientAddress){
+    }
+    
+    /**
+     * @param float $Total
+     * @param float $SubTotal
+     * @param float $TotalDescuento
+     * @param int $CantidadProductos
+     * @param array $DetailProforma
+     * @return bool
+     */
+    public function validateDetailProforma(float $Total, float $SubTotal, float $TotalDescuento, int $CantidadProductos, array $DetailProforma){
+        if ($CantidadProductos != $this->verifyQtyDetailProforma($DetailProforma)) {
+            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+        }
+        if ($SubTotal != $this->verifySubTotal($DetailProforma)) {
+            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+        }
+        if ($Total != $this->verifyTotal($DetailProforma)) {
+            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+        }
+        if ($TotalDescuento != $this->verifyDiscountProforma($DetailProforma)) {
+            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+        }
+        return true;
+    }
+
+    /**
+     * @param array $DetailProforma
+     * @return float
+     */
+    public function verifyDiscountProforma(array $DetailProforma){
+        $TotalDescuento = 0;
+        foreach ($DetailProforma as $key => $Detail) {
+            if ($Detail["TotalDescuento"] != $this->detailInfoProforma($Detail["Descuentos"])){
+                throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            }else{
+                $TotalDescuento += $Detail["TotalDescuento"];
+            }
+        }
+        return $TotalDescuento;
+    }
+
+    /**
+     * @param array $DetailDiscount
+     * @return float
+     */
+    public function detailInfoProforma(array $DetailDiscount){
+        $Monto = 0;
+        foreach ($DetailDiscount as $key => $Detail) {
+            $Monto += $Detail["Monto"];
+        }
+        return $Monto;
+    }
+
+    /**
+     * @param array $DetailProforma
+     * @return float
+     */
+    public function verifyQtyDetailProforma(array $DetailProforma){
+        $qty = 0;
+        foreach ($DetailProforma as $key => $Detail) {
+            $qty += $Detail["Qty"];
+        }
+        return $qty;
+    }
+
+    /**
+     * @param array $DetailProforma
+     * @return float
+     */
+    public function verifySubTotal(array $DetailProforma){
+        $SubTotal = 0;
+        foreach ($DetailProforma as $key => $Detail) {
+            $SubTotal += $Detail["Qty"] * $Detail["PrecioUnitario"];
+        }
+        return $SubTotal;
+    }
+
+    /**
+     * @param array $DetailProforma
+     * @return float
+     */
+    public function verifyTotal(array $DetailProforma){
+        $Total = 0;
+        foreach ($DetailProforma as $key => $Detail) {
+            $Total += $Detail["Total"];
+        }
+        return $Total;
     }
 
     /**
