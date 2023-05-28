@@ -145,8 +145,8 @@ class AddressApi{
      */
     public function createAddress(array $address, int $id_address_extra, int $id_localization){
         try {
-            $address = $this->getAddress($address, $id_address_extra, $id_localization);
-            if (!$address) {
+            $addressM = $this->getAddress($address, $id_address_extra, $id_localization);
+            if (!$addressM) {
                 $Address = new Address();
                 $Address->id_municipality = $address[$this->text->getIdMunicipality()];
                 $Address->id_country = $address[$this->text->getIdCountry()];
@@ -158,7 +158,7 @@ class AddressApi{
                 $Address->save();
                 $this->address = $Address;
             }else{
-                $this->address = $address;
+                $this->address = $addressM;
             }
             return true;
         } catch (Exception $th) {
