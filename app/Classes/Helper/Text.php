@@ -4,65 +4,65 @@ namespace App\Classes\Helper;
 
 class Text{
 
-    CONST ADD_SUCCESS    = "Registro exitoso.";
-    CONST COLUMN_ADDRESS = "address";
-    CONST COLUMN_EXTRA   = "extra";
-    CONST COLUMN_PARTNER = "partner";
-    CONST MED_COMERCIAL  = "medidas_comerciales";
-    CONST INICIAL        = "cuota_inicial";
-    CONST COLUMN_ACCOUNT = "account";
-    CONST RESPONSE       = "response";
-    CONST RESPONSE_TEXT  = "responseText";
-    CONST MAIL_FROM      = "From => ";
-    CONST MAIL_REPLY     = "Reply-To => ";
-    CONST MAIL_HEADERS   = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n";
-    CONST LINE_LINE      = "\r\n";
-    CONST MAIL_CC        = "Cc:";
-    CONST DISPLAY_ERROR  = "display_errors";
-    CONST AUTHORIZATION  = "Authorization";
-    CONST TOKEN_DECLINE  = "TOKEN decline.";
-    CONST ACCESS_DECLINE = "Access decline.";
-    CONST COLUMN_ID      = "id";
-    CONST COLUMN_NAME    = "name";
-    CONST COLUMN_ID_CITY = "id_city";
-    CONST COLUMN_TOKEN   = "token";
-    CONST COLUMN_DOMAIN  = "domain";
-    CONST COLUMN_CREATED = "created_at";
-    CONST COLUMN_UPDATED = "updated_at";
-    CONST LONGITUD       = "longitud";
-    CONST LONGITUDE      = "longitude";
-    CONST LATITUD        = "latitud";
-    CONST LATITUDE       = "latitude";
-    CONST ADDRESS_EXTRA  = "address_extra";
-    CONST ID_MUNICIPALITY= "id_municipality";
-    CONST ID_COUNTRY     = "id_country";
-    CONST IDADDRESS_EXTRA= "id_address_extra";
-    CONST ID_LOCALIZATION= "id_localization";
-    CONST LOCALHOST      = "127.0.0.1";
-    CONST IP_HOST        = "http://ipinfo.io/";
-    CONST BARRA_JSON     = "/json";
-    CONST CERO           = 0;
-    CONST COMA           = ",";
-    CONST ROUNDS         = "rounds";
-    CONST PARTNER_ALREADY= "Partner already registered.";
-    CONST NIT            = "nit";
-    CONST EMAIL          = "email";
-    CONST RAZON_SOCIAL   = "razon_social";
-    CONST L_REPRESENTA   = "legal_representative";
-    CONST USERNAME       = "username";
-    CONST PASSWORD       = "password";
-    CONST EMAIL_ALREADY  = "Email already registered.";
-    CONST CITY           = "city";
-    CONST COUNTRY        = "country";
-    CONST MUNICIPALITY   = "municipality";
-    CONST INTEGRATION    = "integrations_api";
-    CONST CODE           = "code";
-    CONST ID_ROL         = "id_rol";
-    CONST ROL            = "rol";
-    CONST ID_PERMISSIONS = "id_permissions";
-    CONST ARROBA         = "@";
-    CONST SPACE          = " ";
-    CONST MESSAGES_LOGN  = [
+    CONST ADD_SUCCESS         = "Registro exitoso.";
+    CONST COLUMN_ADDRESS      = "address";
+    CONST COLUMN_EXTRA        = "extra";
+    CONST COLUMN_PARTNER      = "partner";
+    CONST MED_COMERCIAL       = "medidas_comerciales";
+    CONST INICIAL             = "cuota_inicial";
+    CONST COLUMN_ACCOUNT      = "account";
+    CONST RESPONSE            = "response";
+    CONST RESPONSE_TEXT       = "responseText";
+    CONST MAIL_FROM           = "From => ";
+    CONST MAIL_REPLY          = "Reply-To => ";
+    CONST MAIL_HEADERS        = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n";
+    CONST LINE_LINE           = "\r\n";
+    CONST MAIL_CC             = "Cc:";
+    CONST DISPLAY_ERROR       = "display_errors";
+    CONST AUTHORIZATION       = "Authorization";
+    CONST TOKEN_DECLINE       = "TOKEN decline.";
+    CONST ACCESS_DECLINE      = "Access decline.";
+    CONST COLUMN_ID           = "id";
+    CONST COLUMN_NAME         = "name";
+    CONST COLUMN_ID_CITY      = "id_city";
+    CONST COLUMN_TOKEN        = "token";
+    CONST COLUMN_DOMAIN       = "domain";
+    CONST COLUMN_CREATED      = "created_at";
+    CONST COLUMN_UPDATED      = "updated_at";
+    CONST LONGITUD            = "longitud";
+    CONST LONGITUDE           = "longitude";
+    CONST LATITUD             = "latitud";
+    CONST LATITUDE            = "latitude";
+    CONST ADDRESS_EXTRA       = "address_extra";
+    CONST ID_MUNICIPALITY     = "id_municipality";
+    CONST ID_COUNTRY          = "id_country";
+    CONST IDADDRESS_EXTRA     = "id_address_extra";
+    CONST ID_LOCALIZATION     = "id_localization";
+    CONST LOCALHOST           = "127.0.0.1";
+    CONST IP_HOST             = "http://ipinfo.io/";
+    CONST BARRA_JSON          = "/json";
+    CONST CERO                = 0;
+    CONST COMA                = ",";
+    CONST ROUNDS              = "rounds";
+    CONST PARTNER_ALREADY     = "Partner already registered.";
+    CONST NIT                 = "nit";
+    CONST EMAIL               = "email";
+    CONST RAZON_SOCIAL        = "razon_social";
+    CONST L_REPRESENTA        = "legal_representative";
+    CONST USERNAME            = "username";
+    CONST PASSWORD            = "password";
+    CONST EMAIL_ALREADY       = "Email already registered.";
+    CONST CITY                = "city";
+    CONST COUNTRY             = "country";
+    CONST MUNICIPALITY        = "municipality";
+    CONST INTEGRATION         = "integrations_api";
+    CONST CODE                = "code";
+    CONST ID_ROL              = "id_rol";
+    CONST ROL                 = "rol";
+    CONST ID_PERMISSIONS      = "id_permissions";
+    CONST ARROBA              = "@";
+    CONST SPACE               = " ";
+    CONST MESSAGES_LOGN       = [
         "Bienvenido.",
         "Contraseña erronea.",
         "La cuenta se encuentra desactivada.",
@@ -71,132 +71,132 @@ class Text{
         "Formato invalido de usuario.",
         "La cuenta no existe."
     ];
-    CONST ENCRYP_METHOD  = "sha256";
-    CONST ENCRYP_KEY     = "ENCRYPTION_KEY";
-    CONST ID_ACCOUNT     = "id_account";
-    CONST STATUS         = "status";
-    CONST STORE          = "store";
-    CONST SHEETS         = "sheets";
-    CONST WAREHOUSES     = "warehouses";
-    CONST Enable         = "Cuenta habilitada.";
-    CONST Disable        = "Cuenta deshabilitada.";
-    CONST TYPE           = "type";
-    CONST KEY            = "key";
-    CONST VALUE          = "value";
-    CONST Partner_None   = "La cuenta no esta asignada a un partner.";
-    CONST ID_CATALOG     = "id_catalog";
-    CONST ID_PARTNER     = "id_partner";
-    CONST PRODUCT        = "product";
-    CONST PRODUCTS       = "products";
-    CONST PRODUCTOS      = "productos";
-    CONST STORES         = "stores";
-    CONST ID_STORE       = "id_store";
-    CONST STORE_NAME     = "store_name";
-    CONST ID_BRAND       = "id_brand";
-    CONST BRAND          = "brand";
-    CONST ID_CLACOM      = "id_clacom";
-    CONST ID_TYPE        = "id_type";
-    CONST SKU            = "sku";
-    CONST QUERY          = "query";
-    CONST LIKE           = "like";
-    CONST CATEGORIAS     = "categorias";
-    CONST ACCOUNT_STATUS = "accountStatus";
-    CONST ROL_ACCOUNT    = "rolAccount";
-    CONST NEGATIVE_ID    = "-1";
-    CONST DISTINCT_SYMBOL= "!=";
-    CONST PERCENT        = "%";
-    CONST IMPORT_SUCCESS = "Importacion exitosa.";
-    CONST OBJECT         = "object";
-    CONST ERROR_PARAMETRO= "Error de parametros.";
-    CONST SEARCH_ERROR   = "Busqueda erronea.";
-    CONST SEARCH_SUCCESS = "Busqueda exitosa.";
-    CONST QUERY_SUCCESS  = "Datos obtenidos exitosamente.";
-    CONST ACCOUNT_REGIS  = "La cuenta ya se encuentra registrada.";
-    CONST CATALOG_EXIST  = "El catalogo ya existe.";
-    CONST CATALOG_NOEXIST= "El catalogo no existe.";
-    CONST NONE_FILTER    = "El filtro seleccionado no existe.";
-    CONST ACCOUNT_NOT    = "La cuenta consultada no existe.";
-    CONST ACCOUNT_YES    = "Cuenta obtenida.";
-    CONST NULL_TYPE      = null;
-    CONST CATEGORY_NONE  = "La categoria no existe.";
-    CONST GRUPO_ARTICULO = "GrupoArticulo";
-    CONST DISPONIBILIDAD = "Disponibilidad";
-    CONST PRECIOS        = "Precios";
-    CONST PRECIOS_POS    = "precios";
-    CONST SUB_CATEGORIA  = "SubCategoria";
-    CONST METHOD_POST    = "POST";
-    CONST METHOD_GET     = "GET";
-    CONST POS_PARAM_ONE  = "Content-Type:application/json; charset=utf-8";
-    CONST POS_AUTH       = "Authorization: Basic ";
-    CONST ORDER_DESC     = "DESC";
-    CONST ORDER_ASC      = "ASC";
-    CONST CODIGO         = "codigo";
-    CONST MARCA          = "marca";
-    CONST NOMBRE         = "nombre";
-    CONST DETALLE        = "detalle";
-    CONST CLACOM         = "clacom";
-    CONST ATTRIBUTES     = "attributes";
-    CONST TIPO_PRODUCTO  = "tipoProducto";
-    CONST TEXT_NONE      = "";
-    CONST MINICUOTAS     = "minicuotas";
-    CONST ESTADO         = "estado";
-    CONST CLASIFICACION  = "clasificacion";
-    CONST VISIBLE        = "visible";
-    CONST FILTROS        = "filtros";
-    CONST DISPONIBILIDAD_= "disponibilidad";
-    CONST STOCKDISPONIBLE= "stockDisponible";
-    CONST NOMBRE_ALMACEN = "nombreAlmacen";
-    CONST ID_PRODUCT     = "id_product";
-    CONST ID_WAREHOUSE   = "id_warehouse";
-    CONST STOCK          = "stock";
-    CONST BASE           = "base";
-    CONST ALMACEN        = "almacen";
-    CONST ID_PRICE       = "id_price";
-    CONST ALMACEN_CENTRAL= "almacenCentral";
-    CONST PRICE          = "price";
-    CONST SPECIAL_PRICE  = "special_price";
-    CONST FROM_DATE      = "from_date";
-    CONST TO_DATE        = "to_date";
-    CONST LISTA_PRECIO   = "listaPrecio";
-    CONST PRECIO         = "precio";
-    CONST DESCUENTO      = "descuento";
-    CONST ADD_ONE_YEAR   = " + 1 years";
-    CONST CODIGO_PADRE   = "codigoPadre";
-    CONST ID_CATEGORY    = "id_category";
-    CONST ID_POS         = "id_pos";
-    CONST POS_SUBCATEGORY= "sub_category_pos";
-    CONST NAME_POS       = "name_pos";
-    CONST CUOTAS         = "cuotas";
-    CONST GUION_BAJO     = "_";
-    CONST LABEL          = "label";
-    CONST TEXT           = "text";
-    CONST CUOTA          = "cuota";
-    CONST MONTO          = "monto";
-    CONST NO_EXIST_SKU   = "El sku no se encuenta asignado a un producto.";
-    CONST SKU_NONE       = "El sku % no existe.";
-    CONST ID_NONE        = "El id % no existe.";
-    CONST CANTIDAD       = "cantidad";
-    CONST CUSTOM         = "custom";
-    CONST PRICES         = "prices";
-    CONST WAREHOUSE      = "warehouse";
-    CONST DESCRIPCION    = "descripcion";
-    CONST NO_RESPONSE    = "Sin resultados.";
-    CONST URL            = "url";
-    CONST LANDING        = "landing";
-    CONST METADATA       = "metadata";
-    CONST TITULO         = "titulo";
-    CONST INHERITANCE    = "inheritance";
-    CONST SUB_CAT_POS    = "sub_category_pos";
-    CONST TITLE          = "title";
-    CONST BODY           = "body";
-    CONST IN_MENU        = "in_menu";
-    CONST INFO           = "info";
-    CONST UPDATE_SUCCESS = "Datos actualizados exitosamente.";
-    CONST ID_METADATA    = "id_metadata";
-    CONST ID_CAT_INFO    = "id_category_info";
-    CONST PROFILE        = "profile";
-    CONST COVER          = "cover";
-    CONST RELATION_WH_P  = [
+    CONST ENCRYP_METHOD       = "sha256";
+    CONST ENCRYP_KEY          = "ENCRYPTION_KEY";
+    CONST ID_ACCOUNT          = "id_account";
+    CONST STATUS              = "status";
+    CONST STORE               = "store";
+    CONST SHEETS              = "sheets";
+    CONST WAREHOUSES          = "warehouses";
+    CONST Enable              = "Cuenta habilitada.";
+    CONST Disable             = "Cuenta deshabilitada.";
+    CONST TYPE                = "type";
+    CONST KEY                 = "key";
+    CONST VALUE               = "value";
+    CONST Partner_None        = "La cuenta no esta asignada a un partner.";
+    CONST ID_CATALOG          = "id_catalog";
+    CONST ID_PARTNER          = "id_partner";
+    CONST PRODUCT             = "product";
+    CONST PRODUCTS            = "products";
+    CONST PRODUCTOS           = "productos";
+    CONST STORES              = "stores";
+    CONST ID_STORE            = "id_store";
+    CONST STORE_NAME          = "store_name";
+    CONST ID_BRAND            = "id_brand";
+    CONST BRAND               = "brand";
+    CONST ID_CLACOM           = "id_clacom";
+    CONST ID_TYPE             = "id_type";
+    CONST SKU                 = "sku";
+    CONST QUERY               = "query";
+    CONST LIKE                = "like";
+    CONST CATEGORIAS          = "categorias";
+    CONST ACCOUNT_STATUS      = "accountStatus";
+    CONST ROL_ACCOUNT         = "rolAccount";
+    CONST NEGATIVE_ID         = "-1";
+    CONST DISTINCT_SYMBOL     = "!=";
+    CONST PERCENT             = "%";
+    CONST IMPORT_SUCCESS      = "Importacion exitosa.";
+    CONST OBJECT              = "object";
+    CONST ERROR_PARAMETRO     = "Error de parametros.";
+    CONST SEARCH_ERROR        = "Busqueda erronea.";
+    CONST SEARCH_SUCCESS      = "Busqueda exitosa.";
+    CONST QUERY_SUCCESS       = "Datos obtenidos exitosamente.";
+    CONST ACCOUNT_REGIS       = "La cuenta ya se encuentra registrada.";
+    CONST CATALOG_EXIST       = "El catalogo ya existe.";
+    CONST CATALOG_NOEXIST     = "El catalogo no existe.";
+    CONST NONE_FILTER         = "El filtro seleccionado no existe.";
+    CONST ACCOUNT_NOT         = "La cuenta consultada no existe.";
+    CONST ACCOUNT_YES         = "Cuenta obtenida.";
+    CONST NULL_TYPE           = null;
+    CONST CATEGORY_NONE       = "La categoria no existe.";
+    CONST GRUPO_ARTICULO      = "GrupoArticulo";
+    CONST DISPONIBILIDAD      = "Disponibilidad";
+    CONST PRECIOS             = "Precios";
+    CONST PRECIOS_POS         = "precios";
+    CONST SUB_CATEGORIA       = "SubCategoria";
+    CONST METHOD_POST         = "POST";
+    CONST METHOD_GET          = "GET";
+    CONST POS_PARAM_ONE       = "Content-Type:application/json; charset=utf-8";
+    CONST POS_AUTH            = "Authorization: Basic ";
+    CONST ORDER_DESC          = "DESC";
+    CONST ORDER_ASC           = "ASC";
+    CONST CODIGO              = "codigo";
+    CONST MARCA               = "marca";
+    CONST NOMBRE              = "nombre";
+    CONST DETALLE             = "detalle";
+    CONST CLACOM              = "clacom";
+    CONST ATTRIBUTES          = "attributes";
+    CONST TIPO_PRODUCTO       = "tipoProducto";
+    CONST TEXT_NONE           = "";
+    CONST MINICUOTAS          = "minicuotas";
+    CONST ESTADO              = "estado";
+    CONST CLASIFICACION       = "clasificacion";
+    CONST VISIBLE             = "visible";
+    CONST FILTROS             = "filtros";
+    CONST DISPONIBILIDAD_     = "disponibilidad";
+    CONST STOCKDISPONIBLE     = "stockDisponible";
+    CONST NOMBRE_ALMACEN      = "nombreAlmacen";
+    CONST ID_PRODUCT          = "id_product";
+    CONST ID_WAREHOUSE        = "id_warehouse";
+    CONST STOCK               = "stock";
+    CONST BASE                = "base";
+    CONST ALMACEN             = "almacen";
+    CONST ID_PRICE            = "id_price";
+    CONST ALMACEN_CENTRAL     = "almacenCentral";
+    CONST PRICE               = "price";
+    CONST SPECIAL_PRICE       = "special_price";
+    CONST FROM_DATE           = "from_date";
+    CONST TO_DATE             = "to_date";
+    CONST LISTA_PRECIO        = "listaPrecio";
+    CONST PRECIO              = "precio";
+    CONST DESCUENTO           = "descuento";
+    CONST ADD_ONE_YEAR        = " + 1 years";
+    CONST CODIGO_PADRE        = "codigoPadre";
+    CONST ID_CATEGORY         = "id_category";
+    CONST ID_POS              = "id_pos";
+    CONST POS_SUBCATEGORY     = "sub_category_pos";
+    CONST NAME_POS            = "name_pos";
+    CONST CUOTAS              = "cuotas";
+    CONST GUION_BAJO          = "_";
+    CONST LABEL               = "label";
+    CONST TEXT                = "text";
+    CONST CUOTA               = "cuota";
+    CONST MONTO               = "monto";
+    CONST NO_EXIST_SKU        = "El sku no se encuenta asignado a un producto.";
+    CONST SKU_NONE            = "El sku % no existe.";
+    CONST ID_NONE             = "El id % no existe.";
+    CONST CANTIDAD            = "cantidad";
+    CONST CUSTOM              = "custom";
+    CONST PRICES              = "prices";
+    CONST WAREHOUSE           = "warehouse";
+    CONST DESCRIPCION         = "descripcion";
+    CONST NO_RESPONSE         = "Sin resultados.";
+    CONST URL                 = "url";
+    CONST LANDING             = "landing";
+    CONST METADATA            = "metadata";
+    CONST TITULO              = "titulo";
+    CONST INHERITANCE         = "inheritance";
+    CONST SUB_CAT_POS         = "sub_category_pos";
+    CONST TITLE               = "title";
+    CONST BODY                = "body";
+    CONST IN_MENU             = "in_menu";
+    CONST INFO                = "info";
+    CONST UPDATE_SUCCESS      = "Datos actualizados exitosamente.";
+    CONST ID_METADATA         = "id_metadata";
+    CONST ID_CAT_INFO         = "id_category_info";
+    CONST PROFILE             = "profile";
+    CONST COVER               = "cover";
+    CONST RELATION_WH_P       = [
         "product_warehouse.id_warehouse",
         "product_warehouse",
         "product.id",
@@ -204,24 +204,344 @@ class Text{
         "product_warehouse.id_product",
         "product_warehouse.id_warehouse"
     ];
-    CONST STORES_ID      = "stores_id";
-    CONST SOCIAL_NETWORK = "id_social_network";
-    CONST IMAGE          = "image";
-    CONST DAYS_DIFENCENS = " hace % dias.";
-    CONST DAY_DIFENCENS  = " hace % dia.";
-    CONST MONTH_DIFENCENS= " hace % mes.";
-    CONST MOTHS_DIFENCENS= " hace % meses.";
-    CONST YEAR_DIFENCENS = " hace % año.";
-    CONST YEARS_DIFENCENS= " hace % años.";
-    CONST CREATED_DIF    = "frecuence_created";
-    CONST UPDATED_DIF    = "frecuence_updated";
-    CONST DESCRIPTION    = "description";
-    CONST TIME           = "time";
-    CONST PARTNER_NONE   = "El partner no existe.";
-    CONST TOKEN_NONE     = "El token del partner no existe.";
+    CONST STORES_ID           = "stores_id";
+    CONST SOCIAL_NETWORK      = "id_social_network";
+    CONST IMAGE               = "image";
+    CONST DAYS_DIFENCENS      = " hace % dias.";
+    CONST DAY_DIFENCENS       = " hace % dia.";
+    CONST MONTH_DIFENCENS     = " hace % mes.";
+    CONST MOTHS_DIFENCENS     = " hace % meses.";
+    CONST YEAR_DIFENCENS      = " hace % año.";
+    CONST YEARS_DIFENCENS     = " hace % años.";
+    CONST CREATED_DIF         = "frecuence_created";
+    CONST UPDATED_DIF         = "frecuence_updated";
+    CONST DESCRIPTION         = "description";
+    CONST TIME                = "time";
+    CONST PARTNER_NONE        = "El partner no existe.";
+    CONST TOKEN_NONE          = "El token del partner no existe.";
+    CONST COUNTRY_NONE        = "No disponemos de covertura en el país solicitado.";
+    CONST CITY_NONE           = "No disponemos de covertura en el país solicitado.";
+    CONST MUNICIPALITY_NONE   = "No disponemos de covertura en el país solicitado.";
+    CONST COLUMN_CUSTOMER     = "customer";
+    CONST PAIS                = "Pais";
+    CONST CIUDAD              = "Ciudad";
+    CONST MUNICIPIO           = "Municipio";
+    CONST LOCALIZACION        = "Localizacion";
+    CONST DIRECCION           = "Direccion";
+    CONST DIRECCION_EXTRA     = "DireccionExtra";
+    CONST TIPO_DOCUMENTO      = "TipoDocumento";
+    CONST NOMBRE_API          = "Nombre";
+    CONST APELLIDO_PATERNO_API= "ApellidoPaterno";
+    CONST APELLIDO_MATERNO_API= "ApellidoMaterno";
+    CONST EMAIL_API           = "Email";
+    CONST NUM_TELEFONO_API    = "NumTelefono";
+    CONST NUM_DOCUMENTO_API   = "NumDocumento";
+    CONST SYMBOL_MAYOR        = ">";
+    CONST QTY                 = "Qty";
+    CONST TOTAL               = "Total";
+    CONST PRECIO_UNITARIO     = "PrecioUnitario";
+    CONST ID_PARTNER_API      = "IdPartner";
+    CONST COL_APELLIDO_PATERNO= "apellido_paterno";
+    CONST COL_APELLIDO_MATERNO= "apellido_materno";
+    CONST COL_NUM_TELEFONO    = "num_telefono";
+    CONST COL_TIPO_DOCUMENTO  = "tipo_documento";
+    CONST COL_NUM_DOCUMENTO   = "num_documento";
+    CONST TOTAL_DESCUENTO     = "TotalDescuento";
+    CONST DESCUENTOS          = "Descuentos";
+    CONST MONTO_API           = "Monto";
+    CONST ERROR_PROFORMA_QTY  = "La cantidad de los productos no coincide con el detalle de la proforma.";
+    CONST ERROR_PROFORMA_SUBT = "El subtotal de los productos no coincide con el detalle de la proforma.";
+    CONST ERROR_PROFORMA_MONTO= "El monto total de los productos no coincide con el detalle de la proforma.";
+    CONST ERROR_PROFORMA_TOTAL= "El total de los descuento no coincide con el detalle de la proforma.";
+    CONST ERROR_TIPO_DOCUMENTO= "El tipo de documento no es valido.";
+    CONST DATOS_CLIENTES      = "DatosCliente";
+    CONST TOKEN_PARTNER       = "TokenPartner";
+    CONST SUB_TOTAL           = "SubTotal";
+    CONST CANTIDAD_PRODUCTOS  = "CantidadProductos";
+    CONST DETALLE_ORDEN       = "DetalleOrden";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenPartner(){
+        return SELF::TOKEN_PARTNER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubTotal(){
+        return SELF::SUB_TOTAL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCantidadProductos(){
+        return SELF::CANTIDAD_PRODUCTOS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetalleOrden(){
+        return SELF::DETALLE_ORDEN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatosClientes(){
+        return SELF::DATOS_CLIENTES;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorTipoDocumento(){
+        return SELF::ERROR_TIPO_DOCUMENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorSubTotalProforma(){
+        return SELF::ERROR_PROFORMA_SUBT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMontoProforma(){
+        return SELF::ERROR_PROFORMA_MONTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorTotalProforma(){
+        return SELF::ERROR_PROFORMA_TOTAL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorQtyProforma(){
+        return SELF::ERROR_PROFORMA_QTY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalDescuento(){
+        return SELF::TOTAL_DESCUENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescuentos(){
+        return SELF::DESCUENTOS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMontoApi(){
+        return SELF::MONTO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColApellidoPaterno(){
+        return SELF::COL_APELLIDO_PATERNO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColApellidoMaterno(){
+        return SELF::COL_APELLIDO_MATERNO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColNumTelf(){
+        return SELF::COL_NUM_TELEFONO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColTipoDoc(){
+        return SELF::COL_TIPO_DOCUMENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColNumDoc(){
+        return SELF::COL_NUM_DOCUMENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdPartnerApi(){
+        return SELF::ID_PARTNER_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrecioUnitario(){
+        return SELF::PRECIO_UNITARIO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQty(){
+        return SELF::QTY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotal(){
+        return SELF::TOTAL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSymbolMayor(){
+        return SELF::SYMBOL_MAYOR;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombreApi(){
+        return SELF::NOMBRE_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApellidoPaternoApi(){
+        return SELF::APELLIDO_PATERNO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApellidoMaternoApi(){
+        return SELF::APELLIDO_MATERNO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailApi(){
+        return SELF::EMAIL_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumTelefonoApi(){
+        return SELF::NUM_TELEFONO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumDocumentoApi(){
+        return SELF::NUM_DOCUMENTO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTipoDocumento(){
+        return SELF::TIPO_DOCUMENTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDireccion(){
+        return SELF::DIRECCION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDireccionExtra(){
+        return SELF::DIRECCION_EXTRA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalizacion(){
+        return SELF::LOCALIZACION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipio(){
+        return SELF::MUNICIPIO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCiudad(){
+        return SELF::CIUDAD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPais(){
+        return SELF::PAIS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomer(){
+        return SELF::COLUMN_CUSTOMER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipalityNone(){
+        return SELF::MUNICIPALITY_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCityNone(){
+        return SELF::CITY_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryNone(){
+        return SELF::COUNTRY_NONE;
     }
 
     /**

@@ -9,6 +9,9 @@ use App\Models\Localization;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use App\Classes\Helper\Text;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Municipality;
 use Exception;
 
 class AddressApi{
@@ -47,7 +50,6 @@ class AddressApi{
         $this->createGeo($geo);
         $GEO = $this->getLocalization($geo);
         $this->createAddress($address, $ExtraAddress, $GEO);
-        $this->setAddress($address, $ExtraAddress, $GEO);
     }
 
     /**
@@ -61,20 +63,56 @@ class AddressApi{
      * @param array $address
      * @param int $id_address_extra
      * @param int $id_localization
-     * @return void
+     * @return Address
      */
-    private function setAddress(array $address, int $id_address_extra, int $id_localization){
-        $this->address = Address::where($this->text->getIdMunicipality(), $address[$this->text->getIdMunicipality()])->
+    public function getAddress(array $address, int $id_address_extra, int $id_localization){
+        return Address::where($this->text->getIdMunicipality(), $address[$this->text->getIdMunicipality()])->
         where($this->text->getIdCountry(), $address[$this->text->getIdCountry()])->
         where($this->text->getIdCity(), $address[$this->text->getIdCity()])->
         where($this->text->getIdAddressExtra(), $id_address_extra)->where($this->text->getIdLocalization(), $id_localization)->first();
     }
 
     /**
+     * @param string $name
+     * @return Country
+     */
+    public function getCountryByName(string $name){
+        $Country = Country::where($this->text->getName(), $name)->first();
+        if (!$Country) {
+            throw new Exception($this->text->getCountryNone());
+        }
+        return $Country;
+    }
+
+    /**
+     * @param string $name
+     * @return City
+     */
+    public function getCityByName(string $name){
+        $City = City::where($this->text->getName(), $name)->first();
+        if (!$City) {
+            throw new Exception($this->text->getCityNone());
+        }
+        return $City;
+    }
+
+    /**
+     * @param string $name
+     * @return Municipality
+     */
+    public function getMunicipalityByName(string $name){
+        $Municipality = Municipality::where($this->text->getName(), $name)->first();
+        if (!$Municipality) {
+            throw new Exception($this->text->getMunicipalityNone());
+        }
+        return $Municipality;
+    }
+
+    /**
      * @param array $GEO
      * @return int
      */
-    private function getLocalization(array $GEO){
+    public function getLocalization(array $GEO){
         $GEO = Localization::select($this->text->getId())->where($this->text->getLatitud(), $GEO[$this->text->getLatitude()])->
         where($this->text->getLongitud(), $GEO[$this->text->getLongitude()])->get()->toArray();
         if (count($GEO) > 0) {
@@ -88,7 +126,7 @@ class AddressApi{
      * @param array $address_extra
      * @return int
      */
-    private function getAddressExtra(array $address_extra){
+    public function getAddressExtra(array $address_extra){
         $ExtraAddress = AddressExtra::select($this->text->getId())->
         where($this->text->getAddress(), $address_extra[$this->text->getAddress()])->
         where($this->text->getExtra(), $address_extra[$this->text->getExtra()])->get()->toArray();
@@ -105,17 +143,23 @@ class AddressApi{
      * @param int $id_localization
      * @return bool
      */
-    private function createAddress(array $address, int $id_address_extra, int $id_localization){
+    public function createAddress(array $address, int $id_address_extra, int $id_localization){
         try {
-            $Address = new Address();
-            $Address->id_municipality = $address[$this->text->getIdMunicipality()];
-            $Address->id_country = $address[$this->text->getIdCountry()];
-            $Address->id_city = $address[$this->text->getIdCity()];
-            $Address->id_address_extra = $id_address_extra;
-            $Address->id_localization = $id_localization;
-            $Address->created_at = $this->date->getFullDate();
-            $Address->updated_at = null;
-            $Address->save();
+            $address = $this->getAddress($address, $id_address_extra, $id_localization);
+            if (!$address) {
+                $Address = new Address();
+                $Address->id_municipality = $address[$this->text->getIdMunicipality()];
+                $Address->id_country = $address[$this->text->getIdCountry()];
+                $Address->id_city = $address[$this->text->getIdCity()];
+                $Address->id_address_extra = $id_address_extra;
+                $Address->id_localization = $id_localization;
+                $Address->created_at = $this->date->getFullDate();
+                $Address->updated_at = null;
+                $Address->save();
+                $this->address = $Address;
+            }else{
+                $this->address = $address;
+            }
             return true;
         } catch (Exception $th) {
             return false;
@@ -126,7 +170,7 @@ class AddressApi{
      * @param array $addressExtra
      * @return bool
      */
-    private function createAddressExtra(array $addresExtra){
+    public function createAddressExtra(array $addresExtra){
         try {
             $AddressExtra = new AddressExtra();
             $AddressExtra->address = $addresExtra[$this->text->getAddress()];
@@ -142,7 +186,7 @@ class AddressApi{
      * @param array $geo
      * @return bool
      */
-    private function createGeo(array $geo){
+    public function createGeo(array $geo){
         try {
             $Localization = new Localization();
             $Localization->latitud = $geo[$this->text->getLatitude()];

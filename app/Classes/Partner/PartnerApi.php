@@ -19,6 +19,10 @@ use App\Classes\Picture\PictureApi;
 use App\Models\Campaign;
 use App\Models\ProductPriceStore;
 use App\Models\Store;
+use App\Classes\Address\AddressApi;
+use App\Models\Customer;
+use App\Models\CustomerAddress;
+use App\Models\TipoDocumento;
 use Exception;
 
 class PartnerApi{
@@ -43,30 +47,146 @@ class PartnerApi{
      * @var PictureApi
      */
     protected $pictureApi;
+    /**
+     * @var AddressApi
+     */
+    protected $addressApi;
 
     public function __construct() {
         $this->date       = new Date();
         $this->status     = new Status();
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
+        $this->addressApi = new AddressApi();
     }
 
     public function createOrder($request){
-        if ($this->existTokenPartner($request["TokenPartner"])) {
-            $Partner = $this->getById($request["IdPartner"]);
-            $this->validateDetailProforma(
-                $request["Total"],
-                $request["SubTotal"],
-                $request["TotalDescuento"],
-                $request["CantidadProductos"],
-                $request["DetalleOrden"]
-            );
+        if ($this->existTokenPartner($request[$this->text->getTokenPartner()])) {
+            $Partner = $this->getById($request[$this->text->getIdPartnerApi()]);
+            if ($this->validateDetailProforma($request[$this->text->getTotal()], $request[$this->text->getSubTotal()], $request[$this->text->getTotalDescuento()], $request[$this->text->getCantidadProductos()], $request[$this->text->getDetalleOrden()])){
+                $idAddress = $this->verifyShippingAddress($request[$this->text->getDatosClientes()]);
+                $idCustomer = $this->verifyCustomer($request[$this->text->getDatosClientes()]);
+                $this->saveCustomerAddress($idCustomer, $idAddress);
+            }
         }else{
             throw new Exception($this->text->getPartnerTokenNone());
         }
     }
 
-    public function verifySHippingAddress($clientAddress){
+    /**
+     * @param int $customer
+     * @param int $address
+     */
+    public function saveCustomerAddress(int $customer, int $address){
+        if (!$this->getCustomerAddress($customer, $address)){
+            $CustomerAddress = new CustomerAddress();
+            $CustomerAddress->customer = $customer;
+            $CustomerAddress->address = $address;
+            $CustomerAddress->save();
+        }
+    }
+
+    /**
+     * @param int $customer
+     * @param int $address
+     * @return CustomerAddress
+     */
+    public function getCustomerAddress(int $customer, int $address){
+        return CustomerAddress::where($this->text->getCustomer(), $customer)->where($this->text->getAddress(), $address)->first();
+    }
+
+    /**
+     * @param array $clientAddress
+     * @return int
+     */
+    public function verifyShippingAddress(array $clientAddress){
+        $this->addressApi->createAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
+        $ExtraAddress = $this->addressApi->getAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
+        $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
+        $GEO = $this->addressApi->getLocalization($clientAddress[$this->text->getLocalizacion()]);
+        $this->addressApi->createAddress($this->convertAddress($clientAddress[$this->text->getPais()], $clientAddress[$this->text->getCiudad()], $clientAddress[$this->text->getMunicipio()]), $ExtraAddress, $GEO);
+        return $this->addressApi->getAddressId();
+    }
+
+    /**
+     * @param array $clientAddress
+     * @return int
+     */
+    public function verifyCustomer(array $clientAddress){
+        $TipoDocumento = $this->getTipoDocumentoId($clientAddress[$this->text->getTipoDocumento()]);
+        $customer = $this->validateCustomer(
+            $clientAddress[$this->text->getNombreApi()],
+            $clientAddress[$this->text->getApellidoPaternoApi()],
+            $clientAddress[$this->text->getApellidoMaternoApi()],
+            $clientAddress[$this->text->getEmailApi()],
+            $clientAddress[$this->text->getNumTelefonoApi()],
+            $TipoDocumento,
+            $clientAddress[$this->text->getNumDocumentoApi()]
+        );
+        if (!$customer) {
+            $Customer = new Customer();
+            $Customer->nombre = $clientAddress[$this->text->getNombreApi()];
+            $Customer->apellido_paterno = $clientAddress[$this->text->getApellidoPaternoApi()];
+            $Customer->apellido_materno = $clientAddress[$this->text->getApellidoMaternoApi()];
+            $Customer->email = $clientAddress[$this->text->getEmailApi()];
+            $Customer->num_telefono = $clientAddress[$this->text->getNumTelefonoApi()];
+            $Customer->tipo_documento = $TipoDocumento;
+            $Customer->num_documento = $clientAddress[$this->text->getNumDocumentoApi()];
+            $Customer->created_at = $this->date->getFullDate();
+            $Customer->updated_at = null;
+            $Customer->save();
+            return $Customer->id;
+        }else{
+            return $customer->id;
+        }
+    }
+
+    /**
+     * @return Customer
+     */
+    public function validateCustomer(string $nombre, string $apellido_paterno, string $apellido_materno, string $email, string $num_telefono, int $tipo_documento, string $num_documento){
+        return Customer::where($this->text->getNombre(), $nombre)->where($this->text->getColApellidoPaterno(), $apellido_paterno)->
+        where($this->text->getColApellidoMaterno(), $apellido_materno)->where($this->text->getEmail(), $email)->
+        where($this->text->getColNumTelf(), $num_telefono)->where($this->text->getColTipoDoc(), $tipo_documento)->
+        where($this->text->getColNumDoc(), $num_documento)->first();
+    }
+
+    /**
+     * @param string $TipoDoc
+     * @return int
+     */
+    public function getTipoDocumentoId(string $TipoDoc){
+        $TipoDoc = TipoDocumento::where($this->text->getType(), $TipoDoc)->first();
+        if (!$TipoDoc) {
+            throw new Exception($this->text->getErrorTipoDocumento());
+        }
+        return $TipoDoc->id;
+    }
+
+    /**
+     * @param string $Pais
+     * @param string $Ciudad
+     * @param string $Municipio
+     * @return array
+     */
+    public function convertAddress($Pais, $Ciudad, $Municipio){
+        return [
+            $this->text->getIdCountry() => $this->addressApi->getCountryByName($Pais),
+            $this->text->getIdMunicipality() => $this->addressApi->getCityByName($Ciudad),
+            $this->text->getIdCity() => $this->addressApi->getMunicipalityByName($Municipio)
+        ];
+    }
+
+    /**
+     * @param string $Direccion
+     * @param string $DireccionExtra
+     * @return array
+     */
+    private function convertAddressExtra(string $Direccion, string $DireccionExtra){
+        return [
+            $this->text->getAddress() => $Direccion,
+            $this->text->getExtra() => $DireccionExtra
+        ];
     }
     
     /**
@@ -79,16 +199,16 @@ class PartnerApi{
      */
     public function validateDetailProforma(float $Total, float $SubTotal, float $TotalDescuento, int $CantidadProductos, array $DetailProforma){
         if ($CantidadProductos != $this->verifyQtyDetailProforma($DetailProforma)) {
-            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            throw new Exception($this->text->getErrorQtyProforma());
         }
         if ($SubTotal != $this->verifySubTotal($DetailProforma)) {
-            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            throw new Exception($this->text->getErrorSubTotalProforma());
         }
         if ($Total != $this->verifyTotal($DetailProforma)) {
-            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            throw new Exception($this->text->getErrorMontoProforma());
         }
         if ($TotalDescuento != $this->verifyDiscountProforma($DetailProforma)) {
-            throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            throw new Exception($this->text->getErrorTotalProforma());
         }
         return true;
     }
@@ -100,10 +220,10 @@ class PartnerApi{
     public function verifyDiscountProforma(array $DetailProforma){
         $TotalDescuento = 0;
         foreach ($DetailProforma as $key => $Detail) {
-            if ($Detail["TotalDescuento"] != $this->detailInfoProforma($Detail["Descuentos"])){
-                throw new Exception("La cantidad de los productos no coincide con el detalle de la proforma.");
+            if ($Detail[$this->text->getTotalDescuento()] != $this->detailInfoProforma($Detail[$this->text->getDescuentos()])){
+                throw new Exception($this->text->getErrorQtyProforma());
             }else{
-                $TotalDescuento += $Detail["TotalDescuento"];
+                $TotalDescuento += $Detail[$this->text->getTotalDescuento()];
             }
         }
         return $TotalDescuento;
@@ -116,7 +236,7 @@ class PartnerApi{
     public function detailInfoProforma(array $DetailDiscount){
         $Monto = 0;
         foreach ($DetailDiscount as $key => $Detail) {
-            $Monto += $Detail["Monto"];
+            $Monto += $Detail[$this->text->getMontoApi()];
         }
         return $Monto;
     }
@@ -128,7 +248,7 @@ class PartnerApi{
     public function verifyQtyDetailProforma(array $DetailProforma){
         $qty = 0;
         foreach ($DetailProforma as $key => $Detail) {
-            $qty += $Detail["Qty"];
+            $qty += $Detail[$this->text->getQty()];
         }
         return $qty;
     }
@@ -140,7 +260,7 @@ class PartnerApi{
     public function verifySubTotal(array $DetailProforma){
         $SubTotal = 0;
         foreach ($DetailProforma as $key => $Detail) {
-            $SubTotal += $Detail["Qty"] * $Detail["PrecioUnitario"];
+            $SubTotal += $Detail[$this->text->getQty()] * $Detail[$this->text->getPrecioUnitario()];
         }
         return $SubTotal;
     }
@@ -152,7 +272,7 @@ class PartnerApi{
     public function verifyTotal(array $DetailProforma){
         $Total = 0;
         foreach ($DetailProforma as $key => $Detail) {
-            $Total += $Detail["Total"];
+            $Total += $Detail[$this->text->getTotal()];
         }
         return $Total;
     }
@@ -435,7 +555,7 @@ class PartnerApi{
      * @return Product[]
      */
     public function listProductPartnerStock(int $id_partner){
-        return Product::select("id", "stock")->where($this->text->getIdPartner(), $id_partner)->where($this->text->getStock(), ">", 0)->get();
+        return Product::select($this->text->getId(), $this->text->getStock())->where($this->text->getIdPartner(), $id_partner)->where($this->text->getStock(), $this->text->getSymbolMayor(), 0)->get();
     }
 
     /**
@@ -500,7 +620,7 @@ class PartnerApi{
      * @return array
      */
     public function getProductLastModify(int $id_partner){
-        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), $this->text->getOrderDesc())->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListProductToArray($Product);
     }
 
@@ -509,7 +629,7 @@ class PartnerApi{
      * @return array
      */
     public function getProductLastCreate(int $id_partner){
-        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Product = Product::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), $this->text->getOrderDesc())->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListProductToArray($Product);
     }
 
@@ -518,7 +638,7 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastModify(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getUpdated(), $this->text->getOrderDesc())->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListCategoryToArray($Category);
     }
 
@@ -527,7 +647,7 @@ class PartnerApi{
      * @return array
      */
     public function getCategoryLastCreate(int $id_partner){
-        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), 'desc')->offset(0)->limit(self::HISTOY_LAST)->get();
+        $Category = Category::where($this->text->getIdPartner(), $id_partner)->orderBy($this->text->getCreated(), $this->text->getOrderDesc())->offset(0)->limit(self::HISTOY_LAST)->get();
         return $this->convertListCategoryToArray($Category);
     }
 
