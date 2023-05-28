@@ -160,6 +160,7 @@ class AddressApi{
             }else{
                 $this->address = $addressM;
             }
+            Log::debug("######");
             return true;
         } catch (Exception $th) {
             return false;
