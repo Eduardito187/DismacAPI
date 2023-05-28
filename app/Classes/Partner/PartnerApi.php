@@ -27,7 +27,6 @@ use App\Models\SalesDetails;
 use App\Models\ShippingAddress;
 use App\Models\StatusOrder;
 use App\Models\TipoDocumento;
-use App\Classes\Product\ProductApi;
 use App\Models\Coupon;
 use App\Models\SalesCoupon;
 use Exception;
@@ -64,10 +63,6 @@ class PartnerApi{
      */
     protected $lastIdOrder = null;
     /**
-     * @var ProductApi
-     */
-    protected $productApi;
-    /**
      * @var array
      */
     protected $listDiscount = [];
@@ -82,7 +77,6 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
-        $this->productApi = new ProductApi();
     }
 
     /**
@@ -125,6 +119,19 @@ class PartnerApi{
     }
 
     /**
+     * @param string $sku
+     * @param int $id_Partner
+     * @return Product
+     */
+    public function getProductBySkuPartner(string $sku, int $id_Partner){
+        $product = Product::where($this->text->getSku(), $sku)->where($this->text->getIdPartner(), $id_Partner)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneSku($sku));
+        }
+        return $product;
+    }
+
+    /**
      * @param array $request
      * @return Sales
      */
@@ -151,7 +158,7 @@ class PartnerApi{
         try {
             $SalesDetails = new SalesDetails();
             $SalesDetails->sales = $this->lastIdOrder;
-            $SalesDetails->product = $this->productApi->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
+            $SalesDetails->product = $this->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
             $SalesDetails->qty = $Detalle[$this->text->getQty()];
             $SalesDetails->discount = $Detalle[$this->text->getTotalDescuento()];
             $SalesDetails->subtotal = $Detalle[$this->text->getSubTotal()];
