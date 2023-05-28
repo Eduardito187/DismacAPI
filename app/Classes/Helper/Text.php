@@ -282,9 +282,17 @@ class Text{
     CONST WAREHOUSE_PRODUCT   = "El producto no existe en el almacen.";
     CONST STOCK_PRODUCT_NONE  = "El producto cuenta con un stock insuficiente.";
     CONST STORE_MAGENTO       = "StoreMagento";
+    CONST STORE_NO_EXIST      = "La tienda seleccionada no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreNone(){
+        return SELF::STORE_NO_EXIST;
     }
 
     /**

@@ -104,7 +104,7 @@ class AddressApi{
     public function getStoreByName(string $name){
         $Store = Store::where($this->text->getName(), $name)->first();
         if (!$Store) {
-            throw new Exception($this->text->getCityNone());
+            throw new Exception($this->text->getStoreNone());
         }
         return $Store;
     }
