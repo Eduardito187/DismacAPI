@@ -108,6 +108,7 @@ class PartnerApi{
         $ExtraAddress = $this->addressApi->getAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
         $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
         $GEO = $this->addressApi->getLocalization($clientAddress[$this->text->getLocalizacion()]);
+        Log::debug("###FIN 1###");
         $this->addressApi->createAddress($this->convertAddress($clientAddress[$this->text->getPais()], $clientAddress[$this->text->getCiudad()], $clientAddress[$this->text->getMunicipio()]), $ExtraAddress, $GEO);
         Log::debug("###FIN###");
         return $this->addressApi->getAddressId();
