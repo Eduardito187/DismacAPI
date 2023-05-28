@@ -104,11 +104,17 @@ class PartnerApi{
      * @return int
      */
     public function verifyShippingAddress(array $clientAddress){
+        Log::debug("###11###");
         $this->addressApi->createAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
+        Log::debug("###12###");
         $ExtraAddress = $this->addressApi->getAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
+        Log::debug("###13###");
         $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
+        Log::debug("###14###");
         $GEO = $this->addressApi->getLocalization($clientAddress[$this->text->getLocalizacion()]);
+        Log::debug("###15###");
         $this->addressApi->createAddress($this->convertAddress($clientAddress[$this->text->getPais()], $clientAddress[$this->text->getCiudad()], $clientAddress[$this->text->getMunicipio()]), $ExtraAddress, $GEO);
+        Log::debug("###16###");
         return $this->addressApi->getAddressId();
     }
 
