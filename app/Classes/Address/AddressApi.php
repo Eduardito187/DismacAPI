@@ -157,6 +157,10 @@ class AddressApi{
                 $Address->created_at = $this->date->getFullDate();
                 $Address->updated_at = null;
                 $Address->save();
+                Log::debug(json_encode($address));
+                Log::debug("id_address_extra => ".$id_address_extra);
+                Log::debug("id_localization => ".$id_localization);
+                Log::debug("###FFF###");
                 $this->address = $Address;
             }else{
                 Log::debug("###---###");
