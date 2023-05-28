@@ -148,13 +148,15 @@ class AddressApi{
             $addressM = $this->getAddress($address, $id_address_extra, $id_localization);
             if (!$addressM) {
                 Log::debug("###***###");
-                Log::debug(json_encode($address));
+                Log::debug("getIdMunicipality => ".$address[$this->text->getIdMunicipality()]);
+                Log::debug("getIdCountry => ".$address[$this->text->getIdCountry()]);
+                Log::debug("getIdCity => ".$address[$this->text->getIdCity()]);
                 Log::debug("id_address_extra => ".$id_address_extra);
                 Log::debug("id_localization => ".$id_localization);
                 $Address = new Address();
-                $Address->id_municipality = $address[$this->text->getIdMunicipality()] ?? $address->id_country;
-                $Address->id_country = $address[$this->text->getIdCountry()] ?? $address->id_municipality;
-                $Address->id_city = $address[$this->text->getIdCity()] ?? $address->id_city;
+                $Address->id_municipality = $address[$this->text->getIdMunicipality()];
+                $Address->id_country = $address[$this->text->getIdCountry()];
+                $Address->id_city = $address[$this->text->getIdCity()];
                 $Address->id_address_extra = $id_address_extra;
                 $Address->id_localization = $id_localization;
                 $Address->created_at = $this->date->getFullDate();
