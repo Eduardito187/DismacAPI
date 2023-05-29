@@ -20,6 +20,7 @@ use App\Models\Campaign;
 use App\Models\ProductPriceStore;
 use App\Models\Store;
 use App\Classes\Address\AddressApi;
+use App\Models\CommittedStock;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\Sales;
@@ -193,8 +194,53 @@ class PartnerApi{
         if ($ProductWarehouse->stock < $Qty) {
             throw new Exception($this->text->getStockNoneProduct());
         }
+        $newStock = $ProductWarehouse->stock - $Qty;
+        $this->updateProductWarehouse($id_product, $idAlmacen, $idCity, $newStock);
+        $this->updateProductStock($id_product, $newStock);
+        $this->committedStock($id_product, $idAlmacen, $Qty);
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $idAlmacen
+     * @param int $Qty
+     */
+    public function committedStock(int $id_product, int $idAlmacen, int $Qty){
+        try {
+            $CommittedStock = new CommittedStock();
+            $CommittedStock->sales = $this->lastIdOrder;
+            $CommittedStock->product = $id_product;
+            $CommittedStock->warehouse = $idAlmacen;
+            $CommittedStock->qty = $Qty;
+            $CommittedStock->status = $this->status->getEnable();
+            $CommittedStock->created_at = $this->date->getFullDate();
+            $CommittedStock->updated_at = null;
+            $CommittedStock->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $idAlmacen
+     * @param int $idCity
+     * @param int $newStock
+     */
+    public function updateProductWarehouse(int $id_product, int $idAlmacen, int $idCity, int $newStock){
         ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->update([
-            $this->text->getStock() => $ProductWarehouse->stock - $Qty,
+            $this->text->getStock() => $newStock,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $newStock
+     */
+    public function updateProductStock(int $id_product, int $newStock){
+        Product::where($this->text->getId(), $id_product)->update([
+            $this->text->getStock() => $newStock,
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
