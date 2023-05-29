@@ -22,8 +22,8 @@ return new class extends Migration
             $table->foreign('warehouse')->references('id')->on('warehouses')->onDelete('cascade');
             $table->integer('qty');
             $table->boolean('status');
-            $table->timestamp('date_limit');
-            $table->timestamp('created_at');
+            $table->timestamp('date_limit')->nullable();
+            $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }
