@@ -16,11 +16,11 @@ class MailOrder{
      */
     protected $text;
 
-    public function __construct(string $to, string $title, string $message) {
+    public function __construct(string $to, string $title, int $idOrden, string $fechaCompromiso) {
         $this->text = new Text();
         $this->to = $to;
         $this->title = $title;
-        $this->message = view('mail.partner.order', ['code' => $message]);
+        $this->message = view('mail.partner.order', ['idOrden' => $idOrden, 'fechaCompromiso' => $fechaCompromiso]);
         /*
         if ($cc != null) {
             if (is_array($cc)) {

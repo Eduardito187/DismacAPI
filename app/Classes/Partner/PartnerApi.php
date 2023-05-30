@@ -36,6 +36,7 @@ use App\Models\Warehouse;
 use Exception;
 
 class PartnerApi{
+    CONST PEDIDO_MARKETPLACE = "Pedido marketplace";
     CONST HISTOY_LAST = 8;
     CONST PENDIENTE = "PENDIENTE";
     CONST CANCELADA = "CANCELADA";
@@ -104,8 +105,6 @@ class PartnerApi{
                     if (!is_null($this->lastIdOrder)) {
                         $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
                         $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()], $request[$this->text->getDatosClientes()]);
-                        $newEmail = new MailOrder($Partner->email, "Código de verificación", $this->lastIdOrder);
-                        $newEmail->createMail();
                     }
                 }
                 return true;
@@ -248,6 +247,8 @@ class PartnerApi{
             $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
             $this->validateStockSku($CiudadId, $idProduct, $Detalle[$this->text->getAlmacenApi()], $Detalle[$this->text->getQty()], $DetalleCliente[$this->text->getFechaCompromiso()]);
         }
+        $newEmail = new MailOrder($Partner->email, self::PEDIDO_MARKETPLACE, $this->lastIdOrder, $DetalleCliente[$this->text->getFechaCompromiso()]);
+        $newEmail->createMail();
     }
 
     /**
