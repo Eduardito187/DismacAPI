@@ -47,7 +47,7 @@ class Stock extends Controller
         $response = array();
         try {
             if (!is_null($request->all()[$this->text->getProductos()])) {
-                $this->catalogApi->changePrices(
+                $this->catalogApi->updateStock(
                     $request->all()[$this->text->getProductos()]
                 );
                 $response = $this->text->getResponseApi($this->catalogApi->getResponseAPI(), $this->text->getQuerySuccess());
