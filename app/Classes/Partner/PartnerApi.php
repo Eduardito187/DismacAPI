@@ -20,6 +20,7 @@ use App\Models\Campaign;
 use App\Models\ProductPriceStore;
 use App\Models\Store;
 use App\Classes\Address\AddressApi;
+use App\Classes\MailOrder;
 use App\Models\CommittedStock;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
@@ -103,6 +104,8 @@ class PartnerApi{
                     if (!is_null($this->lastIdOrder)) {
                         $this->createShippingAddress($idCustomer, $idAddress, $this->lastIdOrder);
                         $this->registerDetailsSale($idCustomer, $Partner, $request[$this->text->getDetalleOrden()], $request[$this->text->getDatosClientes()]);
+                        $newEmail = new MailOrder($Partner->email, "Código de verificación", $this->lastIdOrder);
+                        $newEmail->createMail();
                     }
                 }
                 return true;
