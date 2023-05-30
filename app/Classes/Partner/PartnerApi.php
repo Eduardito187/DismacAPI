@@ -149,7 +149,7 @@ class PartnerApi{
      * @return bool
      */
     public function cancelarOrden(array $request){
-        $Sale = $this->getOrderByApi($request[$this->text->getCode()], $request[$this->text->getType()]);
+        $Sale = $this->getOrderByApi($request[$this->text->getType()], $request[$this->text->getCode()]);
         $this->revertCommmiterProduct($Sale->id, $request[$this->text->getStore()]);
         $this->updateStatusSales($Sale->id, self::CANCELADA);
         return true;
@@ -206,7 +206,7 @@ class PartnerApi{
      * @return bool
      */
     public function completarOrden(array $request){
-        $Sale = $this->getOrderByApi($request[$this->text->getCode()], $request[$this->text->getType()]);
+        $Sale = $this->getOrderByApi($request[$this->text->getType()], $request[$this->text->getCode()]);
         $this->updateStatusSales($Sale->id, self::COMPLETADA);
         return true;
     }
@@ -216,7 +216,7 @@ class PartnerApi{
      * @return bool
      */
     public function cerrarOrden(array $request){
-        $Sale = $this->getOrderByApi($request[$this->text->getCode()], $request[$this->text->getType()]);
+        $Sale = $this->getOrderByApi($request[$this->text->getType()], $request[$this->text->getCode()]);
         $this->updateStatusSales($Sale->id, self::CERRADA);
         return true;
     }
