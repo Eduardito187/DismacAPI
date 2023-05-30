@@ -91,8 +91,8 @@ $SalesDetails = $Orden->SalesDetails;
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="text-align: center;"><p style="margin: 0px;line-height: 15px;"><small style="font-size: 12px;margin-right: 10px"><b>'.$Detail->qty.'</b></small></p></td>
-                                    <td style="text-align: center;"><p style="margin: 0px;line-height: 15px;"><small style="font-size: 12px;"><b>'.$Detail->subtotal.'</b></small></p></td>
+                                    <td style="text-align: center;"><p style="margin: 0px;line-height: 15px;"><small style="font-size: 12px;"><b>'.$Detail->qty.'</b></small></p></td>
+                                    <td style="text-align: center;"><p style="margin: 0px;line-height: 15px;"><small style="font-size: 12px;"><b>'.$Detail->subtotal.' Bs</b></small></p></td>
                                 </tr>';
                             }
                             ?>
