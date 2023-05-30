@@ -523,6 +523,28 @@ class Catalog{
         }
     }
 
+    /**
+     * @param array $products
+     * @return void
+     */
+    public function updateStock(array $products){
+        foreach ($products as $key => $product) {
+            $status = null;
+            try {
+                $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
+                $this->productApi->changeStockApi($product, $Producto);
+                $status = $this->status->getEnable();
+            } catch (Exception $th) {
+                $status = $this->status->getDisable();
+            }
+            $this->listResponse[] = array(
+                $this->text->getSku() => $product[$this->text->getSku()],
+                $this->text->getStatus() => $status,
+                $this->text->getStores() => implode($this->text->getComa(), $product[$this->text->getStores()])
+            );
+        }
+    }
+
     public function removeProductCategory(){
         
     }

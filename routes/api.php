@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Inventory\Category\RemoveProducts;
 use App\Http\Controllers\Api\Inventory\Products\Product as PRODUCT_CATALOG;
 use App\Http\Controllers\Api\Inventory\Products\Validate as VALIDATE_PRODUCT;
 use App\Http\Controllers\Api\Sales\Order;
+use App\Http\Controllers\Api\Inventory\Stock\Stock;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /{id} => destroy <= delete
 
 Route::middleware([CustomValidateToken::class])->group(function () {
+    Route::controller(Partner::class)->group(function(){
+        Route::get('stock', 'index');
+        Route::post('stock', 'store');
+        Route::get('stock/show/{id}', 'show');
+        Route::patch('stock/{id}', 'update');
+        Route::delete('stock/{id}', 'destroy');
+    });
+
     Route::controller(Order::class)->group(function(){
         Route::get('order', 'index');
         Route::post('order/register', 'store');
@@ -206,6 +215,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('currentAccount/getTicketsAccount', 'getTicketsAccount');
         Route::get('currentAccount/getTicketsPartner', 'getTicketsPartner');
     });
+
     Route::controller(AccountSearch::class)->group(function(){
         Route::get('search/account', 'index');
         Route::post('search/account', 'store');
@@ -213,6 +223,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('search/account/{id}', 'update');
         Route::delete('search/account/{id}', 'destroy');
     });
+
     Route::controller(InventorySearch::class)->group(function(){
         Route::get('search/inventory', 'index');
         Route::post('search/inventory', 'store');
@@ -220,6 +231,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('search/inventory/{id}', 'update');
         Route::delete('search/inventory/{id}', 'destroy');
     });
+
     Route::controller(Register::class)->group(function(){
         Route::get('register/account', 'index');
         Route::post('register/account', 'store');
@@ -227,6 +239,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('register/account/{id}', 'update');
         Route::delete('register/account/{id}', 'destroy');
     });
+
     Route::controller(GetProduct::class)->group(function(){
         Route::get('GetProduct', 'index');
         Route::post('GetProduct', 'store');
@@ -235,6 +248,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::delete('GetProduct/{id}', 'destroy');
         Route::post('searchProduct', 'searchProduct');
     });
+
     Route::controller(ReportProducts::class)->group(function(){
         Route::get('report/product', 'index');
         Route::post('report/product', 'store');
@@ -242,6 +256,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('report/product/{id}', 'update');
         Route::delete('report/product/{id}', 'destroy');
     });
+
     Route::controller(Category::class)->group(function(){
         Route::get('partner/inventory/category', 'index');
         Route::post('partner/inventory/category', 'store');
@@ -249,6 +264,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('partner/inventory/category/{id}', 'update');
         Route::delete('partner/inventory/category/{id}', 'destroy');
     });
+
     Route::controller(CategoryInventory::class)->group(function(){
         Route::get('catalog/inventory/category', 'index');
         Route::post('catalog/inventory/category', 'store');
@@ -256,6 +272,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('catalog/inventory/category/{id}', 'update');
         Route::delete('catalog/inventory/category/{id}', 'destroy');
     });
+
     Route::controller(AssignProduct::class)->group(function(){
         Route::get('partner/inventory/AssignProduct', 'index');
         Route::post('partner/inventory/AssignProduct', 'store');
@@ -263,6 +280,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::patch('partner/inventory/AssignProduct/{id}', 'update');
         Route::delete('partner/inventory/AssignProduct/{id}', 'destroy');
     });
+
     Route::controller(VALIDATE_PRODUCT::class)->group(function(){
         Route::get('partner/inventory/Validate', 'index');
         Route::post('partner/inventory/Validate', 'store');

@@ -75,8 +75,6 @@ class ProductApi{
         $this->pictureApi   = new PictureApi();
     }
 
-
-
     /**
      * @param string $code
      * @return int|null
@@ -443,7 +441,7 @@ class ProductApi{
                 $this->setProductAllPrice($res[$this->text->getPreciosPos()], $id_product);
             }
             if (!empty($res[$this->text->getDisponibilidadPos()]) && is_array($res[$this->text->getDisponibilidadPos()]) && !is_null($id_product)) {
-                $this->updateProducStock($id_product, $this->setDisponibility($res[$this->text->getDisponibilidadPos()], $id_product));
+                $this->updateProductStock($id_product, $this->setDisponibility($res[$this->text->getDisponibilidadPos()], $id_product));
             }
         }
     }
@@ -502,7 +500,7 @@ class ProductApi{
      * @param int $id_product
      * @param int $stock
      */
-    public function updateProducStock(int $id_product, int $stock){
+    public function updateProductStock(int $id_product, int $stock){
         Product::where($this->text->getId(), $id_product)->update([
             $this->text->getStock() => $stock
         ]);
@@ -599,6 +597,18 @@ class ProductApi{
         }else{
             return null;
         }
+    }
+
+    /**
+     * @param string $almacen
+     * @return Warehouse
+     */
+    public function getWarehouseByCode(string $almacen){
+        $Warehouse = Warehouse::where($this->text->getAlmacen(), $almacen)->first();
+        if (!$Warehouse) {
+            throw new Exception($this->text->getWarehouseNone());
+        }
+        return $Warehouse;
     }
     
     /**
@@ -791,6 +801,24 @@ class ProductApi{
                 $this->setProductPriceStore($id_price, $store, $Producto->id);
             }
         }
+    }
+    
+    /**
+     * @param array $producto
+     * @param Product $Producto
+     */
+    public function changeStockApi(array $product, Product $Producto){
+        $id_price = $this->getPriceAPI($product);
+        if (is_null($id_price)) {
+            $this->setPriceAPI($product);
+            $id_price = $this->getPriceAPI($product);
+        }
+        $Stock = 0;
+        foreach ($product[$this->text->getWarehouses()] as $key => $warehouse) {
+            $Stock += $warehouse[$this->text->getStock()];
+            $this->updateProductWarehouse($Producto->id, $this->getWarehouseByCode($warehouse[$this->text->getAlmacen()])->id, $warehouse[$this->text->getStock()], $warehouse[$this->text->getStore()]);
+        }
+        $this->updateProductStock($Producto->id, $Stock);
     }
 
     /**
