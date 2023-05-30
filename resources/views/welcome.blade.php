@@ -50,32 +50,32 @@
                         <thead>
                             <tr class="sizeMax">
                                 <th colspan="2" scope="rwo"><p class="pTextMail"><small class="size13"><b>Producto</b></small></p></th>
-                                <th scope="rwo"><p class="pTextMail"><small class="size13"><b>Cantidad</b></small></p></th>
-                                <th scope="rwo"><p class="pTextMail"><small class="size13"><b>Precio</b></small></p></th>
+                                <th scope="row" class="textRight"><p class="pTextMail"><small class="size13"><b>Cantidad</b></small></p></th>
+                                <th scope="row"><p class="pTextMail"><small class="size13"><b>Precio</b></small></p></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td colspan="2">NAME</td>
-                                <td class="textCenter">QTY</td>
+                                <td class="textRight">QTY</td>
                                 <td class="textCenter">BS</td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th colspan="2"></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Subtotal</b></small></p></th>
+                                <th class="textRight"><p class="pTextMail"><small class="size13"><b>Subtotal</b></small></p></th>
                                 <th class="textCenter">450 Bs</th>
                             </tr>
                             <tr>
                                 <th colspan="2"></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Descuentos</b></small></p></th>
+                                <th class="textRight"><p class="pTextMail"><small class="size13"><b>Descuentos</b></small></p></th>
                                 <th class="textCenter">50 Bs</th>
                             </tr>
                             
                             <tr>
                                 <th colspan="2"></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Total</b></small></p></th>
+                                <th class="textRight"><p class="pTextMail"><small class="size13"><b>Total</b></small></p></th>
                                 <th class="textCenter">450 Bs</th>
                             </tr>
                         </tfoot>
