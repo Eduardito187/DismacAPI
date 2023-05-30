@@ -7,7 +7,7 @@
         @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
     </style>
-    <link rel="stylesheet" href="<?php echo asset('../css/mail.css')?>" type="text/css"> 
+    {{ HTML::style('css/mail.css', array('media' => 'print')) }}
 </head>
 
 <body>
