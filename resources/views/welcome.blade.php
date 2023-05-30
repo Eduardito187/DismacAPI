@@ -41,8 +41,8 @@ $Address = $Orden->ShippingAddress->Address;
                         <h5 class="margin5">Datos de envío</h5>
                         <div class="margin5">
                             <p class="pTextMail"><small class="size13">Jesus Diogo López Justiniano</small></p>
-                            <p class="pTextMail"><small class="size13"><?= $Address->Municipio->AddressExtra->extra; ?></small></p>
-                            <p class="pTextMail"><small class="size13"><?= $Address->Municipio->AddressExtra->address; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->AddressExtra->extra; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->AddressExtra->address; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->Municipio->name; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->Ciudad->name; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->Pais->name; ?></small></p>
