@@ -74,8 +74,18 @@ $SalesDetails = $Orden->SalesDetails;
                             <?php
                             foreach ($SalesDetails as $key => $Detail) {
                                 echo '<tr>
-                                    <td colspan="2"><img src="'.$PictureApi->productFirstPicture($Detail->Product->id).'" class="imageProduct" /></td>
-                                    <td class="textCenter"><p class="pTextMail"><small class="size13"><b>'.$Detail->qty.'</b></small></p></td>
+                                    <td colspan="2">
+                                        <div class="contentMaxFlex">
+                                            <div class="contentListImage">
+                                                <img src="'.$PictureApi->productFirstPicture($Detail->Product->id).'" class="imageProduct" />
+                                            </div>
+                                            <div class="contentListProduct">
+                                                <h5 class="margin5">'.$Detail->Product->name.'</h5>
+                                                <h6 class="margin5">'.$Detail->Product->sku.'</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="textCenter"><p class="pTextMail"><small class="size13 marginRight"><b>'.$Detail->qty.'</b></small></p></td>
                                     <td class="textCenter"><p class="pTextMail"><small class="size13"><b>'.$Detail->subtotal.'</b></small></p></td>
                                 </tr>';
                             }
