@@ -1,0 +1,73 @@
+body {
+    font-family: 'Muli', sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 400;
+    line-height: 1.58;
+    letter-spacing: -.003em;
+    font-size: 20px;
+    padding: 40px;
+}
+.sectionImage{
+    width: 100%;
+    background-color: white;
+}
+.imageDismac{
+    width: 100px;
+}
+.contentSection{
+    width: 100%;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+}
+.pTextMail{
+    margin: 0px;
+    line-height: 15px;
+}
+.size13{
+    font-size: 12px;
+}
+.margin5{
+    margin: 5px;
+}
+.sizeMax{
+    width: 100%;
+}
+.margin0{
+    margin: 0px;
+}
+.contentLinks{
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+}
+.inlineBlock{
+    display: inline-block;
+}
+.contentImage{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+.centerContent{
+    margin-left: 10%;
+    width: 80%;
+    background-color: white;
+}
+.contentMaxFlex{
+    width: 100%;
+    display: flex;
+}
+.contentColumnFlex{
+    width: 50%;
+    display: inline-block;
+}
+.contentTable{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    margin: 5px;
+}
+.textCenter{
+    text-align: center;
+}

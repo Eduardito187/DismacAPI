@@ -283,9 +283,25 @@ class Text{
     CONST STOCK_PRODUCT_NONE  = "El producto cuenta con un stock insuficiente.";
     CONST STORE_MAGENTO       = "StoreMagento";
     CONST STORE_NO_EXIST      = "La tienda seleccionada no existe.";
+    CONST FECHA_COMPROMISO    = "FechaCompromiso";
+    CONST ORDER_NONE          = "La orden no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrdenNone(){
+        return SELF::ORDER_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFechaCompromiso(){
+        return SELF::FECHA_COMPROMISO;
     }
 
     /**

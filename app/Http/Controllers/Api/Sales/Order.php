@@ -46,6 +46,51 @@ class Order extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelar(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->cancelarOrden($request->all()), $this->text->getOrderSuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function completar(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->completarOrden($request->all()), $this->text->getOrderSuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cerrar(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->cerrarOrden($request->all()), $this->text->getOrderSuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
 
     /**
      * Display the specified resource.
