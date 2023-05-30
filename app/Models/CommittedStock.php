@@ -22,11 +22,11 @@ class CommittedStock extends Model
     public $timestamps = false;
 
     public function Sales(){
-        return $this->hasOne(Sales::class, 'id', 'product');
+        return $this->hasOne(Sales::class, 'id', 'sales');
     }
 
     public function Product(){
-        return $this->hasOne(Product::class, 'id', 'sales');
+        return $this->hasOne(Product::class, 'id', 'product');
     }
 
     public function Warehouse(){
