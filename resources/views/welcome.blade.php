@@ -57,8 +57,8 @@
                         <tbody>
                             <tr>
                                 <td colspan="2">NAME</td>
-                                <td class="textRight">QTY</td>
-                                <td class="textCenter">BS</td>
+                                <td class="textRight"><p class="pTextMail"><small class="size13"><b>QTY</b></small></p></td>
+                                <td class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></td>
                             </tr>
                         </tbody>
                         <tfoot>
