@@ -6,8 +6,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+        @import url('./../css//mail.css');
     </style>
-    {{ HTML::style('css/mail.css', array('media' => 'print')) }}
 </head>
 
 <body>
