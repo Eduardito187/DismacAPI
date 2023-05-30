@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /{id} => destroy <= delete
 
 Route::middleware([CustomValidateToken::class])->group(function () {
-    Route::controller(Partner::class)->group(function(){
+    Route::controller(Stock::class)->group(function(){
         Route::get('stock', 'index');
         Route::post('stock', 'store');
         Route::get('stock/show/{id}', 'show');

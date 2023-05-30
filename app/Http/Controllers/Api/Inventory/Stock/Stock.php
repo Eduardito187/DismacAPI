@@ -44,10 +44,18 @@ class Stock extends Controller
     public function store(Request $request)
     {
         $response = array();
-        $this->catalogApi->updateStock(
-            $request->all()[$this->text->getProductos()]
-        );
-        $response = $this->text->getResponseApi($this->catalogApi->getResponseAPI(), $this->text->getQuerySuccess());
+        try {
+            if (!is_null($request->all()[$this->text->getProductos()])) {
+                $this->catalogApi->updateStock(
+                    $request->all()[$this->text->getProductos()]
+                );
+                $response = $this->text->getResponseApi($this->catalogApi->getResponseAPI(), $this->text->getQuerySuccess());
+            }else{
+                throw new Exception($this->text->getErrorParametros());
+            }
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
         return response()->json($response);
     }
 
