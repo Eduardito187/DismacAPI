@@ -7,6 +7,7 @@ $fechaCompromiso = "2023-05-31 00:00:00";
 $Orden = Sales::find($idOrden);
 $Address = $Orden->ShippingAddress->Address;
 $Customer = $Orden->ShippingAddress->Customer;
+$SalesDetails = $Orden->SalesDetails;
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,7 +54,8 @@ $Customer = $Orden->ShippingAddress->Customer;
                         <h5 class="margin5">Datos de facturación</h5>
                         <div class="margin5">
                             <p class="pTextMail"><small class="size13"><?= $Customer->nombre." ".$Customer->apellido_paterno." ".$Customer->apellido_materno; ?></small></strong>
-                            <p class="pTextMail"><small class="size13">CI/NIT: 7636490</small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Customer->TipoDocumento->type; ?>: <?= $Customer->num_documento; ?></small></p>
+                            <p class="pTextMail"><small class="size13">Telf: <?= $Customer->num_telefono; ?></small></p>
                         </div>
                     </div>
                 </div>
@@ -67,28 +69,34 @@ $Customer = $Orden->ShippingAddress->Customer;
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td colspan="2">NAME</td>
-                                <td class="textRight"><p class="pTextMail"><small class="size13"><b>QTY</b></small></p></td>
-                                <td class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></td>
-                            </tr>
+                            <?php
+                            foreach ($SalesDetails as $key => $Detail) {
+                                echo '
+                                <tr>
+                                    <td colspan="2">NAME</td>
+                                    <td class="textRight"><p class="pTextMail"><small class="size13"><b>'.$Detail->qty.'</b></small></p></td>
+                                    <td class="textCenter"><p class="pTextMail"><small class="size13"><b>'.$Detail->subtotal.'</b></small></p></td>
+                                </tr>
+                                ';
+                            }
+                            ?>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Subtotal</b></small></p></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b><?= $Orden->subtotal; ?> Bs</b></b></small></p></th>
                             </tr>
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Descuentos</b></small></p></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b><?= $Orden->discount; ?> Bs</b></small></p></th>
                             </tr>
                             
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Total</b></small></p></th>
-                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b><?= $Orden->total; ?> Bs</b></b></small></p></th>
                             </tr>
                         </tfoot>
                     </table>
