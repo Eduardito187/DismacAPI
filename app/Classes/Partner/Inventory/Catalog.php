@@ -536,6 +536,7 @@ class Catalog{
                 $this->productApi->changeStockApi($product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {
+                Log::debug("Stock => ".$th->getMessage());
                 $status = $this->status->getDisable();
             }
             $this->listResponse[] = array(

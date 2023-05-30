@@ -814,7 +814,6 @@ class ProductApi{
             $this->updateProductWarehouse($Producto->id, $this->getWarehouseByCode($warehouse[$this->text->getAlmacen()])->id, $warehouse[$this->text->getStock()], $warehouse[$this->text->getStore()]);
         }
         $this->updateProductStock($Producto->id, $Stock);
-        Log::debug("Stock => ".$Stock);
     }
 
     /**
