@@ -20,7 +20,7 @@ class MailOrder{
         $this->text = new Text();
         $this->to = $to;
         $this->title = $title;
-        $this->message = view('mail.partner.validate', ['code' => $message]);
+        $this->message = view('mail.partner.order', ['code' => $message]);
         /*
         if ($cc != null) {
             if (is_array($cc)) {
