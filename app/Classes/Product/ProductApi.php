@@ -808,11 +808,6 @@ class ProductApi{
      * @param Product $Producto
      */
     public function changeStockApi(array $product, Product $Producto){
-        $id_price = $this->getPriceAPI($product);
-        if (is_null($id_price)) {
-            $this->setPriceAPI($product);
-            $id_price = $this->getPriceAPI($product);
-        }
         $Stock = 0;
         foreach ($product[$this->text->getWarehouses()] as $key => $warehouse) {
             $Stock += $warehouse[$this->text->getStock()];

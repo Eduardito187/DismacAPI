@@ -523,6 +523,7 @@ class Catalog{
         }
     }
 
+
     /**
      * @param array $products
      * @return void
@@ -531,7 +532,7 @@ class Catalog{
         foreach ($products as $key => $product) {
             $status = null;
             try {
-                $Producto = $this->productApi->getProductBySku($product[$this->text->getSku()]);
+                $Producto = $this->productApi->getProductBySkuPartner($product[$this->text->getSku()], $product[$this->text->getPartnerId()]);
                 $this->productApi->changeStockApi($product, $Producto);
                 $status = $this->status->getEnable();
             } catch (Exception $th) {

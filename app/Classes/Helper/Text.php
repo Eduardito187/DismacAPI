@@ -289,9 +289,17 @@ class Text{
     CONST ORDER_CANCELADA     = "La orden se cancelo con exito.";
     CONST ORDER_COMPLETADA    = "La orden se finalizo con exito.";
     CONST ORDER_CERRADA       = "La orden se cerro con exito.";
+    CONST PARTNER_ID_API      = "PartnerId";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerId(){
+        return SELF::PARTNER_ID_API;
     }
 
     /**

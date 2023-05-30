@@ -14,7 +14,6 @@ class Stock extends Controller
 {
     protected $addressApi;
     protected $accountApi;
-    protected $partnerApi;
     protected $text;
     protected $status;
     protected $catalogApi;
