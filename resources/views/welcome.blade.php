@@ -6,6 +6,7 @@ $idOrden = 1;
 $fechaCompromiso = "2023-05-31 00:00:00";
 $Orden = Sales::find($idOrden);
 $Address = $Orden->ShippingAddress->Address;
+$Customer = $Orden->ShippingAddress->Customer;
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +41,7 @@ $Address = $Orden->ShippingAddress->Address;
                     <div class="contentColumnFlex">
                         <h5 class="margin5">Datos de envío</h5>
                         <div class="margin5">
-                            <p class="pTextMail"><small class="size13">Jesus Diogo López Justiniano</small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Customer->nombre." ".$Customer->apellido_paterno." ".$Customer->apellido_materno; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->AddressExtra->extra; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->AddressExtra->address; ?></small></p>
                             <p class="pTextMail"><small class="size13"><?= $Address->Municipio->name; ?></small></p>
@@ -51,7 +52,7 @@ $Address = $Orden->ShippingAddress->Address;
                     <div class="contentColumnFlex">
                         <h5 class="margin5">Datos de facturación</h5>
                         <div class="margin5">
-                            <p class="pTextMail"><small class="size13">Jesus Diogo López Justiniano</small></strong>
+                            <p class="pTextMail"><small class="size13"><?= $Customer->nombre." ".$Customer->apellido_paterno." ".$Customer->apellido_materno; ?></small></strong>
                             <p class="pTextMail"><small class="size13">CI/NIT: 7636490</small></p>
                         </div>
                     </div>
