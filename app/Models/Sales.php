@@ -33,7 +33,7 @@ class Sales extends Model
     }
 
     public function ShippingAddress(){
-        return $this->hasMany(ShippingAddress::class, 'sale', 'id');
+        return $this->hasOne(ShippingAddress::class, 'sale', 'id');
     }
 
     public function SalesDetails(){

@@ -1,3 +1,12 @@
+<?php
+
+use App\Models\Sales;
+
+$idOrden = 1;
+$fechaCompromiso = "2023-05-31 00:00:00";
+$Orden = Sales::find($idOrden);
+$Address = $Orden->ShippingAddress->Address;
+?>
 <!DOCTYPE html>
 <html>
 <title>Código de verificación</title>
@@ -18,23 +27,25 @@
         <div class="contentSection">
             <div class="centerContent">
                 <div class="sizeMax">
-                    <h4 class="margin5">Número de orden: 20218221</h4>
+                    <h4 class="margin5">Número de orden: <?= $Orden->nro_proforma; ?></h4>
                     <hr class="margin0"/>
-                    <h6 class="margin5">Orden realizada el 29 mayo de 2023 21:11:34</h6>
+                    <h6 class="margin5">Fecha de realización <?= $Orden->created_at; ?></h6>
+                    <h6 class="margin5">Fecha de entrega <?= $fechaCompromiso; ?></h6>
                 </div>
                 <div class="sizeMax margin5">
-                    <p class="pTextMail"><small class="size13"><b>Nro de factura:</b> 15326</small></p>
-                    <p class="pTextMail"><small class="size13"><b>Nro de proforma:</b> 145698</small></p>
-                    <p class="pTextMail"><small class="size13"><b>Nro de control:</b> 1452636</small></p>
+                    <p class="pTextMail"><small class="size13"><b>Nro de factura:</b> <?= $Orden->nro_factura; ?></small></p>
+                    <p class="pTextMail"><small class="size13"><b>Nro de control:</b> <?= $Orden->nro_control; ?></small></p>
                 </div>
                 <div class="contentMaxFlex">
                     <div class="contentColumnFlex">
                         <h5 class="margin5">Datos de envío</h5>
                         <div class="margin5">
                             <p class="pTextMail"><small class="size13">Jesus Diogo López Justiniano</small></p>
-                            <p class="pTextMail"><small class="size13">Diagonal 21</small></p>
-                            <p class="pTextMail"><small class="size13">Santa Cruz de la Sierra</small></p>
-                            <p class="pTextMail"><small class="size13">Bolivia</small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->Municipio->AddressExtra->extra; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->Municipio->AddressExtra->address; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->Municipio->name; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->Ciudad->name; ?></small></p>
+                            <p class="pTextMail"><small class="size13"><?= $Address->Pais->name; ?></small></p>
                         </div>
                     </div>
                     <div class="contentColumnFlex">
@@ -65,18 +76,18 @@
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Subtotal</b></small></p></th>
-                                <th class="textCenter">450 Bs</th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
                             </tr>
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Descuentos</b></small></p></th>
-                                <th class="textCenter">50 Bs</th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
                             </tr>
                             
                             <tr>
                                 <th colspan="2"></th>
                                 <th class="textRight"><p class="pTextMail"><small class="size13"><b>Total</b></small></p></th>
-                                <th class="textCenter">450 Bs</th>
+                                <th class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></th>
                             </tr>
                         </tfoot>
                     </table>
