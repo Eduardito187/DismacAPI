@@ -54,7 +54,6 @@
                                 <th scope="row"><p class="pTextMail"><small class="size13"><b>Precio</b></small></p></th>
                             </tr>
                         </thead>
-                        <hr class="margin0"/>
                         <tbody>
                             <tr>
                                 <td colspan="2">NAME</td>
@@ -62,7 +61,6 @@
                                 <td class="textCenter"><p class="pTextMail"><small class="size13"><b>Bs</b></small></p></td>
                             </tr>
                         </tbody>
-                        <hr class="margin0"/>
                         <tfoot>
                             <tr>
                                 <th colspan="2"></th>
