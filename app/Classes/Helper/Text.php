@@ -286,9 +286,33 @@ class Text{
     CONST FECHA_COMPROMISO    = "FechaCompromiso";
     CONST ORDER_NONE          = "La orden no existe.";
     CONST PRODUCT_NONE        = "El producto no existe.";
+    CONST ORDER_CANCELADA     = "La orden se cancelo con exito.";
+    CONST ORDER_COMPLETADA    = "La orden se finalizo con exito.";
+    CONST ORDER_CERRADA       = "La orden se cerro con exito.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrdenCancelada(){
+        return SELF::ORDER_CANCELADA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrdenCompletada(){
+        return SELF::ORDER_COMPLETADA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrdenCerrada(){
+        return SELF::ORDER_CERRADA;
     }
 
     /**

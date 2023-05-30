@@ -55,7 +55,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $response = $this->text->getResponseApi($this->partnerApi->cancelarOrden($request->all()), $this->text->getOrderSuccess());
+            $response = $this->text->getResponseApi($this->partnerApi->cancelarOrden($request->all()), $this->text->getOrdenCancelada());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
@@ -70,7 +70,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $response = $this->text->getResponseApi($this->partnerApi->completarOrden($request->all()), $this->text->getOrderSuccess());
+            $response = $this->text->getResponseApi($this->partnerApi->completarOrden($request->all()), $this->text->getOrdenCompletada());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
@@ -85,7 +85,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $response = $this->text->getResponseApi($this->partnerApi->cerrarOrden($request->all()), $this->text->getOrderSuccess());
+            $response = $this->text->getResponseApi($this->partnerApi->cerrarOrden($request->all()), $this->text->getOrdenCerrada());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
