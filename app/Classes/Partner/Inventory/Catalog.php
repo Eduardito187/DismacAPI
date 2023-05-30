@@ -540,8 +540,7 @@ class Catalog{
             }
             $this->listResponse[] = array(
                 $this->text->getSku() => $product[$this->text->getSku()],
-                $this->text->getStatus() => $status,
-                $this->text->getStores() => implode($this->text->getComa(), $product[$this->text->getStores()])
+                $this->text->getStatus() => $status
             );
         }
     }
