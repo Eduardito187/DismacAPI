@@ -7,7 +7,7 @@
         @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
     </style>
-    <link rel="stylesheet" href="{{URL::asset('./storage/css/mail.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('storage/css/mail.css')}}">
 </head>
 
 <body>
