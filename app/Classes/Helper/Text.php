@@ -285,9 +285,17 @@ class Text{
     CONST STORE_NO_EXIST      = "La tienda seleccionada no existe.";
     CONST FECHA_COMPROMISO    = "FechaCompromiso";
     CONST ORDER_NONE          = "La orden no existe.";
+    CONST PRODUCT_NONE        = "El producto no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductNone(){
+        return SELF::PRODUCT_NONE;
     }
 
     /**

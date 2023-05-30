@@ -150,8 +150,55 @@ class PartnerApi{
      */
     public function cancelarOrden(array $request){
         $Sale = $this->getOrderByApi($request[$this->text->getCode()], $request[$this->text->getType()]);
+        $this->revertCommmiterProduct($Sale->id, $request[$this->text->getStore()]);
         $this->updateStatusSales($Sale->id, self::CANCELADA);
         return true;
+    }
+
+    /**
+     * @param int $orderId
+     */
+    public function getCommitedProductByOrderId(int $orderId){
+        return CommittedStock::where($this->text->getColumSale(), $orderId)->get();
+    }
+
+    /**
+     * @param int $orderId
+     * @param int $store
+     */
+    public function revertCommmiterProduct(int $orderId, int $store){
+        $CommittedStocks = $this->getCommitedProductByOrderId($orderId);
+        $this->proccessCommittedStock($CommittedStocks, $store);
+    }
+
+    /**
+     * @param mixed $CommittedStocks
+     * @param int $store
+     */
+    public function proccessCommittedStock(mixed $CommittedStocks, int $store){
+        foreach ($CommittedStocks as $key => $CommittedStock) {
+            $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $CommittedStock->product)->where($this->text->getIdWarehouse(), $CommittedStock->warehouse)->where($this->text->getIdStore(), $store)->first();
+            if (!$ProductWarehouse) {
+                throw new Exception($this->text->getWarehouseProductNone());
+            }
+            $newStock = $ProductWarehouse->stock + $CommittedStock->qty;
+            $this->updateProductWarehouse($CommittedStock->product, $CommittedStock->warehouse, $store, $newStock);
+            $this->disableCommittedStock($CommittedStock->sales, $CommittedStock->product, $CommittedStock->warehouse);
+            $newStock = $CommittedStock->Product->stock + $CommittedStock->qty;
+            $this->updateProductStock($CommittedStock->product, $newStock);
+        }
+    }
+
+    /**
+     * @param int $idSale
+     * @param int $idProduc
+     * @param int $idWarehouse\
+     */
+    public function disableCommittedStock(int $idSale, int $idProduc, int $idWarehouse){
+        CommittedStock::where($this->text->getColumSale(), $idSale)->where($this->text->getProduct(), $idProduc)->where($this->text->getWarehouse(), $idWarehouse)->update([
+            $this->text->getStatus() => $this->status->getDisable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
     
     /**
@@ -194,6 +241,18 @@ class PartnerApi{
     }
 
     /**
+     * @param int $Id
+     * @return Product
+     */
+    public function getProductById(int $Id){
+        $product = Product::find($Id);
+        if (!$product) {
+            throw new Exception($this->text->getProductNone());
+        }
+        return $product;
+    }
+
+    /**
      * @param array $request
      * @return Sales
      */
@@ -215,13 +274,14 @@ class PartnerApi{
 
     /**
      * @param array $Detalle
+     * @return Product
      */
     public function createDetailSales(Partner $Partner, array $Detalle){
         try {
-            $idProduct = $this->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id)->id;
+            $Product = $this->getProductBySkuPartner($Detalle[$this->text->getSkuApi()], $Partner->id);
             $SalesDetails = new SalesDetails();
             $SalesDetails->sales = $this->lastIdOrder;
-            $SalesDetails->product = $idProduct;
+            $SalesDetails->product = $Product->id;
             $SalesDetails->qty = $Detalle[$this->text->getQty()];
             $SalesDetails->discount = $Detalle[$this->text->getTotalDescuento()];
             $SalesDetails->subtotal = $Detalle[$this->text->getSubTotal()];
@@ -229,7 +289,7 @@ class PartnerApi{
             $SalesDetails->created_at = $this->date->getFullDate();
             $SalesDetails->updated_at = null;
             $SalesDetails->save();
-            return $idProduct;
+            return $Product;
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
@@ -243,9 +303,9 @@ class PartnerApi{
     public function registerDetailsSale(int $idCustomer, Partner $Partner, array $DetalleOrden, array $DetalleCliente){
         $CiudadId = $this->addressApi->getStoreByName($DetalleCliente[$this->text->getStoreMagento()])->id;
         foreach ($DetalleOrden as $key => $Detalle) {
-            $idProduct = $this->createDetailSales($Partner, $Detalle);
+            $Product = $this->createDetailSales($Partner, $Detalle);
             $this->registerDiscountSale($idCustomer, $Partner->id, $Detalle[$this->text->getDescuentos()]);
-            $this->validateStockSku($CiudadId, $idProduct, $Detalle[$this->text->getAlmacenApi()], $Detalle[$this->text->getQty()], $DetalleCliente[$this->text->getFechaCompromiso()]);
+            $this->validateStockSku($CiudadId, $Product, $Detalle[$this->text->getAlmacenApi()], $Detalle[$this->text->getQty()], $DetalleCliente[$this->text->getFechaCompromiso()]);
         }
         $newEmail = new MailOrder($Partner->email, self::PEDIDO_MARKETPLACE, $this->lastIdOrder, $DetalleCliente[$this->text->getFechaCompromiso()]);
         $newEmail->createMail();
@@ -253,13 +313,13 @@ class PartnerApi{
 
     /**
      * @param int $idCity
-     * @param int $id_product
+     * @param Product $Product
      * @param string $almacen
      * @param string $FechaCompromiso
      */
-    public function validateStockSku(int $idCity, int $id_product, string $almacen, int $Qty, string $FechaCompromiso) {
+    public function validateStockSku(int $idCity, Product $Product, string $almacen, int $Qty, string $FechaCompromiso) {
         $idAlmacen = $this->getWarehouseByAlmacen($almacen)->id;
-        $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->first();
+        $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $Product->id)->where($this->text->getIdWarehouse(), $idAlmacen)->where($this->text->getIdStore(), $idCity)->first();
         if (!$ProductWarehouse) {
             throw new Exception($this->text->getWarehouseProductNone());
         }
@@ -267,9 +327,10 @@ class PartnerApi{
             throw new Exception($this->text->getStockNoneProduct());
         }
         $newStock = $ProductWarehouse->stock - $Qty;
-        $this->updateProductWarehouse($id_product, $idAlmacen, $idCity, $newStock);
-        $this->updateProductStock($id_product, $newStock);
-        $this->committedStock($id_product, $idAlmacen, $Qty, $FechaCompromiso);
+        $this->updateProductWarehouse($Product->id, $idAlmacen, $idCity, $newStock);
+        $this->committedStock($Product->id, $idAlmacen, $Qty, $FechaCompromiso);
+        $newStock = $Product->stock - $Qty;
+        $this->updateProductStock($Product->id, $newStock);
     }
 
     /**
