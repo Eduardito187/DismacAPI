@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\Sales;
+use App\Classes\Picture\PictureApi;
 
+$PictureApi = new PictureApi();
 $idOrden = 1;
 $fechaCompromiso = "2023-05-31 00:00:00";
 $Orden = Sales::find($idOrden);
@@ -71,13 +73,11 @@ $SalesDetails = $Orden->SalesDetails;
                         <tbody>
                             <?php
                             foreach ($SalesDetails as $key => $Detail) {
-                                echo '
-                                <tr>
-                                    <td colspan="2">NAME</td>
-                                    <td class="textRight"><p class="pTextMail"><small class="size13"><b>'.$Detail->qty.'</b></small></p></td>
+                                echo '<tr>
+                                    <td colspan="2"><img src="'.$PictureApi->productFirstPicture($Detail->Product->id).'" class="imageProduct" /></td>
+                                    <td class="textCenter"><p class="pTextMail"><small class="size13"><b>'.$Detail->qty.'</b></small></p></td>
                                     <td class="textCenter"><p class="pTextMail"><small class="size13"><b>'.$Detail->subtotal.'</b></small></p></td>
-                                </tr>
-                                ';
+                                </tr>';
                             }
                             ?>
                         </tbody>
