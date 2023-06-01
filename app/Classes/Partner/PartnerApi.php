@@ -117,6 +117,19 @@ class PartnerApi{
     }
 
     /**
+     * @param array $request
+     * @param string $ip
+     * @return array
+     */
+    public function searchSale(array $request, string $ip){
+        $this->getStatusOrderId($request[$this->text->getStatus()]);
+        $request[$this->text->getQuery()];
+        $request[$this->text->getFilters()];
+        $request[$this->text->getFilters()][$this->text->getDateIni()];
+        $request[$this->text->getFilters()][$this->text->getDateEnd()];
+    }
+
+    /**
      * @param string $code
      * @return string
      */

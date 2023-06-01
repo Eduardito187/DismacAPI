@@ -67,6 +67,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('order/cancelar', 'cancelar');
         Route::post('order/completar', 'completar');
         Route::post('order/cerrar', 'cerrar');
+        Route::post('order/search', 'store');
         Route::get('order/show/{id}', 'show');
         Route::patch('order/{id}', 'update');
         Route::delete('order/{id}', 'destroy');

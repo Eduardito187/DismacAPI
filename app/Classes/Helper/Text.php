@@ -290,9 +290,33 @@ class Text{
     CONST ORDER_COMPLETADA    = "La orden se finalizo con exito.";
     CONST ORDER_CERRADA       = "La orden se cerro con exito.";
     CONST PARTNER_ID_API      = "PartnerId";
+    CONST FILTERS             = "filters";
+    CONST DATE_INI            = "date_ini";
+    CONST DATE_END            = "date_end";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateIni(){
+        return SELF::DATE_INI;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateEnd(){
+        return SELF::DATE_END;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilters(){
+        return SELF::FILTERS;
     }
 
     /**

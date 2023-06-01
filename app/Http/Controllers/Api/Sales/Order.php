@@ -36,6 +36,23 @@ class Order extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function search(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->searchSale($request->all(), $request->ip()), $this->text->getSuccessSearch());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $response = array();
