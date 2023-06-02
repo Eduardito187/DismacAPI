@@ -165,10 +165,26 @@ class PartnerApi{
                 $this->text->getNroControl() => $Sale->nro_control,
                 $this->text->getNroFactura() => $Sale->nro_factura,
                 $this->text->getNroProforma() => $Sale->nro_proforma,
-                $this->text->getIp() => $Sale->ip_client
+                $this->text->getIp() => $Sale->ip_client,
+                $this->text->getProducts() => $Sale->products,
+                $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress)
             );
         }
         return $data;
+    }
+
+    public function getCustomerOrder($ShippingAddress){
+        $Customer = $ShippingAddress->Customer;
+        return array(
+            $this->text->getNombre() => $Customer->nombre,
+            $this->text->getColApellidoPaterno() => $Customer->apellido_paterno,
+            $this->text->getColApellidoMaterno() => $Customer->apellido_materno,
+            $this->text->getEmail() => $Customer->email,
+            $this->text->getColNumTelf() => $Customer->num_telefono,
+            $this->text->getColNumDoc() => $Customer->num_documento,
+            $this->text->getColTipoDoc() => $Customer->TipoDocumento->type,
+            $this->text->getId() => $Customer->id
+        );
     }
 
     /**
