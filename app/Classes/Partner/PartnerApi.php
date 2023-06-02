@@ -42,6 +42,7 @@ class PartnerApi{
     CONST CANCELADA = "CANCELADA";
     CONST CERRADA = "CERRADA";
     CONST COMPLETADA = "COMPLETADA";
+    CONST DEFAULT_STRING = "";
     /**
      * @var Partner
      */
@@ -117,16 +118,51 @@ class PartnerApi{
     }
 
     /**
+     * @param string $query
+     * @param int $status
+     * @param string $from_date
+     * @param string $to_date
+     * @return Sales[]
+     */
+    public function getFiltersOrder(string $query, int $status, string $from_date, string $to_date){
+        $Sales = Sales::where($this->text->getStatus(), $status);
+        if ($from_date != self::DEFAULT_STRING && $to_date != self::DEFAULT_STRING) {
+            $Sales->whereBetween($this->text->getCreated(), [$from_date, $to_date]);
+        }else if ($from_date != self::DEFAULT_STRING && $to_date == self::DEFAULT_STRING) {
+            $Sales->whereDate($this->text->getCreated(), '>=' ,$from_date);
+        }else if ($from_date == self::DEFAULT_STRING && $to_date != self::DEFAULT_STRING) {
+            $Sales->whereDate($this->text->getCreated(), '<=' ,$to_date);
+        }
+        return $Sales->get();
+    }
+
+    /**
      * @param array $request
      * @param string $ip
      * @return array
      */
     public function searchSale(array $request, string $ip){
-        $this->getStatusOrderId($request[$this->text->getStatus()]);
-        $request[$this->text->getQuery()];
-        $request[$this->text->getFilters()];
-        $request[$this->text->getFilters()][$this->text->getDateIni()];
-        $request[$this->text->getFilters()][$this->text->getDateEnd()];
+        $Sales = $this->getFiltersOrder(
+            $request[$this->text->getQuery()],
+            $this->getStatusOrderId($request[$this->text->getStatus()])->status,
+            $request[$this->text->getFilters()][$this->text->getDateIni()] ?? self::DEFAULT_STRING,
+            $request[$this->text->getFilters()][$this->text->getDateEnd()] ?? self::DEFAULT_STRING
+        );
+        return $this->searchArraySale($Sales);
+    }
+
+    /**
+     * @param mixed $Sales
+     * @return array
+     */
+    public function searchArraySale($Sales){
+        $data = array();
+        foreach ($Sales as $key => $Sale) {
+            $data[] = array(
+                $this->text->getId() => $Sale->id
+            );
+        }
+        return $data;
     }
 
     /**
