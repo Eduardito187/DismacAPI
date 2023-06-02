@@ -158,7 +158,14 @@ class PartnerApi{
         $data = array();
         foreach ($Sales as $key => $Sale) {
             $data[] = array(
-                $this->text->getId() => $Sale->id
+                $this->text->getId() => $Sale->id,
+                $this->text->getDescuentos() => $Sale->discount,
+                $this->text->getSubTotal() => $Sale->subtotal,
+                $this->text->getTotal() => $Sale->total,
+                $this->text->getNroControl() => $Sale->nro_control,
+                $this->text->getNroFactura() => $Sale->nro_factura,
+                $this->text->getNroProforma() => $Sale->nro_proforma,
+                $this->text->getIp() => $Sale->ip_client
             );
         }
         return $data;

@@ -293,9 +293,17 @@ class Text{
     CONST FILTERS             = "filters";
     CONST DATE_INI            = "date_ini";
     CONST DATE_END            = "date_end";
+    CONST IP                  = "ip";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(){
+        return SELF::IP;
     }
 
     /**
