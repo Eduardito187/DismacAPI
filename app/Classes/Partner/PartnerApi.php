@@ -143,7 +143,7 @@ class PartnerApi{
     public function searchSale(array $request){
         $Sales = $this->getFiltersOrder(
             $request[$this->text->getQuery()],
-            $this->getStatusOrderId($request[$this->text->getStatus()])->status,
+            $this->getStatusOrderId($request[$this->text->getStatus()])->id,
             $request[$this->text->getFilters()][$this->text->getDateIni()] ?? self::DEFAULT_STRING,
             $request[$this->text->getFilters()][$this->text->getDateEnd()] ?? self::DEFAULT_STRING
         );
