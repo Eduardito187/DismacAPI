@@ -40,7 +40,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $response = $this->text->getResponseApi($this->partnerApi->searchSale($request->all(), $request->ip()), $this->text->getSuccessSearch());
+            $response = $this->text->getResponseApi($this->partnerApi->searchSale($request->all()), $this->text->getSuccessSearch());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }

@@ -138,10 +138,9 @@ class PartnerApi{
 
     /**
      * @param array $request
-     * @param string $ip
      * @return array
      */
-    public function searchSale(array $request, string $ip){
+    public function searchSale(array $request){
         $Sales = $this->getFiltersOrder(
             $request[$this->text->getQuery()],
             $this->getStatusOrderId($request[$this->text->getStatus()])->status,
