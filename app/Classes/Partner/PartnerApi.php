@@ -118,13 +118,13 @@ class PartnerApi{
     }
 
     /**
-     * @param string $query
+     * @param string|null $query
      * @param int $status
      * @param string $from_date
      * @param string $to_date
      * @return Sales[]
      */
-    public function getFiltersOrder(string $query, int $status, string $from_date, string $to_date){
+    public function getFiltersOrder(string|null $query, int $status, string $from_date, string $to_date){
         $Sales = Sales::where($this->text->getStatus(), $status);
         if ($from_date != self::DEFAULT_STRING && $to_date != self::DEFAULT_STRING) {
             $Sales->whereBetween($this->text->getCreated(), [$from_date, $to_date]);
