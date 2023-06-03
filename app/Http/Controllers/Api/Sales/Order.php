@@ -117,7 +117,13 @@ class Order extends Controller
      */
     public function show($id)
     {
-        //
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->getOrder($id), $this->text->getOrderSuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

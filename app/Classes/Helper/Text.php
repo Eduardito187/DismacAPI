@@ -294,9 +294,25 @@ class Text{
     CONST DATE_INI            = "date_ini";
     CONST DATE_END            = "date_end";
     CONST IP                  = "ip";
+    CONST DETAIL_ORDER        = "detail_order";
+    CONST HISTORY_STATUS      = "history_status";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getHistoryStatus(){
+        return SELF::HISTORY_STATUS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetailOrder(){
+        return SELF::DETAIL_ORDER;
     }
 
     /**

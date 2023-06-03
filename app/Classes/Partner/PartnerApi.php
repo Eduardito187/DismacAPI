@@ -30,6 +30,7 @@ use App\Models\ShippingAddress;
 use App\Models\StatusOrder;
 use App\Models\TipoDocumento;
 use App\Models\Coupon;
+use App\Models\HistoryStatusOrder;
 use App\Models\ProductWarehouse;
 use App\Models\SalesCoupon;
 use App\Models\Warehouse;
@@ -86,6 +87,23 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
+    }
+
+    /**
+     * @param int $sale
+     * @param int $status
+     */
+    public function setHistoryStatusOrder(int $sale, int $status){
+        try {
+            $HistoryStatusOrder = new HistoryStatusOrder();
+            $HistoryStatusOrder->sale = $sale;
+            $HistoryStatusOrder->status = $status;
+            $HistoryStatusOrder->created_at = $this->date->getFullDate();
+            $HistoryStatusOrder->updated_at = null;
+            $HistoryStatusOrder->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
     }
 
     /**
@@ -148,6 +166,67 @@ class PartnerApi{
             $request[$this->text->getFilters()][$this->text->getDateEnd()] ?? self::DEFAULT_STRING
         );
         return $this->searchArraySale($Sales);
+    }
+
+    /**
+     * @param int $idSale
+     * @return array
+     */
+    public function getOrder(int $idSale){
+        $Sale = $this->getOrderByID($idSale);
+        return array(
+            $this->text->getId() => $Sale->id,
+            $this->text->getDescuentos() => $Sale->discount,
+            $this->text->getSubTotal() => $Sale->subtotal,
+            $this->text->getTotal() => $Sale->total,
+            $this->text->getNroControl() => $Sale->nro_control,
+            $this->text->getNroFactura() => $Sale->nro_factura,
+            $this->text->getNroProforma() => $Sale->nro_proforma,
+            $this->text->getIp() => $Sale->ip_client,
+            $this->text->getProducts() => $Sale->products,
+            $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress),
+            $this->text->getDetailOrder() => $this->getDetailOrderArray($Sale->SalesDetails),
+            $this->text->getHistoryStatus() => $this->getHistorySale($Sale->HistoryStatusOrder)
+        );
+    }
+
+    public function getDetailOrderArray($SalesDetails){
+        $data = array();
+        foreach ($SalesDetails as $key => $detail) {
+            $data[] = array(
+                $this->text->getSku() => $detail->Product->sku,
+                $this->text->getName() => $detail->Product->name,
+                $this->text->getQty() => $detail->qty,
+                $this->text->getDescuento() => $detail->discount,
+                $this->text->getSubTotal() => $detail->subtotal,
+                $this->text->getTotal() => $detail->total
+            );
+        }
+        return $data;
+    }
+
+    public function getHistorySale($HistoryStatusOrder){
+        $data = array();
+        foreach ($HistoryStatusOrder as $key => $History) {
+            $data[] = array(
+                $this->text->getStatus() => $History->StatusOrder->status,
+                $this->text->getCreated() => $History->created_at,
+                $this->text->getUpdated() => $History->updated_at
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $id
+     * @return Sales
+     */
+    public function getOrderByID(int $id){
+        $Sale = Sales::find($id);
+        if (!$Sale) {
+            throw new Exception($this->text->getOrdenNone());
+        }
+        return $Sale;
     }
 
     /**
@@ -293,9 +372,11 @@ class PartnerApi{
     }
 
     public function updateStatusSales(int $id_sale, string $status){
+        $id_Status = $this->getStatusOrderId($status);
         Sales::where($this->text->getId(), $id_sale)->update([
-            $this->text->getStatus() => $this->getStatusOrderId($status)
+            $this->text->getStatus() => $id_Status
         ]);
+        $this->setHistoryStatusOrder($id_sale, $id_Status);
     }
 
     /**
@@ -556,6 +637,7 @@ class PartnerApi{
             $Sales->updated_at = null;
             $Sales->save();
             $this->lastIdOrder = $Sales->id;
+            $this->setHistoryStatusOrder($Sales->id, $Sales->status);
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }

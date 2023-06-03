@@ -8,6 +8,7 @@ use App\Models\Partner;
 use App\Models\StatusOrder;
 use App\Models\ShippingAddress;
 use App\Models\SalesDetails;
+use App\Models\HistoryStatusOrder;
 
 class Sales extends Model
 {
@@ -38,5 +39,9 @@ class Sales extends Model
 
     public function SalesDetails(){
         return $this->hasMany(SalesDetails::class, 'sales', 'id');
+    }
+
+    public function HistoryStatusOrder(){
+        return $this->hasMany(HistoryStatusOrder::class, 'sale', 'id');
     }
 }
