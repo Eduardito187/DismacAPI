@@ -119,7 +119,7 @@ class Order extends Controller
     {
         $response = array();
         try {
-            $response = $this->text->getResponseApi($this->partnerApi->getOrder($id), $this->text->getOrderSuccess());
+            $response = $this->text->getResponseApi($this->partnerApi->getOrder($id), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
