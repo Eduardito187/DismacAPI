@@ -210,8 +210,7 @@ class PartnerApi{
         foreach ($HistoryStatusOrder as $key => $History) {
             $data[] = array(
                 $this->text->getStatus() => $History->StatusOrder->status,
-                $this->text->getCreated() => $History->created_at,
-                $this->text->getUpdated() => $History->updated_at
+                $this->text->getCreated() => $History->created_at
             );
         }
         return $data;
