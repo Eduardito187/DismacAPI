@@ -185,8 +185,34 @@ class PartnerApi{
             $this->text->getIp() => $Sale->ip_client,
             $this->text->getProducts() => $Sale->products,
             $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress),
+            $this->text->getAddress() => $this->getAddressOrder($Sale->ShippingAddress),
             $this->text->getDetailOrder() => $this->getDetailOrderArray($Sale->SalesDetails),
             $this->text->getHistoryStatus() => $this->getHistorySale($Sale->HistoryStatusOrder)
+        );
+    }
+
+    public function getAddressOrder($ShippingAddress){
+        $Address = $ShippingAddress->Address;
+        return array(
+            $this->text->getPais() => $Address->Pais->name,
+            $this->text->getCiudad() => $Address->Ciudad->name,
+            $this->text->getMunicipio() => $Address->Municipio->name,
+            $this->text->getLocalizacion() => $this->getLocalizationAddress($Address->Lozalizacion),
+            $this->text->getAddressExtra() => $this->getAddressExtra($Address->AddressExtra)
+        );
+    }
+
+    public function getAddressExtra($AddressExtra){
+        return array(
+            $this->text->getExtra() => $AddressExtra->extra,
+            $this->text->getAddress() => $AddressExtra->address
+        );
+    }
+
+    public function getLocalizationAddress($Lozalizacion){
+        return array(
+            $this->text->getLatitud() => $Lozalizacion->latitud,
+            $this->text->getLongitud() => $Lozalizacion->longitud
         );
     }
 
@@ -245,7 +271,8 @@ class PartnerApi{
                 $this->text->getNroProforma() => $Sale->nro_proforma,
                 $this->text->getIp() => $Sale->ip_client,
                 $this->text->getProducts() => $Sale->products,
-                $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress)
+                $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress),
+                $this->text->getAddress() => $this->getAddressOrder($Sale->ShippingAddress),
             );
         }
         return $data;
