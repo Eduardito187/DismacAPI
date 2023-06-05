@@ -199,6 +199,7 @@ class PartnerApi{
             $data[] = array(
                 $this->text->getSku() => $commited->Product->sku,
                 $this->text->getName() => $commited->Product->name,
+                $this->text->getQty() => $commited->qty,
                 $this->text->getWarehouse() => $commited->Warehouse->name
             );
         }
