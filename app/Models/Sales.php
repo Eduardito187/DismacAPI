@@ -9,6 +9,7 @@ use App\Models\StatusOrder;
 use App\Models\ShippingAddress;
 use App\Models\SalesDetails;
 use App\Models\HistoryStatusOrder;
+use App\Models\SalesCoupon;
 
 class Sales extends Model
 {
@@ -43,5 +44,9 @@ class Sales extends Model
 
     public function HistoryStatusOrder(){
         return $this->hasMany(HistoryStatusOrder::class, 'sale', 'id');
+    }
+
+    public function SalesCoupon(){
+        return $this->hasMany(SalesCoupon::class, 'sales', 'id');
     }
 }

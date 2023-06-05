@@ -296,9 +296,33 @@ class Text{
     CONST IP                  = "ip";
     CONST DETAIL_ORDER        = "detail_order";
     CONST HISTORY_STATUS      = "history_status";
+    CONST DETAIL_DISCOUNT     = "detail_descount";
+    CONST CUPON_API           = "Cupon";
+    CONST CUPON_CODE_API      = "Codigo_Cupon";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouponCodeApi(){
+        return SELF::CUPON_CODE_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCuponApi(){
+        return SELF::CUPON_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetailDiscount(){
+        return SELF::DETAIL_DISCOUNT;
     }
 
     /**

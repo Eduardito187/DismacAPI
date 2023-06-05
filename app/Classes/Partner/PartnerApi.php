@@ -187,8 +187,22 @@ class PartnerApi{
             $this->text->getCustomer() => $this->getCustomerOrder($Sale->ShippingAddress),
             $this->text->getAddress() => $this->getAddressOrder($Sale->ShippingAddress),
             $this->text->getDetailOrder() => $this->getDetailOrderArray($Sale->SalesDetails),
-            $this->text->getHistoryStatus() => $this->getHistorySale($Sale->HistoryStatusOrder)
+            $this->text->getHistoryStatus() => $this->getHistorySale($Sale->HistoryStatusOrder),
+            $this->text->getDetailDiscount() => $this->getDetailDiscount($Sale->SalesCoupon)
         );
+    }
+
+    public function getDetailDiscount($SalesCoupon){
+        $data = array();
+        foreach ($SalesCoupon as $key => $coupon) {
+            $data[] = array(
+                $this->text->getMontoApi() => $coupon->monto,
+                $this->text->getPorcentajeApi() => $coupon->percent,
+                $this->text->getCuponApi() => $coupon->Coupon->name,
+                $this->text->getCouponCodeApi() => $coupon->Coupon->coupon_code
+            );
+        }
+        return $data;
     }
 
     public function getAddressOrder($ShippingAddress){
