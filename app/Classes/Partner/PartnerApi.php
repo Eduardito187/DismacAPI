@@ -222,6 +222,7 @@ class PartnerApi{
             $data[] = array(
                 $this->text->getSku() => $detail->Product->sku,
                 $this->text->getName() => $detail->Product->name,
+                $this->text->getImage() => $this->pictureApi->productFirstPicture($detail->Product->id),
                 $this->text->getQty() => $detail->qty,
                 $this->text->getDescuento() => $detail->discount,
                 $this->text->getSubTotal() => $detail->subtotal,
