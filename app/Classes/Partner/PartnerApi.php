@@ -203,7 +203,6 @@ class PartnerApi{
                 $this->text->getWarehouse() => $commited->Warehouse->name
             );
         }
-        
         return $data;
     }
 
