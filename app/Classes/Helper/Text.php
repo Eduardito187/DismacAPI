@@ -299,9 +299,17 @@ class Text{
     CONST DETAIL_DISCOUNT     = "detail_descount";
     CONST CUPON_API           = "Cupon";
     CONST CUPON_CODE_API      = "Codigo_Cupon";
+    CONST DETALLE_WAREHOUSE   = "Detalle_Warehouse";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetalleWarehouse(){
+        return SELF::DETALLE_WAREHOUSE;
     }
 
     /**

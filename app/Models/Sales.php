@@ -10,6 +10,7 @@ use App\Models\ShippingAddress;
 use App\Models\SalesDetails;
 use App\Models\HistoryStatusOrder;
 use App\Models\SalesCoupon;
+use App\Models\CommittedStock;
 
 class Sales extends Model
 {
@@ -48,5 +49,9 @@ class Sales extends Model
 
     public function SalesCoupon(){
         return $this->hasMany(SalesCoupon::class, 'sales', 'id');
+    }
+
+    public function CommittedStock(){
+        return $this->hasMany(CommittedStock::class, 'sales', 'id');
     }
 }

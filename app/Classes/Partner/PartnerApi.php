@@ -188,8 +188,21 @@ class PartnerApi{
             $this->text->getAddress() => $this->getAddressOrder($Sale->ShippingAddress),
             $this->text->getDetailOrder() => $this->getDetailOrderArray($Sale->SalesDetails),
             $this->text->getHistoryStatus() => $this->getHistorySale($Sale->HistoryStatusOrder),
-            $this->text->getDetailDiscount() => $this->getDetailDiscount($Sale->SalesCoupon)
+            $this->text->getDetailDiscount() => $this->getDetailDiscount($Sale->SalesCoupon),
+            $this->text->getDetalleWarehouse() => $this->getDeatilWarehouse($Sale->CommittedStock)
         );
+    }
+
+    public function getDeatilWarehouse($CommittedStock){
+        $data = array();
+        foreach ($CommittedStock as $key => $commited) {
+            $data[] = array(
+                $this->text->getSku() => $commited->Product->sku,
+                $this->text->getName() => $commited->Product->name,
+                $this->text->getWarehouse() => $commited->Warehouse->name
+            );
+        }
+        return $data;
     }
 
     public function getDetailDiscount($SalesCoupon){
