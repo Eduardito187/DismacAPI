@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\Inventory\Products\Product as PRODUCT_CATALOG;
 use App\Http\Controllers\Api\Inventory\Products\Validate as VALIDATE_PRODUCT;
 use App\Http\Controllers\Api\Sales\Order;
 use App\Http\Controllers\Api\Inventory\Stock\Stock;
+use App\Http\Controllers\Api\Upload\Upload;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /{id} => destroy <= delete
 
 Route::middleware([CustomValidateToken::class])->group(function () {
+    
+    Route::controller(Upload::class)->group(function(){
+        Route::post('uploadFile', 'actionFile');
+    });
+
     Route::controller(Stock::class)->group(function(){
         Route::get('stock', 'index');
         Route::post('stock', 'store');

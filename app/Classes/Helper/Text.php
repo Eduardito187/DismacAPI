@@ -300,9 +300,17 @@ class Text{
     CONST CUPON_API           = "Cupon";
     CONST CUPON_CODE_API      = "Codigo_Cupon";
     CONST DETALLE_WAREHOUSE   = "Detalle_Warehouse";
+    CONST FILE_UNDEFINED      = "El archivo no se pudo encontrar.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileUndefined(){
+        return SELF::FILE_UNDEFINED;
     }
 
     /**
