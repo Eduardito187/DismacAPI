@@ -139,7 +139,7 @@ class Import{
         $File->move($Path, $imageName);
         $local = "/storage/".$Path."/".$imageName;
         $public = env('APP_URL').$local;
-        $this->saveData($local, $public);
+        $this->saveData($public, $local);
         return $public;
     }
 

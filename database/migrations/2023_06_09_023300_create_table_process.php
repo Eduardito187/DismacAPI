@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('Type')->nullable();
             $table->string('Ejecucion')->nullable();
             $table->string('Duracion')->nullable();
-            $table->string('FechaEjecucion')->nullable();
-            $table->string('FechaDuracion')->nullable();
+            $table->timestamp('FechaEjecucion')->nullable();
+            $table->timestamp('FechaDuracion')->nullable();
             $table->boolean('Status');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
