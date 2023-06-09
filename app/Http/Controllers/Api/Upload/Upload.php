@@ -31,9 +31,8 @@ class Upload extends Controller
     public function actionFile(Request $request)
     {
         try {
-            $this->Import->setActionProgram($request);
             $response = $this->text->getResponseApi(
-                true,
+                $this->Import->setActionProgram($request),
                 $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {

@@ -134,7 +134,7 @@ class Import{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner){
-        $imageName = time().'-process-'.time().$File->extension();
+        $imageName = time().'-process-'.time().".csv";
         $Path = self::FOLDER.$id_Partner;
         $File->move($Path, $imageName);
         $local = "/storage/".$Path."/".$imageName;
