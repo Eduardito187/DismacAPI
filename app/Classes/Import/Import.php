@@ -116,8 +116,8 @@ class Import{
             $Process->Type = $param["Type"];
             $Process->Ejecucion = $param["Ejecucion"];
             $Process->Duracion = $param["Duracion"];
-            $Process->FechaEjecucion = $param["FechaEjecucion"] ?? null;
-            $Process->FechaDuracion = $param["FechaDuracion"] ?? null;
+            $Process->FechaEjecucion = $this->replaceDateApi($param["FechaEjecucion"] ?? "");
+            $Process->FechaDuracion = $this->replaceDateApi($param["FechaDuracion"] ?? "");
             $Process->Status = $this->status->getEnable();
             $Process->created_at = $this->date->getFullDate();
             $Process->updated_at = null;
@@ -127,6 +127,12 @@ class Import{
             throw new Exception($th->getMessage());
             return false;
         }
+    }
+
+    public function replaceDateApi(string $date){
+        $date = str_replace("T", " ", $date);
+        $date = str_replace(".000Z", "", $date);
+        return strlen($date) == 0 ? null : $date;
     }
 
     /**
