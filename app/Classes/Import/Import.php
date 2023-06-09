@@ -116,8 +116,8 @@ class Import{
             $Process->Type = $param["Type"];
             $Process->Ejecucion = $param["Ejecucion"];
             $Process->Duracion = $param["Duracion"];
-            $Process->FechaEjecucion = $param["FechaEjecucion"];
-            $Process->FechaDuracion = $param["FechaDuracion"];
+            $Process->FechaEjecucion = $param["FechaEjecucion"] ?? null;
+            $Process->FechaDuracion = $param["FechaDuracion"] ?? null;
             $Process->Status = $this->status->getEnable();
             $Process->created_at = $this->date->getFullDate();
             $Process->updated_at = null;
