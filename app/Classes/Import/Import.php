@@ -99,7 +99,7 @@ class Import{
         $file = $request->file('File');
         $public = $this->uploadFile($file, $id_Partner);
         $Picture = $this->getPicture($public);
-        return  $this->newProcess($Picture->id, $id_Partner, $params);
+        return $this->newProcess($Picture->id, $id_Partner, $params);
     }
 
     /**
@@ -124,6 +124,7 @@ class Import{
             $Process->save();
             return true;
         } catch (Exception $th) {
+            throw new Exception($th->getMessage());
             return false;
         }
     }
@@ -138,7 +139,7 @@ class Import{
         $Path = "storage/".self::FOLDER.$id_Partner;
         $File->move($Path, $imageName);
         $local = $Path."/".$imageName;
-        $public = env('APP_URL').$local;
+        $public = env('APP_URL')."/".$local;
         $this->saveData($public, $local);
         return $public;
     }
