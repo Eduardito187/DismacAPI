@@ -135,7 +135,7 @@ class Import{
      */
     public function uploadFile(UploadedFile $File, int $id_Partner){
         $imageName = time().'-process-'.time().".csv";
-        $Path = "/storage/".self::FOLDER.$id_Partner;
+        $Path = "storage/".self::FOLDER.$id_Partner;
         $File->move($Path, $imageName);
         $local = $Path."/".$imageName;
         $public = env('APP_URL').$local;
