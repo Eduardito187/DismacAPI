@@ -14,7 +14,7 @@ class CommittedStock extends Model
 
     protected $table = 'committed_stock';
 
-    protected $fillable = ['sales', 'product', 'warehouse', 'qty', 'status', 'date_limit', 'created_at', 'updated_at'];
+    protected $fillable = ['sales', 'product', 'warehouse', 'qty', 'status', 'date_limit', 'store', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
