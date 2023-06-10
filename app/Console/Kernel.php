@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('return_stock:cron')->everyMinute();
+        $schedule->command('backupdb:cron')->daily();
     }
 
     /**
