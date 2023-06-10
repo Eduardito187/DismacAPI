@@ -4,9 +4,20 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Classes\Partner\PartnerApi;
 
 class RetornarStock extends Command
 {
+    /**
+     * @var PartnerApi
+     */
+    protected $PartnerApi;
+
+    public function __construct() {
+        parent::__construct();
+        $this->PartnerApi = new PartnerApi();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -28,7 +39,7 @@ class RetornarStock extends Command
      */
     public function handle()
     {
-        Log::info("Cron is working fine!");
+        $this->PartnerApi->runProcessCronCommitedStock();
         return Command::SUCCESS;
     }
 }

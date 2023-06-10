@@ -41,6 +41,7 @@ class PartnerApi{
     CONST HISTOY_LAST = 8;
     CONST PENDIENTE = "PENDIENTE";
     CONST CANCELADA = "CANCELADA";
+    CONST CANCELADA_ID = 1;
     CONST CERRADA = "CERRADA";
     CONST COMPLETADA = "COMPLETADA";
     CONST DEFAULT_STRING = "";
@@ -87,6 +88,25 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
+    }
+
+    /**
+     * @return void
+     */
+    public function runProcessCronCommitedStock(){
+        foreach ($this->getListCommietCron() as $key => $commited) {
+            if ($commited->status != $this->status->getDisable()) {
+                $this->processCommitedRevert($commited, $commited->store);
+                $this->updatedOrderStatus($commited->Sales->id, self::CANCELADA_ID);
+            }
+        }
+    }
+
+    /**
+     * @return CommittedStock[]
+     */
+    public function getListCommietCron(){
+        return CommittedStock::where($this->text->getStatus(), 1)->whereDate($this->text->getDateLimit(), '<=', $this->date->getFullDate())->get();
     }
 
     /**
@@ -382,25 +402,36 @@ class PartnerApi{
      */
     public function proccessCommittedStock(mixed $CommittedStocks, int $store){
         foreach ($CommittedStocks as $key => $CommittedStock) {
-            $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $CommittedStock->product)->where($this->text->getIdWarehouse(), $CommittedStock->warehouse)->where($this->text->getIdStore(), $store)->first();
-            if (!$ProductWarehouse) {
-                throw new Exception($this->text->getWarehouseProductNone());
-            }
-            $newStock = $ProductWarehouse->stock + $CommittedStock->qty;
-            $this->updateProductWarehouse($CommittedStock->product, $CommittedStock->warehouse, $store, $newStock);
-            $this->disableCommittedStock($CommittedStock->sales, $CommittedStock->product, $CommittedStock->warehouse);
-            $newStock = $CommittedStock->Product->stock + $CommittedStock->qty;
-            $this->updateProductStock($CommittedStock->product, $newStock);
+            $this->processCommitedRevert($CommittedStock, $store);
         }
+    }
+
+    /**
+     * @param CommittedStock $CommittedStocks
+     * @param int $store
+     * @return void
+     */
+    public function processCommitedRevert(CommittedStock $CommittedStock, int $store){
+        $ProductWarehouse = ProductWarehouse::where($this->text->getIdProduct(), $CommittedStock->product)->where($this->text->getIdWarehouse(), $CommittedStock->warehouse)->where($this->text->getIdStore(), $store)->first();
+        if (!$ProductWarehouse) {
+            throw new Exception($this->text->getWarehouseProductNone());
+        }
+        $newStock = $ProductWarehouse->stock + $CommittedStock->qty;
+        $this->updateProductWarehouse($CommittedStock->product, $CommittedStock->warehouse, $store, $newStock);
+        $this->disableCommittedStock($CommittedStock->sales, $CommittedStock->product, $CommittedStock->warehouse, $store);
+        $newStock = $CommittedStock->Product->stock + $CommittedStock->qty;
+        $this->updateProductStock($CommittedStock->product, $newStock);
     }
 
     /**
      * @param int $idSale
      * @param int $idProduc
-     * @param int $idWarehouse\
+     * @param int $idWarehouse
+     * @param int $store
+     * @return void
      */
-    public function disableCommittedStock(int $idSale, int $idProduc, int $idWarehouse){
-        CommittedStock::where($this->text->getColumSale(), $idSale)->where($this->text->getProduct(), $idProduc)->where($this->text->getWarehouse(), $idWarehouse)->update([
+    public function disableCommittedStock(int $idSale, int $idProduc, int $idWarehouse, int $store){
+        CommittedStock::where($this->text->getColumSale(), $idSale)->where($this->text->getProduct(), $idProduc)->where($this->text->getWarehouse(), $idWarehouse)->where($this->text->getStore(), $store)->update([
             $this->text->getStatus() => $this->status->getDisable(),
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
@@ -426,8 +457,25 @@ class PartnerApi{
         return true;
     }
 
+    /**
+     * @param int $id_sale
+     * @return string $status
+     * @return void
+     */
     public function updateStatusSales(int $id_sale, string $status){
         $id_Status = $this->getStatusOrderId($status);
+        Sales::where($this->text->getId(), $id_sale)->update([
+            $this->text->getStatus() => $id_Status
+        ]);
+        $this->setHistoryStatusOrder($id_sale, $id_Status);
+    }
+
+    /**
+     * @param int $id_sale
+     * @param int $id_Status
+     * @return void
+     */
+    public function updatedOrderStatus(int $id_sale, int $id_Status){
         Sales::where($this->text->getId(), $id_sale)->update([
             $this->text->getStatus() => $id_Status
         ]);
@@ -535,7 +583,7 @@ class PartnerApi{
         }
         $newStock = $ProductWarehouse->stock - $Qty;
         $this->updateProductWarehouse($Product->id, $idAlmacen, $idCity, $newStock);
-        $this->committedStock($Product->id, $idAlmacen, $Qty, $FechaCompromiso);
+        $this->committedStock($Product->id, $idAlmacen, $Qty, $FechaCompromiso, $idCity);
         $newStock = $Product->stock - $Qty;
         $this->updateProductStock($Product->id, $newStock);
     }
@@ -544,9 +592,10 @@ class PartnerApi{
      * @param int $id_product
      * @param int $idAlmacen
      * @param int $Qty
+     * @param int $idCity
      * @param string $FechaCompromiso
      */
-    public function committedStock(int $id_product, int $idAlmacen, int $Qty, string $FechaCompromiso){
+    public function committedStock(int $id_product, int $idAlmacen, int $Qty, string $FechaCompromiso, int $idCity){
         try {
             $CommittedStock = new CommittedStock();
             $CommittedStock->sales = $this->lastIdOrder;
@@ -555,6 +604,7 @@ class PartnerApi{
             $CommittedStock->qty = $Qty;
             $CommittedStock->status = $this->status->getEnable();
             $CommittedStock->date_limit = $FechaCompromiso;
+            $CommittedStock->store = $idCity;
             $CommittedStock->created_at = $this->date->getFullDate();
             $CommittedStock->updated_at = null;
             $CommittedStock->save();

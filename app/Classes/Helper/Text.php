@@ -301,9 +301,17 @@ class Text{
     CONST CUPON_CODE_API      = "Codigo_Cupon";
     CONST DETALLE_WAREHOUSE   = "Detalle_Warehouse";
     CONST FILE_UNDEFINED      = "El archivo no se pudo encontrar.";
+    CONST DATE_LIMIT          = "date_limit";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateLimit(){
+        return SELF::DATE_LIMIT;
     }
 
     /**
