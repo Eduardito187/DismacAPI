@@ -40,6 +40,7 @@ class RetornarStock extends Command
     public function handle()
     {
         $this->PartnerApi->runProcessCronCommitedStock();
+        Log::info("Cron retorno de stock ejecutado.");
         return Command::SUCCESS;
     }
 }
