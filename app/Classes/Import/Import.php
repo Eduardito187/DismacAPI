@@ -93,6 +93,10 @@ class Import{
         }
     }
 
+    /**
+     * @param Request $request
+     * @return bool
+     */
     public function setActionProgram(Request $request){
         $params = $request->all();
         $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
@@ -100,6 +104,35 @@ class Import{
         $public = $this->uploadFile($file, $id_Partner);
         $Picture = $this->getPicture($public);
         return $this->newProcess($Picture->id, $id_Partner, $params);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllProcessPending(){
+        $data = $this->getAllProcess();
+        return $this->processAllPending($data);
+    }
+
+    public function processAllPending($Process){
+        $data = array();
+        foreach ($Process as $key => $process) {
+            $data[] = array(
+                $this->text->getIdApi() => $process->id,
+                $this->text->getEjecucionApi() => $process->Ejecucion,
+                $this->text->getDuracionApi() => $process->Duracion,
+                $this->text->getFechaEjecucionApi() => $process->FechaEjecucion,
+                $this->text->getFechaDuracionApi() => $process->FechaDuracion
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @return Process[]
+     */
+    public function getAllProcess(){
+        return Process::where($this->text->getStatusColumn(), "!=" , $this->status->getDisable())->get();
     }
 
     /**

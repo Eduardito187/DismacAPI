@@ -57,4 +57,20 @@ class Upload extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->Import->getAllProcessPending(),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
 }

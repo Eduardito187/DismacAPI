@@ -303,9 +303,57 @@ class Text{
     CONST FILE_UNDEFINED      = "El archivo no se pudo encontrar.";
     CONST DATE_LIMIT          = "date_limit";
     CONST PRECESS_DATA_SUCCESS= "Datos procesados exitosamente.";
+    CONST STATUS_COLUMN       = "Status";
+    CONST ID_API              = "ID";
+    CONST EJECUCION_API       = "Ejecucion";
+    CONST DURACION_API        = "Duracion";
+    CONST FECHA_EJECUCION_API = "FechaEjecucion";
+    CONST FECHA_DURACION_API  = "FechaDuracion";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdApi(){
+        return SELF::ID_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEjecucionApi(){
+        return SELF::EJECUCION_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDuracionApi(){
+        return SELF::DURACION_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFechaEjecucionApi(){
+        return SELF::FECHA_EJECUCION_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFechaDuracionApi(){
+        return SELF::FECHA_DURACION_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusColumn(){
+        return SELF::STATUS_COLUMN;
     }
 
     /**

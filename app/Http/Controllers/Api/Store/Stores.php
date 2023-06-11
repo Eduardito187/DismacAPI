@@ -14,6 +14,7 @@ class Stores extends Controller
     public function __construct() {
         $this->text = new Text();
     }
+    
     /**
      * Display a listing of the resource.
      *
