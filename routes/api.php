@@ -57,6 +57,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     
     Route::controller(Upload::class)->group(function(){
         Route::post('uploadFile', 'actionFile');
+        Route::post('process', 'process');
     });
 
     Route::controller(Stock::class)->group(function(){
