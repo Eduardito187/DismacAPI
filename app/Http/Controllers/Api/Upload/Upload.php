@@ -50,7 +50,7 @@ class Upload extends Controller
         try {
             $response = $this->text->getResponseApi(
                 true,
-                $this->text->getQuerySuccess()
+                $this->text->getDataProcessSuccess()
             );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi(false, $th->getMessage());

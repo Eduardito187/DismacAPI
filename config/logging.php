@@ -51,6 +51,16 @@ return [
     */
 
     'channels' => [
+        'backup_db' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/backup_db.log'),
+            'level' => 'info',
+        ],
+        'return_stock' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/return_stock.log'),
+            'level' => 'info',
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

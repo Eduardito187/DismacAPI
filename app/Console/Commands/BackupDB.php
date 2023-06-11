@@ -37,7 +37,7 @@ class BackupDB extends Command
         $output  = NULL;
   
         exec($command, $output, $returnVar);
-        Log::info("Cron backup database ejecutado.");
+        Log::channel('backup_db')->info("Cron backup database ejecutado.");
         return Command::SUCCESS;
     }
 }

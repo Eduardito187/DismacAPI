@@ -302,9 +302,17 @@ class Text{
     CONST DETALLE_WAREHOUSE   = "Detalle_Warehouse";
     CONST FILE_UNDEFINED      = "El archivo no se pudo encontrar.";
     CONST DATE_LIMIT          = "date_limit";
+    CONST PRECESS_DATA_SUCCESS= "Datos procesados exitosamente.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataProcessSuccess(){
+        return SELF::PRECESS_DATA_SUCCESS;
     }
 
     /**
