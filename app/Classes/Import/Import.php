@@ -122,7 +122,8 @@ class Import{
                 $this->text->getEjecucionApi() => $process->Ejecucion,
                 $this->text->getDuracionApi() => $process->Duracion,
                 $this->text->getFechaEjecucionApi() => $process->FechaEjecucion,
-                $this->text->getFechaDuracionApi() => $process->FechaDuracion
+                $this->text->getFechaDuracionApi() => $process->FechaDuracion,
+                $this->text->getStatusColumn() => $process->Status
             );
         }
         return $data;
