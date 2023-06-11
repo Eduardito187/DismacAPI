@@ -26,7 +26,7 @@ class Process extends Model
         return $this->hasOne(Picture::class, 'id', 'File');
     }
 
-    public function Partner(){
+    public function PartnerProcess(){
         return $this->hasOne(Partner::class, 'id', 'Partner');
     }
 }
