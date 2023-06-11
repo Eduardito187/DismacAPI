@@ -82,7 +82,6 @@ class Import{
      */
     public function processApply(Process $Process){
         $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
-        $text = $this->getReplacePartner($Process->Partner->name, $text);
         Log::channel('process_run')->info($text);
         return true;
     }
