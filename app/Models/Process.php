@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Picture;
+use App\Models\Partner;
 
 class Process extends Model
 {
@@ -23,5 +24,9 @@ class Process extends Model
 
     public function Data(){
         return $this->hasOne(Picture::class, 'id', 'File');
+    }
+
+    public function Partner(){
+        return $this->hasOne(Partner::class, 'id', 'Partner');
     }
 }

@@ -49,7 +49,7 @@ class Upload extends Controller
     {
         try {
             $response = $this->text->getResponseApi(
-                true,
+                $this->Import->runProcess($request->all()),
                 $this->text->getDataProcessSuccess()
             );
         } catch (Exception $th) {

@@ -309,9 +309,17 @@ class Text{
     CONST DURACION_API        = "Duracion";
     CONST FECHA_EJECUCION_API = "FechaEjecucion";
     CONST FECHA_DURACION_API  = "FechaDuracion";
+    CONST PROCESS_NONE        = "El proceso solicitado no existe.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessNone(){
+        return SELF::PROCESS_NONE;
     }
 
     /**

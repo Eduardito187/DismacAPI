@@ -13,10 +13,12 @@ use App\Models\Process;
 use \Illuminate\Http\Request;
 use \Exception;
 use \Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 
 class Import{
     CONST FOLDER = "Process/";
     CONST AUTH = "Wagento:wagento2021";
+    CONST LOG_TEXT = "El proceso ID : %, del partner & fue ejecutado exitosamente.";
     /**
      * @var Date
      */
@@ -64,6 +66,64 @@ class Import{
         $response = curl_exec($ch);
         curl_close($ch);
         return json_decode($response, true);
+    }
+
+    /**
+     * @param array $params
+     * @return bool
+     */
+    public function runProcess(array $params){
+        return $this->processApply($this->getProcess($params[$this->text->getId()]));
+    }
+
+    /**
+     * @param Process $Process
+     * @return bool
+     */
+    public function processApply(Process $Process){
+        $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
+        $text = $this->getReplacePartner($Process->Partner->name, $text);
+        Log::channel('process_run')->info($text);
+        return true;
+    }
+
+    /**
+     * @param int $id
+     * @param string $text
+     * @return string
+     */
+    public function getReplaceId(int $id, string $text){
+        return str_replace("%", $id, $text);
+    }
+
+    /**
+     * @param string $partner
+     * @param string $text
+     * @return string
+     */
+    public function getReplacePartner(string $partner, string $text){
+        return str_replace("&", $partner, $text);
+    }
+
+    /**
+     * @param int $id
+     * @return Process
+     */
+    public function getProcess(int $id){
+        $Process = $this->getProcessById($id);
+        if (!$Process) {
+            throw new Exception($this->text->getProcessNone());
+        }
+        return $Process;
+    }
+    
+
+    /**
+     * @param int $id
+     * @return Process
+     */
+    public function getProcessById(int $id){
+        return Process::find($id);
     }
 
     /**
