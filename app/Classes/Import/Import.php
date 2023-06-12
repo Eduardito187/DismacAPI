@@ -14,7 +14,7 @@ use \Illuminate\Http\Request;
 use \Exception;
 use \Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Import{
     CONST FOLDER = "Process/";
@@ -90,8 +90,8 @@ class Import{
     }
 
     public function validateFile(Process $Process){
-        echo public_path('Process/1/1686298936-process-1686298936.csv');
-        if (File::exists(public_path('Process/1/1686298936-process-1686298936.csv'))){
+        echo public_path('storage/app/public/Process/1/1686298936-process-1686298936.csv');
+        if (Storage::exists(public_path('storage/app/public/Process/1/1686298936-process-1686298936.csv'))){
             throw new Exception("Existe el archivo.");
         }else{
             throw new Exception("No existe el archivo.");
