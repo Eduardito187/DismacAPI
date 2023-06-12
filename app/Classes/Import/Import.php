@@ -90,7 +90,7 @@ class Import{
     }
 
     public function validateFile(Process $Process){
-        if (Storage::exists('storage/app/public/Process/1/1686298936-process-1686298936.csv')){
+        if (Storage::exists('app/public/Process/1/1686298936-process-1686298936.csv')){
             throw new Exception("Existe el archivo.");
         }else{
             throw new Exception("No existe el archivo.");
