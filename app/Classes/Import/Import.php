@@ -14,6 +14,7 @@ use \Illuminate\Http\Request;
 use \Exception;
 use \Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Import{
     CONST FOLDER = "Process/";
@@ -81,10 +82,19 @@ class Import{
      * @return bool
      */
     public function processApply(Process $Process){
+        $this->validateFile($Process);
         $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
         $text = $this->getReplacePartner($Process->PartnerProcess->name, $text);
         Log::channel('process_run')->info($text);
         return true;
+    }
+
+    public function validateFile(Process $Process){
+        if (Storage::exists('Process/1/1686298936-process-1686298936.csv')){
+            throw new Exception("Existe el archivo.");
+        }else{
+            throw new Exception("No existe el archivo.");
+        }
     }
 
     /**
