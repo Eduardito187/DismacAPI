@@ -90,6 +90,7 @@ class Import{
     }
 
     public function validateFile(Process $Process){
+        echo public_path('Process/1/1686298936-process-1686298936.csv');
         if (File::exists(public_path('Process/1/1686298936-process-1686298936.csv'))){
             throw new Exception("Existe el archivo.");
         }else{
