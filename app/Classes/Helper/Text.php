@@ -310,9 +310,25 @@ class Text{
     CONST FECHA_EJECUCION_API = "FechaEjecucion";
     CONST FECHA_DURACION_API  = "FechaDuracion";
     CONST PROCESS_NONE        = "El proceso solicitado no existe.";
+    CONST MENSAJE             = "mensaje";
+    CONST SEGUNDOS_DURACION   = " segundos.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDuracionProcess(){
+        return SELF::SEGUNDOS_DURACION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMensaje(){
+        return SELF::MENSAJE;
     }
 
     /**

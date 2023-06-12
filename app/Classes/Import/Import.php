@@ -10,6 +10,8 @@ use App\Models\Account;
 use App\Models\AccountPartner;
 use App\Models\Picture;
 use App\Models\Process;
+use App\Models\ProcessTask;
+use App\Models\ProcessTaskLog;
 use \Illuminate\Http\Request;
 use \Exception;
 use \Illuminate\Http\UploadedFile;
@@ -19,7 +21,14 @@ use Illuminate\Support\Facades\Storage;
 class Import{
     CONST FOLDER = "Process/";
     CONST AUTH = "Wagento:wagento2021";
-    CONST LOG_TEXT = "El proceso ID : %, del partner & fue ejecutado exitosamente.";
+    CONST LOG_TEXT = "El proceso ID : %, del partner & fue ejecutado.";
+    CONST FILE_NONE = "El archivo adjunto no existe.";
+    CONST FILE_EMPTY = "El archivo adjunto se encuentra en vacío.";
+    CONST FILE_EXIST = "El archivo adjunto existe.";
+    CONST SKU_CONTENT = "La columna sku no se encontro al inicio del archivo adjunto.";
+    CONST ERROR_1 = "Archivo vacío.";
+    CONST ERROR_2 = "Archivo no encontrado.";
+    CONST ERROR_3 = "Formato del archivo erroneo.";
     /**
      * @var Date
      */
@@ -36,6 +45,12 @@ class Import{
      * @var TokenAccess
      */
     protected $tokenAccess;
+    protected $iniDate;
+    protected $endDate;
+    protected $logProcess = [];
+    protected $DataExcel = [];
+    protected $MessageProcess = "Proceso ejecutado exitosamente.";
+    protected $StatusProcess = true;
 
     public function __construct() {
         $this->date     = new Date();
@@ -74,6 +89,7 @@ class Import{
      * @return bool
      */
     public function runProcess(array $params){
+        $this->iniDate = strtotime($this->date->getFullDate());
         return $this->processApply($this->getProcess($params[$this->text->getId()]));
     }
 
@@ -83,19 +99,168 @@ class Import{
      */
     public function processApply(Process $Process){
         $this->validateFile($Process);
-        $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
-        $text = $this->getReplacePartner($Process->PartnerProcess->name, $text);
-        Log::channel('process_run')->info($text);
+        $this->endDate = strtotime($this->date->getFullDate());
+        $this->endProcessLog($Process);
+        $this->saveHostoryLog($Process);
         return true;
     }
 
-    public function validateFile(Process $Process){
-        echo public_path()."/storage/Process/1/1686298936-process-1686298936.csv";
-        if (file_exists(public_path()."/storage/Process/1/1686298936-process-1686298936.csv")){
-            throw new Exception("Existe el archivo.");
-        }else{
-            throw new Exception("No existe el archivo.");
+    /**
+     * @param Process $Process
+     * @return void
+     */
+    public function endProcessLog(Process $Process){
+        $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
+        $text = $this->getReplacePartner($Process->PartnerProcess->name, $text);
+        Log::channel('process_run')->info($text);
+    }
+
+    /**
+     * @param Process $Process
+     * @return bool
+     */
+    public function saveHostoryLog(Process $Process){
+        try {
+            $ProcessTask = new ProcessTask();
+            $ProcessTask->id_process = $Process->id;
+            $ProcessTask->id_partner = $Process->Partner;
+            $ProcessTask->mensaje = $this->MessageProcess;
+            $ProcessTask->duracion = $this->getDuracionProcess();
+            $ProcessTask->status = $this->StatusProcess;
+            $ProcessTask->created_at = $this->date->getFullDate();
+            $ProcessTask->updated_at = null;
+            $ProcessTask->save();
+            $this->setAllHistory($ProcessTask->id);
+            return true;
+        } catch (Exception $th) {
+            return false;
         }
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function setAllHistory(int $id){
+        foreach ($this->logProcess as $key => $Task) {
+            $this->saveHostoryDetailLog($id, $Task[$this->text->getMensaje()], $Task[$this->text->getStatus()], $Task[$this->text->getCreated()]);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function saveHostoryDetailLog(int $id, string $mensaje, bool $status, string $created_at){
+        try {
+            $ProcessTaskLog = new ProcessTaskLog();
+            $ProcessTaskLog->id_process_task = $id;
+            $ProcessTaskLog->mensaje = $mensaje;
+            $ProcessTaskLog->status = $status;
+            $ProcessTaskLog->created_at = $created_at;
+            $ProcessTaskLog->updated_at = null;
+            $ProcessTaskLog->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function getDuracionProcess(){
+        return ($this->endDate - $this->iniDate).$this->text->getDuracionProcess();
+    }
+
+    /**
+     * @param Process $Process
+     * @return bool
+     */
+    public function validateFile(Process $Process){
+        $ProcessPath = $Process->Data->path;
+        $path = public_path().$ProcessPath;
+        if (file_exists($path)){
+            $this->addLogHistory(self::FILE_EXIST, $this->status->getEnable(), $this->date->getFullDate());
+            $this->DataExcel = $this->readFileCsv($path);
+            if (count($this->DataExcel) == 0) {
+                $this->errorProcess(self::ERROR_1);
+                $this->addLogHistory(self::FILE_EMPTY, $this->status->getDisable(), $this->date->getFullDate());
+                $this->updateStatusProcess($Process->id, $this->status->getDisable());
+            }else{
+                $this->validateHeadersCsv($Process, $this->DataExcel[0]);
+            }
+        }else{
+            $this->errorProcess(self::ERROR_2);
+            $this->addLogHistory(self::FILE_NONE, $this->status->getDisable(), $this->date->getFullDate());
+            $this->updateStatusProcess($Process->id, $this->status->getDisable());
+        }
+    }
+
+    /**
+     * @param string $mensaje
+     * @param bool $status
+     * @param string $created_at
+     */
+    public function addLogHistory(string $mensaje, bool $status, string $created_at){
+        $this->logProcess[] = array(
+            $this->text->getMensaje() => $mensaje,
+            $this->text->getStatus() => $status,
+            $this->text->getCreated() => $created_at
+        );
+    }
+
+    /**
+     * @param Process $Process
+     * @param array $HeaderCsv
+     * @return void
+     */
+    public function validateHeadersCsv(Process $Process, array $HeaderCsv){
+        for ($i=0; $i < count($HeaderCsv); $i++) { 
+            $code = strtolower($HeaderCsv[$i]);
+            if ($i == 0 && $code != $this->text->getSku()){
+                $this->errorProcess(self::ERROR_3);
+                $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
+                $this->updateStatusProcess($Process->id, $this->status->getDisable());
+                $i = count($HeaderCsv);
+            }
+        }
+    }
+
+    /**
+     * @param string $msg
+     * @return void
+     */
+    public function errorProcess(string $msg){
+        $this->MessageProcess = $msg;
+        $this->StatusProcess = $this->status->getDisable();
+    }
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    public function readFileCsv(string $path){
+        $DataCsv = array();
+        if (($open = fopen($path, "r")) !== FALSE) {
+            while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+                $DataCsv[] = $data;
+            }
+            fclose($open);
+        }
+        return $DataCsv;
+    }
+
+    /**
+     * @param int $id
+     * @param int $status
+     * @return void
+     */
+    public function updateStatusProcess(int $id, int $status){
+        Process::where($this->text->getId(), $id)->update([
+            $this->text->getStatusColumn() => $status,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
 
     /**
@@ -249,8 +414,8 @@ class Import{
         $imageName = time().'-process-'.time().".csv";
         $Path = "storage/".self::FOLDER.$id_Partner;
         $File->move($Path, $imageName);
-        $local = $Path."/".$imageName;
-        $public = env('APP_URL')."/".$local;
+        $local = "/".$Path."/".$imageName;
+        $public = env('APP_URL').$local;
         $this->saveData($public, $local);
         return $public;
     }

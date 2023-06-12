@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Picture;
 use App\Models\Partner;
+use App\Models\ProcessTask;
 
 class Process extends Model
 {
@@ -28,5 +29,9 @@ class Process extends Model
 
     public function PartnerProcess(){
         return $this->hasOne(Partner::class, 'id', 'Partner');
+    }
+    
+    public function ProcessTask(){
+        return $this->hasOne(ProcessTask::class, 'id_process', 'id');
     }
 }
