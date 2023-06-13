@@ -48,8 +48,7 @@ class AddressApi{
     public function create(array $address, array $geo){
         $this->createAddressExtra($address[$this->text->getAddressExtra()]);
         $ExtraAddress = $this->getAddressExtra($address[$this->text->getAddressExtra()]);
-        $this->createGeo($geo);
-        $GEO = $this->getLocalization($geo);
+        $GEO = $this->createGeo($geo);
         $this->createAddress($address, $ExtraAddress, $GEO);
     }
 
@@ -197,7 +196,7 @@ class AddressApi{
     
     /**
      * @param array $geo
-     * @return bool
+     * @return int|null
      */
     public function createGeo(array $geo){
         try {
@@ -205,9 +204,9 @@ class AddressApi{
             $Localization->latitud = $geo[$this->text->getLatitude()];
             $Localization->longitud = $geo[$this->text->getLongitude()];
             $Localization->save();
-            return true;
+            return $Localization->id;
         } catch (Exception $th) {
-            return false;
+            return 0;
         }
     }
 }

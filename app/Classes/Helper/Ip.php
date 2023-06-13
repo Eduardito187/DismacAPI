@@ -34,7 +34,6 @@ class Ip{
      */
     public function getGeo(){
         $data = json_decode(file_get_contents($this->text->getIpHost().$this->IP.$this->text->getBarraJson()));
-        Log::debug("IP => ".$this->IP);
         if ($this->IP == $this->text->getLocalhost()) {
             $localization = [$this->text->getCero(), $this->text->getCero()];
         }else{
@@ -58,13 +57,14 @@ class Ip{
     }
 
     /**
-     * @return void
+     * @return int|null
      */
     public function validIp(){
         $ip = $this->getIp();
         if (!$ip) {
-            $this->addIp();
+            return $this->addIp();
         }
+        return $ip->id;
     }
 
     /**
@@ -75,7 +75,7 @@ class Ip{
     }
 
     /**
-     * @return bool
+     * @return int|null
      */
     public function addIp(){
         try {
@@ -84,9 +84,9 @@ class Ip{
             $Model_Ip->created_at = $this->date->getFullDate();
             $Model_Ip->updated_at = null;
             $Model_Ip->save();
-            return true;
+            return $Model_Ip->id;
         } catch (Exception $th) {
-            return false;
+            return null;
         }
     }
 

@@ -794,8 +794,7 @@ class PartnerApi{
     public function verifyShippingAddress(array $clientAddress){
         $this->addressApi->createAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
         $ExtraAddress = $this->addressApi->getAddressExtra($this->convertAddressExtra($clientAddress[$this->text->getDireccion()], $clientAddress[$this->text->getDireccionExtra()]));
-        $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
-        $GEO = $this->addressApi->getLocalization($clientAddress[$this->text->getLocalizacion()]);
+        $GEO = $this->addressApi->createGeo($clientAddress[$this->text->getLocalizacion()]);
         $this->addressApi->createAddress($this->convertAddress($clientAddress[$this->text->getPais()], $clientAddress[$this->text->getCiudad()], $clientAddress[$this->text->getMunicipio()]), $ExtraAddress, $GEO);
         return $this->addressApi->getAddressId();
     }

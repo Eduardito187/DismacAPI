@@ -5,6 +5,7 @@ namespace App\Classes\Account;
 use App\Models\Account;
 use App\Models\AccountLogin;
 use App\Classes\Helper\Date;
+use App\Classes\Helper\Ip;
 use App\Classes\Helper\Status;
 use App\Classes\Helper\Text;
 use App\Classes\Partner\PartnerApi;
@@ -17,6 +18,9 @@ use App\Models\CatalogPartner;
 use App\Models\Mejoras;
 use App\Models\Partner;
 use App\Models\SupportTechnical;
+use App\Classes\Address\AddressApi;
+use App\Models\PartnerSession;
+use App\Models\Session;
 
 class AccountApi{
 
@@ -44,21 +48,25 @@ class AccountApi{
      * @var TokenAccess
      */
     protected $tokenAccess;
+    /**
+     * @var AddressApi
+     */
+    protected $addressApi;
 
     public function __construct() {
         $this->date        = new Date();
         $this->status      = new Status();
         $this->text        = new Text();
         $this->partner     = new PartnerApi();
+        $this->addressApi  = new AddressApi();
     }
 
     /**
      * @param int $id
-     * @return array|null
+     * @return Account
      */
     public function byId(int $id){
-        $Account = Account::find($id);
-        return $Account;
+        return Account::find($id);
     }
 
     public function byEmail(){
@@ -574,15 +582,16 @@ class AccountApi{
      * @return array
      */
     public function validateLogin(Request $request){
-        return $this->validateAccountLogin($request->all()[$this->text->getUsername()], $request->all()[$this->text->getPassword()]);
+        return $this->validateAccountLogin($request->all()[$this->text->getUsername()], $request->all()[$this->text->getPassword()], $request->ip());
     }
 
     /**
      * @param string $username
      * @param string $password
+     * @param string $ip
      * @return array
      */
-    private function validateAccountLogin(string $username, string $password){
+    private function validateAccountLogin(string $username, string $password, string $ip){
         $arrayUser = explode ($this->text->getArroba(), $username);
         if (count($arrayUser) == 2) {
             if ($this->partner->issetDomain($arrayUser[0])) {
@@ -592,7 +601,12 @@ class AccountApi{
                         if ($response[0][$this->text->getPassword()] == $this->encriptionPawd($password)) {
                             $Account = $this->byId($response[0][$this->text->getIdAccount()]);
                             if ($Account != null) {
-                                return $this->text->messageLogin(true, 0, $Account[$this->text->getToken()]);
+                                $api_ip = new Ip($ip);
+                                $this->setPartnerSession(
+                                    $Account->accountPartner->id_partner,
+                                    $this->setSession($api_ip->validIp(), $this->addressApi->createGeo($api_ip->getGeo()))
+                                );
+                                return $this->text->messageLogin(true, 0, $Account->token);
                             }else{
                                 return $this->text->messageLogin(false, 6);
                             }
@@ -610,6 +624,42 @@ class AccountApi{
             }
         }else{
             return $this->text->messageLogin(false, 5);
+        }
+    }
+
+    /**
+     * @param int|null $id_ip
+     * @param int|null $id_localization
+     * @return int|null
+     */
+    public function setSession(int|null $id_ip, int|null $id_localization){
+        try {
+            $Session = new Session();
+            $Session->date = $this->date->getFullDate();
+            $Session->id_ip = $id_ip;
+            $Session->id_localization = $id_localization;
+            $Session->save();
+            return $Session->id;
+        } catch (Exception $th) {
+            return null;
+        }
+    }
+
+    /**
+     * @param int|null $id_partner
+     * @param int|null $id_session
+     * @return int|null
+     */
+    public function setPartnerSession(int|null $id_partner, int|null $id_session){
+        try {
+            $PartnerSession = new PartnerSession();
+            $PartnerSession->id_partner = $id_partner;
+            $PartnerSession->id_session = $id_session;
+            $PartnerSession->status = $this->status->getEnable();
+            $PartnerSession->save();
+            return $PartnerSession->id;
+        } catch (Exception $th) {
+            return null;
         }
     }
 }
