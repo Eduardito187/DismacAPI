@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ip extends Model
+class RestrictIp extends Model
 {
     use HasFactory;
 
-    protected $table = 'ip';
+    protected $table = 'restrict_ip';
 
     protected $fillable = ['ip', 'created_at', 'updated_at'];
 

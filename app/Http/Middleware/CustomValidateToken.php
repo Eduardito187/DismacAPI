@@ -8,16 +8,27 @@ use \Illuminate\Support\Facades\Log;
 use App\Classes\TokenAccess;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
+use App\Classes\Helper\Ip;
 use \Illuminate\Http\Response;
 use \Illuminate\Http\RedirectResponse;
 
 class CustomValidateToken
 {
+    /**
+     * @var Text
+     */
     protected $text;
+    /**
+     * @var Status
+     */
     protected $status;
+    /**
+     * @var Ip
+     */
+    protected $Ip;
 
     public function __construct() {
-        $this->text = new Text();
+        $this->text   = new Text();
         $this->status = new Status();
     }
 
@@ -30,7 +41,9 @@ class CustomValidateToken
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->header($this->text->getAuthorization()) != null) {
+        $this->Ip = new Ip($request->Ip);
+        $this->Ip->validIp();
+        if ($this->Ip->validRestrict() && $request->header($this->text->getAuthorization()) != null) {
             $tokenAccess = new TokenAccess($request->header($this->text->getAuthorization()));
             if ($tokenAccess->validateAPI() == $this->status->getEnable()) {
                 return $next($request);

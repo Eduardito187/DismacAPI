@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('ip', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('public');
-            $table->string('private');
+            $table->string('ip', 20);
             $table->timestamps();
         });
     }
