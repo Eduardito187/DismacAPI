@@ -281,6 +281,7 @@ class Import{
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
             $HeaderCsv = explode($this->text->getDelimiterCode(), $HeaderCsv[0]);
+            print_r($HeaderCsv);
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strtolower($HeaderCsv[$i]);
                 if ($i == 0 && $code != $this->text->getSku()){
@@ -289,7 +290,6 @@ class Import{
                     $this->updateStatusProcess($Process->id, $this->status->getDisable());
                     $i = count($HeaderCsv);
                 }else{
-                    print_r($code);
                     if (!$this->Process_Cron->ifExistKey($code)){
                         $this->errorProcess(self::ATTRIBUTE_NONE);
                         $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
