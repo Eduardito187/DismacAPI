@@ -296,6 +296,7 @@ class Import{
                         $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         $this->updateStatusProcess($Process->id, $this->status->getDisable());
                     }else{
+                        print_r($code);
                         if (!$this->Process_Cron->setStructure($code, $i)){
                             $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         }
