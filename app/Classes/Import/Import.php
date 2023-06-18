@@ -289,12 +289,12 @@ class Import{
                     $this->updateStatusProcess($Process->id, $this->status->getDisable());
                     $i = count($HeaderCsv);
                 }else{
+                    print_r($code);
                     if (!$this->Process_Cron->ifExistKey($code)){
                         $this->errorProcess(self::ATTRIBUTE_NONE);
                         $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         $this->updateStatusProcess($Process->id, $this->status->getDisable());
                     }else{
-                        print_r($code);
                         if (!$this->Process_Cron->setStructure($code, $i)){
                             $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         }
