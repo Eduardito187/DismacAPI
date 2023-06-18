@@ -244,7 +244,9 @@ class Process{
         if (!is_null($this->Current_Row)){
             $Index = $this->existIndex($index);
             if (!is_null($Index)) {
+                print_r("Entro1");
                 if ($this->Types->validateType($Index[$this->Text->getType()], $value)){
+                    print_r("Entro2");
                     $this->Current_Row[$this->Text->getData()][] = array(
                         $this->Text->getType() => $Index[$this->Text->getType()],
                         $this->Text->getValue() => $value,
