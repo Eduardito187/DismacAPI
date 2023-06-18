@@ -282,7 +282,7 @@ class Import{
         if (count($HeaderCsv) > 0){
             $HeaderCsv = explode($this->text->getDelimiterCode(), $HeaderCsv[0]);
             for ($i=0; $i < count($HeaderCsv); $i++) {
-                $code = $HeaderCsv[$i];
+                $code = '"'.$HeaderCsv[$i].'"';
                 print_r($code."_".$this->text->getSku());
                 print_r($code != $this->text->getSku() ? "Si" : "No");
                 print_r(strval($code) != $this->text->getSku() ? "Si" : "No");
