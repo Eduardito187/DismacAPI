@@ -27,6 +27,7 @@ class Types{
      * @return true
      */
     public function validateType(string $type, string $value){
+        echo $type."_".$value;
         switch($type){
             case self::INTEGER || self::LITROS || self::DECIMAL || self::FLOAT || self::GIGABYTE:
                 return is_numeric($value);

@@ -253,7 +253,6 @@ class Import{
                         }else if ($Row_Status == 1){
                             $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                         }
-                        echo $Row_Status."_Status";
                     }else{
                         $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
@@ -283,10 +282,8 @@ class Import{
      * @return void
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
-        print_r($HeaderCsv);
         if (count($HeaderCsv) > 0){
             $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
-            print_r($HeaderCsv);
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
                 if ($i == 0 && $code != $this->text->getSku()){
