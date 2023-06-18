@@ -197,9 +197,8 @@ class Import{
             $this->DataExcel = $this->readFileCsv($path);
             $array = $this->DataExcel;
             $array = json_encode($array);
-            print_r($array);
             $array = json_decode($array, true);
-            print_r($array);
+            $this->DataExcel = $array;
             if (count($this->DataExcel) == 0) {
                 $this->errorProcess(self::ERROR_1);
                 $this->addLogHistory(self::FILE_EMPTY, $this->status->getDisable(), $this->date->getFullDate());
