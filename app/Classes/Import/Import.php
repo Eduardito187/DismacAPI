@@ -279,27 +279,29 @@ class Import{
      * @return void
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
-        print_r($HeaderCsv);
-        for ($i=0; $i < count($HeaderCsv); $i++) {
-            $code = strtolower($HeaderCsv[$i]);
-            if ($i == 0 && $code != $this->text->getSku()){
-                $this->errorProcess(self::ERROR_3);
-                $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
-                $this->updateStatusProcess($Process->id, $this->status->getDisable());
-                $i = count($HeaderCsv);
-            }else{
-                if (!$this->Process_Cron->ifExistKey($code)){
-                    $this->errorProcess(self::ATTRIBUTE_NONE);
-                    $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
+        if (count($HeaderCsv) > 0){
+            $HeaderCsv = explode($this->text->getDelimiterCode(), $HeaderCsv[0]);
+            for ($i=0; $i < count($HeaderCsv); $i++) {
+                $code = strtolower($HeaderCsv[$i]);
+                if ($i == 0 && $code != $this->text->getSku()){
+                    $this->errorProcess(self::ERROR_3);
+                    $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
                     $this->updateStatusProcess($Process->id, $this->status->getDisable());
+                    $i = count($HeaderCsv);
                 }else{
-                    if (!$this->Process_Cron->setStructure($code, $i)){
+                    if (!$this->Process_Cron->ifExistKey($code)){
+                        $this->errorProcess(self::ATTRIBUTE_NONE);
                         $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
+                        $this->updateStatusProcess($Process->id, $this->status->getDisable());
+                    }else{
+                        if (!$this->Process_Cron->setStructure($code, $i)){
+                            $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
+                        }
                     }
                 }
-            }
-            if ($this->StatusProcess == $this->status->getDisable()) {
-                $i = count($HeaderCsv);
+                if ($this->StatusProcess == $this->status->getDisable()) {
+                    $i = count($HeaderCsv);
+                }
             }
         }
     }
