@@ -273,7 +273,6 @@ class Process{
         try {
             return $this->getProductBySkuPartner($sku, $id_Partner)->id;
         } catch (\Throwable $th) {
-            echo $th->getMessage()."-";
             return 0;
         }
     }

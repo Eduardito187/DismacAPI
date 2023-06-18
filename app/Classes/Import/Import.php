@@ -244,6 +244,7 @@ class Import{
         if (count($Row) > 0){
             $Row = explode($this->text->getDelimiterCode(), strval($Row[0]));
             for ($i=0; $i < count($Row); $i++) { 
+                echo $i."_";
                 if ($i == 0){
                     $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                     if ($id_Product != 0){
@@ -253,7 +254,6 @@ class Import{
                         }else if ($Row_Status == 1){
                             $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                         }
-                        echo $Row_Status."_";
                     }else{
                         $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
