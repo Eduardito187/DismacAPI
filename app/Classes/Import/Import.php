@@ -253,6 +253,7 @@ class Import{
                         }else if ($Row_Status == 1){
                             $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                         }
+                        echo $Row_Status."_";
                     }else{
                         $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
