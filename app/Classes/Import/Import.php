@@ -238,7 +238,7 @@ class Import{
     public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
         if (count($Row) > 0){
-            $Row = explode($this->text->getDelimiterCode(), $Row[0]);
+            $Row = explode($this->text->getDelimiterCode(), strval($Row[0]));
             for ($i=0; $i < count($Row); $i++) { 
                 if ($i == 0){
                     $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
@@ -280,9 +280,9 @@ class Import{
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
-            $HeaderCsv = explode($this->text->getDelimiterCode(), $HeaderCsv[0]);
+            $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
             for ($i=0; $i < count($HeaderCsv); $i++) {
-                $code = strval('"'.$HeaderCsv[$i].'"');
+                $code = strval($HeaderCsv[$i]);
                 print_r($code."_".$this->text->getSku());
                 print_r($code != $this->text->getSku() ? "Si" : "No");
                 print_r(strval($code) != $this->text->getSku() ? "Si" : "No");
