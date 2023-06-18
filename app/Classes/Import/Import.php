@@ -226,7 +226,7 @@ class Import{
     public function validateDocumentFile(Process $Process, array $Csv){
         for ($i=1; $i < count($Csv); $i++) { 
             print_r($Csv[$i]);
-            $this->validateRows($Process, $Csv[$i]);
+            $this->validateRows($Process, explode($this->text->getDelimiterCode(), $Csv[$i]));
             $this->Process_Cron->setDataQuery();
         }
     }

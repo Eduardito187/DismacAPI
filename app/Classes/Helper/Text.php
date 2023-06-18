@@ -323,9 +323,17 @@ class Text{
     CONST BOOL                = "bool";
     CONST INDEX               = "index";
     CONST DATA                = "data";
+    CONST DELIMITER_CODE      = ";";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDelimiterCode(){
+        return SELF::DELIMITER_CODE;
     }
 
     /**
