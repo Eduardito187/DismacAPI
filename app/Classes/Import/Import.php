@@ -283,7 +283,6 @@ class Import{
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
             print_r($HeaderCsv);
-            $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
                 print_r($code);
