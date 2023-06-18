@@ -241,24 +241,22 @@ class Import{
      */
     public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
-        print_r($Row);
-        if (count($Row) > 0){
-            for ($i=0; $i < count($Row); $i++) {
-                if ($i == 0){
-                    $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
-                    if ($id_Product != 0){
-                        $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[$i], $i);
-                        if ($Row_Status == 0){
-                            $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
-                        }else if ($Row_Status == 1){
-                            $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
-                        }
-                    }else{
-                        $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+        for ($i=0; $i < count($Row); $i++) {
+            print_r($Row[$i]);
+            if ($i == 0){
+                $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
+                if ($id_Product != 0){
+                    $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[$i], $i);
+                    if ($Row_Status == 0){
+                        $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
+                    }else if ($Row_Status == 1){
+                        $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
                 }else{
-                    $this->Process_Cron->setDataBody($Row[$i], $i);
+                    $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                 }
+            }else{
+                $this->Process_Cron->setDataBody($Row[$i], $i);
             }
         }
     }
