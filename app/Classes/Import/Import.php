@@ -285,6 +285,7 @@ class Import{
             $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
+                print_r($code);
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
                     $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
@@ -292,12 +293,10 @@ class Import{
                     $i = count($HeaderCsv);
                 }else{
                     if (!$this->Process_Cron->ifExistKey($code)){
-                        print_r($code."_None");
                         $this->errorProcess(self::ATTRIBUTE_NONE);
                         $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         $this->updateStatusProcess($Process->id, $this->status->getDisable());
                     }else{
-                        print_r($code);
                         if (!$this->Process_Cron->setStructure($code, $i)){
                             $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
                         }
