@@ -27,11 +27,11 @@ class Types{
      * @return true
      */
     public function validateType(string $type, string $value){
-        switch($type){
+        switch("string"){
             case self::INTEGER || self::LITROS || self::DECIMAL || self::FLOAT || self::GIGABYTE:
                 return is_numeric($value);
                 break;
-            case self::STRING:
+            case self::STRING || self::DATE || self::TIME || self::DATETIME:
                 echo $type."_".$value;
                 return is_string($value);
                 break;
