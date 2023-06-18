@@ -31,7 +31,7 @@ class Types{
             case self::INTEGER || self::LITROS || self::DECIMAL || self::FLOAT || self::GIGABYTE:
                 return is_numeric($value);
                 break;
-            case self::STRING || self::DATE || self::TIME || self::DATETIME:
+            case self::STRING:
                 echo $type."_".$value;
                 return is_string($value);
                 break;
