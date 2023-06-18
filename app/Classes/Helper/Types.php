@@ -27,26 +27,19 @@ class Types{
      * @return true
      */
     public function validateType(string $type, string $value){
-        switch("string"){
-            case self::INTEGER || self::LITROS || self::DECIMAL || self::FLOAT || self::GIGABYTE:
-                return is_numeric($value);
-                break;
-            case self::STRING || self::DATE || self::TIME || self::DATETIME:
-                echo $type."_".$value;
-                return is_string($value);
-                break;
-            case self::BOOL:
-                return is_bool($this->validateBool($value));
-                break;
-            case self::ARRAY:
-                return is_array($value);
-                break;
-            case self::OBJECT:
-                return is_object($value);
-                break;
-            default:
-                return false;
-                break;
+        if ($type == self::INTEGER || $type == self::LITROS || $type == self::DECIMAL || $type == self::FLOAT || $type == self::GIGABYTE){
+            return is_numeric($value);
+        }else if ($type == self::STRING || $type == self::DATE || $type == self::TIME || $type == self::DATETIME){
+            echo $type."_".$value;
+            return is_string($value);
+        }else if ($type == self::BOOL){
+            return is_bool($this->validateBool($value));
+        }else if ($type == self::ARRAY){
+            return is_array($value);
+        }else if ($type == self::OBJECT){
+            return is_object($value);
+        }else{
+            return false;
         }
     }
 
