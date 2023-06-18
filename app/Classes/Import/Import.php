@@ -224,8 +224,8 @@ class Import{
      * @return void
      */
     public function validateDocumentFile(Process $Process, array $Csv){
-        print_r($Csv);
         for ($i=1; $i < count($Csv); $i++) { 
+            print_r($Csv[$i]);
             $this->validateRows($Process, $Csv[$i]);
             $this->Process_Cron->setDataQuery();
         }
