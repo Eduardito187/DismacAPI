@@ -219,6 +219,7 @@ class Import{
      * @return void
      */
     public function saveProcessCron(){
+        print_r($this->logProcess);
         $this->Process_Cron->saveProcess();
     }
 
