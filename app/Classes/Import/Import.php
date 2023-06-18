@@ -237,24 +237,25 @@ class Import{
      */
     public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
-        print_r($Row);
-        $Row = explode($this->text->getDelimiterCode(), $Row);
-        for ($i=0; $i < count($Row); $i++) { 
-            if ($i == 0){
-                $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
-                echo $id_Product;
-                if ($id_Product != 0){
-                    $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[0], $i);
-                    if ($Row_Status == 0){
-                        $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
-                    }else if ($Row_Status == 1){
-                        $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+        if (count($Row) > 0){
+            $Row = explode($this->text->getDelimiterCode(), $Row[0]);
+            for ($i=0; $i < count($Row); $i++) { 
+                if ($i == 0){
+                    $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
+                    echo $id_Product;
+                    if ($id_Product != 0){
+                        $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[0], $i);
+                        if ($Row_Status == 0){
+                            $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
+                        }else if ($Row_Status == 1){
+                            $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+                        }
+                    }else{
+                        $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
                 }else{
-                    $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+                    $this->Process_Cron->setDataBody($Row[$i], $i);
                 }
-            }else{
-                $this->Process_Cron->setDataBody($Row[$i], $i);
             }
         }
     }
