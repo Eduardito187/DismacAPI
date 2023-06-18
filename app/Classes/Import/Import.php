@@ -241,8 +241,8 @@ class Import{
         for ($i=0; $i < count($Row); $i++) { 
             if ($i == 0){
                 $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
+                echo $id_Product;
                 if ($id_Product != 0){
-                    echo $id_Product;
                     $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[0], $i);
                     if ($Row_Status == 0){
                         $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
