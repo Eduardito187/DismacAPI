@@ -312,9 +312,97 @@ class Text{
     CONST PROCESS_NONE        = "El proceso solicitado no existe.";
     CONST MENSAJE             = "mensaje";
     CONST SEGUNDOS_DURACION   = " segundos.";
+    CONST CATEGORY            = "category";
+    CONST WIDTH               = "width";
+    CONST HEIGHT              = "height";
+    CONST WEIGHT              = "weight";
+    CONST VOLUME              = "volume";
+    CONST STRING              = "string";
+    CONST INT                 = "int";
+    CONST FLOAT               = "float";
+    CONST BOOL                = "bool";
+    CONST INDEX               = "index";
+    CONST DATA                = "data";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getData(){
+        return SELF::DATA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndex(){
+        return SELF::INDEX;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFloat(){
+        return SELF::FLOAT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBool(){
+        return SELF::BOOL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInt(){
+        return SELF::INT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getString(){
+        return SELF::STRING;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidth(){
+        return SELF::WIDTH;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeight(){
+        return SELF::HEIGHT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWeight(){
+        return SELF::WEIGHT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVolume(){
+        return SELF::VOLUME;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategory(){
+        return SELF::CATEGORY;
     }
 
     /**

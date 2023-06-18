@@ -17,6 +17,7 @@ use \Exception;
 use \Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Classes\Import\Process as Process_Cron;
 
 class Import{
     CONST FOLDER = "Process/";
@@ -29,6 +30,10 @@ class Import{
     CONST ERROR_1 = "Archivo vacío.";
     CONST ERROR_2 = "Archivo no encontrado.";
     CONST ERROR_3 = "Formato del archivo erroneo.";
+    CONST CODE_NONE = "El codigo `%` no existe.";
+    CONST ATTRIBUTE_NONE = "El archivo cuenta con atributos invalidos.";
+    CONST ATRIBUTE_NONE = "El atributo `%` no existe.";
+    CONST VALUE_ATRIBUTE_NONE = "El valor `%` del atributo es invalido.";
     /**
      * @var Date
      */
@@ -42,6 +47,10 @@ class Import{
      */
     protected $text;
     /**
+     * @var Process_Cron
+     */
+    protected $Process_Cron;
+    /**
      * @var TokenAccess
      */
     protected $tokenAccess;
@@ -53,9 +62,10 @@ class Import{
     protected $StatusProcess = true;
 
     public function __construct() {
-        $this->date     = new Date();
-        $this->status   = new Status();
-        $this->text     = new Text();
+        $this->date         = new Date();
+        $this->status       = new Status();
+        $this->text         = new Text();
+        $this->Process_Cron = new Process_Cron();
     }
 
     /**
@@ -98,6 +108,8 @@ class Import{
      * @return bool
      */
     public function processApply(Process $Process){
+        $this->Process_Cron->setType($Process->Type);
+        $this->Process_Cron->loadAttributes();
         $this->validateFile($Process);
         $this->endDate = strtotime($this->date->getFullDate());
         $this->endProcessLog($Process);
@@ -189,11 +201,58 @@ class Import{
                 $this->updateStatusProcess($Process->id, $this->status->getDisable());
             }else{
                 $this->validateHeadersCsv($Process, $this->DataExcel[0]);
+                $this->validateDocumentFile($Process, $this->DataExcel);
+                $this->saveProcessCron();
             }
         }else{
             $this->errorProcess(self::ERROR_2);
             $this->addLogHistory(self::FILE_NONE, $this->status->getDisable(), $this->date->getFullDate());
             $this->updateStatusProcess($Process->id, $this->status->getDisable());
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function saveProcessCron(){
+        $this->Process_Cron->saveProcess();
+    }
+
+    /**
+     * @param Process $Process
+     * @param array $Csv
+     * @return void
+     */
+    public function validateDocumentFile(Process $Process, array $Csv){
+        for ($i=1; $i < count($Csv); $i++) { 
+            $this->validateRows($Process, $Csv[$i]);
+            $this->Process_Cron->setDataQuery();
+        }
+    }
+
+    /**
+     * @param Process $Process
+     * @param array $Row
+     * @return void
+     */
+    public function validateRows(Process $Process, array $Row){
+        $id_Product = 0;
+        for ($i=0; $i < count($Row); $i++) { 
+            if ($i == 0){
+                $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
+                if ($id_Product != 0){
+                    $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[0], $i);
+                    if ($Row_Status == 0){
+                        $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
+                    }else if ($Row_Status == 1){
+                        $this->addLogHistory($this->valueOfAttributeNone($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+                    }
+                }else{
+                    $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
+                }
+            }else{
+                $this->Process_Cron->setDataBody($Row[$i], $i);
+            }
         }
     }
 
@@ -216,15 +275,44 @@ class Import{
      * @return void
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
-        for ($i=0; $i < count($HeaderCsv); $i++) { 
+        for ($i=0; $i < count($HeaderCsv); $i++) {
             $code = strtolower($HeaderCsv[$i]);
             if ($i == 0 && $code != $this->text->getSku()){
                 $this->errorProcess(self::ERROR_3);
                 $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
                 $this->updateStatusProcess($Process->id, $this->status->getDisable());
                 $i = count($HeaderCsv);
+            }else{
+                if (!$this->Process_Cron->ifExistKey($code)){
+                    $this->errorProcess(self::ATTRIBUTE_NONE);
+                    $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
+                    $this->updateStatusProcess($Process->id, $this->status->getDisable());
+                }else{
+                    if (!$this->Process_Cron->setStructure($code, $i)){
+                        $this->addLogHistory($this->noExistCode($code), $this->status->getDisable(), $this->date->getFullDate());
+                    }
+                }
+            }
+            if ($this->StatusProcess == $this->status->getDisable()) {
+                $i = count($HeaderCsv);
             }
         }
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    public function noExistCode(string $code){
+        return str_replace("%", $code, self::CODE_NONE);
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    public function noExistAtribute(string $code){
+        return str_replace("%", $code, self::ATRIBUTE_NONE);
     }
 
     /**
@@ -399,10 +487,22 @@ class Import{
         }
     }
 
+    /**
+     * @param string $date
+     * @return string|null
+     */
     public function replaceDateApi(string $date){
         $date = str_replace("T", " ", $date);
         $date = str_replace(".000Z", "", $date);
         return strlen($date) == 0 ? null : $date;
+    }
+
+    /**
+     * @param string $valor
+     * @return string
+     */
+    public function valueOfAttributeNone(string $valor){
+        return str_replace("%", $valor, self::VALUE_ATRIBUTE_NONE);
     }
 
     /**
