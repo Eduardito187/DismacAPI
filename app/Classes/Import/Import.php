@@ -243,6 +243,7 @@ class Import{
         $id_Product = 0;
         if (count($Row) > 0){
             for ($i=0; $i < count($Row); $i++) {
+                print_r($i);
                 if ($i == 0){
                     $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                     if ($id_Product != 0){
