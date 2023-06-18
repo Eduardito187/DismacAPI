@@ -284,6 +284,7 @@ class Import{
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
                 print_r($code."_");
+                
                 print_r(strcmp($code, $this->text->getSku())."_");
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
