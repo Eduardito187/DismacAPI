@@ -232,13 +232,13 @@ class Import{
 
     /**
      * @param Process $Process
-     * @param string $Row
+     * @param array $Row
      * @return void
      */
-    public function validateRows(Process $Process, string $Row){
+    public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
-        $Row = explode($this->text->getDelimiterCode(), $Row);
         print_r($Row);
+        $Row = explode($this->text->getDelimiterCode(), $Row);
         for ($i=0; $i < count($Row); $i++) { 
             if ($i == 0){
                 $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
