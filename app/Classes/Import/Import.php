@@ -232,11 +232,12 @@ class Import{
 
     /**
      * @param Process $Process
-     * @param array $Row
+     * @param string $Row
      * @return void
      */
-    public function validateRows(Process $Process, array $Row){
+    public function validateRows(Process $Process, string $Row){
         $id_Product = 0;
+        $Row = explode($this->text->getDelimiterCode(), $Row);
         print_r($Row);
         for ($i=0; $i < count($Row); $i++) { 
             if ($i == 0){
