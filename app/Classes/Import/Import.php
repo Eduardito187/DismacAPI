@@ -243,8 +243,7 @@ class Import{
         $id_Product = 0;
         if (count($Row) > 0){
             $Row = explode($this->text->getDelimiterCode(), strval($Row[0]));
-            for ($i=0; $i < count($Row); $i++) { 
-                echo "_".$i."_";
+            for ($i=0; $i < count($Row); $i++) {
                 if ($i == 0){
                     $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                     if ($id_Product != 0){
