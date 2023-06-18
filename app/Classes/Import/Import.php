@@ -243,7 +243,7 @@ class Import{
                 if ($i == 0){
                     $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                     if ($id_Product != 0){
-                        $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[0], $i);
+                        $Row_Status = $this->Process_Cron->createRow($id_Product, $Row[$i], $i);
                         if ($Row_Status == 0){
                             $this->addLogHistory(self::ATTRIBUTE_NONE, $this->status->getDisable(), $this->date->getFullDate());
                         }else if ($Row_Status == 1){
@@ -279,6 +279,7 @@ class Import{
      * @return void
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
+        print_r($HeaderCsv);
         for ($i=0; $i < count($HeaderCsv); $i++) {
             $code = strtolower($HeaderCsv[$i]);
             if ($i == 0 && $code != $this->text->getSku()){
