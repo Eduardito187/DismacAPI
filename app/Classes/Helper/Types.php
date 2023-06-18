@@ -35,7 +35,7 @@ class Types{
                 return is_string($value);
                 break;
             case self::BOOL:
-                return is_bool($value);
+                return is_bool($this->validateBool($value));
                 break;
             case self::ARRAY:
                 return is_array($value);
@@ -46,6 +46,22 @@ class Types{
             default:
                 return false;
                 break;
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return bool
+     */
+    public function validateBool($value){
+        if (is_numeric($value)){
+            if (intval($value) == 1){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
         }
     }
 }
