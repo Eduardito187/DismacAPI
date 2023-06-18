@@ -242,7 +242,6 @@ class Import{
     public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
         for ($i=0; $i < count($Row); $i++) {
-            print_r($Row[$i]);
             if ($i == 0){
                 $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                 if ($id_Product != 0){
@@ -256,6 +255,7 @@ class Import{
                     $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                 }
             }else{
+                print_r($Row[$i]);
                 $this->Process_Cron->setDataBody($Row[$i], $i);
             }
         }
