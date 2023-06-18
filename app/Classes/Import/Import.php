@@ -283,6 +283,7 @@ class Import{
             $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
+                print_r($code);
                 print_r(strcmp($code, $this->text->getSku()));
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
