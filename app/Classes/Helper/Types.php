@@ -30,7 +30,6 @@ class Types{
         if ($type == self::INTEGER || $type == self::LITROS || $type == self::DECIMAL || $type == self::FLOAT || $type == self::GIGABYTE){
             return is_numeric($value);
         }else if ($type == self::STRING || $type == self::DATE || $type == self::TIME || $type == self::DATETIME){
-            echo $type."_".$value;
             return is_string($value);
         }else if ($type == self::BOOL){
             return is_bool($this->validateBool($value));
