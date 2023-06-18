@@ -280,7 +280,6 @@ class Import{
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
-            print_r($HeaderCsv);
             $HeaderCsv = explode($this->text->getDelimiterCode(), strval($HeaderCsv[0]));
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
@@ -339,7 +338,7 @@ class Import{
     public function readFileCsv(string $path){
         $DataCsv = array();
         if (($open = fopen($path, "r")) !== FALSE) {
-            while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+            while (($data = fgetcsv($open, 1000, ";")) !== FALSE) {
                 $DataCsv[] = $data;
             }
             fclose($open);
