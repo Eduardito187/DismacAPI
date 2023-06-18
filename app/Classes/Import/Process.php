@@ -241,15 +241,10 @@ class Process{
      * @param int $index
      */
     public function setDataBody(string $value, int $index){
-        print_r("Entro0");
-        print_r($this->Headers);
         if (!is_null($this->Current_Row)){
             $Index = $this->existIndex($index);
-            print_r("Entro1");
             if (!is_null($Index)) {
-                print_r("Entro2");
                 if ($this->Types->validateType($Index[$this->Text->getType()], $value)){
-                    print_r("Entro2");
                     $this->Current_Row[$this->Text->getData()][] = array(
                         $this->Text->getType() => $Index[$this->Text->getType()],
                         $this->Text->getValue() => $value,
