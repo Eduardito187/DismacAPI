@@ -258,6 +258,7 @@ class Import{
                         $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                     }
                 }else{
+                    print($Row);
                     $this->Process_Cron->setDataBody($Row[$i], $i);
                 }
             }
