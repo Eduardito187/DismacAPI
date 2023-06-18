@@ -241,8 +241,8 @@ class Process{
      * @param int $index
      */
     public function setDataBody(string $value, int $index){
+        print_r($this->Headers);
         if (!is_null($this->Current_Row)){
-            print_r($this->Headers);
             $Index = $this->existIndex($index);
             print_r($Index);
             if (!is_null($Index)) {
