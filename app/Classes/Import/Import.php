@@ -281,8 +281,12 @@ class Import{
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
             for ($i=0; $i < count($HeaderCsv); $i++) {
-                $code = strval(preg_replace('/[^\p{L}\p{N}\s]/u', '',$HeaderCsv[$i]));
-                print_r($code);
+                $code = "";
+                if ($i == 0){
+                    $code = strval(preg_replace('/[^\p{L}\p{N}\s]/u', '',$HeaderCsv[$i]));
+                }else{
+                    $code = strval($HeaderCsv[$i]);
+                }
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
                     $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
