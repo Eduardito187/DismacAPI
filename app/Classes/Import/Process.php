@@ -355,6 +355,7 @@ class Process{
             }else if ($code == $this->Text->getLongitude() || $code == $this->Text->getWidth() || $code == $this->Text->getHeight() || $code == $this->Text->getWeight() || $code == $this->Text->getVolume()){
                 $this->setMedidasComerciales($id_product, $value, $code);
             }else{
+                
                 $this->updateCustomAttribute($id_product, $value, $code);
             }
         }
