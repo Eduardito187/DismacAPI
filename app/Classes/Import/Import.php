@@ -282,7 +282,7 @@ class Import{
         if (count($HeaderCsv) > 0){
             print_r($HeaderCsv);
             for ($i=0; $i < count($HeaderCsv); $i++) {
-                $code = strval($HeaderCsv[$i]);
+                $code = strval(preg_replace('/[^\p{L}\p{N}\s]/u', '',$HeaderCsv[$i]));
                 print_r($code);
                 if ($i == 0 && $code != $this->text->getSku() || $i == 0 && $code != "﻿sku"){
                     $this->errorProcess(self::ERROR_3);
