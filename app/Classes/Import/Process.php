@@ -247,7 +247,7 @@ class Process{
                 if ($this->Types->validateType($Index[$this->Text->getType()], $value)){
                     $this->Current_Row[$this->Text->getData()][] = array(
                         $this->Text->getType() => $Index[$this->Text->getType()],
-                        $this->Text->getValue() => $value,
+                        $this->Text->getValue() => $this->Types->convertType($Index[$this->Text->getType()], $value),
                         $this->Text->getCode() => $Index[$this->Text->getCode()]
                     );
                 }

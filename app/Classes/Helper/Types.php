@@ -43,6 +43,29 @@ class Types{
     }
 
     /**
+     * @param string $type
+     * @param string $value
+     * @return string|int|float|array|object
+     */
+    public function convertType(string|int|float|array|object $type, string $value){
+        if ($type == self::INTEGER || $type == self::GIGABYTE){
+            return intval($value);
+        }else if ($type == self::LITROS || $type == self::DECIMAL || $type == self::FLOAT){
+            return floatval($value);
+        }else if ($type == self::STRING || $type == self::DATE || $type == self::TIME || $type == self::DATETIME){
+            return strval($value);
+        }else if ($type == self::BOOL){
+            return $value == 1 ? true : false;
+        }else if ($type == self::ARRAY){
+            return json_encode($value, true);
+        }else if ($type == self::OBJECT){
+            return json_encode($value, true);
+        }else{
+            return strval($value);
+        }
+    }
+
+    /**
      * @param string $value
      * @return bool
      */
