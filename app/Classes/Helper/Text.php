@@ -324,9 +324,65 @@ class Text{
     CONST INDEX               = "index";
     CONST DATA                = "data";
     CONST DELIMITER_CODE      = ";";
+    CONST ID_DESCRIPTION      = "id_description";
+    CONST ID_MED_COMERCIALES  = "id_medidas_comerciales";
+    CONST ANCHO               = "ancho";
+    CONST ALTURA              = "altura";
+    CONST VOLUMEN             = "volumen";
+    CONST PESO                = "peso";
+    CONST ID_ATTRIBUTE        = "id_attribute ";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdAttribute(){
+        return SELF::ID_ATTRIBUTE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAncho(){
+        return SELF::ANCHO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAltura(){
+        return SELF::ALTURA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVolumen(){
+        return SELF::VOLUMEN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeso(){
+        return SELF::PESO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdMedidasComerciales(){
+        return SELF::ID_MED_COMERCIALES;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdDescription(){
+        return SELF::ID_DESCRIPTION;
     }
 
     /**

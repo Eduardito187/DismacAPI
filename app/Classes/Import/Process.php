@@ -7,6 +7,13 @@ use App\Classes\Helper\Text;
 use App\Models\Product;
 use \Exception;
 use App\Classes\Helper\Types;
+use App\Classes\Helper\Date;
+use App\Models\Brand;
+use App\Models\Clacom;
+use App\Models\MedidasComerciales;
+use App\Models\ProductAttribute;
+use App\Models\ProductDescription;
+use App\Models\ProductType;
 
 class Process{
     const PRODUCT = "Product";
@@ -42,8 +49,13 @@ class Process{
      * @var Types
      */
     protected $Types;
+    /**
+     * @var Date
+     */
+    protected $Date;
 
     public function __construct() {
+        $this->Date  = new Date();
         $this->Text  = new Text();
         $this->Types = new Types();
     }
@@ -74,24 +86,24 @@ class Process{
      */
     public function loadAttributes(){
         if ($this->Type == self::PRODUCT) {
-            $this->loadAttributesProduct();
+            $this->Attributes = $this->loadAttributesProduct();
             $this->setProductAttribute();
         } else if ($this->Type == self::STOCK) {
-            $this->loadStockProduct();
+            $this->Attributes = $this->loadStockProduct();
         } else if ($this->Type == self::ESTADOS) {
-            $this->loadStatusProduct();
+            $this->Attributes = $this->loadStatusProduct();
         } else if ($this->Type == self::CATEGORIZAR) {
-            $this->loadCategoryProduct();
+            $this->Attributes = $this->loadCategoryProduct();
         } else if ($this->Type == self::PRECIOS) {
-            $this->loadPricesProduct();
+            $this->Attributes = $this->loadPricesProduct();
         }
     }
 
     /**
-     * @var void
+     * @return array
      */
     public function loadPricesProduct(){
-        $this->Attributes = array(
+        return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getPrice() => $this->Text->getFloat(),
             $this->Text->getSpecialPrice() => $this->Text->getFloat(),
@@ -100,10 +112,10 @@ class Process{
     }
 
     /**
-     * @var void
+     * @return array
      */
     public function loadCategoryProduct(){
-        $this->Attributes = array(
+        return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getCategory() => $this->Text->getInt(),
             $this->Text->getStore() => $this->Text->getString()
@@ -111,10 +123,10 @@ class Process{
     }
 
     /**
-     * @var void
+     * @return array
      */
     public function loadStatusProduct(){
-        $this->Attributes = array(
+        return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getStatus() => $this->Text->getBool(),
             $this->Text->getStore() => $this->Text->getString()
@@ -122,10 +134,10 @@ class Process{
     }
 
     /**
-     * @var void
+     * @return array
      */
     public function loadAttributesProduct(){
-        $this->Attributes = array(
+        return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getName() => $this->Text->getString(),
             $this->Text->getBrand() => $this->Text->getString(),
@@ -141,10 +153,10 @@ class Process{
     }
 
     /**
-     * @var void
+     * @return array
      */
     public function loadStockProduct(){
-        $this->Attributes = array(
+        return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getWarehouse() => $this->Text->getInt(),
             $this->Text->getStock() => $this->Text->getInt(),
@@ -279,7 +291,387 @@ class Process{
      * @return void
      */
     public function saveProcess(){
+        foreach ($this->Data as $key => $row) {
+            $this->changeRow($row);
+        }
         print_r($this->Data);
     }
+
+    /**
+     * @param array $row
+     * @return void
+     */
+    public function changeRow(array $row){
+        if ($this->Type == self::PRODUCT) {
+            $defaultValues = $this->loadAttributesProduct();
+            $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        } else if ($this->Type == self::STOCK) {
+            $defaultValues = $this->loadStockProduct();
+            $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        } else if ($this->Type == self::ESTADOS) {
+            $defaultValues = $this->loadStatusProduct();
+            $this->updateStates($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        } else if ($this->Type == self::CATEGORIZAR) {
+            $defaultValues = $this->loadCategoryProduct();
+            $this->updateCategory($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        } else if ($this->Type == self::PRECIOS) {
+            $defaultValues = $this->loadPricesProduct();
+            $this->updatePrices($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return Product
+     */
+    public function getProductId(int $id){
+        $product = Product::find($id);
+        if (!$product) {
+            throw new Exception($this->Text->getProductNone());
+        }
+        return $product;
+    }
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updateProduct(array $defaultValues, array $row, int $id_product){
+        foreach ($row as $key => $data) {
+            $code = $data[$this->Text->getCode()];
+            $value = $data[$this->Text->getValue()];
+            if ($code == $this->Text->getName()){
+                $this->updateProductAttribute($id_product, $value, $this->Text->getName());
+            }else if ($code == $this->Text->getBrand()){
+                $this->updateProductBrand($id_product, $value);
+            }else if ($code == $this->Text->getClacom()){
+                $this->updateProductClacom($id_product, $value);
+            }else if ($code == $this->Text->getType()){
+                $this->updateProductType($id_product, $value);
+            }else if ($code == $this->Text->getDescription()){
+                $this->setDescription($id_product, $value);
+            }else if ($code == $this->Text->getLongitude() || $code == $this->Text->getWidth() || $code == $this->Text->getHeight() || $code == $this->Text->getWeight() || $code == $this->Text->getVolume()){
+                $this->setMedidasComerciales($id_product, $value, $code);
+            }else{
+                $this->updateCustomAttribute($id_product, $value, $code);
+            }
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param string $value
+     * @param string $code
+     * @return void
+     */
+    public function updateCustomAttribute(int $id_product, string $value, string $code){
+        $attribute_id = $this->getAttibuteByCode($code);
+        if (!is_null($attribute_id)){
+            $this->getProductAttribute($id_product, $attribute_id, $value);
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @param string $value
+     * @return void
+     */
+    public function getProductAttribute(int $id_product, int $attribute_id, string $value){
+        $ProductAttribute = ProductAttribute::where($this->Text->getIdProduct(), $id_product)->where($this->Text->getIdAttribute(), $attribute_id)->first();
+        if (!$ProductAttribute){
+            $this->createProductAttribute($id_product, $attribute_id, $value);
+        }else{
+            $this->changeCustomAttribute($id_product, $attribute_id, $value);
+        }
+    }
+    
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @param string $value
+     * @return void
+     */
+    public function createProductAttribute(int $id_product, int $attribute_id, string $value){
+        try {
+            $ProductAttribute = new ProductAttribute();
+            $ProductAttribute->value = $value;
+            $ProductAttribute->id_product = $id_product;
+            $ProductAttribute->id_attribute = $attribute_id;
+            $ProductAttribute->save();
+        } catch (Exception $th) {
+            //
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @param string $value
+     */
+    public function changeCustomAttribute(int $id_product, int $attribute_id, string $value){
+        ProductAttribute::where($this->Text->getIdProduct(), $id_product)->where($this->Text->getIdAttribute(), $attribute_id)->update([
+            $this->Text->getValue() => $value,
+            $this->Text->getUpdated() => $this->Date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @return int|null
+     */
+    public function getAttibuteByCode(string $code){
+        $Attribute = Attribute::where($this->Text->getCode(), $code)->first();
+        if (!$Attribute) {
+            return null;
+        }
+        return $Attribute->id;
+    }
+
+    /**
+     * @param int $id_product
+     * @param string $value
+     * @param string $code
+     * @return void
+     */
+    public function setMedidasComerciales(int $id_product, string $value, string $code){
+        $product = $this->getProductId($id_product);
+        if (is_null($product->id_medidas_comerciales)){
+            $id_medidas_comerciales = $this->createMedidaComercial($value, $code);
+            $this->updateProductAttribute($product->id, $id_medidas_comerciales, $this->Text->getIdMedidasComerciales());
+        }else{
+            $this->updateMedidaComercial($product->id_medidas_comerciales, $code, $value);
+        }
+    }
+    
+    /**
+     * @param int $id
+     * @param string $code
+     * @param string $value
+     * @return void
+     */
+    public function updateMedidaComercial(int $id, string $code, string $value){
+        $code = $this->convertMedidasComercial($code);
+        if (!is_null($code)){
+            MedidasComerciales::where($this->Text->getId(), $id)->update([
+                $code => $value,
+                $this->Text->getUpdated() => $this->Date->getFullDate()
+            ]);
+        }
+    }
+
+    /**
+     * @param string $code
+     * @return string|null
+     */
+    private function convertMedidasComercial(string $code){
+        if ($code == $this->Text->getLongitude()){
+            return $this->Text->getLongitud();
+        }else if ($code == $this->Text->getWidth()){
+            return $this->Text->getAncho();
+        }else if ($code == $this->Text->getHeight()){
+            return $this->Text->getAltura();
+        }else if ($code == $this->Text->getWeight()){
+            return $this->Text->getVolumen();
+        }else if ($code == $this->Text->getVolume()){
+            return $this->Text->getPeso();
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param string $value
+     * @param string $code
+     * @return int|null
+     */
+    public function createMedidaComercial(string $value, string $code){
+        try {
+            $MedidasComerciales = new MedidasComerciales();
+            $MedidasComerciales->longitud = $code == $this->Text->getLongitude() ? $value : $this->Text->getTextNone();
+            $MedidasComerciales->ancho = $code == $this->Text->getWidth() ? $value : $this->Text->getTextNone();
+            $MedidasComerciales->altura = $code == $this->Text->getHeight() ? $value : $this->Text->getTextNone();
+            $MedidasComerciales->volumen = $code == $this->Text->getWeight() ? $value : $this->Text->getTextNone();
+            $MedidasComerciales->peso = $code == $this->Text->getVolume() ? $value : $this->Text->getTextNone();
+            $MedidasComerciales->created_at = $this->Date->getFullDate();
+            $MedidasComerciales->updated_at = null;
+            $MedidasComerciales->save();
+            return $MedidasComerciales->id;
+        } catch (Exception $th) {
+            return null;
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param string $value
+     * @return void
+     */
+    public function updateProductBrand(int $id_product, string $value){
+        $id_val = $this->getBrand($value);
+        $this->updateProductAttribute($id_product, $id_val, $this->Text->getIdBrand());
+    }
+    
+    /**
+     * @param int $id_product
+     * @param string $value
+     * @return void
+     */
+    public function updateProductClacom(int $id_product, string $value){
+        $id_val = $this->getClacom($value);
+        $this->updateProductAttribute($id_product, $id_val, $this->Text->getIdClacom());
+    }
+    
+    /**
+     * @param int $id_product
+     * @param string $value
+     * @return void
+     */
+    public function updateProductType(int $id_product, string $value){
+        $id_val = $this->getType($value);
+        $this->updateProductAttribute($id_product, $id_val, $this->Text->getIdType());
+    }
+
+    /**
+     * @param string $value
+     * @return int|null
+     */
+    public function getBrand(string $value){
+        $Brand = Brand::where($this->Text->getName(), $value)->first();
+        if (!$Brand) {
+            return null;
+        }
+        return $Brand->id;
+    }
+
+    /**
+     * @param string $value
+     * @return int|null
+     */
+    public function setBrand(string $value){
+        try {
+            $Brand = new Brand();
+            $Brand->name = $value;
+            $Brand->save();
+            return $Brand->id;
+        } catch (Exception $th) {
+            return null;
+        }
+    }
+    
+    /**
+     * @param string $value
+     * @return int|null
+     */
+    public function getClacom(string $value){
+        $Clacom = Clacom::where($this->Text->getLabel(), $value)->first();
+        if (!$Clacom) {
+            return null;
+        }
+        return $Clacom->id;
+    }
+    
+    /**
+     * @param string $value
+     * @return int|null
+     */
+    public function getType(string $value){
+        $ProductType = ProductType::where($this->Text->getType(), $value)->first();
+        if (!$ProductType) {
+            return null;
+        }
+        return $ProductType->id;
+    }
+
+    /**
+     * @param int $id_product
+     * @param string|int $value
+     * @param string $attribute
+     * @return void
+     */
+    public function updateProductAttribute(int $id_product, string|int $value, string $attribute){
+        Product::where($this->Text->getId(), $id_product)->update([
+            $attribute => $value,
+            $this->Text->getUpdated() => $this->Date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id_product
+     * @param string $description
+     * @return void
+     */
+    public function setDescription(int $id_product, string $description){
+        $product = $this->getProductId($id_product);
+        if (is_null($product->id_description)){
+            $id_description = $this->createDescription($description);
+            $this->updateProductAttribute($product->id, $id_description, $this->Text->getIdDescription());
+        }else{
+            $this->updateDescription($product->id_description, $description);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @param string $description
+     * @return void
+     */
+    public function updateDescription(int $id, string $description){
+        ProductDescription::where($this->Text->getId(), $id)->update([
+            $this->Text->getDescription() => $description,
+            $this->Text->getUpdated() => $this->Date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $description
+     * @return int|null
+     */
+    public function createDescription(string $description){
+        try {
+            $ProductDescription = new ProductDescription();
+            $ProductDescription->description = $description;
+            $ProductDescription->created_at = $this->Date->getFullDate();
+            $ProductDescription->updated_at = null;
+            $ProductDescription->save();
+            return $ProductDescription->id;
+        } catch (Exception $th) {
+            return null;
+        }
+    }
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updateStock(array $defaultValues, array $row, int $id_product){}
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updateStates(array $defaultValues, array $row, int $id_product){}
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updateCategory(array $defaultValues, array $row, int $id_product){}
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updatePrices(array $defaultValues, array $row, int $id_product){}
 }
 ?>

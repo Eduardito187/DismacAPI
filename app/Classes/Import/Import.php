@@ -111,9 +111,9 @@ class Import{
         $this->Process_Cron->setType($Process->Type);
         $this->Process_Cron->loadAttributes();
         $this->validateFile($Process);
-        $this->endProcessLog($Process);
         $this->endDate = strtotime($this->date->getFullDate());
         $this->saveHostoryLog($Process);
+        $this->endProcessLog($Process);
         return true;
     }
 
