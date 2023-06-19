@@ -284,7 +284,7 @@ class Import{
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
                 print_r($code);
-                if ($i == 0 && $code != $this->text->getSku()){
+                if ($i == 0 && $code != $this->text->getSku() || $i == 0 && $code != "﻿sku"){
                     $this->errorProcess(self::ERROR_3);
                     $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
                     $this->updateStatusProcess($Process->id, $this->status->getDisable());
