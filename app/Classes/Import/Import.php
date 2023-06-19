@@ -219,7 +219,6 @@ class Import{
      * @return void
      */
     public function saveProcessCron(){
-        print_r($this->logProcess);
         $this->Process_Cron->saveProcess();
     }
 
@@ -256,7 +255,6 @@ class Import{
                     $this->addLogHistory($this->noExistCode($Row[$i]), $this->status->getDisable(), $this->date->getFullDate());
                 }
             }else{
-                print_r($Row[$i]);
                 $this->Process_Cron->setDataBody($Row[$i], $i);
             }
         }
@@ -282,10 +280,8 @@ class Import{
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
-            print_r($HeaderCsv);
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
-                print_r($code);
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
                     $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
