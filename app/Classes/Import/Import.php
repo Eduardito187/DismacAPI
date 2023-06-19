@@ -204,7 +204,6 @@ class Import{
                 $this->addLogHistory(self::FILE_EMPTY, $this->status->getDisable(), $this->date->getFullDate());
                 $this->updateStatusProcess($Process->id, $this->status->getDisable());
             }else{
-                print_r($this->DataExcel);
                 $this->validateHeadersCsv($Process, $this->DataExcel[0]);
                 $this->validateDocumentFile($Process, $this->DataExcel);
                 $this->saveProcessCron();
@@ -281,8 +280,10 @@ class Import{
      */
     public function validateHeadersCsv(Process $Process, array $HeaderCsv){
         if (count($HeaderCsv) > 0){
+            print_r($HeaderCsv);
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = strval($HeaderCsv[$i]);
+                print_r($code);
                 if ($i == 0 && $code != $this->text->getSku()){
                     $this->errorProcess(self::ERROR_3);
                     $this->addLogHistory(self::SKU_CONTENT, $this->status->getDisable(), $this->date->getFullDate());
