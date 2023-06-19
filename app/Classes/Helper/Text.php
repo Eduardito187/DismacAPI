@@ -330,7 +330,7 @@ class Text{
     CONST ALTURA              = "altura";
     CONST VOLUMEN             = "volumen";
     CONST PESO                = "peso";
-    CONST ID_ATTRIBUTE        = "id_attribute ";
+    CONST ID_ATTRIBUTE        = "id_attribute";
 
     public function __construct() {
         //
