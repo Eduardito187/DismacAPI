@@ -350,6 +350,7 @@ class Process{
         foreach ($this->Data as $key => $row) {
             $this->changeRow($row);
         }
+        print_r($this->Data);
     }
 
     /**
