@@ -206,7 +206,6 @@ class Import{
             }else{
                 $this->validateHeadersCsv($Process, $this->DataExcel[0]);
                 $this->validateDocumentFile($Process, $this->DataExcel);
-                print_r($this->DataExcel);
                 $this->saveProcessCron();
             }
         }else{
