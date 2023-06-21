@@ -357,6 +357,7 @@ class Process{
      * @return void
      */
     public function changeRow(array $row){
+        print_r("HI");
         print_r($row[$this->Text->getData()]);
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
