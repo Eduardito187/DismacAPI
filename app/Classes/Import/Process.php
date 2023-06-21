@@ -357,8 +357,6 @@ class Process{
      * @return void
      */
     public function changeRow(array $row){
-        print_r("HI");
-        print_r($row[$this->Text->getData()]);
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
@@ -707,9 +705,10 @@ class Process{
      */
     public function updateStock(array $defaultValues, array $row, int $id_product){
         if (array_key_exists($this->Text->getWarehouse(), $defaultValues)) {
-            $this->Stores;
+            $store = $this->getCodeParam($row, $this->Text->getStore());
+            $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
         }else{
-
+            //Error tipo erroneo
         }
     }
 
@@ -717,6 +716,20 @@ class Process{
         foreach ($this->WarehouseCentral as $key => $wh) {
             //$this->ProductApi->updateProductWarehouse($id_product, $wh->id, $stock);
         }
+    }
+
+    /**
+     * @param array $row
+     * @param string $code
+     * @return string|null
+     */
+    public function getCodeParam(array $row, string $code){
+        foreach ($row as $key => $item) {
+            if ($item[$this->Text->getCode()] == $code) {
+                return $item[$this->Text->getValue()];
+            }
+        }
+        return null;
     }
 
     /**
