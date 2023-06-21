@@ -14,6 +14,8 @@ use App\Models\MedidasComerciales;
 use App\Models\ProductAttribute;
 use App\Models\ProductDescription;
 use App\Models\ProductType;
+use App\Models\Warehouse;
+use App\Classes\Product\ProductApi;
 
 class Process{
     const PRODUCT = "Product";
@@ -21,6 +23,7 @@ class Process{
     const ESTADOS = "Estados";
     const CATEGORIZAR = "Categorizar";
     const PRECIOS = "Precios";
+    const DEFAULT_ENABLE = 1;
     /**
      * @var array
      */
@@ -53,11 +56,31 @@ class Process{
      * @var Date
      */
     protected $Date;
+    /**
+     * @var array
+     */
+    protected $WarehouseCentral = [];
+    /**
+     * @var ProductApi
+     */
+    protected $ProductApi;
+    /**
+     * @var array
+     */
+    protected $Stores = [];
 
     public function __construct() {
-        $this->Date  = new Date();
-        $this->Text  = new Text();
-        $this->Types = new Types();
+        $this->Date       = new Date();
+        $this->Text       = new Text();
+        $this->Types      = new Types();
+        $this->ProductApi = new ProductApi();
+    }
+
+    /**
+     * @return void
+     */
+    public function getAllStore(){
+        $this->Stores = $this->ProductApi->getAllStoreEntity();
     }
 
     /**
@@ -66,6 +89,33 @@ class Process{
      */
     public function setType(string $type){
         $this->Type = $type;
+    }
+
+    /**
+     * @return Warehouse[]
+     */
+    public function getWarehouseCentral(){
+        return Warehouse::where($this->Text->getBase(), self::DEFAULT_ENABLE)->get();
+    }
+
+    /**
+     * @return void
+     */
+    public function setProductBaseWarehouse(){
+        $WH = $this->getWarehouseCentral();
+        $this->processWarehouseCentral($WH);
+    }
+
+    /**
+     * @param mixed $WH
+     * @return void
+     */
+    public function processWarehouseCentral(mixed $WH){
+        foreach ($WH as $key => $warehouse) {
+            if ($warehouse->base == self::DEFAULT_ENABLE){
+                $this->WarehouseCentral[] = $warehouse;
+            }
+        }
     }
 
     /**
@@ -97,6 +147,12 @@ class Process{
         } else if ($this->Type == self::PRECIOS) {
             $this->Attributes = $this->loadPricesProduct();
         }
+        $this->getAllStore();
+        $this->setProductBaseWarehouse();
+    }
+
+    public function setAllStore(){
+        $this->ProductApi->getAllStoreEntity();
     }
 
     /**
@@ -648,7 +704,72 @@ class Process{
      * @param int $id_product
      * @return void
      */
-    public function updateStock(array $defaultValues, array $row, int $id_product){}
+    public function updateStock(array $defaultValues, array $row, int $id_product){
+        print_r($row);
+        if (array_key_exists($this->Text->getWarehouse(), $defaultValues)) {
+            $this->Stores;
+        }else{
+
+        }
+    }
+
+    public function updateStockAllCentralWarehouse(int $id_product, int $stock){
+        foreach ($this->WarehouseCentral as $key => $wh) {
+            //$this->ProductApi->updateProductWarehouse($id_product, $wh->id, $stock);
+        }
+    }
+
+    /**
+     * @param string $store
+     * @return array
+     */
+    public function storeData(string $store){
+        if ($store == $this->Text->getTextNone()) {
+            return $this->getAllIdStore();
+        }else{
+            $data = explode($this->Text->getComa(), $store);
+            return $this->getStoreData($data);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllIdStore(){
+        $data = [];
+        foreach ($this->Stores as $key => $value) {
+            $data[] = $value->id;
+        }
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function getStoreData(array $data){
+        $store = array();
+        foreach ($data as $key => $value) {
+            $STORE = $this->getStoreByCode($value);
+            if (!is_null($STORE)) {
+                $store[] = $STORE;
+            }
+        }
+        return $store;
+    }
+
+    /**
+     * @param string $code
+     * @return int|null
+     */
+    public function getStoreByCode(string $code){
+        foreach ($this->Stores as $key => $value) {
+            if ($value->code == $code){
+                return $value->id;
+            }
+        }
+        return null;
+    }
 
     /**
      * @param array $defaultValues
