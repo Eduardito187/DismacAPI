@@ -101,7 +101,6 @@ class Process{
      */
     public function setType(string $type){
         $this->Type = $type;
-        $this->addLogHistory($this->Text->getTypeProcess($type), true, $this->Date->getFullDate());
     }
 
     /**
