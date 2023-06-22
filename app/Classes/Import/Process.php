@@ -763,6 +763,7 @@ class Process{
     public function updateStockWarehouse(Warehouse $wh, array $id_store, int $id_product, int $stock){
         $store = $this->getStoreWarebouse($wh->name);
         if (!is_null($store) && $this->existInArray($id_store, $store)){
+            print_r($store);
             $qty = $this->verifyExistWarehouseStore($store, $id_product, $wh->id);
             $qty = $qty + $stock;
             $this->ProductApi->updateProductWarehouse($id_product, $wh->id, $qty, $store);
@@ -789,13 +790,15 @@ class Process{
      * @param int $idCity
      * @param int $id_product
      * @param int $idAlmacen
-     * @return void
+     * @return int
      */
     public function verifyExistWarehouseStore(int $idCity, int $id_product, int $idAlmacen){
         $ProductWarehouse = ProductWarehouse::where($this->Text->getIdProduct(), $id_product)->where($this->Text->getIdWarehouse(), $idAlmacen)->where($this->Text->getIdStore(), $idCity)->first();
         if (!$ProductWarehouse) {
             $this->setProductWarehouse($id_product, $idAlmacen, 0, $idCity);
+            return 0;
         }
+        return $ProductWarehouse->stock;
     }
 
     /**
