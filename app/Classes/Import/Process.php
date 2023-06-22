@@ -392,7 +392,6 @@ class Process{
      */
     public function changeRow(array $row){
         $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
-        print_r("HOLA");
         print_r($row);
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
@@ -402,7 +401,6 @@ class Process{
             $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::ESTADOS) {
             $defaultValues = $this->loadStatusProduct();
-            print_r($defaultValues);
             $this->updateStates($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::CATEGORIZAR) {
             $defaultValues = $this->loadCategoryProduct();
@@ -967,6 +965,8 @@ class Process{
      * @return void
      */
     public function updateStates(array $defaultValues, array $row, int $id_product){
+        print_r($defaultValues);
+        print_r("HOLA");
         $status = $this->getCodeParam($row, $this->Text->getStatus());
         $store = $this->getCodeParam($row, $this->Text->getStore());
         $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
