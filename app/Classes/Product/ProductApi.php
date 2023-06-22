@@ -1445,10 +1445,10 @@ class ProductApi{
      */
     public function changeStatusProduct(int $idProduct, array $stores, bool $status){
         foreach ($stores as $store) {
-            if(is_null($this->getProductStoreStatus($idProduct, $store[$this->text->getId()]))){
-                $this->setProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
+            if(is_null($this->getProductStoreStatus($idProduct, $store))){
+                $this->setProductStoreStatus($idProduct, $store, $status);
             }else{
-                $this->updateProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
+                $this->updateProductStoreStatus($idProduct, $store, $status);
             }
         }
     }
