@@ -367,6 +367,9 @@ class Process{
      * @return void
      */
     public function saveProcess(){
+        foreach ($this->Data as $key => $row) {
+            $this->changeRow($row);
+        }
     }
     
     /**
