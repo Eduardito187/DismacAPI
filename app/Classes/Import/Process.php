@@ -396,6 +396,7 @@ class Process{
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::STOCK) {
+            print_r($row);
             $defaultValues = $this->loadStockProduct();
             $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::ESTADOS) {
