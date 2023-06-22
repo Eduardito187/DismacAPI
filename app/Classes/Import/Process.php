@@ -16,8 +16,16 @@ use App\Models\ProductDescription;
 use App\Models\ProductType;
 use App\Models\Warehouse;
 use App\Classes\Product\ProductApi;
+use App\Models\ProductWarehouse;
+use Throwable;
 
 class Process{
+    const SCZ = "SCZ";
+    const ID_SCZ = 2;
+    const CBA = "CBA";
+    const ID_CBA = 3;
+    const LPZ = 1;
+    const ID_LPZ = "LPZ";
     const PRODUCT = "Product";
     const STOCK = "Stock";
     const ESTADOS = "Estados";
@@ -338,7 +346,7 @@ class Process{
     public function validateSku(string $sku, int $id_Partner){
         try {
             return $this->getProductBySkuPartner($sku, $id_Partner)->id;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return 0;
         }
     }
@@ -705,19 +713,136 @@ class Process{
      */
     public function updateStock(array $defaultValues, array $row, int $id_product){
         if (array_key_exists($this->Text->getWarehouse(), $defaultValues)) {
+            $stock = $this->getCodeParam($row, $this->Text->getStock());
             $store = $this->getCodeParam($row, $this->Text->getStore());
             $warehouse = $this->getCodeParam($row, $this->Text->getWarehouse());
             $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
-            print_r($id_store);
-            print_r($warehouse);
+            $Warehouse = null;
+            if (!is_null($stock)) {
+                try {
+                    if (!is_null($warehouse)) {
+                        $Warehouse = $this->ProductApi->getWarehouseByCode($warehouse);
+                    }
+                } catch (Throwable $th) {
+                    $Warehouse = null;
+                }
+                $this->updateStockAllCentralWarehouse($Warehouse, $id_store, $defaultValues, $stock, $id_product);
+            }
         }else{
             //Error tipo erroneo
         }
     }
 
-    public function updateStockAllCentralWarehouse(int $id_product, int $stock){
-        foreach ($this->WarehouseCentral as $key => $wh) {
-            //$this->ProductApi->updateProductWarehouse($id_product, $wh->id, $stock);
+    /**
+     * @param Warehouse|null $Warehouse
+     * @param array $id_store
+     * @param array $defaultValues
+     * @param int $row
+     * @param int $id_product
+     */
+    public function updateStockAllCentralWarehouse(Warehouse|null $Warehouse, array $id_store, array $defaultValues, int $stock, int $id_product){
+        $Product = $this->getProductId($id_product);
+        $qty = $Product->stock;
+        if (is_null($Warehouse)) {
+            foreach ($this->WarehouseCentral as $key => $wh) {
+                $qty += $this->updateStockWarehouse($wh, $id_store, $id_product, $stock);
+            }
+        }else{
+            $qty += $this->updateStockWarehouse($Warehouse, $id_store, $id_product, $stock);
+        }
+        $this->updateProductStock($id_product, $qty);
+    }
+
+    /**
+     * @param Warehouse $wh
+     * @param array $id_store
+     * @param int $id_product
+     * @param int $stock
+     * @return int
+     */
+    public function updateStockWarehouse(Warehouse $wh, array $id_store, int $id_product, int $stock){
+        $store = $this->getStoreWarebouse($wh->name);
+        if (!is_null($store) && $this->existInArray($id_store, $store)){
+            $qty = $this->verifyExistWarehouseStore($store, $id_product, $wh->id);
+            $qty = $qty + $stock;
+            $this->ProductApi->updateProductWarehouse($id_product, $wh->id, $qty, $store);
+            return $stock;
+        }
+        return 0;
+    }
+
+    /**
+     * @param array $data
+     * @param mixed $value
+     * @return bool
+     */
+    private function existInArray(array $data, mixed $value){
+        foreach ($data as $key => $index) {
+            if ($value == $index) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param int $idCity
+     * @param int $id_product
+     * @param int $idAlmacen
+     * @return void
+     */
+    public function verifyExistWarehouseStore(int $idCity, int $id_product, int $idAlmacen){
+        $ProductWarehouse = ProductWarehouse::where($this->Text->getIdProduct(), $id_product)->where($this->Text->getIdWarehouse(), $idAlmacen)->where($this->Text->getIdStore(), $idCity)->first();
+        if (!$ProductWarehouse) {
+            $this->setProductWarehouse($id_product, $idAlmacen, 0, $idCity);
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_warehouse
+     * @param int $stock
+     * @param int $id_store
+     */
+    public function setProductWarehouse(int $id_product, int $id_warehouse, int $stock, int $id_store){
+        try {
+            $ProductWarehouse = new ProductWarehouse();
+            $ProductWarehouse->id_product = $id_product;
+            $ProductWarehouse->id_warehouse = $id_warehouse;
+            $ProductWarehouse->stock = $stock;
+            $ProductWarehouse->id_store = $id_store;
+            $ProductWarehouse->created_at = $this->Date->getFullDate();
+            $ProductWarehouse->updated_at = null;
+            $ProductWarehouse->save();
+        } catch (Exception $th) {
+            //
+        }
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $newStock
+     */
+    public function updateProductStock(int $id_product, int $newStock){
+        Product::where($this->Text->getId(), $id_product)->update([
+            $this->Text->getStock() => $newStock,
+            $this->Text->getUpdated() => $this->Date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $name
+     * @return int|null
+     */
+    private function getStoreWarebouse(string $name){
+        if (str_contains($name, self::SCZ)) {
+            return self::ID_SCZ;
+        }else if(str_contains($name, self::CBA)) {
+            return self::CBA;
+        }else if(str_contains($name, self::LPZ)) {
+            return self::LPZ;
+        }else{
+            return null;
         }
     }
 
@@ -741,11 +866,27 @@ class Process{
      */
     public function storeData(string $store){
         if ($store == $this->Text->getTextNone()) {
-            return $this->getAllIdStore();
+            //$this->getAllIdStore();
+            return $this->getStoreCentral();
         }else{
             $data = explode($this->Text->getComa(), $store);
             return $this->getStoreData($data);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getStoreCentral(){
+        $this->WarehouseCentral;
+        $data = array();
+        foreach ($this->WarehouseCentral as $key => $value) {
+            $id = $this->getStoreWarebouse($value->name);
+            if (!is_null($id)){
+                $data[] = $id;
+            }
+        }
+        return $data;
     }
 
     /**
