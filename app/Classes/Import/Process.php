@@ -750,6 +750,7 @@ class Process{
         }else{
             $qty += $this->updateStockWarehouse($Warehouse, $id_store, $id_product, $stock);
         }
+        print_r($id_store);
         $this->updateProductStock($id_product, $qty);
     }
 
@@ -777,7 +778,6 @@ class Process{
      * @return bool
      */
     private function existInArray(array $data, mixed $value){
-        print_r($data);
         foreach ($data as $key => $index) {
             if ($value == $index) {
                 return true;
