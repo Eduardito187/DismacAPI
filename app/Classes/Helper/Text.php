@@ -331,9 +331,27 @@ class Text{
     CONST VOLUMEN             = "volumen";
     CONST PESO                = "peso";
     CONST ID_ATTRIBUTE        = "id_attribute";
+    CONST INICIO_PROCESS      = "Inicio del proceso para guardar la data.";
+    CONST FIN_PROCESS         = "Fin del proceso para guardar la data.";
+    CONST PROCESS_PRODUCT     = "Procesando el producto %.";
+    CONST PROCESS_TYPE        = "Tipo de proceso '%' iniciado.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getInicioProcess(){
+        return SELF::INICIO_PROCESS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFinProcess(){
+        return SELF::FIN_PROCESS;
     }
 
     /**
@@ -1171,6 +1189,22 @@ class Text{
      */
     public function getDiferenceDays(string $text, int $days){
         return $text.str_replace($this->getPercent(), $days, $days > 1 ? SELF::DAYS_DIFENCENS : SELF::DAY_DIFENCENS);
+    }
+
+    /**
+     * @param string $product
+     * @return string
+     */
+    public function getProcessProduct(string $product){
+        return str_replace($this->getPercent(), $product, SELF::PROCESS_PRODUCT);
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function getTypeProcess(string $type){
+        return str_replace($this->getPercent(), $type, SELF::PROCESS_TYPE);
     }
 
     /**

@@ -757,6 +757,30 @@ class ProductApi{
     }
 
     /**
+     * @param int $id_store
+     * @param int $id_product
+     * @param string $precio
+     * @param string|float $special_price
+     */
+    public function updatePriceProductStore(int $id_store, int $id_product, string $precio, string|float $special_price){
+        $id_price = $this->getProductPriceStore($id_store, $id_product);
+        $_price = floatval($precio);
+        $_special_price = floatval($special_price);
+        if ($_price == $_special_price) {
+            $_special_price=null;
+        }
+        $from_date = $this->date->getFullDate();
+        $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
+        if (is_null($id_price)) {
+            $this->setPrice($_price, $_special_price, $from_date, $to_date);
+            $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
+            $this->setProductPriceStore($id_price, $id_store, $id_product);
+        }else{
+            $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+        }
+    }
+
+    /**
      * @param array $product
      * @return int|null
      */
@@ -905,9 +929,9 @@ class ProductApi{
      * @param int $id_catalog
      * @param int $id_product
      * @param int $id_store
-     * @param int $id_category
+     * @param int|null $id_category
      */
-    public function setProductCategoryCatalog(int $id_catalog, int $id_product, int $id_store, int $id_category){
+    public function setProductCategoryCatalog(int $id_catalog, int $id_product, int $id_store, int|null $id_category){
         try {
             $ProductCategory = new ProductCategory();
             $ProductCategory->id_product = $id_product;

@@ -8,6 +8,7 @@ use App\Models\Product;
 use \Exception;
 use App\Classes\Helper\Types;
 use App\Classes\Helper\Date;
+use App\Classes\Helper\Status;
 use App\Models\Brand;
 use App\Models\Clacom;
 use App\Models\MedidasComerciales;
@@ -76,12 +77,21 @@ class Process{
      * @var array
      */
     protected $Stores = [];
+    /**
+     * @var array
+     */
+    protected $Log_Save = [];
+    /**
+     * @var Status
+     */
+    protected $status;
 
     public function __construct() {
         $this->Date       = new Date();
         $this->Text       = new Text();
         $this->Types      = new Types();
         $this->ProductApi = new ProductApi();
+        $this->status     = new Status();
     }
 
     /**
@@ -97,6 +107,7 @@ class Process{
      */
     public function setType(string $type){
         $this->Type = $type;
+        $this->addLogHistory($this->Text->getTypeProcess($type), $this->status->getDisable(), $this->Date->getFullDate());
     }
 
     /**
@@ -182,7 +193,8 @@ class Process{
         return array(
             $this->Text->getSku() => $this->Text->getString(),
             $this->Text->getCategory() => $this->Text->getInt(),
-            $this->Text->getStore() => $this->Text->getString()
+            $this->Text->getStore() => $this->Text->getString(),
+            $this->Text->getIdCatalog() => $this->Text->getInt()
         );
     }
 
@@ -359,12 +371,33 @@ class Process{
             $this->changeRow($row);
         }
     }
+    
+    /**
+     * @return array
+     */
+    public function getProcessLog(){
+        return $this->Log_Save;
+    }
+
+    /**
+     * @param string $mensaje
+     * @param bool $status
+     * @param string $created_at
+     */
+    public function addLogHistory(string $mensaje, bool $status, string $created_at){
+        $this->Log_Save[] = array(
+            $this->Text->getMensaje() => $mensaje,
+            $this->Text->getStatus() => $status,
+            $this->Text->getCreated() => $created_at
+        );
+    }
 
     /**
      * @param array $row
      * @return void
      */
     public function changeRow(array $row){
+        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), $this->status->getDisable(), $this->Date->getFullDate());
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
@@ -750,7 +783,6 @@ class Process{
         }else{
             $qty += $this->updateStockWarehouse($Warehouse, $id_store, $id_product, $stock);
         }
-        print_r($id_store);
         $this->updateProductStock($id_product, $qty);
     }
 
@@ -937,7 +969,13 @@ class Process{
      * @param int $id_product
      * @return void
      */
-    public function updateStates(array $defaultValues, array $row, int $id_product){}
+    public function updateStates(array $defaultValues, array $row, int $id_product){
+        $status = $this->getCodeParam($row, $this->Text->getStatus());
+        $store = $this->getCodeParam($row, $this->Text->getStore());
+        $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
+        $status = $status == null ? true : ($status == 1 ? true : false);
+        $this->ProductApi->changeStatusProduct($id_product, $id_store, $status);
+    }
 
     /**
      * @param array $defaultValues
@@ -945,7 +983,18 @@ class Process{
      * @param int $id_product
      * @return void
      */
-    public function updateCategory(array $defaultValues, array $row, int $id_product){}
+    public function updateCategory(array $defaultValues, array $row, int $id_product){
+        $id_catalog = $this->getCodeParam($row, $this->Text->getIdCatalog());
+        $store = $this->getCodeParam($row, $this->Text->getStore());
+        $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
+        $id_category = $this->getCodeParam($row, $this->Text->getCategory());
+        if (!is_null($id_catalog) && !is_null($id_category)){
+            foreach ($id_store as $key => $value) {
+                $this->ProductApi->deleteProductCategoryCatalog($id_catalog, $value, $id_category, $id_product);
+                $this->ProductApi->setProductCategoryCatalog($id_catalog, $id_product, $value, $id_category);
+            }
+        }
+    }
 
     /**
      * @param array $defaultValues
@@ -953,6 +1002,16 @@ class Process{
      * @param int $id_product
      * @return void
      */
-    public function updatePrices(array $defaultValues, array $row, int $id_product){}
+    public function updatePrices(array $defaultValues, array $row, int $id_product){
+        $price = $this->getCodeParam($row, $this->Text->getPrice());
+        $special_price = $this->getCodeParam($row, $this->Text->getSpecialPrice());
+        $store = $this->getCodeParam($row, $this->Text->getStore());
+        $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
+        if (!is_null($price) || !is_null($special_price)){
+            foreach ($id_store as $key => $value) {
+                $this->ProductApi->updatePriceProductStore($value, $id_product, $price, $special_price);
+            }
+        }
+    }
 }
 ?>

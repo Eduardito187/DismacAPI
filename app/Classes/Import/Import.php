@@ -219,7 +219,11 @@ class Import{
      * @return void
      */
     public function saveProcessCron(){
+        $this->addLogHistory($this->text->getInicioProcess(), $this->status->getEnable(), $this->date->getFullDate());
         $this->Process_Cron->saveProcess();
+        $this->addLogHistory($this->text->getFinProcess(), $this->status->getEnable(), $this->date->getFullDate());
+        $this->logProcess = array_merge($this->logProcess, $this->Process_Cron->getProcessLog());
+        ;
     }
 
     /**
