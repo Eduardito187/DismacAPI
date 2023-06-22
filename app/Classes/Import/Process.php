@@ -392,7 +392,6 @@ class Process{
      */
     public function changeRow(array $row){
         $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
-        print_r($row);
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
@@ -968,7 +967,6 @@ class Process{
         $status = $this->getCodeParam($row, $this->Text->getStatus());
         $store = $this->getCodeParam($row, $this->Text->getStore());
         $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
-        print_r($id_store);
         $status = $status == null ? true : ($status == 1 ? true : false);
         $this->ProductApi->changeStatusProduct($id_product, $id_store, $status);
     }
