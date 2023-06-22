@@ -204,6 +204,9 @@ class Import{
                 $this->addLogHistory(self::FILE_EMPTY, $this->status->getDisable(), $this->date->getFullDate());
                 $this->updateStatusProcess($Process->id, $this->status->getDisable());
             }else{
+                $this->validateHeadersCsv($Process, $this->DataExcel[0]);
+                $this->validateDocumentFile($Process, $this->DataExcel);
+                $this->saveProcessCron();
             }
         }else{
             $this->errorProcess(self::ERROR_2);

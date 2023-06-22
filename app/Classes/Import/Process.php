@@ -8,7 +8,6 @@ use App\Models\Product;
 use \Exception;
 use App\Classes\Helper\Types;
 use App\Classes\Helper\Date;
-use App\Classes\Helper\Status;
 use App\Models\Brand;
 use App\Models\Clacom;
 use App\Models\MedidasComerciales;
@@ -81,17 +80,12 @@ class Process{
      * @var array
      */
     protected $Log_Save = [];
-    /**
-     * @var Status
-     */
-    protected $status;
 
     public function __construct() {
         $this->Date       = new Date();
         $this->Text       = new Text();
         $this->Types      = new Types();
         $this->ProductApi = new ProductApi();
-        $this->status     = new Status();
     }
 
     /**
@@ -107,7 +101,7 @@ class Process{
      */
     public function setType(string $type){
         $this->Type = $type;
-        $this->addLogHistory($this->Text->getTypeProcess($type), $this->status->getDisable(), $this->Date->getFullDate());
+        $this->addLogHistory($this->Text->getTypeProcess($type), true, $this->Date->getFullDate());
     }
 
     /**
@@ -397,7 +391,7 @@ class Process{
      * @return void
      */
     public function changeRow(array $row){
-        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), $this->status->getDisable(), $this->Date->getFullDate());
+        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
