@@ -761,7 +761,7 @@ class Process{
      * @return int
      */
     public function updateStockWarehouse(Warehouse $wh, array $id_store, int $id_product, int $stock){
-        $store = $this->getStoreWarebouse($wh->name);
+        $store = $this->getStoreWarehouse($wh->name);
         if (!is_null($store) && $this->existInArray($id_store, $store)){
             $qty = $this->verifyExistWarehouseStore($store, $id_product, $wh->id);
             $qty = $qty + $stock;
@@ -837,13 +837,13 @@ class Process{
      * @param string $name
      * @return int|null
      */
-    private function getStoreWarebouse(string $name){
+    private function getStoreWarehouse(string $name){
         if (str_contains($name, self::SCZ)) {
             return self::ID_SCZ;
         }else if(str_contains($name, self::CBA)) {
-            return self::CBA;
+            return self::ID_CBA;
         }else if(str_contains($name, self::LPZ)) {
-            return self::LPZ;
+            return self::ID_LPZ;
         }else{
             return null;
         }
@@ -884,7 +884,7 @@ class Process{
         $this->WarehouseCentral;
         $data = array();
         foreach ($this->WarehouseCentral as $key => $value) {
-            $id = $this->getStoreWarebouse($value->name);
+            $id = $this->getStoreWarehouse($value->name);
             if (!is_null($id)){
                 $data[] = $id;
             }
