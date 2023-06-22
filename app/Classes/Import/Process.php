@@ -396,6 +396,8 @@ class Process{
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::STOCK) {
             $defaultValues = $this->loadStockProduct();
+            print_r("HOLA");
+            print_r($row);
             $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::ESTADOS) {
             $defaultValues = $this->loadStatusProduct();
@@ -738,8 +740,6 @@ class Process{
      * @return void
      */
     public function updateStock(array $defaultValues, array $row, int $id_product){
-        print_r("HOLA");
-        print_r($row);
         if (array_key_exists($this->Text->getWarehouse(), $defaultValues)) {
             $stock = $this->getCodeParam($row, $this->Text->getStock());
             $store = $this->getCodeParam($row, $this->Text->getStore());
