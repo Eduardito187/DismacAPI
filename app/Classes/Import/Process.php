@@ -706,8 +706,10 @@ class Process{
     public function updateStock(array $defaultValues, array $row, int $id_product){
         if (array_key_exists($this->Text->getWarehouse(), $defaultValues)) {
             $store = $this->getCodeParam($row, $this->Text->getStore());
+            $warehouse = $this->getCodeParam($row, $this->Text->getWarehouse());
             $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
             print_r($id_store);
+            print_r($warehouse);
         }else{
             //Error tipo erroneo
         }
