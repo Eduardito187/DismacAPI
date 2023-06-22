@@ -24,8 +24,8 @@ class Process{
     const ID_SCZ = 2;
     const CBA = "CBA";
     const ID_CBA = 3;
-    const LPZ = 1;
-    const ID_LPZ = "LPZ";
+    const LPZ = "LPZ";
+    const ID_LPZ = 1;
     const PRODUCT = "Product";
     const STOCK = "Stock";
     const ESTADOS = "Estados";
