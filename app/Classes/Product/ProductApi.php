@@ -1444,7 +1444,6 @@ class ProductApi{
      * @return bool
      */
     public function changeStatusProduct(int $idProduct, array $stores, bool $status){
-        print_r($stores);
         foreach ($stores as $store) {
             if(is_null($this->getProductStoreStatus($idProduct, $store))){
                 $this->setProductStoreStatus($idProduct, $store, $status);
