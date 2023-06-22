@@ -402,6 +402,7 @@ class Process{
             $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::ESTADOS) {
             $defaultValues = $this->loadStatusProduct();
+            print_r($defaultValues);
             $this->updateStates($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::CATEGORIZAR) {
             $defaultValues = $this->loadCategoryProduct();
