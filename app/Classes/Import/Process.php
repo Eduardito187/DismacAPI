@@ -763,7 +763,6 @@ class Process{
     public function updateStockWarehouse(Warehouse $wh, array $id_store, int $id_product, int $stock){
         $store = $this->getStoreWarebouse($wh->name);
         if (!is_null($store) && $this->existInArray($id_store, $store)){
-            print_r($store);
             $qty = $this->verifyExistWarehouseStore($store, $id_product, $wh->id);
             $qty = $qty + $stock;
             $this->ProductApi->updateProductWarehouse($id_product, $wh->id, $qty, $store);
@@ -778,6 +777,7 @@ class Process{
      * @return bool
      */
     private function existInArray(array $data, mixed $value){
+        print_r($data);
         foreach ($data as $key => $index) {
             if ($value == $index) {
                 return true;
