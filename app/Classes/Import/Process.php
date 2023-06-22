@@ -391,15 +391,16 @@ class Process{
      * @return void
      */
     public function changeRow(array $row){
+        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::STOCK) {
-            print_r("HOLA");
-            print_r($row);
             $defaultValues = $this->loadStockProduct();
             $this->updateStock($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::ESTADOS) {
+            print_r("HOLA");
+            print_r($row);
             $defaultValues = $this->loadStatusProduct();
             $this->updateStates($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::CATEGORIZAR) {
