@@ -965,10 +965,9 @@ class Process{
      * @return void
      */
     public function updateStates(array $defaultValues, array $row, int $id_product){
-        print_r($defaultValues);
-        print_r($row);
         $status = $this->getCodeParam($row, $this->Text->getStatus());
         $store = $this->getCodeParam($row, $this->Text->getStore());
+        print_r($row);
         $id_store = $this->storeData($store == null ? $this->Text->getTextNone() : $store);
         $status = $status == null ? true : ($status == 1 ? true : false);
         $this->ProductApi->changeStatusProduct($id_product, $id_store, $status);
