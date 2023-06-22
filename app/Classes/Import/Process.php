@@ -391,9 +391,9 @@ class Process{
      * @return void
      */
     public function changeRow(array $row){
+        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
         print_r("HOLA");
         print_r($row);
-        $this->addLogHistory($this->Text->getProcessProduct($row[$this->Text->getSku()]), false, $this->Date->getFullDate());
         if ($this->Type == self::PRODUCT) {
             $defaultValues = $this->loadAttributesProduct();
             $this->updateProduct($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
