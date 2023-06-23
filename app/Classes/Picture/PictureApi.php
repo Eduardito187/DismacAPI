@@ -52,10 +52,6 @@ class PictureApi{
         $File->move($Path, $imageName);
         $local = "/".$Path."/".$imageName;
         $public = env('APP_URL').$local;
-        print_r($public);
-        print_r($local);
-        print_r($Path);
-        print_r($imageName);
         $this->saveData($public, $local);
         return $public;
     }
