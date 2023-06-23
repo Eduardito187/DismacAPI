@@ -35,8 +35,12 @@ use App\Models\ProductWarehouse;
 use App\Models\SalesCoupon;
 use App\Models\Warehouse;
 use Exception;
+use Illuminate\Http\Request;
+use App\Classes\TokenAccess;
 
 class PartnerApi{
+    CONST FOLDER_PROFILES = "Profiles/";
+    CONST FOLDER_COVERS = "Covers/";
     CONST PEDIDO_MARKETPLACE = "Pedido marketplace";
     CONST HISTOY_LAST = 8;
     CONST PENDIENTE = "PENDIENTE";
@@ -81,6 +85,10 @@ class PartnerApi{
      * @var array
      */
     protected $validCoupons = [];
+    /**
+     * @var TokenAccess
+     */
+    protected $tokenAccess;
 
     public function __construct() {
         $this->date       = new Date();
@@ -88,6 +96,54 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function uploadPicture(Request $request){
+        $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROFILES);
+        return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureProfile());
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function uploadCover(Request $request){
+        $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_COVERS);
+        return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureFront());
+    }
+
+    /**
+     * @param int $id_picture
+     * @param int $id_partner
+     * @param string $code
+     * @return bool
+     */
+    public function updatePicturePartner(int $id_picture, int $id_partner, string $code){
+        Partner::where($this->text->getId(), $id_partner)->update([
+            $code => $id_picture,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param string $value
+     * @return int
+     */
+    public function getAccountToken(string $value){
+        $this->tokenAccess = new TokenAccess($value);
+        $Account = Account::select($this->text->getId())->where($this->text->getToken(), $this->tokenAccess->getToken())->get()->toArray();
+        if (count($Account) > 0) {
+            return $Account[0][$this->text->getId()];
+        }else{
+            throw new Exception($this->text->AccountNotExist());
+        }
     }
 
     /**

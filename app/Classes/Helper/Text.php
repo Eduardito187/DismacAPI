@@ -335,9 +335,25 @@ class Text{
     CONST FIN_PROCESS         = "Fin del proceso para guardar la data.";
     CONST PROCESS_PRODUCT     = "Procesando el producto %.";
     CONST PROCESS_TYPE        = "Tipo de proceso '%' iniciado.";
+    CONST PICTURE_PROFILE     = "picture_profile";
+    CONST PICTURE_FRONT       = "picture_front";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPictureProfile(){
+        return SELF::PICTURE_PROFILE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPictureFront(){
+        return SELF::PICTURE_FRONT;
     }
 
     /**

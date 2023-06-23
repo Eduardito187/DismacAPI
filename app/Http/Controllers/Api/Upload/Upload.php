@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Classes\Import\Import;
 use App\Classes\Helper\Text;
 use \Exception;
+use App\Classes\Partner\PartnerApi;
 
 class Upload extends Controller
 {
@@ -18,10 +19,15 @@ class Upload extends Controller
      * @var Text
      */
     protected $text;
+    /**
+     * @var PartnerApi
+     */
+    protected $PartnerApi;
 
     public function __construct() {
         $this->Import     = new Import();
         $this->text       = new Text();
+        $this->PartnerApi = new PartnerApi();
     }
 
     /**
@@ -40,7 +46,41 @@ class Upload extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeProfile(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PartnerApi->uploadPicture($request),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
 
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeCover(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PartnerApi->uploadCover($request),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
