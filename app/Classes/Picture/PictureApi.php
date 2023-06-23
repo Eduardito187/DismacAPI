@@ -47,7 +47,7 @@ class PictureApi{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner, string $folder){
-        $imageName = time().'-process-'.time().".csv";
+        $imageName = time().'-picture-'.time().".".$File->getClientOriginalExtension();
         $Path = "storage/".$folder.$id_Partner;
         $File->move($Path, $imageName);
         $local = "/".$Path."/".$imageName;
