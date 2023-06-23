@@ -55,6 +55,7 @@ class PictureApi{
         print_r($public);
         print_r($local);
         print_r($Path);
+        print_r($imageName);
         $this->saveData($public, $local);
         return $public;
     }
