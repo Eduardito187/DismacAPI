@@ -232,7 +232,8 @@ class ProductApi{
      */
     public function searchProduct(string $query, int $id_partner){
         return Product::where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->
-        orwhere($this->text->getSku(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->distinct()->get();
+        orwhere($this->text->getSku(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->offset(0)
+        ->limit(10)->distinct()->get();
     }
 
     /**
