@@ -103,7 +103,7 @@ class PartnerApi{
      * @return bool
      */
     public function uploadPicture(Request $request){
-        $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROFILES);
         return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureProfile());
     }
@@ -113,9 +113,22 @@ class PartnerApi{
      * @return bool
      */
     public function uploadCover(Request $request){
-        $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_COVERS);
         return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureFront());
+    }
+
+    /**
+     * @param int $idAccount
+     * @return int|null
+     */
+    public function getPartnerByAccountId(int $idAccount){
+        $AccountPartner = AccountPartner::select($this->text->getIdPartner())->where($this->text->getIdAccount(), $idAccount)->get()->toArray();
+        if (count($AccountPartner) > 0) {
+            return $AccountPartner[0][$this->text->getIdPartner()];
+        }else{
+            throw new Exception($this->text->getNonePartner());
+        }
     }
 
     /**
