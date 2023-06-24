@@ -111,10 +111,9 @@ class PictureApi{
             $subdirectorios_del_ano = Storage::directories("storage/Process/1/1687598029-picture-1687598029/$id_figura/$year");
             foreach ($subdirectorios_del_ano as $directorio_del_mes) {
                 $temp_array = explode('/', $directorio_del_mes);
-                // obtienes el último elemento (el mes).
                 $filename = end( $temp_array );
-                // Obtienes los archivos que están dentro del directorio del mes
                 $archivos_del_mes = Storage::files($directorio_del_mes);
+                print_r($filename);
                 print_r("HOLA");
                 print_r($archivos_del_mes);
                 /*
