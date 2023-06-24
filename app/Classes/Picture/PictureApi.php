@@ -103,12 +103,10 @@ class PictureApi{
 
     /**
      * @param int $id_partner
-     * @param string $folder
      * @param string $pathFile
      * @return void
      */
-    public function processZipFile(int $id_partner, string $folder, string $pathFile){
-        $Path = "storage/".$folder.$id_partner;
+    public function processZipFile(int $id_partner, string $pathFile){
         $pathFile = str_replace(".zip", "/", $pathFile);
         $filePath = str_replace("storage", "public", $pathFile)."Imagenes/";
         $folderPath = Storage::directories($filePath);
@@ -120,7 +118,7 @@ class PictureApi{
             $files = Storage::files($dir);
             foreach ($files as $file) {
                 $file_after = str_replace("Process", "Products", $file);
-                $file_after = str_replace($this->getNameFile()."/Imagenes/", "", $file_after);
+                $file_after = str_replace($this->getNameFile()."/Imagenes/".$SKU."/", $id_Product."/", $file_after);
                 if (Storage::move($file, $file_after)){
                     $public = env('APP_URL').Storage::url($file_after);
                     $id_Picture = $this->saveData($public, $file_after);
