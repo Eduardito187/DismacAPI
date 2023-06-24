@@ -111,8 +111,9 @@ class PictureApi{
     public function processZipFile(int $id_partner, string $folder, string $pathFile){
         $Path = "storage/".$folder.$id_partner;
         $pathFile = str_replace(".zip", "/", $pathFile);
-        $filePath = str_replace("storage", "public", $pathFile);
+        $filePath = str_replace("storage", "public", $pathFile)."Imagenes/";
         $folderPath = Storage::directories($filePath);
+        print_r($folderPath);
         foreach ($folderPath as $dir) {
             $sku = end(explode('/', $dir));
             $id_Product = $this->getProductBySkuPartner(str_replace("_", "/", $sku), $id_partner)->id;
