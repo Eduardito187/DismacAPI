@@ -118,7 +118,7 @@ class PictureApi{
             $files = Storage::files($dir);
             foreach ($files as $file) {
                 $file_after = str_replace("Process", "Products", $file);
-                Storage::makeDirectory('public/Products/'.$id_partner."_".$id_Product, 0775);
+                Storage::makeDirectory('public/Products/'.$id_partner."_".$id_Product, 0755);
                 $file_after = str_replace($id_partner."/".$this->getNameFile()."/Imagenes/".$sku."/", $id_partner."_".$id_Product."/", $file_after);
                 if (Storage::move($file, $file_after)){
                     $public = env('APP_URL').Storage::url($file_after);
