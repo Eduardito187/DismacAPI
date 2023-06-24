@@ -68,8 +68,8 @@ class PictureApi{
         $Path = "storage/".$folder.$id_Partner;
         $File->move($Path, $imageName);
         $this->path = $Path."/";
-        $local = "/".$this->path.$imageName;
-        $public = env('APP_URL').$local;
+        $local = $this->path.$imageName;
+        $public = env('APP_URL')."/".$local;
         $this->saveData($public, $local);
         return $public;
     }
