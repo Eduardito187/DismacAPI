@@ -122,7 +122,7 @@ class PictureApi{
                 $array_tmp = explode('/', $file);
                 $name = end($array_tmp);
                 $local = $Path."/".$sku."/".$name;
-                $file_now = str_replace("public", "storage", $file);
+                $file_now = str_replace("public", "public", $file);
                 $file_after = str_replace("Process", "Products", $file_now);
                 print_r($file_now);
                 print_r(array());
