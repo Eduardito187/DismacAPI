@@ -110,6 +110,7 @@ class PictureApi{
      */
     public function processZipFile(int $id_partner, string $folder, string $pathFile){
         $Path = "storage/".$folder.$id_partner;
+        $pathFile = str_replace(".zip", "/", $pathFile);
         $filePath = str_replace("storage", "public", $pathFile);
         $folderPath = Storage::directories($filePath);
         foreach ($folderPath as $dir) {
