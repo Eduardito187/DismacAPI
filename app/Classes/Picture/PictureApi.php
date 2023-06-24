@@ -101,7 +101,6 @@ class PictureApi{
     }
 
     public function processZipFile(){
-        // directorio del cliente en `/storage/app/public`
         $id_figura = 11;
         // Obtienes los subdirectorios que están dentro del directorio del cliente
         //$directorios_del_cliente = Storage::directories("/storage/Process/1/1687598029-picture-1687598029/");
