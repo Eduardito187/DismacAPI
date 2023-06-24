@@ -86,7 +86,8 @@ class PictureApi{
         if ($zip->open(storage_path($zipPath)) !== true) {
             throw new \Exception('El archivo no existe.');
         }
-        $zip->extractTo($this->getPath());
+        //$zip->extractTo($this->getPath());
+        $zip->extractTo("storage/Process/1/");
         $zip->close();
     }
 
