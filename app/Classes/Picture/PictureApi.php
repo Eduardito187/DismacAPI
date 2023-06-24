@@ -120,7 +120,7 @@ class PictureApi{
                 print_r($file);
                 print_r(array());
                 $file_after = str_replace("Process", "Products", $file);
-                $file_after = str_replace($this->getNameFile()."/Imagenes/".$SKU."/", $id_Product."/", $file_after);
+                $file_after = str_replace($this->getNameFile()."/Imagenes/".$sku."/", $id_Product."/", $file_after);
                 print_r($file_after);
                 print_r(array());
                 if (Storage::move($file, $file_after)){
