@@ -117,7 +117,9 @@ class PictureApi{
         foreach ($folderPath as $dir) {
             $sku = end(explode('/', $dir));
             $id_Product = $this->getProductBySkuPartner(str_replace("_", "/", $sku), $id_partner)->id;
-            foreach (Storage::files($dir) as $file) {
+            $files = Storage::files($dir);
+            print_r($files);
+            foreach ($files as $file) {
                 $name = end(explode('/', $file));
                 $local = $Path."/".$sku."/".$name;
                 if (copy($file, $local)){
