@@ -82,8 +82,7 @@ class PictureApi{
     public function unZip(string $zipPath){
         $zip = new ZipArchive();
         print_r($zipPath);
-        print_r(storage_path($zipPath));
-        if ($zip->open(storage_path($zipPath)) !== true) {
+        if ($zip->open($zipPath) !== true) {
             throw new \Exception('El archivo no existe.');
         }
         //$zip->extractTo($this->getPath());
