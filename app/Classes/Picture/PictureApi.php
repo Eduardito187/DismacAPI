@@ -106,6 +106,7 @@ class PictureApi{
         // Obtienes los subdirectorios que están dentro del directorio del cliente
         //$directorios_del_cliente = Storage::directories("/storage/Process/1/1687598029-picture-1687598029/");
         $directorios_del_cliente = Storage::directories(public_path());
+        print_r("HOLA");
         print_r($directorios_del_cliente);
         /*
         // creas un array vacío para ir llenándolo con los elementos año/mes/archivos
