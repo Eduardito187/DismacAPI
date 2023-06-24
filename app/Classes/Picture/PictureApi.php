@@ -8,6 +8,7 @@ use App\Models\ProductPicture;
 use App\Classes\Helper\Text;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Date;
+use App\Models\Product;
 use \Illuminate\Http\UploadedFile;
 use \Illuminate\Http\Request;
 use Exception;
@@ -66,7 +67,7 @@ class PictureApi{
         $imageName = $this->nameFile.".".$File->getClientOriginalExtension();
         $Path = "storage/".$folder.$id_Partner;
         $File->move($Path, $imageName);
-        $this->path = "/".$Path."/";
+        $this->path = $Path."/";
         $local = "/".$this->path.$imageName;
         $public = env('APP_URL').$local;
         $this->saveData($public, $local);
@@ -100,45 +101,83 @@ class PictureApi{
         $zip->close();
     }
 
-    public function processZipFile(){
-        $directorios_del_cliente = Storage::directories(str_replace("storage", "public", "storage/Process/1/1687598029-picture-1687598029"));
-        print_r($directorios_del_cliente);
-        
-        foreach ($directorios_del_cliente as $dir) {
-            $temp_array = explode('/', $dir);
-            $year = end($temp_array);
-            print_r($year);
-            $subdirectorios_del_ano = Storage::files($dir);
-            print_r($subdirectorios_del_ano);
-            foreach ($subdirectorios_del_ano as $directorio_del_mes) {
-                $temp_array = explode('/', $directorio_del_mes);
-                $filename = end( $temp_array );
-                $archivos_del_mes = Storage::files($directorio_del_mes);
-                print_r($filename);
-                print_r($archivos_del_mes);
-                /*
-                foreach ($archivos_del_mes as $archivo_del_mes) {
-                    $temp_array = explode('/', $archivo_del_mes);
-                    // obtienes el último elemento (el nombre del archivo).
-                    $filename = end( $temp_array );
-                    // obtienes la url que corresponde a ese archivo.
-                    $url = Storage::url($archivo_del_mes);
-                    // guardas en tu array el nombre y la url del archivo, 
-                    // haciendo que el array sea multidimensional por año y mes.
-                    $tree_array[$year][$month][] = [
-                        'filename' => $filename,
-                        'url' => $url
-                    ];
+    /**
+     * @param int $id_partner
+     * @param string $folder
+     * @param string $pathFile
+     * @return void
+     */
+    public function processZipFile(int $id_partner, string $folder, string $pathFile){
+        $Path = "storage/".$folder.$id_partner;
+        $filePath = str_replace("storage", "public", $pathFile);
+        $folderPath = Storage::directories($filePath);
+        foreach ($folderPath as $dir) {
+            $sku = end(explode('/', $dir));
+            $id_Product = $this->getProductBySkuPartner(str_replace("_", "/", $sku), $id_partner)->id;
+            foreach (Storage::files($dir) as $file) {
+                $name = end(explode('/', $file));
+                $local = $Path."/".$sku."/".$name;
+                if (copy($file, $local)){
+                    $public = env('APP_URL')."/".$local;
+                    $id_Picture = $this->saveData($public, $local);
+                    $this->saveProductPicture($id_Product, $id_Picture);
+                    $this->deleteFile($file);
                 }
-                 */
             }
         }
+        $this->deleteFolder($pathFile);
+    }
+
+    /**
+     * @param string $sku
+     * @param int $id_Partner
+     * @return Product
+     */
+    public function getProductBySkuPartner(string $sku, int $id_Partner){
+        $product = Product::where($this->text->getSku(), $sku)->where($this->text->getIdPartner(), $id_Partner)->first();
+        if (!$product) {
+            throw new Exception($this->text->getNoneSku($sku));
+        }
+        return $product;
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_picture
+     * @return bool
+     */
+    public function saveProductPicture(int $id_product, int $id_picture){
+        try {
+            $ProductPicture = new ProductPicture();
+            $ProductPicture->id_product = $id_product;
+            $ProductPicture->id_picture = $id_picture;
+            $ProductPicture->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $path
+     * @return void
+     */
+    public function deleteFile(string $path){
+        unlink($path);
+    }
+
+    /**
+     * @param string $path
+     * @return void
+     */
+    public function deleteFolder(string $path){
+        rmdir($path);
     }
 
     /**
      * @param string $url
      * @param string $path
-     * @return bool
+     * @return int|bool
      */
     public function saveData(string $url, string $path){
         try {
@@ -148,7 +187,7 @@ class PictureApi{
             $Picture->created_at = $this->date->getFullDate();
             $Picture->updated_at = null;
             $Picture->save();
-            return true;
+            return $Picture->id;
         } catch (Exception $th) {
             return false;
         }

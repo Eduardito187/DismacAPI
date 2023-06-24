@@ -42,6 +42,7 @@ class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
     CONST FOLDER_PROCESS = "Process/";
     CONST FOLDER_COVERS = "Covers/";
+    CONST FOLDER_PRODUCTS = "Products/";
     CONST PEDIDO_MARKETPLACE = "Pedido marketplace";
     CONST HISTOY_LAST = 8;
     CONST PENDIENTE = "PENDIENTE";
@@ -114,12 +115,10 @@ class PartnerApi{
      * @return bool
      */
     public function uploadZipPicture(Request $request){
-        /*
         $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROCESS, true);
         $this->pictureApi->unZip($picture->path);
-        */
-        $this->pictureApi->processZipFile();
+        $this->pictureApi->processZipFile($id_Partner, self::FOLDER_PRODUCTS, $picture->path);
         return true;
     }
 
