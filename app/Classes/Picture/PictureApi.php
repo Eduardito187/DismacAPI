@@ -94,7 +94,6 @@ class PictureApi{
      */
     public function unZip(string $zipPath){
         $zip = new ZipArchive();
-        print_r($zipPath);
         if ($zip->open($zipPath) !== true) {
             throw new Exception($this->text->getFileNoReading());
         }
