@@ -115,7 +115,8 @@ class PictureApi{
         $folderPath = Storage::directories($filePath);
         print_r($folderPath);
         foreach ($folderPath as $dir) {
-            $sku = end(explode('/', $dir));
+            $array_tmp = explode('/', $dir);
+            $sku = end($array_tmp);
             print_r($sku);
             $SKU = str_replace("_", "/", $sku);
             print_r($SKU);
@@ -123,7 +124,8 @@ class PictureApi{
             $files = Storage::files($dir);
             print_r($files);
             foreach ($files as $file) {
-                $name = end(explode('/', $file));
+                $array_tmp = explode('/', $file);
+                $name = end($array_tmp);
                 $local = $Path."/".$sku."/".$name;
                 if (copy($file, $local)){
                     $public = env('APP_URL')."/".$local;
