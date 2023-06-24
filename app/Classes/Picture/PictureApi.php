@@ -124,7 +124,7 @@ class PictureApi{
                 $name = end($array_tmp);
                 $local = $Path."/".$sku."/".$name;
                 print_r($local);
-                print_r("**");
+                print_r(array());
                 print_r(str_replace("public", "storage", $file));
                 if (copy(str_replace("public", "storage", $file), $local)){
                     $public = env('APP_URL')."/".$local;
