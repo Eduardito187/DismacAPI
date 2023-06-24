@@ -108,7 +108,8 @@ class PictureApi{
         foreach ($directorios_del_cliente as $dir) {
             $temp_array = explode('/', $dir);
             $year = end($temp_array);
-            $subdirectorios_del_ano = Storage::directories(str_replace("storage", "public", "storage/Process/1/1687598029-picture-1687598029/$id_figura/$year"));
+            print_r($year);
+            $subdirectorios_del_ano = Storage::directories(str_replace("storage", "public", "storage/Process/1/1687598029-picture-1687598029/$id_figura/$year/"));
             print_r($subdirectorios_del_ano);
             foreach ($subdirectorios_del_ano as $directorio_del_mes) {
                 $temp_array = explode('/', $directorio_del_mes);
