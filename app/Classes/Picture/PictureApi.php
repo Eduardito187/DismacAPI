@@ -181,7 +181,7 @@ class PictureApi{
      * @return void
      */
     public function deleteFolder(string $path){
-        rmdir($path);
+        File::deleteDirectory($path);
     }
 
     /**
