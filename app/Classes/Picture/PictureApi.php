@@ -118,7 +118,7 @@ class PictureApi{
             $files = Storage::files($dir);
             foreach ($files as $file) {
                 $file_after = str_replace("Process", "Products", $file);
-                mkdir('storage/Products/'.$id_partner."_".$id_Product."/", 0775, true);
+                $this->createFolder('storage/Products/'.$id_partner."_".$id_Product."/");
                 $file_after = str_replace($id_partner."/".$this->getNameFile()."/Imagenes/".$sku."/", $id_partner."_".$id_Product."/", $file_after);
                 if (Storage::move($file, $file_after)){
                     $public = env('APP_URL').Storage::url($file_after);
@@ -129,6 +129,16 @@ class PictureApi{
             }
         }
         $this->deleteFolder($pathFile);
+    }
+
+    /**
+     * @param string $dir
+     * @return void
+     */
+    public function createFolder(string $dir){
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
     }
 
     /**
