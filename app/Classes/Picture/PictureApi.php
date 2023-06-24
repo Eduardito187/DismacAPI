@@ -117,12 +117,9 @@ class PictureApi{
             $id_Product = $this->getProductBySkuPartner($SKU, $id_partner)->id;
             $files = Storage::files($dir);
             foreach ($files as $file) {
-                print_r($file);
-                print_r(array());
                 $file_after = str_replace("Process", "Products", $file);
+                Storage::makeDirectory('public/Products/'.$id_partner."_".$id_Product, 0775);
                 $file_after = str_replace($id_partner."/".$this->getNameFile()."/Imagenes/".$sku."/", $id_partner."_".$id_Product."/", $file_after);
-                print_r($file_after);
-                print_r(array());
                 if (Storage::move($file, $file_after)){
                     $public = env('APP_URL').Storage::url($file_after);
                     $id_Picture = $this->saveData($public, $file_after);
