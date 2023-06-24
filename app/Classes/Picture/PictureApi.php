@@ -113,20 +113,19 @@ class PictureApi{
         $pathFile = str_replace(".zip", "/", $pathFile);
         $filePath = str_replace("storage", "public", $pathFile)."Imagenes/";
         $folderPath = Storage::directories($filePath);
-        print_r($folderPath);
         foreach ($folderPath as $dir) {
             $array_tmp = explode('/', $dir);
             $sku = end($array_tmp);
-            print_r($sku);
             $SKU = str_replace("_", "/", $sku);
-            print_r($SKU);
             $id_Product = $this->getProductBySkuPartner($SKU, $id_partner)->id;
             $files = Storage::files($dir);
-            print_r($files);
             foreach ($files as $file) {
                 $array_tmp = explode('/', $file);
                 $name = end($array_tmp);
                 $local = $Path."/".$sku."/".$name;
+                print_r($local);
+                print_r("**");
+                print_r(str_replace("public", "storage", $file));
                 if (copy(str_replace("public", "storage", $file), $local)){
                     $public = env('APP_URL')."/".$local;
                     $id_Picture = $this->saveData($public, $local);
