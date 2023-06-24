@@ -46,6 +46,23 @@ class Upload extends Controller
         }
         return response()->json($response);
     }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadZipImages(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PartnerApi->uploadZipPicture($request),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
     
     /**
      * @param  \Illuminate\Http\Request  $request

@@ -40,6 +40,7 @@ use App\Classes\TokenAccess;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
+    CONST FOLDER_PROCESS = "Process/";
     CONST FOLDER_COVERS = "Covers/";
     CONST PEDIDO_MARKETPLACE = "Pedido marketplace";
     CONST HISTOY_LAST = 8;
@@ -106,6 +107,17 @@ class PartnerApi{
         $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROFILES);
         return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureProfile());
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function uploadZipPicture(Request $request){
+        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROCESS);
+        $this->pictureApi->unZip($picture->path);
+        return true;
     }
 
     /**

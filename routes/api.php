@@ -61,6 +61,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('process', 'process');
         Route::post('changeProfile', 'changeProfile');
         Route::post('changeCover', 'changeCover');
+        Route::post('uploadZipImages', 'uploadZipImages');
     });
 
     Route::controller(Stock::class)->group(function(){
