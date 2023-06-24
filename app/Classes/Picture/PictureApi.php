@@ -114,7 +114,6 @@ class PictureApi{
                 $filename = end( $temp_array );
                 $archivos_del_mes = Storage::files($directorio_del_mes);
                 print_r($filename);
-                print_r("HOLA");
                 print_r($archivos_del_mes);
                 /*
                 foreach ($archivos_del_mes as $archivo_del_mes) {
