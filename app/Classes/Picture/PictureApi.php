@@ -128,6 +128,7 @@ class PictureApi{
                 print_r($file_after);
                 if (Storage::move($file, $file_after)){
                     $public = env('APP_URL')."/".$local;
+                    $public = str_replace("public", "storage", $public);
                     $id_Picture = $this->saveData($public, $local);
                     $this->saveProductPicture($id_Product, $id_Picture);
                     $this->deleteFile($file);
@@ -172,7 +173,7 @@ class PictureApi{
      * @return void
      */
     public function deleteFile(string $path){
-        unlink($path);
+        Storage::delete($path);
     }
 
     /**
