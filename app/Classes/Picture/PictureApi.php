@@ -29,6 +29,10 @@ class PictureApi{
      * @var string
      */
     protected $path = "";
+    /**
+     * @var string
+     */
+    protected $nameFile = "";
 
     public function __construct() {
         $this->date = new Date();
@@ -58,7 +62,8 @@ class PictureApi{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner, string $folder){
-        $imageName = time().'-picture-'.time().".".$File->getClientOriginalExtension();
+        $this->nameFile = time().'-picture-'.time();
+        $imageName = $this->nameFile.".".$File->getClientOriginalExtension();
         $Path = "storage/".$folder.$id_Partner;
         $File->move($Path, $imageName);
         $this->path = "/".$Path."/";
@@ -76,18 +81,22 @@ class PictureApi{
     }
 
     /**
+     * @return string
+     */
+    public function getNameFile(){
+        return $this->nameFile;
+    }
+
+    /**
      * @param string $zipPath
      * @return void
      */
     public function unZip(string $zipPath){
         $zip = new ZipArchive();
-        print_r("HOLA");
-        print_r($zipPath);
         if ($zip->open($zipPath) !== true) {
-            throw new \Exception('El archivo no existe.');
+            throw new Exception($this->text->getFileNoReading());
         }
-        //$zip->extractTo($this->getPath());
-        $zip->extractTo("storage/Process/1/");
+        $zip->extractTo($this->getPath().$this->getNameFile());
         $zip->close();
     }
 
@@ -95,7 +104,9 @@ class PictureApi{
         // directorio del cliente en `/storage/app/public`
         $id_figura = 11;
         // Obtienes los subdirectorios que están dentro del directorio del cliente
-        $directorios_del_cliente = Storage::directories("/public/Process/1/{$id_figura}");
+        $directorios_del_cliente = Storage::directories("storage/Process/1/1687598029-picture-1687598029");
+        print_r($directorios_del_cliente);
+        /*
         // creas un array vacío para ir llenándolo con los elementos año/mes/archivos
         $tree_array = [];
 
@@ -128,6 +139,7 @@ class PictureApi{
                 }
             }
         }
+        */
     }
 
     /**

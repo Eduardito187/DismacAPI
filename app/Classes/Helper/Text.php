@@ -337,9 +337,17 @@ class Text{
     CONST PROCESS_TYPE        = "Tipo de proceso '%' iniciado.";
     CONST PICTURE_PROFILE     = "picture_profile";
     CONST PICTURE_FRONT       = "picture_front";
+    CONST FILE_NO_READING     = "El archivo no se puede leer.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileNoReading(){
+        return SELF::FILE_NO_READING;
     }
 
     /**
