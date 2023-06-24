@@ -122,10 +122,12 @@ class PictureApi{
                 $array_tmp = explode('/', $file);
                 $name = end($array_tmp);
                 $local = $Path."/".$sku."/".$name;
-                print_r($local);
+                $file_now = str_replace("public", "storage", $file);
+                $file_after = str_replace("Process", "Products", $file);
+                print_r($file_now);
                 print_r(array());
-                print_r($file);
-                if (copy(str_replace("public", "storage", $file), "/".$local)){
+                print_r($file_after);
+                if (copy($file_now, $file_after)){
                     $public = env('APP_URL')."/".$local;
                     $id_Picture = $this->saveData($public, $local);
                     $this->saveProductPicture($id_Product, $id_Picture);
