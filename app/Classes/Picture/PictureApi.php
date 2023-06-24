@@ -115,7 +115,23 @@ class PictureApi{
                 $filename = end( $temp_array );
                 // Obtienes los archivos que están dentro del directorio del mes
                 $archivos_del_mes = Storage::files($directorio_del_mes);
+                print_r("HOLA");
                 print_r($archivos_del_mes);
+                /*
+                foreach ($archivos_del_mes as $archivo_del_mes) {
+                    $temp_array = explode('/', $archivo_del_mes);
+                    // obtienes el último elemento (el nombre del archivo).
+                    $filename = end( $temp_array );
+                    // obtienes la url que corresponde a ese archivo.
+                    $url = Storage::url($archivo_del_mes);
+                    // guardas en tu array el nombre y la url del archivo, 
+                    // haciendo que el array sea multidimensional por año y mes.
+                    $tree_array[$year][$month][] = [
+                        'filename' => $filename,
+                        'url' => $url
+                    ];
+                }
+                 */
             }
         }
     }
