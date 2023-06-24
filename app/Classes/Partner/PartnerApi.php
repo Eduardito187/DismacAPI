@@ -114,9 +114,12 @@ class PartnerApi{
      * @return bool
      */
     public function uploadZipPicture(Request $request){
+        /*
         $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROCESS, true);
         $this->pictureApi->unZip($picture->path);
+        */
+        $this->pictureApi->unZip("/storage/Process/1/1687598029-picture-1687598029.zip");
         return true;
     }
 
