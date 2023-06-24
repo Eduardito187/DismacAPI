@@ -104,7 +104,7 @@ class PictureApi{
         $id_figura = 11;
         // Obtienes los subdirectorios que están dentro del directorio del cliente
         //$directorios_del_cliente = Storage::directories("/storage/Process/1/1687598029-picture-1687598029/");
-        $directorios_del_cliente = Storage::directories("public/");
+        $directorios_del_cliente = Storage::directories(str_replace("storage", "public", "storage/Process/1/1687598029-picture-1687598029/"));
         print_r("HOLA");
         print_r($directorios_del_cliente);
         /*
