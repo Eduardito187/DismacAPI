@@ -127,7 +127,7 @@ class PictureApi{
                 print_r($file_now);
                 print_r(array());
                 print_r($file_after);
-                if (copy($file_now, $file_after)){
+                if (rename($file_now, $file_after)){
                     $public = env('APP_URL')."/".$local;
                     $id_Picture = $this->saveData($public, $local);
                     $this->saveProductPicture($id_Product, $id_Picture);
