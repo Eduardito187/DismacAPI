@@ -37,8 +37,9 @@ class Upload extends Controller
     public function actionFile(Request $request)
     {
         try {
+            $params = $request->all();
             $response = $this->text->getResponseApi(
-                $this->Import->setActionProgram($request),
+                $params[$this->text->getType()] == $this->text->getFotos() ? $this->PartnerApi->uploadZipPicture($request) :$this->Import->setActionProgram($request),
                 $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {

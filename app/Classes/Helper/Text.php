@@ -372,9 +372,17 @@ class Text{
     CONST PROCESS_PARAM       = "-process-";
     CONST MINIMUS_IGUALS      = "<=";
     CONST MAXIMUS_IGUALS      = ">=";
+    CONST FOTOS               = "Fotos";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getFotos(){
+        return SELF::FOTOS;
     }
 
     /**
