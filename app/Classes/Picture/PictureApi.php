@@ -117,7 +117,7 @@ class PictureApi{
             $id_Product = $this->getProductBySkuPartner($SKU, $id_partner)->id;
             $files = Storage::files($dir);
             foreach ($files as $file) {
-                $file_after = str_replace($this->text->getProcess(), $this->text->getProducts(), $file);
+                $file_after = str_replace($this->text->getProcess(), $this->text->getProductsApi(), $file);
                 $this->createFolder($this->text->getPublicStorage().$id_partner.$this->text->getGuionBajo().$id_Product.$this->text->getSlashOnly());
                 $file_after = str_replace($id_partner.$this->text->getSlashOnly().$this->getNameFile().$this->text->getStorageImagenes().$sku.$this->text->getSlashOnly(), $id_partner.$this->text->getGuionBajo().$id_Product.$this->text->getSlashOnly(), $file_after);
                 if (Storage::move($file, $file_after)){

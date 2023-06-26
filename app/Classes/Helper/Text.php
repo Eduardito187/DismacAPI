@@ -89,6 +89,7 @@ class Text{
     CONST PRODUCT             = "product";
     CONST PRODUCTS            = "products";
     CONST PROCESS             = "Process";
+    CONST PRODUCTS_API        = "Products";
     CONST PRODUCTOS           = "productos";
     CONST STORES              = "stores";
     CONST ID_STORE            = "id_store";
@@ -1721,6 +1722,13 @@ class Text{
      */
     public function getProducts(){
         return SELF::PRODUCTS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductsApi(){
+        return SELF::PRODUCTS_API;
     }
 
     /**
