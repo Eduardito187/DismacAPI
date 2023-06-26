@@ -48,7 +48,7 @@ class PictureApi{
      * @return int|Picture
      */
     public function uploadPicture(Request $request, int $id_Partner, string $folder, bool $type = false){
-        $file = $request->file('File');
+        $file = $request->file($this->text->getFile());
         $public = $this->uploadFile($file, $id_Partner, $folder);
         if ($type == false){
             return $this->getPicture($public)->id;
@@ -63,13 +63,13 @@ class PictureApi{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner, string $folder){
-        $this->nameFile = time().'-picture-'.time();
-        $imageName = $this->nameFile.".".$File->getClientOriginalExtension();
-        $Path = "storage/".$folder.$id_Partner;
+        $this->nameFile = time().$this->text->getPictureParam().time();
+        $imageName = $this->nameFile.$this->text->getPunto().$File->getClientOriginalExtension();
+        $Path = $this->text->getFolderStorage().$folder.$id_Partner;
         $File->move($Path, $imageName);
-        $this->path = $Path."/";
+        $this->path = $Path.$this->text->getSlashOnly();
         $local = $this->path.$imageName;
-        $public = env('APP_URL')."/".$local;
+        $public = env($this->text->getAppUrl()).$this->text->getSlashOnly().$local;
         $this->saveData($public, $local);
         return $public;
     }
@@ -107,21 +107,21 @@ class PictureApi{
      * @return void
      */
     public function processZipFile(int $id_partner, string $pathFile){
-        $pathFile = str_replace(".zip", "/", $pathFile);
-        $filePath = str_replace("storage", "public", $pathFile)."Imagenes/";
+        $pathFile = str_replace($this->text->getZipExtensions(), $this->text->getSlashOnly(), $pathFile);
+        $filePath = str_replace($this->text->getStorage(), $this->text->getPublic(), $pathFile).$this->text->getImagenes();
         $folderPath = Storage::directories($filePath);
         foreach ($folderPath as $dir) {
-            $array_tmp = explode('/', $dir);
+            $array_tmp = explode($this->text->getSlashOnly(), $dir);
             $sku = end($array_tmp);
-            $SKU = str_replace("_", "/", $sku);
+            $SKU = str_replace($this->text->getGuionBajo(), $this->text->getSlashOnly(), $sku);
             $id_Product = $this->getProductBySkuPartner($SKU, $id_partner)->id;
             $files = Storage::files($dir);
             foreach ($files as $file) {
-                $file_after = str_replace("Process", "Products", $file);
-                $this->createFolder('storage/Products/'.$id_partner."_".$id_Product."/");
-                $file_after = str_replace($id_partner."/".$this->getNameFile()."/Imagenes/".$sku."/", $id_partner."_".$id_Product."/", $file_after);
+                $file_after = str_replace($this->text->getProcess(), $this->text->getProducts(), $file);
+                $this->createFolder($this->text->getPublicStorage().$id_partner.$this->text->getGuionBajo().$id_Product.$this->text->getSlashOnly());
+                $file_after = str_replace($id_partner.$this->text->getSlashOnly().$this->getNameFile().$this->text->getStorageImagenes().$sku.$this->text->getSlashOnly(), $id_partner.$this->text->getGuionBajo().$id_Product.$this->text->getSlashOnly(), $file_after);
                 if (Storage::move($file, $file_after)){
-                    $public = env('APP_URL').Storage::url($file_after);
+                    $public = env($this->text->getAppUrl()).Storage::url($file_after);
                     $id_Picture = $this->saveData($public, $file_after);
                     $this->saveProductPicture($id_Product, $id_Picture);
                     $this->deleteFile($file);
@@ -211,7 +211,7 @@ class PictureApi{
      * @return Picture
      */
     public function getPictureByUrl(string $url){
-        return Picture::where("url", $url)->first();
+        return Picture::where($this->text->getUrl(), $url)->first();
     }
 
     /**

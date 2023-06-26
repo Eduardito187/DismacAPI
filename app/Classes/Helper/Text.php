@@ -88,6 +88,7 @@ class Text{
     CONST ID_PARTNER          = "id_partner";
     CONST PRODUCT             = "product";
     CONST PRODUCTS            = "products";
+    CONST PROCESS             = "Process";
     CONST PRODUCTOS           = "productos";
     CONST STORES              = "stores";
     CONST ID_STORE            = "id_store";
@@ -338,9 +339,265 @@ class Text{
     CONST PICTURE_PROFILE     = "picture_profile";
     CONST PICTURE_FRONT       = "picture_front";
     CONST FILE_NO_READING     = "El archivo no se puede leer.";
+    CONST SLASH_ONLY          = "/";
+    CONST ZIP_EXTENSIONS      = ".zip";
+    CONST STORAGE_FOLDER      = "storage";
+    CONST PUBLIC_FOLDER       = "public";
+    CONST IMAGENES_FOLDER     = "Imagenes/";
+    CONST APP_URL             = "APP_URL";
+    CONST PUBLIC_STORAGE      = "storage/Products/";
+    CONST FILE                = "File";
+    CONST PICTURE_PARAM       = "-picture-";
+    CONST PUNTO               = ".";
+    CONST STORAGE_IMAGENES    = "/Imagenes/";
+    CONST FOLDER_STORAGE      = "storage/";
+    CONST TIME_ZONE           = "America/La_Paz";
+    CONST ZONE_FULL_PHP       = "Y-m-d H:i:s";
+    CONST DAY_PHP             = "d";
+    CONST MONTH_PHP           = "m";
+    CONST YEAR_PHP            = "Y";
+    CONST DATE_PHP            = "Y-m-d";
+    CONST TIME_PHP            = "H:i";
+    CONST DATE_TIME_PHP       = "H:i:s";
+    CONST CREADO              = "Creado";
+    CONST MODIFICADO          = "Modificado";
+    CONST CREADO_NOW          = "Creado recientemente.";
+    CONST MODIFICADO_NOW      = "Modificado recientemente.";
+    CONST HOURS_PHP           = "H";
+    CONST MINUTES_PHP         = "min";
+    CONST POS_IMPORT          = "https://posapi.dismac.com.bo/v2/Product/GetItems";
+    CONST PROCESS_RUN         = "process_run";
+    CONST TEXT_REPLACE        = "/[^\p{L}\p{N}\s]/u";
+    CONST PROCESS_PARAM       = "-process-";
+    CONST MINIMUS_IGUALS      = "<=";
+    CONST MAXIMUS_IGUALS      = ">=";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaximusIguals(){
+        return SELF::MAXIMUS_IGUALS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinimusIguals(){
+        return SELF::MINIMUS_IGUALS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessParam(){
+        return SELF::PROCESS_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextReplace(){
+        return SELF::TEXT_REPLACE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessRun(){
+        return SELF::PROCESS_RUN;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosImport(){
+        return SELF::POS_IMPORT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHoursPhp(){
+        return SELF::HOURS_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinutesPhp(){
+        return SELF::MINUTES_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreadoNow(){
+        return SELF::CREADO_NOW;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModificadoNow(){
+        return SELF::MODIFICADO_NOW;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModificado(){
+        return SELF::MODIFICADO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreado(){
+        return SELF::CREADO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimePhp(){
+        return SELF::TIME_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateTimePhp(){
+        return SELF::DATE_TIME_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatePhp(){
+        return SELF::DATE_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDayPhp(){
+        return SELF::DAY_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMonthPhp(){
+        return SELF::MONTH_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYearPhp(){
+        return SELF::YEAR_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZoneFull(){
+        return SELF::ZONE_FULL_PHP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeZone(){
+        return SELF::TIME_ZONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFolderStorage(){
+        return SELF::FOLDER_STORAGE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorageImagenes(){
+        return SELF::STORAGE_IMAGENES;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPunto(){
+        return SELF::PUNTO;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPictureParam(){
+        return SELF::PICTURE_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile(){
+        return SELF::FILE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicStorage(){
+        return SELF::PUBLIC_STORAGE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppUrl(){
+        return SELF::APP_URL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZipExtensions(){
+        return SELF::ZIP_EXTENSIONS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorage(){
+        return SELF::STORAGE_FOLDER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublic(){
+        return SELF::PUBLIC_FOLDER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagenes(){
+        return SELF::IMAGENES_FOLDER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlashOnly(){
+        return SELF::SLASH_ONLY;
     }
 
     /**
@@ -1464,6 +1721,13 @@ class Text{
      */
     public function getProducts(){
         return SELF::PRODUCTS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcess(){
+        return SELF::PROCESS;
     }
 
     /**

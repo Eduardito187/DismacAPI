@@ -189,7 +189,7 @@ class PartnerApi{
      * @return CommittedStock[]
      */
     public function getListCommietCron(){
-        return CommittedStock::where($this->text->getStatus(), 1)->whereDate($this->text->getDateLimit(), '<=', $this->date->getFullDate())->get();
+        return CommittedStock::where($this->text->getStatus(), 1)->whereDate($this->text->getDateLimit(), $this->text->getMinimusIguals(), $this->date->getFullDate())->get();
     }
 
     /**
@@ -250,9 +250,9 @@ class PartnerApi{
         if ($from_date != self::DEFAULT_STRING && $to_date != self::DEFAULT_STRING) {
             $Sales->whereBetween($this->text->getCreated(), [$from_date, $to_date]);
         }else if ($from_date != self::DEFAULT_STRING && $to_date == self::DEFAULT_STRING) {
-            $Sales->whereDate($this->text->getCreated(), '>=' ,$from_date);
+            $Sales->whereDate($this->text->getCreated(), $this->text->getMaximusIguals() ,$from_date);
         }else if ($from_date == self::DEFAULT_STRING && $to_date != self::DEFAULT_STRING) {
-            $Sales->whereDate($this->text->getCreated(), '<=' ,$to_date);
+            $Sales->whereDate($this->text->getCreated(), $this->text->getMinimusIguals() ,$to_date);
         }
         return $Sales->get();
     }

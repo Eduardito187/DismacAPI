@@ -74,7 +74,7 @@ class Import{
      */
     public function importCategory(array $request){
         
-        $url = 'https://posapi.dismac.com.bo/v2/Product/GetItems';
+        $url = $this->text->getPosImport();
         $data = [
             $this->text->getGrupoArticulo()  => $request[$this->text->getGrupoArticulo()],
             $this->text->getDisponibilidad() => $request[$this->text->getDisponibilidad()],
@@ -124,7 +124,7 @@ class Import{
     public function endProcessLog(Process $Process){
         $text = $this->getReplaceId($Process->id, self::LOG_TEXT);
         $text = $this->getReplacePartner($Process->PartnerProcess->name, $text);
-        Log::channel('process_run')->info($text);
+        Log::channel($this->text->getProcessRun())->info($text);
     }
 
     /**
@@ -286,7 +286,7 @@ class Import{
             for ($i=0; $i < count($HeaderCsv); $i++) {
                 $code = "";
                 if ($i == 0){
-                    $code = strval(preg_replace('/[^\p{L}\p{N}\s]/u', '',$HeaderCsv[$i]));
+                    $code = strval(preg_replace($this->text->getTextReplace(), $this->text->getTextNone(),$HeaderCsv[$i]));
                 }else{
                     $code = strval($HeaderCsv[$i]);
                 }
@@ -438,7 +438,7 @@ class Import{
     public function setActionProgram(Request $request){
         $params = $request->all();
         $id_Partner = $this->getPartnerId($this->getAccountToken($request->header($this->text->getAuthorization())));
-        $file = $request->file('File');
+        $file = $request->file($this->text->getFile());
         $public = $this->uploadFile($file, $id_Partner);
         $Picture = $this->getPicture($public);
         return $this->newProcess($Picture->id, $id_Partner, $params);
@@ -525,11 +525,11 @@ class Import{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner){
-        $imageName = time().'-process-'.time().".csv";
+        $imageName = time().$this->text->getProcessParam().time().".csv";
         $Path = "storage/".self::FOLDER.$id_Partner;
         $File->move($Path, $imageName);
         $local = "/".$Path."/".$imageName;
-        $public = env('APP_URL').$local;
+        $public = env($this->text->getAppUrl()).$local;
         $this->saveData($public, $local);
         return $public;
     }

@@ -12,8 +12,8 @@ class Date{
     protected $text;
 
     public function __construct() {
-        date_default_timezone_set('America/La_Paz');
         $this->text = new Text();
+        date_default_timezone_set($this->text->getTimeZone());
     }
     
     /**
@@ -49,14 +49,14 @@ class Date{
      */
     public function getDiferenceCreated(string $Year, string $Month, string $Days){
         if ($Year > 0) {
-            return $this->text->getDiferenceYear("Creado", $Year);
+            return $this->text->getDiferenceYear($this->text->getCreado(), $Year);
         }else if ($Month > 0){
-            return $this->text->getDiferenceMonth("Creado", $Month);
+            return $this->text->getDiferenceMonth($this->text->getCreado(), $Month);
         }else {
             if ($Days > 0) {
-                return $this->text->getDiferenceDays("Creado", $Days);
+                return $this->text->getDiferenceDays($this->text->getCreado(), $Days);
             }else{
-                return "Creado recientemente.";
+                return $this->text->getCreadoNow();
             }
         }
     }
@@ -69,14 +69,14 @@ class Date{
      */
     public function getDiferenceUpdated(string $Year, string $Month, string $Days){
         if ($Year > 0) {
-            return $this->text->getDiferenceYear("Modificado", $Year);
+            return $this->text->getDiferenceYear($this->text->getModificado(), $Year);
         }else if ($Month > 0){
-            return $this->text->getDiferenceMonth("Modificado", $Month);
+            return $this->text->getDiferenceMonth($this->text->getModificado(), $Month);
         }else {
             if ($Days > 0) {
-                return $this->text->getDiferenceDays("Modificado", $Days);
+                return $this->text->getDiferenceDays($this->text->getModificado(), $Days);
             }else{
-                return "Modificado recientemente.";
+                return $this->text->getModificadoNow();
             }
         }
     }
@@ -91,17 +91,17 @@ class Date{
      */
     public function getDiferenceUpdatedInit(int $Year, int $Month, int $Days, int $Hours, int $Minutes){
         if ($Year > 0) {
-            return $this->text->concatTwoString($Year, "Y");
+            return $this->text->concatTwoString($Year, $this->text->getYearPhp());
         }else if ($Month > 0){
-            return $this->text->concatTwoString($Month, "M");
+            return $this->text->concatTwoString($Month, $this->text->getMonthPhp());
         }else {
             if ($Days > 0) {
-                return $this->text->concatTwoString($Days, "D");
+                return $this->text->concatTwoString($Days, $this->text->getDayPhp());
             }else{
                 if ($Hours > 0) {
-                    return $this->text->concatTwoString($Hours, "H");
+                    return $this->text->concatTwoString($Hours, $this->text->getHoursPhp());
                 }else{
-                    return $this->text->concatTwoString($Minutes, "min");
+                    return $this->text->concatTwoString($Minutes, $this->text->getMinutesPhp());
                 }
             }
         }
@@ -166,35 +166,35 @@ class Date{
      * @return int
      */
     public function getDay(){
-        return date("d");
+        return date($this->text->getDayPhp());
     }
     
     /**
      * @return int
      */
     public function getMonth(){
-        return date("m");
+        return date($this->text->getMonthPhp());
     }
     
     /**
      * @return int
      */
     public function getYear(){
-        return date("Y");
+        return date($this->text->getYearPhp());
     }
 
     /**
      * @return string
      */
     public function getDate(){
-        return date("Y-m-d");
+        return date($this->text->getDatePhp());
     }
 
     /**
      * @return string
      */
     public function getFullDate(){
-        return date("Y-m-d H:i:s");
+        return date($this->text->getZoneFull());
     }
 
     /**
@@ -203,21 +203,21 @@ class Date{
      * @return string
      */
     public function addDateToDate(string $date_time, string $date){
-        return date('Y-m-d H:i:s', strtotime($date_time.$date));
+        return date($this->text->getZoneFull(), strtotime($date_time.$date));
     }
 
     /**
      * @return string
      */
     public function getTime(){
-        return date("H:i");
+        return date($this->text->getTimePhp());
     }
 
     /**
      * @return string
      */
     public function getFullTime(){
-        return date("H:i:s");
+        return date($this->text->getDateTimePhp());
     }
 }
 
