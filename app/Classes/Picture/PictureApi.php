@@ -44,6 +44,24 @@ class PictureApi{
      * @param Request $request
      * @param int $id_Partner
      * @param string $folder
+     * @param int $idProduct
+     * @return void
+     */
+    public function uploadPictures(Request $request, int $id_Partner, string $folder, int $idProduct){
+        $index = 0;
+        $params = $request->all();
+        $this->createFolder($this->text->getPublicStorage().$id_Partner.$this->text->getGuionBajo().$idProduct.$this->text->getSlashOnly());
+        while ($index < $params[$this->text->getLong()] ?? 0) {
+            $file = $request->file($this->text->getFile().$this->text->getGuionBajo().$index);
+            $public = $this->uploadFile($file, $id_Partner, $folder);
+            $this->saveProductPicture($idProduct, $this->getPicture($public)->id);
+        }
+    }  
+
+    /**
+     * @param Request $request
+     * @param int $id_Partner
+     * @param string $folder
      * @param bool $type
      * @return int|Picture
      */

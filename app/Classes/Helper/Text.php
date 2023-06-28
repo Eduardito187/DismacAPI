@@ -373,9 +373,17 @@ class Text{
     CONST MINIMUS_IGUALS      = "<=";
     CONST MAXIMUS_IGUALS      = ">=";
     CONST FOTOS               = "Fotos";
+    CONST LONG                = "Long";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getLong(){
+        return SELF::LONG;
     }
 
     /**

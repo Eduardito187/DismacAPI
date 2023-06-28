@@ -47,6 +47,24 @@ class Upload extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadPictures(Request $request)
+    {
+        try {
+            $params = $request->all();
+            $response = $this->text->getResponseApi(
+                $this->PartnerApi->uploadPictures($request),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
 
     /**
      * @param  \Illuminate\Http\Request  $request

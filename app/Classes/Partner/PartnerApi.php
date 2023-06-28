@@ -121,6 +121,18 @@ class PartnerApi{
         $this->pictureApi->processZipFile($id_Partner, $picture->path);
         return true;
     }
+    
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function uploadPictures(Request $request){
+        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $params = $request->all();
+        $Product = $this->getProductBySkuPartner($params[$this->text->getSku()], $id_Partner);
+        $this->pictureApi->uploadPictures($request, $id_Partner, self::FOLDER_PRODUCTS, $Product->id);
+        return true;
+    }
 
     /**
      * @param Request $request
