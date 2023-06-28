@@ -1650,13 +1650,13 @@ class ProductApi{
         $Warehouse = array();
         foreach ($Stores as $key => $store) {
             $WarehouseDetails = $this->warehouseStoreProduct($store->id, $Warehouses);
+            $Warehouse[] = array(
+                $this->text->getIdStore() => $store->id,
+                $this->text->getStoreName() => $store->name,
+                $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
+                $this->text->getWarehouse() => $WarehouseDetails
+            );
             if (count($WarehouseDetails) > 0){
-                $Warehouse[] = array(
-                    $this->text->getIdStore() => $store->id,
-                    $this->text->getStoreName() => $store->name,
-                    $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
-                    $this->text->getWarehouse() => $WarehouseDetails
-                );
             }
         }
         return $Warehouse;
