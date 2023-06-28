@@ -1650,6 +1650,7 @@ class ProductApi{
         $Warehouse = array();
         foreach ($Stores as $key => $store) {
             $WarehouseDetails = $this->warehouseStoreProduct($store->id, $Warehouses);
+            
             if (count($WarehouseDetails) > 0){
                 $Warehouse[] = array(
                     $this->text->getIdStore() => $store->id,
