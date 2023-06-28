@@ -1656,6 +1656,7 @@ class ProductApi{
                 $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
                 $this->text->getWarehouse() => $WarehouseDetails
             );
+            
             if (count($WarehouseDetails) > 0){
             }
         }
