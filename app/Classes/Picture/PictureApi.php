@@ -55,6 +55,7 @@ class PictureApi{
             $file = $request->file($this->text->getFile().$this->text->getGuionBajo().$index);
             $public = $this->uploadFile($file, $id_Partner, $folder);
             $this->saveProductPicture($idProduct, $this->getPicture($public)->id);
+            $index++;
         }
     }  
 
