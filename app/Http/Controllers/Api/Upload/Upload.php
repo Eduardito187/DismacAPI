@@ -55,7 +55,6 @@ class Upload extends Controller
     public function uploadPictures(Request $request)
     {
         try {
-            $params = $request->all();
             $response = $this->text->getResponseApi(
                 $this->PartnerApi->uploadPictures($request),
                 $this->text->getQuerySuccess()
