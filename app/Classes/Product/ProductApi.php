@@ -1649,12 +1649,15 @@ class ProductApi{
     private function getProductWarehouses($Stores, $Warehouses, $id_product){
         $Warehouse = array();
         foreach ($Stores as $key => $store) {
-            $Warehouse[] = array(
-                $this->text->getIdStore() => $store->id,
-                $this->text->getStoreName() => $store->name,
-                $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
-                $this->text->getWarehouse() => $this->warehouseStoreProduct($store->id, $Warehouses)
-            );
+            $WarehouseDetails = $this->warehouseStoreProduct($store->id, $Warehouses);
+            if (count($WarehouseDetails) > 0){
+                $Warehouse[] = array(
+                    $this->text->getIdStore() => $store->id,
+                    $this->text->getStoreName() => $store->name,
+                    $this->text->getProducts() => $this->countProductsWarehouses($id_product, $store->id),
+                    $this->text->getWarehouse() => $WarehouseDetails
+                );
+            }
         }
         return $Warehouse;
     }
