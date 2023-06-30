@@ -21,7 +21,7 @@ use App\Models\CategoryInfo;
 use App\Models\Picture;
 use App\Models\Price;
 use App\Models\ProductCategory;
-use App\Models\ProductPicture;
+use App\Models\ProductAttribute;
 use App\Models\ProductPriceStore;
 use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
@@ -1600,7 +1600,7 @@ class ProductApi{
             $this->text->getType() => $Product->Type,
             $this->text->getDescripcion() => $Product->Description,
             $this->text->getStatus() => $this->statusProducts($Stores, $Product->Status),
-            $this->text->getAttributes() => $this->getAttributesInProduct($Product->Attributes),
+            $this->text->getAttributes() => $this->getAttributesInFamily($Product->Family, $id),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
             $this->text->getPartner() => $Product->Partner,
@@ -1698,6 +1698,42 @@ class ProductApi{
             );
         }
         return $attributes_Array;
+    }
+
+    private function getAttributesInFamily($Family, $id_product){
+        $attributes_Array = array();
+        if(is_null($Family)){
+            return [];
+        }
+        $Attributes = $Family->Attributes;
+        foreach ($Attributes as $key => $Attribute) {
+            $AttributeFamily = $this->getAttributeProduct($id_product, $Attribute->id);
+            if (!is_null($AttributeFamily)){
+                $attributes_Array[] = array(
+                    $this->text->getValue() => $AttributeFamily->value,
+                    $this->text->getCustom() => $this->getCustomValueAttribute($AttributeFamily->Attribute)
+                );
+            }else{
+                $attributes_Array[] = array(
+                    $this->text->getValue() => "",
+                    $this->text->getCustom() => $this->getCustomValueAttribute($Attribute->Attribute)
+                );
+            }
+        }
+        return $attributes_Array;
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $id_attribute
+     * @return ProductAttribute|null
+     */
+    private function getAttributeProduct(int $id_product, int $id_attribute){
+        $Data = ProductAttribute::where('id_product', $id_product)->where('id_attribute', $id_attribute)->first();
+        if (!$Data){
+            return null;
+        }
+        return $Data;
     }
 
     private function categoriasProducts($Categorys){

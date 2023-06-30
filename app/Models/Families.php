@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\FamiliesAttribute;
 
 class Families extends Model
 {
@@ -19,4 +20,8 @@ class Families extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+
+    public function Attributes(){
+        return $this->hasMany(FamiliesAttribute::class, 'id_family', 'id');
+    }
 }
