@@ -14,9 +14,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('restrict_ip', function (Blueprint $table) {
+        Schema::create('families', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('ip', 20);
+            $table->string('name', 100);
+            $table->string('code', 50);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restrict_ip');
+        Schema::dropIfExists('families');
     }
 };
