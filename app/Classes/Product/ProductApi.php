@@ -1706,6 +1706,7 @@ class ProductApi{
             return [];
         }
         $Attributes = $Family->Attributes;
+        Log::info(json_encode($Attributes));
         foreach ($Attributes as $key => $Attribute) {
             $AttributeFamily = $this->getAttributeProduct($id_product, $Attribute->id);
             if (!is_null($AttributeFamily)){
