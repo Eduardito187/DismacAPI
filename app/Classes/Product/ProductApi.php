@@ -376,6 +376,7 @@ class ProductApi{
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
+            Log::info("###0");
             if (!empty($res[$this->text->getMarca()]) && is_array($res[$this->text->getMarca()])) {
                 $id_brand = $this->getBrand($res[$this->text->getMarca()][$this->text->getNombre()]);
                 if (is_null($id_brand)) {
@@ -598,12 +599,11 @@ class ProductApi{
      */
     public function getWarehouse(string $name, string $code, bool $base, string $almacen){
         $Warehouse = Warehouse::select($this->text->getId())->where($this->text->getName(), $name)->
-        where($this->text->getCode(), $code)->where($this->text->getBase(), $base)->where($this->text->getAlmacen(), $almacen)->get()->toArray();
-        if (count($Warehouse) > 0) {
-            return $Warehouse[0][$this->text->getId()];
-        }else{
+        where($this->text->getCode(), $code)->where($this->text->getBase(), $base)->where($this->text->getAlmacen(), $almacen)->first();
+        if (!$Warehouse) {
             return null;
         }
+        return $Warehouse->id;
     }
 
     /**
@@ -694,12 +694,11 @@ class ProductApi{
     public function getPrice(float $price, float|null $special_price, string $from_date, string $to_date){
         $Price = Price::select($this->text->getId())->where($this->text->getPrice(), $price)->
         where($this->text->getSpecialPrice(), $special_price)->where($this->text->getFromDate(), $from_date)->
-        where($this->text->getToDate(), $to_date)->get()->toArray();
-        if (count($Price) > 0) {
-            return $Price[0][$this->text->getId()];
-        }else{
+        where($this->text->getToDate(), $to_date)->first();
+        if (!$Price) {
             return null;
         }
+        return $Price->id;
     }
     
     /**
@@ -1098,12 +1097,11 @@ class ProductApi{
      */
     public function getCategoryInfo(int $id_pos, int $sub_category_pos){
         $CategoryInfo = CategoryInfo::select($this->text->getId())->where($this->text->getIdPos(), $id_pos)->
-        where($this->text->getPosSubCategory(), $sub_category_pos)->get()->toArray();
-        if (count($CategoryInfo) > 0) {
-            return $CategoryInfo[0][$this->text->getId()];
-        }else{
+        where($this->text->getPosSubCategory(), $sub_category_pos)->first();
+        if (!$CategoryInfo) {
             return null;
         }
+        return $CategoryInfo->id;
     }
 
     /**
@@ -1111,12 +1109,11 @@ class ProductApi{
      * @param int $sub_category_pos
      */
     public function getCategoryIdPos(int $id_pos){
-        $Category = Category::select($this->text->getId())->where($this->text->getCode(), $id_pos)->get()->toArray();
-        if (count($Category) > 0) {
-            return $Category[0][$this->text->getId()];
-        }else{
+        $Category = Category::select($this->text->getId())->where($this->text->getCode(), $id_pos)->first();
+        if (!$Category) {
             return null;
         }
+        return $Category->id;
     }
 
     /**
@@ -1151,12 +1148,11 @@ class ProductApi{
      */
     public function getCategory(string $name_pos, string $code, int $inheritance){
         $Category = Category::select($this->text->getId())->where($this->text->getNamePos(), $name_pos)
-        ->where($this->text->getCode(), $code)->where($this->text->getInhitance(), $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance))->get()->toArray();
-        if (count($Category) > 0) {
-            return $Category[0][$this->text->getId()];
-        }else{
+        ->where($this->text->getCode(), $code)->where($this->text->getInhitance(), $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance))->first();
+        if (!$Category) {
             return null;
         }
+        return $Category->id;
     }
 
     /**
@@ -1309,12 +1305,11 @@ class ProductApi{
      * @param string $monto
      */
     public function getMiniCuota(string $cuotas, string $monto){
-        $MiniCuota = MiniCuota::select($this->text->getId())->where($this->text->getCuotas(), $cuotas)->where($this->text->getMonto(), $monto)->get()->toArray();
-        if (count($MiniCuota) > 0) {
-            return $MiniCuota[0][$this->text->getId()];
-        }else{
+        $MiniCuota = MiniCuota::select($this->text->getId())->where($this->text->getCuotas(), $cuotas)->where($this->text->getMonto(), $monto)->first();
+        if (!$MiniCuota) {
             return null;
         }
+        return $MiniCuota->id;
     }
 
     /**
@@ -1352,12 +1347,11 @@ class ProductApi{
      * @param string $name
      */
     public function getBrand(string $name){
-        $Brand = Brand::select($this->text->getId())->where($this->text->getName(), $name)->get()->toArray();
-        if (count($Brand) > 0) {
-            return $Brand[0][$this->text->getId()];
-        }else{
+        $Brand = Brand::select($this->text->getId())->where($this->text->getName(), $name)->first();
+        if (!$Brand) {
             return null;
         }
+        return $Brand->id;
     }
     
     /**
@@ -1385,12 +1379,11 @@ class ProductApi{
      * @param string $type
      */
     public function getType(string $type){
-        $ProductType = ProductType::select($this->text->getId())->where($this->text->getType(), $type)->get()->toArray();
-        if (count($ProductType) > 0) {
-            return $ProductType[0][$this->text->getId()];
-        }else{
+        $ProductType = ProductType::select($this->text->getId())->where($this->text->getType(), $type)->first();
+        if (!$ProductType) {
             return null;
         }
+        return $ProductType->id;
     }
     
     /**
@@ -1424,12 +1417,11 @@ class ProductApi{
         if (is_null($clacom)) {
             return null;
         }
-        $Clacom = Clacom::select($this->text->getId())->where($this->text->getLabel(), $clacom)->get()->toArray();
-        if (count($Clacom) > 0) {
-            return $Clacom[0][$this->text->getId()];
-        }else{
+        $Clacom = Clacom::select($this->text->getId())->where($this->text->getLabel(), $clacom)->first();
+        if (!$Clacom) {
             return null;
         }
+        return $Clacom->id;
     }
 
     /**
