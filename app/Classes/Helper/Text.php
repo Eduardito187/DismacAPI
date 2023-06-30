@@ -376,9 +376,17 @@ class Text{
     CONST LONG                = "Long";
     CONST PARAMETROS_INVALIDSO= "Los parametros recibidos son invalidos.";
     CONST ERROR_NO_BLOCK_IP   = "Lo sentimos no se pudo bloquear la IP.";
+    CONST PICTURES_DATA       = "pictures";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPictureData(){
+        return SELF::PICTURES_DATA;
     }
 
     /**

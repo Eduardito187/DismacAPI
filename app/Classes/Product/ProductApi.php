@@ -1608,8 +1608,21 @@ class ProductApi{
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->id),
             $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
             $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
-            $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id)
+            $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id),
+            $this->text->getPictureData() => $this->getProductPictures($Product->Pictures)
         ];
+    }
+
+    private function getProductPictures($Pictures){
+        $dataPictures = array();
+        foreach ($Pictures as $key => $picture) {
+            $Picture = $picture->Picture;
+            $dataPictures[] = array(
+                $this->text->getId() => $Picture->id,
+                $this->text->getUrl() => $Picture->url
+            );
+        }
+        return $dataPictures;
     }
 
     private function statusProducts($stores, $Status){
