@@ -374,9 +374,25 @@ class Text{
     CONST MAXIMUS_IGUALS      = ">=";
     CONST FOTOS               = "Fotos";
     CONST LONG                = "Long";
+    CONST PARAMETROS_INVALIDSO= "Los parametros recibidos son invalidos.";
+    CONST ERROR_NO_BLOCK_IP   = "Lo sentimos no se pudo bloquear la IP.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoBlockIp(){
+        return SELF::ERROR_NO_BLOCK_IP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParametersNone(){
+        return SELF::PARAMETROS_INVALIDSO;
     }
 
     /**
