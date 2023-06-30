@@ -383,6 +383,7 @@ class ProductApi{
                     }
                 }
             }
+            Log::info("###1");
             if (!empty($res[$this->text->getDetalle()]) && is_array($res[$this->text->getDetalle()])) {
                 $id_type = $this->getType($res[$this->text->getDetalle()][$this->text->getTipoProducto()]);
                 $id_clacom = $this->getClacom($res[$this->text->getDetalle()][$this->text->getClacom()]);
@@ -397,7 +398,9 @@ class ProductApi{
                     }
                 }
             }
+            Log::info("###2");
             if (is_null($id_product)) {
+                Log::info("###3");
                 $this->setProduct(
                     $res[$this->text->getCodigo()],
                     !empty($res[$this->text->getNombre()]) ? $res[$this->text->getNombre()] : $this->text->getTextNone(),
@@ -419,6 +422,7 @@ class ProductApi{
                     $id_Account
                 );
             }else{
+                Log::info("###4");
                 $this->updateProductALL(
                     $id_product,
                     $res[$this->text->getCodigo()],

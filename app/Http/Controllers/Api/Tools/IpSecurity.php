@@ -33,7 +33,7 @@ class IpSecurity extends Controller
         try {
             $response = $this->text->getResponseApi(
                 $this->IpLocker->lockerIp($request),
-                $this->text->getQuerySuccess()
+                $this->text->getDataProcessSuccess()
             );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi(false, $th->getMessage());
@@ -50,7 +50,7 @@ class IpSecurity extends Controller
         try {
             $response = $this->text->getResponseApi(
                 $this->IpLocker->unlockerIp($request),
-                $this->text->getQuerySuccess()
+                $this->text->getDataProcessSuccess()
             );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi(false, $th->getMessage());
