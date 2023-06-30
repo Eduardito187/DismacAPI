@@ -370,6 +370,7 @@ class ProductApi{
     public function applyRequestAPI(array $response, Request $request){
         $id_Account = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
         $allStore = $this->getAllStoreID();
+        Log::info("###");
         foreach ($response as $res) {
             $id_product = $this->getCatalogStore($res[$this->text->getCodigo()]);
             $id_brand = null;
