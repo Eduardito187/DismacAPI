@@ -370,6 +370,7 @@ class ProductApi{
     public function applyRequestAPI(array $response, Request $request){
         $id_Account = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
         $allStore = $this->getAllStoreID();
+        Log::info(json_encode($allStore));
         Log::info("###");
         foreach ($response as $res) {
             $id_product = $this->getCatalogStore($res[$this->text->getCodigo()], $id_Account);
@@ -440,7 +441,7 @@ class ProductApi{
                 $this->changeMiniCuotas($id_product, $res[$this->text->getMinicuotas()]);
             }
             if (!empty($res[$this->text->getEstado()]) && is_array($res[$this->text->getEstado()]) && !is_null($id_product)) {
-                $this->changeStatusProduct($id_product, $allStore, $res[$this->text->getEstado()][$this->text->getVisible()]);
+                $this->changeStatusProduct($id_product, $allStore, $res[$this->text->getEstado()][$this->text->getVisible()] ?? false);
             }
             if (!empty($res[$this->text->getClasificacion()]) && is_array($res[$this->text->getClasificacion()]) && !is_null($id_product)) {
                 $this->setClasificacion($res[$this->text->getClasificacion()], false, $allStore, $id_product);
@@ -1514,13 +1515,11 @@ class ProductApi{
      * @param int $id_store
      */
     public function getProductStoreStatus(int $id_product, int $id_store){
-        $ProductStoreStatus = ProductStoreStatus::select($this->text->getIdProduct())
-        ->where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->get()->toArray();
-        if (count($ProductStoreStatus) > 0) {
-            return $ProductStoreStatus[0][$this->text->getIdProduct()];
-        }else{
+        $ProductStoreStatus = ProductStoreStatus::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->first();
+        if (!$ProductStoreStatus){
             return null;
         }
+        return $id_product;
     }
     
     /**
