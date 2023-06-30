@@ -77,17 +77,15 @@ class ProductApi{
 
     /**
      * @param string $code
+     * @param int $id_Partner
      * @return int|null
      */
-    private function getCatalogStore(string $code){
-        //->where($this->text->getName(), $name)
-        $Product = Product::select($this->text->getId())->where($this->text->getSku(), $code)->get()->toArray();
-        Log::info("sku => ".$code." >> ".json_encode($Product));
-        if (count($Product) > 0) {
-            return $Product[0][$this->text->getId()];
-        }else{
+    private function getCatalogStore(string $code, int $id_Partner){
+        $product = Product::where($this->text->getSku(), $code)->where($this->text->getIdPartner(), $id_Partner)->first();
+        if (!$product) {
             return null;
         }
+        return $product->id;
     }
 
     /**
@@ -373,7 +371,7 @@ class ProductApi{
         $allStore = $this->getAllStoreID();
         Log::info("###");
         foreach ($response as $res) {
-            $id_product = $this->getCatalogStore($res[$this->text->getCodigo()]);
+            $id_product = $this->getCatalogStore($res[$this->text->getCodigo()], $id_Account);
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
@@ -412,7 +410,8 @@ class ProductApi{
                     $id_Account
                 );
                 $id_product = $this->getCatalogStore(
-                    $res[$this->text->getCodigo()]
+                    $res[$this->text->getCodigo()],
+                    $id_Account
                 );
                 $this->updateProductRelations(
                     $id_product,
