@@ -370,8 +370,6 @@ class ProductApi{
     public function applyRequestAPI(array $response, Request $request){
         $id_Account = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
         $allStore = $this->getAllStoreID();
-        Log::info(json_encode($allStore));
-        Log::info("###");
         foreach ($response as $res) {
             $id_product = $this->getCatalogStore($res[$this->text->getCodigo()], $id_Account);
             $id_brand = null;
@@ -1446,9 +1444,9 @@ class ProductApi{
     public function changeStatusProduct(int $idProduct, array $stores, bool $status){
         foreach ($stores as $store) {
             if(is_null($this->getProductStoreStatus($idProduct, $store))){
-                $this->setProductStoreStatus($idProduct, $store, $status);
+                $this->setProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
             }else{
-                $this->updateProductStoreStatus($idProduct, $store, $status);
+                $this->updateProductStoreStatus($idProduct, $store[$this->text->getId()], $status);
             }
         }
     }
