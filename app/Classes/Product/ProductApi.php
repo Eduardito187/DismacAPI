@@ -81,6 +81,7 @@ class ProductApi{
      * @return int|null
      */
     private function getCatalogStore(string $code, int $id_Partner){
+        Log::info("sku => ".$code." >> partner => ".$id_Partner);
         $product = Product::where($this->text->getSku(), $code)->where($this->text->getIdPartner(), $id_Partner)->first();
         if (!$product) {
             return null;
