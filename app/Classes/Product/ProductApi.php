@@ -82,6 +82,7 @@ class ProductApi{
     private function getCatalogStore(string $code){
         //->where($this->text->getName(), $name)
         $Product = Product::select($this->text->getId())->where($this->text->getSku(), $code)->get()->toArray();
+        Log::info("sku => ".$code." >> ".json_encode($Product));
         if (count($Product) > 0) {
             return $Product[0][$this->text->getId()];
         }else{
