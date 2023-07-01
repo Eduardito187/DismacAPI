@@ -377,9 +377,17 @@ class Text{
     CONST PARAMETROS_INVALIDSO= "Los parametros recibidos son invalidos.";
     CONST ERROR_NO_BLOCK_IP   = "Lo sentimos no se pudo bloquear la IP.";
     CONST PICTURES_DATA       = "pictures";
+    CONST FAMILY_API          = "family";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getFamilyApi(){
+        return SELF::FAMILY_API;
     }
 
     /**

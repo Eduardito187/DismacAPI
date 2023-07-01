@@ -1609,8 +1609,20 @@ class ProductApi{
             $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
             $this->text->getSheets() => $this->getProductSheet($Product->Sheet),
             $this->text->getWarehouses() => $this->getProductWarehouses($Stores, $Product->Warehouse, $Product->id),
-            $this->text->getPictureData() => $this->getProductPictures($Product->Pictures)
+            $this->text->getPictureData() => $this->getProductPictures($Product->Pictures),
+            $this->text->getFamilyApi() => $this->getFamilyProduct($Product->Family)
         ];
+    }
+
+    private function getFamilyProduct($Family){
+        if (is_null($Family)){
+            return null;
+        }
+        return array(
+            $this->text->getId() => $Family->id,
+            $this->text->getName() => $Family->name,
+            $this->text->getCode() => $Family->code
+        );
     }
 
     private function getProductPictures($Pictures){
