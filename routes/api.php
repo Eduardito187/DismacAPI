@@ -96,6 +96,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('partner', 'store');
         Route::get('partner/show/{id}', 'show');
         Route::patch('partner/{id}', 'update');
+        Route::post('socialNetworkPartner', 'socialNetworkPartner');
         Route::delete('partner/{id}', 'destroy');
         Route::get('partner/countAccount', 'countAccount');
         Route::get('partner/countProduct', 'countProduct');

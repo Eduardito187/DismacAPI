@@ -378,9 +378,17 @@ class Text{
     CONST ERROR_NO_BLOCK_IP   = "Lo sentimos no se pudo bloquear la IP.";
     CONST PICTURES_DATA       = "pictures";
     CONST FAMILY_API          = "family";
+    CONST SOCIAL_PARAM        = "social";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getSocial(){
+        return SELF::SOCIAL_PARAM;
     }
 
     /**

@@ -12,7 +12,7 @@ class SocialNetwork extends Model
 
     protected $table = 'social_network';
     
-    protected $fillable = ['name', 'url', 'icon', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'url', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 

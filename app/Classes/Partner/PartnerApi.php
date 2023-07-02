@@ -1329,6 +1329,34 @@ class PartnerApi{
      * @param Partner $partner
      * @return int
      */
+    public function socialNetworkPartner(Partner $partner){
+        return $this->getSocialNetworkPartnet($partner);
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getSocialNetworkPartnet(Partner $partner){
+        $data = array();
+        foreach ($partner->SocialPartner as $key => $social_partner) {
+            $Social = $social_partner->Social;
+            $data[] = array(
+                $this->text->getUrl() => $social_partner->url,
+                $this->text->getSocial() => array(
+                    $this->text->getId() => $Social->id,
+                    $this->text->getName() => $Social->name,
+                    $this->text->getUrl() => $Social->code
+                )
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param Partner $partner
+     * @return int
+     */
     public function countCampaignsPartner(Partner $partner){
         return $this->countCampaignsSocialPartner($partner->id);
     }

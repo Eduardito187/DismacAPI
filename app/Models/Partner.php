@@ -9,6 +9,7 @@ use App\Models\Address;
 use App\Models\AccountPartner;
 use App\Models\StorePartner;
 use App\Models\Campaign;
+use App\Models\SocialPartner;
 
 class Partner extends Model
 {
@@ -50,5 +51,9 @@ class Partner extends Model
 
     public function Campaigns(){
         return $this->hasMany(Campaign::class, 'id_partner', 'id');
+    }
+    
+    public function SocialPartner(){
+        return $this->hasMany(SocialPartner::class, 'id_partner', 'id');
     }
 }
