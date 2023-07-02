@@ -1357,10 +1357,10 @@ class PartnerApi{
     }
 
     /**
-     * @param Category $Category
+     * @param Category|null $Category
      * @return array|null
      */
-    public function getArrayCategory(Category $Category){
+    public function getArrayCategory(Category|null $Category){
         if (is_null($Category)){
             return null;
         }
