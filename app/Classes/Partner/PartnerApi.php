@@ -1358,9 +1358,12 @@ class PartnerApi{
 
     /**
      * @param Category $Category
-     * @return array
+     * @return array|null
      */
     public function getArrayCategory(Category $Category){
+        if (is_null($Category)){
+            return null;
+        }
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
