@@ -130,7 +130,7 @@ class PartnerApi{
      * @return bool
      */
     public function deletePicture(Request $request){
-        $deletedFile = File::delete("/storage/app/public/Products/1/1688279516-picture-1688279516.jpg");
+        $deletedFile = File::delete(app_path()."/Products/1/1688279516-picture-1688279516.jpg");
         return true;
         $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $params = $request->all();
