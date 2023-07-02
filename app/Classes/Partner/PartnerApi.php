@@ -37,6 +37,7 @@ use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
 use App\Classes\TokenAccess;
+use App\Models\ProductCategory;
 use App\Models\SocialNetwork;
 
 class PartnerApi{
@@ -1346,6 +1347,7 @@ class PartnerApi{
                 $this->text->getUrl() => $Campaign->url,
                 $this->text->getName() => $Campaign->name,
                 $this->text->getStatus() => $Campaign->status,
+                $this->text->getProducts() => $this->countProductCategory($Campaign->id_category),
                 $this->text->getFromAt() => $Campaign->from_at,
                 $this->text->getToAt() => $Campaign->to_at,
                 $this->text->getSocial() => $this->getArraySocial($Campaign->SocialNewtwork),
@@ -1353,6 +1355,17 @@ class PartnerApi{
             );
         }
         return $data;
+    }
+
+    /**
+     * @param int|null $id_category
+     * @return int|null
+     */
+    public function countProductCategory(int|null $id_category){
+        if (is_null($id_category)){
+            return 0;
+        }
+        return ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), $id_category)->distinct($this->text->getIdProduct())->count($this->text->getIdProduct());
     }
 
     /**
