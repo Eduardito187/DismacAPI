@@ -184,7 +184,7 @@ class PictureApi{
             $ProductPicture->id_product = $id_product;
             $ProductPicture->id_picture = $id_picture;
             $ProductPicture->save();
-            $this->updateProductInformation($id_picture);
+            $this->updateProductInformation($id_product);
             return true;
         } catch (Exception $th) {
             return false;
