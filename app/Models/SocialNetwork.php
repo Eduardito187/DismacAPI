@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Picture;
 
 class SocialNetwork extends Model
 {
@@ -20,8 +19,4 @@ class SocialNetwork extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
-
-    public function Icon(){
-        return $this->hasOne(Picture::class, 'id', 'icon');
-    }
 }

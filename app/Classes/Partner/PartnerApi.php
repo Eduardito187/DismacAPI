@@ -1346,7 +1346,7 @@ class PartnerApi{
                 $this->text->getSocial() => array(
                     $this->text->getId() => $Social->id,
                     $this->text->getName() => $Social->name,
-                    $this->text->getUrl() => $Social->code
+                    $this->text->getUrl() => $Social->url
                 )
             );
         }
