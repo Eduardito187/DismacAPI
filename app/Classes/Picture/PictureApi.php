@@ -218,8 +218,8 @@ class PictureApi{
     public function deletePictureProduct(int $id_picture){
         try {
             ProductPicture::where($this->text->getIdPicture(), $id_picture)->delete();
-            Picture::where($this->text->getId(), $id_picture)->delete();
             PictureProperty::where($this->text->getIdPicture(), $id_picture)->delete();
+            Picture::where($this->text->getId(), $id_picture)->delete();
             return true;
         } catch (Throwable $th) {
             return false;
