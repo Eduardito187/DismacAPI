@@ -383,9 +383,17 @@ class Text{
     CONST TO_AT_PARAM         = "to_at";
     CONST ID_PICTURE          = "id_picture";
     CONST STORAGE_PATH        = "/storage";
+    CONST APP_PUBLIC_STORAGE  = "app/public";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppPublic(){
+        return SELF::APP_PUBLIC_STORAGE;
     }
 
     /**

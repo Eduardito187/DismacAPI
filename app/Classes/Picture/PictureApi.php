@@ -208,8 +208,8 @@ class PictureApi{
      * @return void
      */
     public function deleteFile(string $path){
-        $path = str_replace($this->text->getStoragePath(), $this->text->getTextNone(), $path);
-        $path = str_replace($this->text->getStorage(), $this->text->getTextNone(), $path);
+        $path = str_replace($this->text->getStoragePath(), $this->text->getAppPublic(), $path);
+        $path = str_replace($this->text->getStorage(), $this->text->getAppPublic(), $path);
         unlink(storage_path().$path);
     }
 
