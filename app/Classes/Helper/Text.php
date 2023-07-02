@@ -379,9 +379,25 @@ class Text{
     CONST PICTURES_DATA       = "pictures";
     CONST FAMILY_API          = "family";
     CONST SOCIAL_PARAM        = "social";
+    CONST FROM_AT_PARAM       = "from_at";
+    CONST TO_AT_PARAM         = "to_at";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getFromAt(){
+        return SELF::FROM_AT_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToAt(){
+        return SELF::TO_AT_PARAM;
     }
 
     /**

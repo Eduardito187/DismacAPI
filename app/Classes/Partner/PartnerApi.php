@@ -37,6 +37,7 @@ use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
 use App\Classes\TokenAccess;
+use App\Models\SocialNetwork;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -1327,7 +1328,61 @@ class PartnerApi{
 
     /**
      * @param Partner $partner
-     * @return int
+     * @return array
+     */
+    public function campaignsPartner(Partner $partner){
+        return $this->getCampaignsPartner($partner);
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getCampaignsPartner(Partner $partner){
+        $data = array();
+        foreach ($partner->Campaign as $key => $Campaign) {
+            $data[] = array(
+                $this->text->getId() => $Campaign->id,
+                $this->text->getUrl() => $Campaign->url,
+                $this->text->getName() => $Campaign->name,
+                $this->text->getStatus() => $Campaign->status,
+                $this->text->getProducts() => $Campaign->products,
+                $this->text->getFromAt() => $Campaign->from_at,
+                $this->text->getToAt() => $Campaign->to_at,
+                $this->text->getSocial() => $this->getArraySocial($Campaign->SocialNewtwork),
+                $this->text->getCategory() => $this->getArrayCategory($Campaign->Category)
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param Category $Category
+     * @return array
+     */
+    public function getArrayCategory(Category $Category){
+        return array(
+            $this->text->getId() => $Category->id,
+            $this->text->getName() => $Category->name,
+            $this->text->getUrl() => $Category->code
+        );
+    }
+
+    /**
+     * @param SocialNetwork $Social
+     * @return array
+     */
+    public function getArraySocial(SocialNetwork $Social){
+        return array(
+            $this->text->getId() => $Social->id,
+            $this->text->getName() => $Social->name,
+            $this->text->getUrl() => $Social->url
+        );
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
      */
     public function socialNetworkPartner(Partner $partner){
         return $this->getSocialNetworkPartnet($partner);
@@ -1343,11 +1398,7 @@ class PartnerApi{
             $Social = $social_partner->Social;
             $data[] = array(
                 $this->text->getUrl() => $social_partner->url,
-                $this->text->getSocial() => array(
-                    $this->text->getId() => $Social->id,
-                    $this->text->getName() => $Social->name,
-                    $this->text->getUrl() => $Social->url
-                )
+                $this->text->getSocial() => $this->getArraySocial($Social)
             );
         }
         return $data;

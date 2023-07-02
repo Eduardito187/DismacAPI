@@ -56,4 +56,8 @@ class Partner extends Model
     public function SocialPartner(){
         return $this->hasMany(SocialPartner::class, 'id_partner', 'id');
     }
+    
+    public function Campaign(){
+        return $this->hasMany(Campaign::class, 'id_partner', 'id');
+    }
 }
