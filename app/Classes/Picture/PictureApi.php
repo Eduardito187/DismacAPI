@@ -184,10 +184,21 @@ class PictureApi{
             $ProductPicture->id_product = $id_product;
             $ProductPicture->id_picture = $id_picture;
             $ProductPicture->save();
+            $this->updateProductInformation($id_picture);
             return true;
         } catch (Exception $th) {
             return false;
         }
+    }
+
+    /**
+     * @param int $id_product
+     * @return void
+     */
+    public function updateProductInformation(int $id_product){
+        Product::where($this->text->getId(), $id_product)->update([
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
 
     /**
