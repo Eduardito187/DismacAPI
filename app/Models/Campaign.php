@@ -14,7 +14,7 @@ class Campaign extends Model
 
     protected $table = 'campaign';
 
-    protected $fillable = ['id_social_network', 'id_partner', 'id_category', 'name', 'url', 'status', 'products', 'created_at', 'updated_at', 'from_at', 'to_at'];
+    protected $fillable = ['id_social_network', 'id_partner', 'id_category', 'name', 'url', 'status', 'created_at', 'updated_at', 'from_at', 'to_at'];
 
     protected $hidden = ['id_social_network', 'id_partner', 'id_category', 'created_at', 'updated_at', 'id_rol', 'id_account'];
 

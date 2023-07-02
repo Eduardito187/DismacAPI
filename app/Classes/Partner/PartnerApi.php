@@ -1346,7 +1346,6 @@ class PartnerApi{
                 $this->text->getUrl() => $Campaign->url,
                 $this->text->getName() => $Campaign->name,
                 $this->text->getStatus() => $Campaign->status,
-                $this->text->getProducts() => $Campaign->products,
                 $this->text->getFromAt() => $Campaign->from_at,
                 $this->text->getToAt() => $Campaign->to_at,
                 $this->text->getSocial() => $this->getArraySocial($Campaign->SocialNewtwork),

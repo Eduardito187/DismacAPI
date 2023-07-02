@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('url', 250);
             $table->boolean('status');
-            $table->integer('products');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('from_at')->nullable();
