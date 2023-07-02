@@ -381,9 +381,17 @@ class Text{
     CONST SOCIAL_PARAM        = "social";
     CONST FROM_AT_PARAM       = "from_at";
     CONST TO_AT_PARAM         = "to_at";
+    CONST ID_PICTURE          = "id_picture";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdPicture(){
+        return SELF::ID_PICTURE;
     }
 
     /**

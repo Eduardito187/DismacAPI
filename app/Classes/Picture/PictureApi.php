@@ -8,10 +8,12 @@ use App\Models\ProductPicture;
 use App\Classes\Helper\Text;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Helper\Date;
+use App\Models\PictureProperty;
 use App\Models\Product;
 use \Illuminate\Http\UploadedFile;
 use \Illuminate\Http\Request;
 use Exception;
+use Throwable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
@@ -207,6 +209,21 @@ class PictureApi{
      */
     public function deleteFile(string $path){
         Storage::delete($path);
+    }
+
+    /**
+     * @param int $id_picture
+     * @return bool
+     */
+    public function deletePictureProduct(int $id_picture){
+        try {
+            ProductPicture::where($this->text->getIdPicture(), $id_picture)->delete();
+            Picture::where($this->text->getId(), $id_picture)->delete();
+            PictureProperty::where($this->text->getIdPicture(), $id_picture)->delete();
+            return true;
+        } catch (Throwable $th) {
+            return false;
+        }
     }
 
     /**

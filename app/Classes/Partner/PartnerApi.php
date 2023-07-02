@@ -123,6 +123,18 @@ class PartnerApi{
         $this->pictureApi->processZipFile($id_Partner, $picture->path);
         return true;
     }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function deletePicture(Request $request){
+        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $params = $request->all();
+        $Picture = $this->pictureApi->getImageById($params[$this->text->getIdPicture()]);
+        $this->pictureApi->deleteFile($Picture->path);
+        return $this->pictureApi->deletePictureProduct($Picture->id);
+    }
     
     /**
      * @param Request $request

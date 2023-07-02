@@ -69,6 +69,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('changeCover', 'changeCover');
         Route::post('uploadZipImages', 'uploadZipImages');
         Route::post('uploadPictures', 'uploadPictures');
+        Route::post('deletePicture', 'deletePicture');
     });
 
     Route::controller(Stock::class)->group(function(){
