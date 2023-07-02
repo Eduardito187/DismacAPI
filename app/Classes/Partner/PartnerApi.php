@@ -39,6 +39,7 @@ use Illuminate\Http\Request;
 use App\Classes\TokenAccess;
 use App\Models\ProductCategory;
 use App\Models\SocialNetwork;
+use Illuminate\Support\Facades\File;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -129,6 +130,8 @@ class PartnerApi{
      * @return bool
      */
     public function deletePicture(Request $request){
+        $deletedFile = File::delete(app_path()."/storage/app/public/Products/1/1688279516-picture-1688279516.jpg");
+        return true;
         $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
         $params = $request->all();
         $Picture = $this->pictureApi->getImageById($params[$this->text->getIdPicture()]);
