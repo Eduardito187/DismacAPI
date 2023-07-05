@@ -1603,7 +1603,7 @@ class ProductApi{
             $this->text->getAttributes() => $this->getAttributesInFamily($Product->Family, $id),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
             $this->text->getCuotaInicial() => $this->cuotaInicial($Stores, $Product->CuotaInicial),
-            $this->text->getPartner() => $Product->Partner,
+            $this->text->getPartner() => $this->getPartnerProduct($Product->Partner),
             $this->text->getPrices() => $this->pricesProducts($Stores, $Product->PriceStore),
             $this->text->getMinicuotas() => $this->minicuotasProducts($Stores, $Product->id),
             $this->text->getCategorias() => $this->categoriasProducts($Product->Categorys->unique()),
@@ -1612,6 +1612,14 @@ class ProductApi{
             $this->text->getPictureData() => $this->getProductPictures($Product->Pictures),
             $this->text->getFamilyApi() => $this->getFamilyProduct($Product->Family)
         ];
+    }
+
+    private function getPartnerProduct($Partner){
+        return array(
+            $this->text->getId() => $Partner->id,
+            $this->text->getName() => $Partner->name,
+            $this->text->getUrl() => $this->pictureApi->getPictureById($Partner->picture_profile),
+        );
     }
 
     private function getFamilyProduct($Family){

@@ -307,6 +307,15 @@ class PictureApi{
     }
 
     /**
+     * @param int|null $id_picture
+     * @return string
+     */
+    public function getPictureById(int|null $id_picture){
+        $Picture = $this->getImageById($id_picture ?? $this::DEFAULT_IMAGE);
+        return $this->getPublicUrlImage($Picture);
+    }
+
+    /**
      * @param int $id_product
      * @return ProductPicture
      */
