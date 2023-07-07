@@ -1612,6 +1612,7 @@ class ProductApi{
         if (is_null($Description)){
             return null;
         }
+        print_r($Description);
         return array(
             $this->text->getId() => $Description->id,
             $this->text->getDescription() => $Description->description
