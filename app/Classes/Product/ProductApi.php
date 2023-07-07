@@ -1609,6 +1609,9 @@ class ProductApi{
     }
 
     private function getDescription($Description){
+        if (is_null($Description)){
+            return null;
+        }
         return array(
             $this->text->getId() => $Description->id,
             $this->text->getDescription() => $Description->description
