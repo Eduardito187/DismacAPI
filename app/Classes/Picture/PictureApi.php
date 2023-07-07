@@ -56,6 +56,10 @@ class PictureApi{
         while ($index < $params[$this->text->getLong()] ?? 0) {
             $file = $request->file($this->text->getFile().$this->text->getGuionBajo().$index);
             $public = $this->uploadFile($file, $id_Partner, $folder);
+            Log::info("-------");
+            Log::info($this->text->getFile().$this->text->getGuionBajo().$index);
+            Log::info($public);
+            Log::info("-------");
             $this->saveProductPicture($idProduct, $this->getPicture($public)->id);
             $index++;
         }
