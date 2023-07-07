@@ -1611,7 +1611,7 @@ class ProductApi{
     private function getDescription($Description){
         return array(
             $this->text->getId() => $Description->id,
-            $this->text->getDescription() => $Description->name
+            $this->text->getDescription() => $Description->description
         );
     }
 
