@@ -1592,7 +1592,7 @@ class ProductApi{
             $this->text->getBrand() => $Product->Brand,
             $this->text->getClacom() => $Product->Clacom,
             $this->text->getType() => $Product->Type,
-            $this->text->getDescripcion() => $this->getDescription($Product->Description),
+            $this->text->getDescripcion() => $Product->Description,
             $this->text->getStatus() => $this->statusProducts($Stores, $Product->Status),
             $this->text->getAttributes() => $this->getAttributesInFamily($Product->Family, $id),
             $this->text->getMedidaComercial() => $Product->MedidasComerciales,
@@ -1606,17 +1606,6 @@ class ProductApi{
             $this->text->getPictureData() => $this->getProductPictures($Product->Pictures),
             $this->text->getFamilyApi() => $this->getFamilyProduct($Product->Family)
         ];
-    }
-
-    private function getDescription($Description){
-        if (is_null($Description)){
-            return null;
-        }
-        print_r($Description);
-        return array(
-            $this->text->getId() => $Description->id,
-            $this->text->getDescription() => $Description->description
-        );
     }
 
     private function getPartnerProduct($Partner){
