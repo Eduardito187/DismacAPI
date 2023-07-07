@@ -47,11 +47,8 @@ class Category extends Controller
         try {
             //$ApiBlend = $this->import->importCategory($request->all());
             $ApiBlend = $request->all();
-            Log::info("INI");
             if ($ApiBlend[$this->text->getCode()] == 200) {
-                Log::info("INI1");
                 if (is_array($ApiBlend[$this->text->getObject()])) {
-                    Log::info("IN2");
                     $this->productApi->applyRequestAPI($ApiBlend[$this->text->getObject()], $request);
                 }else{
                     //

@@ -28,6 +28,7 @@ class PictureApi{
      */
     protected $date;
     CONST DEFAULT_IMAGE = 3;
+    CONST DEFAULT_LIMIT = 12;
     /**
      * @var string
      */
@@ -88,7 +89,7 @@ class PictureApi{
      * @return string
      */
     public function uploadFile(UploadedFile $File, int $id_Partner, string $folder){
-        $this->nameFile = time().$this->text->getPictureParam().time();
+        $this->nameFile = $this->getRandomString(self::DEFAULT_LIMIT).$this->text->getPictureParam().$this->getRandomString(self::DEFAULT_LIMIT);
         $imageName = $this->nameFile.$this->text->getPunto().$File->getClientOriginalExtension();
         $Path = $this->text->getFolderStorage().$folder.$id_Partner;
         $File->move($Path, $imageName);
@@ -97,6 +98,22 @@ class PictureApi{
         $public = env($this->text->getAppUrl()).$this->text->getSlashOnly().$local;
         $this->saveData($public, $local);
         return $public;
+    }
+
+    /**
+     * @param int $n
+     * @return string
+     */
+    public function getRandomString(int $n){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+    
+        return $randomString;
     }
 
     /**

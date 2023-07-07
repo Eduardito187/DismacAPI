@@ -81,7 +81,6 @@ class ProductApi{
      * @return int|null
      */
     private function getCatalogStore(string $code, int $id_Partner){
-        Log::info("sku => ".$code." >> partner => ".$id_Partner);
         $product = Product::where($this->text->getSku(), $code)->where($this->text->getIdPartner(), $id_Partner)->first();
         if (!$product) {
             return null;
@@ -375,7 +374,6 @@ class ProductApi{
             $id_brand = null;
             $id_type = null;
             $id_clacom = null;
-            Log::info("###0");
             if (!empty($res[$this->text->getMarca()]) && is_array($res[$this->text->getMarca()])) {
                 $id_brand = $this->getBrand($res[$this->text->getMarca()][$this->text->getNombre()]);
                 if (is_null($id_brand)) {
@@ -384,7 +382,6 @@ class ProductApi{
                     }
                 }
             }
-            Log::info("###1");
             if (!empty($res[$this->text->getDetalle()]) && is_array($res[$this->text->getDetalle()])) {
                 $id_type = $this->getType($res[$this->text->getDetalle()][$this->text->getTipoProducto()]);
                 $id_clacom = $this->getClacom($res[$this->text->getDetalle()][$this->text->getClacom()]);
@@ -399,9 +396,7 @@ class ProductApi{
                     }
                 }
             }
-            Log::info("###2");
             if (is_null($id_product)) {
-                Log::info("###3");
                 $this->setProduct(
                     $res[$this->text->getCodigo()],
                     !empty($res[$this->text->getNombre()]) ? $res[$this->text->getNombre()] : $this->text->getTextNone(),
@@ -424,7 +419,6 @@ class ProductApi{
                     $id_Account
                 );
             }else{
-                Log::info("###4");
                 $this->updateProductALL(
                     $id_product,
                     $res[$this->text->getCodigo()],
@@ -1739,7 +1733,6 @@ class ProductApi{
             return [];
         }
         $Attributes = $Family->Attributes;
-        Log::info(json_encode($Attributes));
         foreach ($Attributes as $key => $Attribute) {
             $AttributeFamily = $this->getAttributeProduct($id_product, $Attribute->Attribute->id);
             if (!is_null($AttributeFamily)){
