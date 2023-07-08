@@ -409,7 +409,7 @@ class AccountApi{
                 $this->text->getId() => $account->id,
                 $this->text->getName() => $account->name,
                 $this->text->getEmail() => $account->email,
-                $this->text->getAccountStatusParam() => $this->getStatusAccount($account->accountStatus),
+                $this->text->getStatus() => $this->getStatusAccount($account->accountStatus),
                 $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount)
             );
         }
@@ -430,9 +430,10 @@ class AccountApi{
     }
 
     private function getStatusAccount($accountStatus){
-        return array(
-            $this->text->getStatus() => $accountStatus->status
-        );
+        if (!$accountStatus){
+            return false;
+        }
+        return $accountStatus->status;
     }
 
     /**
