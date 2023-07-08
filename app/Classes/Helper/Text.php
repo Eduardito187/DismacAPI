@@ -384,9 +384,25 @@ class Text{
     CONST ID_PICTURE          = "id_picture";
     CONST STORAGE_PATH        = "/storage";
     CONST APP_PUBLIC_STORAGE  = "/app/public";
+    CONST ACCOUNT_STATUS_PARAM= "account_status";
+    CONST ROL_ACCOUNT_PARAM   = "rol_account";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountStatusParam(){
+        return SELF::ACCOUNT_STATUS_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRolAccountParam(){
+        return SELF::ROL_ACCOUNT_PARAM;
     }
 
     /**

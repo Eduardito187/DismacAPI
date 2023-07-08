@@ -370,12 +370,69 @@ class AccountApi{
     public function searchAccount(Request $request){
         $param = $request->all()[$this->text->getQuery()];
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
-        $AccountPartner = AccountPartner::select($this->text->getIdAccount())->where($this->text->getIdAccount(), $this->text->getDistinctSymbol(), $id_Account)->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get()->toArray();
-        $Accounts = Account::select($this->text->getId(),$this->text->getName(),$this->text->getEmail())->whereIn($this->text->getId(), $AccountPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
-        orwhere($this->text->getEmail(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->whereIn($this->text->getId(), $AccountPartner)->with([$this->text->getAccountStatus(), $this->text->getRolAccount() => function ($query) {
-            $query->with([$this->text->getRol()]);
-        }])->get()->toArray();
-        return $Accounts;
+        return $this->getAccountSearch($id_Account, $param);
+    }
+
+    /**
+     * @param int $id_Account
+     * @return AccountPartner[]
+     */
+    private function getAccountPartner(int $id_Account){
+        return AccountPartner::select($this->text->getIdAccount())->where($this->text->getIdAccount(), $this->text->getDistinctSymbol(), $id_Account)->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get();
+    }
+
+    /**
+     * @param array $AccountPartner
+     * @param string $quer
+     * @return Account[]
+     */
+    private function getAccountFilters(array $AccountPartner, string $query){
+        return Account::whereIn($this->text->getId(), $AccountPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->
+        orwhere($this->text->getEmail(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->whereIn($this->text->getId(), $AccountPartner)->get();
+    }
+
+    /**
+     * @param int $id_Account
+     * @param string $query
+     * @return array
+     */
+    private function getAccountSearch(int $id_Account, string $query){
+        $AccountPartner = $this->getAccountPartner($id_Account);
+        $accounts = $this->getAccountFilters($AccountPartner, $query);
+        return $this->convertAccountArray($accounts);
+    }
+
+    private function convertAccountArray($accounts){
+        $data = array();
+        foreach ($accounts as $key => $account) {
+            $data[] = array(
+                $this->text->getId() => $account->id,
+                $this->text->getName() => $account->name,
+                $this->text->getEmail() => $account->email,
+                $this->text->getAccountStatusParam() => $this->getStatusAccount($account->accountStatus),
+                $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount)
+            );
+        }
+        return $data;
+    }
+
+    private function getRolAccountArray($rolAccount){
+        $data = array();
+        foreach ($rolAccount as $key => $rol) {
+            $ROL = $rol->rol;
+            $data[] = array(
+                $this->text->getId() => $ROL->id,
+                $this->text->getName() => $ROL->name,
+                $this->text->getCode() => $ROL->code
+            );
+        }
+        return $data;
+    }
+
+    private function getStatusAccount($accountStatus){
+        return array(
+            $this->text->getStatus() => $accountStatus->status
+        );
     }
 
     /**

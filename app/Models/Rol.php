@@ -12,7 +12,7 @@ class Rol extends Model
 
     protected $table = 'rol';
 
-    protected $fillable = ['name', 'code', 'monto', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'code', 'created_at', 'updated_at'];
 
     protected $hidden = ['created_at', 'updated_at'];
 
