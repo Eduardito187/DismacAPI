@@ -198,6 +198,7 @@ class Text{
     CONST UPDATE_SUCCESS      = "Datos actualizados exitosamente.";
     CONST ID_METADATA         = "id_metadata";
     CONST ID_CAT_INFO         = "id_category_info";
+    CONST ID_INFO_CAT         = "id_info_category";
     CONST PROFILE             = "profile";
     CONST COVER               = "cover";
     CONST RELATION_WH_P       = [
@@ -389,6 +390,10 @@ class Text{
 
     public function __construct() {
         //
+    }
+
+    public function getIdInfoCat(){
+        return SELF::ID_INFO_CAT;
     }
 
     /**

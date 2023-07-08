@@ -326,7 +326,6 @@ class Catalog{
      * @return int|null
      */
     public function createCateogryInfo(bool $show_filter, int $id_pos, string $url, bool $sub_category_pos, array|null $landing){
-        $id = null;
         try {
             $id_picture = null;
             $id_content = $this->createContent($landing);
@@ -340,11 +339,10 @@ class Catalog{
             $CategoryInfo->created_at = $this->date->getFullDate();
             $CategoryInfo->updated_at = null;
             $CategoryInfo->save();
-            $id = $CategoryInfo->id;
+            return $CategoryInfo->id;
         } catch (Exception $th) {
-            //
+            return null;
         }
-        return $id;
     }
 
     /**
@@ -455,7 +453,7 @@ class Catalog{
                 $this->text->getStatus() => $estado,
                 $this->text->getInMenu() => $visible,
                 $this->text->getIdMetadata() => $id_metadata,
-                $this->text->getCatInfo() => $id_category_info,
+                $this->text->getIdInfoCat() => $id_category_info,
                 $this->text->getUpdated() => $this->date->getFullDate()
             ]);
             /*
