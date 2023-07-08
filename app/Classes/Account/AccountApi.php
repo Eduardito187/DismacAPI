@@ -375,7 +375,7 @@ class AccountApi{
 
     /**
      * @param int $id_Account
-     * @return AccountPartner[]
+     * @return array
      */
     private function getAccountPartner(int $id_Account){
         return AccountPartner::select($this->text->getIdAccount())->where($this->text->getIdAccount(), $this->text->getDistinctSymbol(), $id_Account)->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get()->toArray();
