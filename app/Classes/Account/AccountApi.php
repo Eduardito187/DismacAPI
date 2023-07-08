@@ -419,6 +419,7 @@ class AccountApi{
     private function getRolAccountArray($rolAccount){
         $data = array();
         foreach ($rolAccount as $key => $rol) {
+            print_r($rol);
             $ROL = $rol->rol;
             $data[] = array(
                 $this->text->getId() => $ROL->id,
