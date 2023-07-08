@@ -398,6 +398,7 @@ class AccountApi{
      */
     private function getAccountSearch(int $id_Account, string $query){
         $AccountPartner = $this->getAccountPartner($id_Account);
+        print_r($AccountPartner);
         $accounts = $this->getAccountFilters($AccountPartner, $query);
         return $this->convertAccountArray($accounts);
     }
