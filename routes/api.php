@@ -257,8 +257,8 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     Route::controller(Register::class)->group(function(){
         Route::get('register/account', 'index');
         Route::post('register/account', 'store');
-        Route::get('register/account/show/{id}', 'show');
-        Route::patch('register/account/{id}', 'update');
+        Route::get('account/show/{id}', 'show');
+        Route::patch('account/edit/{id}', 'update');
         Route::delete('register/account/{id}', 'destroy');
     });
 

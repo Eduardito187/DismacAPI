@@ -20,6 +20,7 @@ use App\Models\Partner;
 use App\Models\SupportTechnical;
 use App\Classes\Address\AddressApi;
 use App\Models\PartnerSession;
+use App\Models\RolAccount;
 use App\Models\Session;
 
 class AccountApi{
@@ -164,7 +165,19 @@ class AccountApi{
      */
     public function getCurrentAccount(string $token){
         $id_Account = $this->getAccountToken($token);
-        $Account = Account::find($id_Account);
+        $Account = $this->getAccountById($id_Account);
+        if (!$Account) {
+            throw new Exception($this->text->AccountNotExist());
+        }
+        return $Account;
+    }
+
+    /**
+     * @param int|null|string $id
+     * @return Account
+     */
+    public function getAccountById(string $id){
+        $Account = Account::find($id);
         if (!$Account) {
             throw new Exception($this->text->AccountNotExist());
         }
@@ -405,15 +418,32 @@ class AccountApi{
     private function convertAccountArray($accounts){
         $data = array();
         foreach ($accounts as $key => $account) {
-            $data[] = array(
-                $this->text->getId() => $account->id,
-                $this->text->getName() => $account->name,
-                $this->text->getEmail() => $account->email,
-                $this->text->getStatus() => $this->getStatusAccount($account->accountStatus),
-                $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount)
-            );
+            $data[] = $this->accountToArray($account);
         }
         return $data;
+    }
+
+    public function accountToArray($account){
+        return array(
+            $this->text->getId() => $account->id,
+            $this->text->getName() => $account->name,
+            $this->text->getEmail() => $account->email,
+            $this->text->getStatus() => $this->getStatusAccount($account->accountStatus),
+            $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount)
+        );
+    }
+
+    /**
+     * @param int $ID
+     * @return array
+     */
+    public function getAccountQuery(int $ID){
+        $Account = $this->getAccountById($ID);
+        if ($Account != null) {
+            return $this->accountToArray($Account);
+        }else{
+            throw new Exception($this->text->AccountNotExist());
+        }
     }
 
     private function getRolAccountArray($rolAccount){
@@ -454,8 +484,8 @@ class AccountApi{
      * @param bool $status
      */
     public function statusAccount(int $ID, bool $status){
-        $Account=Account::find($ID);
-        if ($Account!=null) {
+        $Account = $this->getAccountById($ID);
+        if ($Account != null) {
             $time = $this->date->getFullDate();
             Account::where($this->text->getId(), $ID)->update([
                 $this->text->getUpdated() => $time
@@ -479,6 +509,99 @@ class AccountApi{
             return $AccountPartner[0][$this->text->getIdPartner()];
         }else{
             throw new Exception($this->text->getNonePartner());
+        }
+    }
+
+    /**
+     * @param int $idAccount
+     * @param array $params
+     * @return bool
+     */
+    public function updateAccount(int $idAccount, array $params){
+        $account = $this->getAccountById($idAccount);
+        if (!is_null($params[$this->text->getAccount()])){
+            $this->changeAccountDate($account, $params[$this->text->getAccount()]);
+        }
+        if (!is_null($params[$this->text->getRol()])){
+            $this->updateRolAccount($account, $params[$this->text->getRol()]);
+        }
+        return true;
+    }
+    
+    /**
+     * @param Account $account
+     * @param array $rol
+     * @return void
+     */
+    public function updateRolAccount(Account $account, array $rol){
+        try {
+            if (is_array($rol)){
+                $this->clearAllRolsAccount($account->id);
+                $this->assingRol($account->id, $rol);
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $idAccount
+     * @param array $rols
+     * @return void
+     */
+    public function assingRol(int $idAccount, array $rols){
+        try {
+            foreach ($rols as $key => $rol) {
+                $this->setRolAccount($idAccount, $rol);
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $idAccount
+     * @param int $idRol
+     * @return void
+     */
+    public function setRolAccount(int $idAccount, int $idRol){
+        try {
+            $RolAccount = new RolAccount();
+            $RolAccount->id_rol = $idRol;
+            $RolAccount->id_account = $idAccount;
+            $RolAccount->save();
+            return true;
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $accountId
+     * @return bool
+     */
+    public function clearAllRolsAccount(int $accountId){
+        return RolAccount::where($this->text->getIdAccount(), $accountId)->delete();
+    }
+    
+    /**
+     * @param Account $account
+     * @param array $cuenta
+     * @return void
+     */
+    public function changeAccountDate(Account $account, array $cuenta){
+        try {
+            if ($account != null) {
+                Account::where($this->text->getId(), $account->id)->update([
+                    $this->text->getUsername() => $cuenta[$this->text->getName()],
+                    $this->text->getPassword() => $cuenta[$this->text->getPassword()],
+                    $this->text->getUpdated() => $this->date->getFullDate()
+                ]);
+            }else{
+                throw new Exception($this->text->AccountNotExist());
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
         }
     }
 

@@ -68,7 +68,16 @@ class Register extends Controller
      */
     public function show($id)
     {
-        return response()->json([]);
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getAccountQuery($id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
@@ -80,7 +89,16 @@ class Register extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json([]);
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->updateAccount($id, $request->all()),
+                $this->text->getAddSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
