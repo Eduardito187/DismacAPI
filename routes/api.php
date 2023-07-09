@@ -236,6 +236,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('currentAccount/getImprovementsInactive', 'getImprovementsInactive');
         Route::get('currentAccount/getTicketsAccount', 'getTicketsAccount');
         Route::get('currentAccount/getTicketsPartner', 'getTicketsPartner');
+        Route::get('allrol', 'allrol');
     });
 
     Route::controller(AccountSearch::class)->group(function(){

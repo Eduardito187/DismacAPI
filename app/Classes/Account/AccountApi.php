@@ -20,6 +20,7 @@ use App\Models\Partner;
 use App\Models\SupportTechnical;
 use App\Classes\Address\AddressApi;
 use App\Models\PartnerSession;
+use App\Models\Rol;
 use App\Models\RolAccount;
 use App\Models\Session;
 
@@ -200,6 +201,29 @@ class AccountApi{
     public function createImprovement(string $token, array $data){
         $Account = $this->getCurrentAccount($token);
         return $this->newImprovement($Account->id, $data);
+    }
+
+    /**
+     * @return Rol[]
+     */
+    public function getRols(){
+        return Rol::all();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllRols(){
+        $rol = $this->getRols();
+        return $this->getRolArray($rol);
+    }
+
+    public function getRolArray($rol){
+        $data = array();
+        foreach ($rol as $key => $ROL) {
+            $data[] = $this->rolArray($ROL);
+        }
+        return $data;
     }
 
     /**
@@ -450,13 +474,17 @@ class AccountApi{
         $data = array();
         foreach ($rolAccount as $key => $rol) {
             $ROL = $rol->rol;
-            $data[] = array(
-                $this->text->getId() => $ROL->id,
-                $this->text->getName() => $ROL->name,
-                $this->text->getCode() => $ROL->code
-            );
+            $data[] = $this->rolArray($ROL);
         }
         return $data;
+    }
+
+    public function rolArray($ROL){
+        array(
+            $this->text->getId() => $ROL->id,
+            $this->text->getName() => $ROL->name,
+            $this->text->getCode() => $ROL->code
+        );
     }
 
     private function getStatusAccount($accountStatus){
