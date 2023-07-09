@@ -480,7 +480,7 @@ class AccountApi{
     }
 
     public function rolArray($ROL){
-        array(
+        return array(
             $this->text->getId() => $ROL->id,
             $this->text->getName() => $ROL->name,
             $this->text->getCode() => $ROL->code
