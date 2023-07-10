@@ -548,7 +548,7 @@ class AccountApi{
     public function updatePasswordAccount(int $idAccount, array $params){
         $account = $this->getAccountById($idAccount);
         if (!is_null($params[$this->text->getAccount()])){
-            $this->changePasswrod($account, $params[$this->text->getAccount()]);
+            $this->changePassword($account, $params[$this->text->getAccount()]);
         }
         return true;
     }
@@ -635,7 +635,6 @@ class AccountApi{
             if ($account != null) {
                 Account::where($this->text->getId(), $account->id)->update([
                     $this->text->getUsername() => $cuenta[$this->text->getName()],
-                    $this->text->getPassword() => $this->encriptionPawd($cuenta[$this->text->getPassword()]),
                     $this->text->getUpdated() => $this->date->getFullDate()
                 ]);
             }else{
@@ -651,7 +650,7 @@ class AccountApi{
      * @param array $cuenta
      * @return void
      */
-    public function changePasswrod(Account $account, array $cuenta){
+    public function changePassword(Account $account, array $cuenta){
         try {
             if ($account != null) {
                 Account::where($this->text->getId(), $account->id)->update([
