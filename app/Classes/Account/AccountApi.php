@@ -634,7 +634,7 @@ class AccountApi{
         try {
             if ($account != null) {
                 Account::where($this->text->getId(), $account->id)->update([
-                    $this->text->getUsername() => $cuenta[$this->text->getName()],
+                    $this->text->getName() => $cuenta[$this->text->getName()],
                     $this->text->getUpdated() => $this->date->getFullDate()
                 ]);
             }else{
