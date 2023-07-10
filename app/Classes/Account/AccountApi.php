@@ -653,6 +653,7 @@ class AccountApi{
     public function changePassword(Account $account, array $cuenta){
         try {
             if ($account != null) {
+                print_r($cuenta);
                 Account::where($this->text->getId(), $account->id)->update([
                     $this->text->getUpdated() => $this->date->getFullDate()
                 ]);
