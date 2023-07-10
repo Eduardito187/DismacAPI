@@ -102,6 +102,27 @@ class Register extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, $id)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->updatePasswordAccount($id, $request->all()),
+                $this->text->getAddSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
