@@ -545,6 +545,42 @@ class AccountApi{
      * @param array $params
      * @return bool
      */
+    public function changeStatus(int $idAccount, array $params){
+        $account = $this->getAccountById($idAccount);
+        if (!is_null($params[$this->text->getAccount()])){
+            $this->changeStatusAccount($account, $params[$this->text->getAccount()]);
+        }
+        return true;
+    }
+
+    /**
+     * @param Account $account
+     * @param array $cuenta
+     * @return void
+     */
+    public function changeStatusAccount(Account $account, array $cuenta){
+        try {
+            if ($account != null) {
+                Account::where($this->text->getId(), $account->id)->update([
+                    $this->text->getUpdated() => $this->date->getFullDate()
+                ]);
+                AccountLogin::where($this->text->getIdAccount(), $account->id)->update([
+                    $this->text->getStatus() => $cuenta[$this->text->getStatus()],
+                    $this->text->getUpdated() => $this->date->getFullDate()
+                ]);
+            }else{
+                throw new Exception($this->text->AccountNotExist());
+            }
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $idAccount
+     * @param array $params
+     * @return bool
+     */
     public function updatePasswordAccount(int $idAccount, array $params){
         $account = $this->getAccountById($idAccount);
         if (!is_null($params[$this->text->getAccount()])){

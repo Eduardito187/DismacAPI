@@ -261,6 +261,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('account/show/{id}', 'show');
         Route::patch('account/edit/{id}', 'update');
         Route::patch('account/updatePassword/{id}', 'updatePassword');
+        Route::patch('account/changeStatus/{id}', 'changeStatus');
         Route::delete('register/account/{id}', 'destroy');
     });
 
