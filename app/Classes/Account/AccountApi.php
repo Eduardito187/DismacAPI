@@ -20,12 +20,13 @@ use App\Models\Partner;
 use App\Models\SupportTechnical;
 use App\Classes\Address\AddressApi;
 use App\Models\PartnerSession;
+use App\Models\Picture;
 use App\Models\Rol;
 use App\Models\RolAccount;
 use App\Models\Session;
 
 class AccountApi{
-
+    const DEFAULT_IMAGE = 3;
     /**
      * @var Account
      */
@@ -453,8 +454,42 @@ class AccountApi{
             $this->text->getName() => $account->name,
             $this->text->getEmail() => $account->email,
             $this->text->getStatus() => $this->getStatusAccount($account->accountStatus),
-            $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount)
+            $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount),
+            $this->text->getPartner() => $this->getPartnerProduct($account->accountPartner->Partner ?? null)
         );
+    }
+
+    private function getPartnerProduct($Partner){
+        return array(
+            $this->text->getId() => $Partner->id,
+            $this->text->getName() => $Partner->name,
+            $this->text->getUrl() => $this->getPictureById($Partner->picture_profile),
+        );
+    }
+
+    /**
+     * @param int|null $id_picture
+     * @return string
+     */
+    public function getPictureById(int|null $id_picture){
+        $Picture = $this->getImageById($id_picture ?? $this::DEFAULT_IMAGE);
+        return $this->getPublicUrlImage($Picture);
+    }
+
+    /**
+     * @param int $id
+     * @return Picture
+     */
+    public function getImageById(int $id){
+        return Picture::find($id);
+    }
+
+    /**
+     * @param Picture $Picture
+     * @return string
+     */
+    public function getPublicUrlImage(Picture $Picture){
+        return $Picture->url;
     }
 
     /**
