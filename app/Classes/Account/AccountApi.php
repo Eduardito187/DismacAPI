@@ -655,6 +655,9 @@ class AccountApi{
         try {
             if ($account != null) {
                 Account::where($this->text->getId(), $account->id)->update([
+                    $this->text->getUpdated() => $this->date->getFullDate()
+                ]);
+                AccountLogin::where($this->text->getIdAccount(), $account->id)->update([
                     $this->text->getPassword() => $this->encriptionPawd($cuenta[$this->text->getPassword()]),
                     $this->text->getUpdated() => $this->date->getFullDate()
                 ]);
