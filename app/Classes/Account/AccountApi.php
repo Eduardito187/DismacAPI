@@ -455,15 +455,26 @@ class AccountApi{
             $this->text->getEmail() => $account->email,
             $this->text->getStatus() => $this->getStatusAccount($account->accountStatus),
             $this->text->getRolAccountParam() => $this->getRolAccountArray($account->rolAccount),
-            $this->text->getPartner() => $this->getPartnerProduct($account->accountPartner->Partner ?? null)
+            $this->text->getPartner() => $this->getPartnerAccount($account->accountPartner->Partner ?? null)
         );
     }
 
-    private function getPartnerProduct($Partner){
+    /**
+     * @param Partner|null $partner
+     * @return array
+     */
+    public function getPartnerAccount(Partner|null $partner){
+        if (is_null($partner)){
+            return null;
+        }
         return array(
-            $this->text->getId() => $Partner->id,
-            $this->text->getName() => $Partner->name,
-            $this->text->getUrl() => $this->getPictureById($Partner->picture_profile),
+            $this->text->getId() => $partner->id,
+            $this->text->getName() => $partner->name,
+            $this->text->getDomain() => $partner->domain,
+            $this->text->getEmail() => $partner->email,
+            $this->text->getProfile() => $this->getPictureById($partner->picture_profile),
+            $this->text->getCover() => $this->getPictureById($partner->picture_front),
+            $this->text->getToken() => $partner->token
         );
     }
 
