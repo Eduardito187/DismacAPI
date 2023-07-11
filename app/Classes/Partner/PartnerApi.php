@@ -1419,6 +1419,9 @@ class PartnerApi{
         return $data;
     }
 
+    /**
+     * @return null|array
+     */
     public function getSocialArray($Social){
         if (is_null($Social)){
             return null;
