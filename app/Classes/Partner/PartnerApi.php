@@ -1451,7 +1451,7 @@ class PartnerApi{
             $Social = $social_partner->Social;
             $data[] = array(
                 $this->text->getUrl() => $social_partner->url,
-                $this->text->getSocial() => $this->getArraySocial($Social)
+                $this->text->getSocial() => $this->getSocialArray($Social)
             );
         }
         return $data;
