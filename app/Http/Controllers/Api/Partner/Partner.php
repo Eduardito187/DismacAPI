@@ -73,12 +73,31 @@ class Partner extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, int $id)
     {
         return response()->json([]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function campaignPartner(Request $request, int $id)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->campaignPartner($id), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

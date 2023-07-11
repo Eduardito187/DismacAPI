@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('campaign', function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->unsignedBigInteger('id_social_network')->nullable();
-            $table->foreign('id_social_network')->references('id')->on('social_network')->onDelete('cascade');
             $table->unsignedBigInteger('id_partner')->nullable();
             $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
             $table->unsignedBigInteger('id_category')->nullable();
@@ -38,6 +36,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campaign');
+        Schema::table('campaign', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_partner');
+            $table->dropConstrainedForeignId('id_category');
+        });
     }
 };

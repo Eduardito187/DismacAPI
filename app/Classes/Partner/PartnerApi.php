@@ -1350,6 +1350,14 @@ class PartnerApi{
     }
 
     /**
+     * @param int $id
+     * @return array
+     */
+    public function campaignPartner(int $id){
+        //
+    }
+
+    /**
      * @param Partner $partner
      * @return array
      */
@@ -1364,7 +1372,7 @@ class PartnerApi{
                 $this->text->getProducts() => $this->countProductCategory($Campaign->id_category),
                 $this->text->getFromAt() => $Campaign->from_at,
                 $this->text->getToAt() => $Campaign->to_at,
-                $this->text->getSocial() => $this->getArraySocial($Campaign->SocialNewtwork),
+                $this->text->getSocial() => $this->getArraySocial($Campaign->SocialCampaings),
                 $this->text->getCategory() => $this->getArrayCategory($Campaign->Category)
             );
         }
@@ -1393,7 +1401,7 @@ class PartnerApi{
         return array(
             $this->text->getId() => $Category->id,
             $this->text->getName() => $Category->name,
-            $this->text->getUrl() => $Category->code
+            $this->text->getCode() => $Category->code
         );
     }
 
@@ -1401,7 +1409,22 @@ class PartnerApi{
      * @param SocialNetwork $Social
      * @return array
      */
-    public function getArraySocial(SocialNetwork $Social){
+    public function getArraySocial(SocialNetwork $SocialCampaings){
+        $data = array();
+        foreach ($SocialCampaings as $key => $SocialCampaing) {
+            $Social = $SocialCampaing->SocialNetwork;
+            $data[] = array(
+                $this->text->getUrl() => $SocialCampaing->url,
+                $this->text->getSocial() => $this->getSocialArray($Social)
+            );
+        }
+        return $data;
+    }
+
+    public function getSocialArray($Social){
+        if (is_null($Social)){
+            return null;
+        }
         return array(
             $this->text->getId() => $Social->id,
             $this->text->getName() => $Social->name,
