@@ -1406,10 +1406,9 @@ class PartnerApi{
     }
 
     /**
-     * @param SocialNetwork $Social
      * @return array
      */
-    public function getArraySocial(SocialNetwork $SocialCampaings){
+    public function getArraySocial($SocialCampaings){
         $data = array();
         foreach ($SocialCampaings as $key => $SocialCampaing) {
             $Social = $SocialCampaing->SocialNetwork;
