@@ -387,11 +387,22 @@ class Text{
     CONST APP_PUBLIC_STORAGE  = "/app/public";
     CONST ACCOUNT_STATUS_PARAM= "account_status";
     CONST ROL_ACCOUNT_PARAM   = "rol_account";
+    CONST CAMPAIGN_NONE       = "La campaña no existe.";
 
     public function __construct() {
         //
     }
 
+    /**
+     * @return string
+     */
+    public function getCampaignNone(){
+        return SELF::CAMPAIGN_NONE;
+    }
+
+    /**
+     * @return string
+     */
     public function getIdInfoCat(){
         return SELF::ID_INFO_CAT;
     }

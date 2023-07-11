@@ -1351,10 +1351,23 @@ class PartnerApi{
 
     /**
      * @param int $id
-     * @return array
+     * @return Campaign
+     */
+    public function getCampaignById(int $id){
+        $Campaign = Campaign::find($id);
+        if (!$Campaign){
+            throw new Exception($this->text->getCampaignNone());
+        }
+        return $Campaign;
+    }
+
+    /**
+     * @param int $id
+     * @return array|null
      */
     public function campaignPartner(int $id){
-        //
+        $Campaign = $this->getCampaignById($id);
+        return $this->getCampaingArray($Campaign);
     }
 
     /**
@@ -1364,19 +1377,26 @@ class PartnerApi{
     public function getCampaignsPartner(Partner $partner){
         $data = array();
         foreach ($partner->Campaign as $key => $Campaign) {
-            $data[] = array(
-                $this->text->getId() => $Campaign->id,
-                $this->text->getUrl() => $Campaign->url,
-                $this->text->getName() => $Campaign->name,
-                $this->text->getStatus() => $Campaign->status,
-                $this->text->getProducts() => $this->countProductCategory($Campaign->id_category),
-                $this->text->getFromAt() => $Campaign->from_at,
-                $this->text->getToAt() => $Campaign->to_at,
-                $this->text->getSocial() => $this->getArraySocial($Campaign->SocialCampaings),
-                $this->text->getCategory() => $this->getArrayCategory($Campaign->Category)
-            );
+            $data[] = $this->getCampaingArray($Campaign);
         }
         return $data;
+    }
+
+    public function getCampaingArray($Campaign){
+        if (is_null($Campaign)){
+            return null;
+        }
+        return array(
+            $this->text->getId() => $Campaign->id,
+            $this->text->getUrl() => $Campaign->url,
+            $this->text->getName() => $Campaign->name,
+            $this->text->getStatus() => $Campaign->status,
+            $this->text->getProducts() => $this->countProductCategory($Campaign->id_category),
+            $this->text->getFromAt() => $Campaign->from_at,
+            $this->text->getToAt() => $Campaign->to_at,
+            $this->text->getSocial() => $this->getArraySocial($Campaign->SocialCampaings),
+            $this->text->getCategory() => $this->getArrayCategory($Campaign->Category)
+        );
     }
 
     /**
