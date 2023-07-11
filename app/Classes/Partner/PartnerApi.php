@@ -1409,6 +1409,7 @@ class PartnerApi{
      * @return array
      */
     public function getArraySocial($SocialCampaings){
+        print_r($SocialCampaings);
         $data = array();
         foreach ($SocialCampaings as $key => $SocialCampaing) {
             $data[] = array(
