@@ -1411,10 +1411,9 @@ class PartnerApi{
     public function getArraySocial($SocialCampaings){
         $data = array();
         foreach ($SocialCampaings as $key => $SocialCampaing) {
-            $Social = $SocialCampaing->SocialNetwork;
             $data[] = array(
                 $this->text->getUrl() => $SocialCampaing->url,
-                $this->text->getSocial() => $this->getSocialArray($Social)
+                $this->text->getSocial() => $this->getSocialArray($SocialCampaing->SocialNetwork)
             );
         }
         return $data;
