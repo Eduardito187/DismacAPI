@@ -24,7 +24,7 @@ class Campaign extends Model
     public $timestamps = false;
 
     public function SocialCampaings(){
-        return $this->hasMany(SocialCampaings::class, 'id', 'id_social_network');
+        return $this->hasMany(SocialCampaings::class, 'id_social_network', 'id');
     }
 
     public function Partner(){
