@@ -254,6 +254,9 @@ class AccountApi{
     }
 
     public function getRolPermissions($rolPermissions){
+        if (is_null($rolPermissions)){
+            return [];
+        }
         $data = array();
         foreach ($rolPermissions as $key => $rolPermission) {
             $data[] = $this->rolArray($rolPermission->permissions);
