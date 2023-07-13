@@ -204,7 +204,7 @@ class AccountApi{
     }
 
     public function rolAccountArray($rolAccount){
-        return $this->getRolsAccountArray($rolAccount, true);
+        return $this->getRolsAccountArray($rolAccount);
     }
 
     /**
@@ -229,29 +229,22 @@ class AccountApi{
      */
     public function getAllRols(){
         $rol = $this->getRols();
-        return $this->getRolArray($rol, false);
+        return $this->getRolArray($rol);
     }
 
-    public function getRolArray($rol, $permissions){
+    public function getRolArray($rol){
         $data = array();
         foreach ($rol as $key => $ROL) {
-            if ($permissions) {
-                $data[] = $this->rolArrayPermissions($ROL);
-            }else{
-                $data[] = $this->rolArray($ROL);
-            }
+            $data[] = $this->rolArray($ROL);
         }
         return $data;
     }
     
-    public function getRolsAccountArray($rol, $permissions){
+    public function getRolsAccountArray($rol){
+        print_r($rol);
         $data = array();
         foreach ($rol as $key => $ROL) {
-            if ($permissions) {
-                $data[] = $this->rolArrayPermissions($ROL->rol);
-            }else{
-                $data[] = $this->rolArray($ROL->rol);
-            }
+            $data[] = $this->rolArrayPermissions($ROL->rol);
         }
         return $data;
     }
