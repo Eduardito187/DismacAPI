@@ -337,12 +337,12 @@ class ProductApi{
      */
     public function getSearchProduct(array $query, int $id_partner){
         $data = array();
-        $searching = $this->paramsSearching($query, "query");
-        $idPartner = $this->paramsSearching($query, "id_partner");
+        $searching = $this->paramsSearching($query, $this->text->getQuery());
+        $idPartner = $this->paramsSearching($query, $this->text->getIdPartner());
         if (!is_null($idPartner)){
             $id_partner = $idPartner;
         }
-        $idCategory = $this->paramsSearching($query, "id_category");
+        $idCategory = $this->paramsSearching($query, $this->text->getIdCategory());
         foreach ($this->searchProduct($searching, $id_partner, $idCategory) as $key => $product) {
             /** @var Product $product */
             $data[] = $this->getArrayproduct($product);
