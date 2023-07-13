@@ -241,9 +241,11 @@ class AccountApi{
     }
     
     public function getRolsAccountArray($rol){
+        print_r($rol->toArray());
         $data = array();
         foreach ($rol as $key => $ROL) {
             print_r($ROL);
+            $data[] = $this->rolArrayPermissions($ROL->rol);
         }
         return $data;
     }

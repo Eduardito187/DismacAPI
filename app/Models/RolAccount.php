@@ -14,8 +14,6 @@ class RolAccount extends Model
 
     protected $fillable = ['id_rol', 'id_account'];
 
-    protected $hidden = ['id_rol', 'id_account'];
-
     public $incrementing = false;
     public $timestamps = false;
 
