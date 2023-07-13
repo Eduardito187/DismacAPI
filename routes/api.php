@@ -227,6 +227,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     
     Route::controller(CurrentAccount::class)->group(function(){
         Route::get('currentAccount', 'index');
+        Route::get('rolsAccount', 'rolsAccount');
         Route::post('currentAccount', 'store');
         Route::get('currentAccount/show/{id}', 'show');
         Route::patch('currentAccount/{id}', 'update');

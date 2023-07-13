@@ -388,9 +388,17 @@ class Text{
     CONST ACCOUNT_STATUS_PARAM= "account_status";
     CONST ROL_ACCOUNT_PARAM   = "rol_account";
     CONST CAMPAIGN_NONE       = "La campaña no existe.";
+    CONST PERMISSIONS         = "permissions";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermissions(){
+        return SELF::PERMISSIONS;
     }
 
     /**

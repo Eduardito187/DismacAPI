@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\RolAccount;
+use App\Models\RolPermissions;
 
 class Rol extends Model
 {
@@ -20,4 +20,8 @@ class Rol extends Model
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
+    
+    public function rolPermissions() {
+        return $this->hasMany(RolPermissions::class, 'id_rol', 'id');
+    }
 }

@@ -61,6 +61,25 @@ class Account extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function rolsAccount(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->getRolAccount($request->header($this->text->getAuthorization())),
+                $this->text->getAccountExist()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request

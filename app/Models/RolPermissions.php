@@ -15,4 +15,12 @@ class RolPermissions extends Model
 
     public $incrementing = false;
     public $timestamps = false;
+
+    public function rol() {
+        return $this->hasOne(Rol::class, 'id', 'id_rol');
+    }
+
+    public function permissions() {
+        return $this->hasMany(Permissions::class, 'id', 'id_permissions');
+    }
 }
