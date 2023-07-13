@@ -138,7 +138,7 @@ class GetProduct extends Controller
         try {
             $id_Partner = $this->accountApi->getPartnerId($this->accountApi->getAccountToken($request->header($this->text->getAuthorization())));
             $response = $this->text->getResponseApi(
-                $this->productApi->getSearchProduct($params["query"], $id_Partner),
+                $this->productApi->getSearchProduct($params, $id_Partner),
                 $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {

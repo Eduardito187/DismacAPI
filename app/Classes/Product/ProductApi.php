@@ -228,12 +228,25 @@ class ProductApi{
     /**
      * @param string $query
      * @param int $id_partner
+     * @param int|string|null $idCategory
      * @return Product[]
      */
-    public function searchProduct(string $query, int $id_partner){
-        return Product::where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->
-        orwhere($this->text->getSku(), $this->text->getLike(), $this->text->getPercent().$query.$this->text->getPercent())->where($this->text->getIdPartner(), $id_partner)->offset(0)
-        ->limit(10)->distinct()->get();
+    public function searchProduct(string $query, int $id_partner, int|string|null $idCategory){
+        $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->
+        orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
+        if (!is_null($idCategory)){
+            $productCategory = ProductCategory::select($this->text->getId())->where("id_category", 7)->distinct()->get()->toArray();
+            print_r($productCategory);
+        }
+        return $busqueda->offset(0)->limit(10)->distinct()->get();
+    }
+
+    /**
+     * @param string $query
+     * @return string
+     */
+    private function queryLike(string $query){
+        return $this->text->getPercent().$query.$this->text->getPercent();
     }
 
     /**
@@ -306,17 +319,35 @@ class ProductApi{
     }
 
     /**
-     * @param string $query
+     * @param array $query
      * @param int $id_partner
      * @return array
      */
-    public function getSearchProduct(string $query, int $id_partner){
+    public function getSearchProduct(array $query, int $id_partner){
         $data = array();
-        foreach ($this->searchProduct($query, $id_partner) as $key => $product) {
+        $searching = $this->paramsSearching($query, "query");
+        $idPartner = $this->paramsSearching($query, "id_partner");
+        if (!is_null($idPartner)){
+            $id_partner = $idPartner;
+        }
+        $idCategory = $this->paramsSearching($query, "id_category");
+        foreach ($this->searchProduct($searching, $id_partner, $idCategory) as $key => $product) {
             /** @var Product $product */
             $data[] = $this->getArrayproduct($product);
         }
         return $data;
+    }
+
+    /**
+     * @param array $query
+     * @param string $code
+     * @return string|null
+     */
+    public function paramsSearching(array $query, string $code){
+        if (array_key_exists($code, $query)){
+            return $query[$code];
+        }
+        return null;
     }
 
     /**
