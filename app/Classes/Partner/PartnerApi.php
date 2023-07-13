@@ -1490,7 +1490,7 @@ class PartnerApi{
      * @return int
      */
     public function countCampaignsSocialPartner(int $id_partner){
-        return Campaign::select($this->text->getSocialNetwork())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getSocialNetwork());
+        return Campaign::select($this->text->getIdCategory())->where($this->text->getIdPartner(), $id_partner)->distinct()->count($this->text->getIdCategory());
     }
 
     /**
