@@ -232,8 +232,7 @@ class ProductApi{
      * @return Product[]
      */
     public function searchProduct(string $query, int $id_partner, int|string|null $idCategory){
-        $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->
-        orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
+        $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
         if (!is_null($idCategory)){
             $productCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), 7)->distinct()->get()->toArray();
             print_r($productCategory);
