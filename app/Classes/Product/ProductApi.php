@@ -238,6 +238,7 @@ class ProductApi{
             $productsId = $this->getProductByCategory($productCategory);
             $busqueda->whereIn($this->text->getId(), $productsId);
         }
+        
         return $busqueda->offset(0)->limit(10)->distinct()->get();
     }
 
