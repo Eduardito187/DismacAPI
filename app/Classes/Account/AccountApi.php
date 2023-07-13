@@ -244,7 +244,6 @@ class AccountApi{
         $data = array();
         foreach ($rol as $key => $ROL) {
             print_r($ROL);
-            $data[] = $this->rolArrayPermissions($ROL->rol);
         }
         return $data;
     }
