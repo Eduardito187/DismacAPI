@@ -389,9 +389,17 @@ class Text{
     CONST ROL_ACCOUNT_PARAM   = "rol_account";
     CONST CAMPAIGN_NONE       = "La campaña no existe.";
     CONST PERMISSIONS         = "permissions";
+    CONST ROLES               = "roles";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoles(){
+        return SELF::ROLES;
     }
 
     /**

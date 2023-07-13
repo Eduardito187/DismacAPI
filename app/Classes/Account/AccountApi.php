@@ -437,7 +437,8 @@ class AccountApi{
             $this->text->getName() => $Account->name,
             $this->text->getEmail() => $Account->email,
             $this->text->getProfile() => $Partner->Profile->url,
-            $this->text->getCover() => $Partner->Front->url
+            $this->text->getCover() => $Partner->Front->url,
+            $this->text->getRoles() => $this->rolAccountArray($Account->rolAccount)
         );
     }
 
