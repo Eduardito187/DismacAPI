@@ -235,7 +235,7 @@ class ProductApi{
         $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->
         orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
         if (!is_null($idCategory)){
-            $productCategory = ProductCategory::select($this->text->getId())->where("id_category", 7)->distinct()->get()->toArray();
+            $productCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), 7)->distinct()->get()->toArray();
             print_r($productCategory);
         }
         return $busqueda->offset(0)->limit(10)->distinct()->get();
