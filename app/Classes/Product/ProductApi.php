@@ -236,8 +236,8 @@ class ProductApi{
         if (!is_null($idCategory)){
             $productCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), $idCategory)->distinct()->get()->toArray();
             $productsId = $this->getProductByCategory($productCategory);
-            $busqueda->whereIn($this->text->getId(), $productsId);
             print_r($productsId);
+            $busqueda->whereIn($this->text->getId(), $productsId);
         }
         return $busqueda->offset(0)->limit(10)->distinct()->get();
     }
