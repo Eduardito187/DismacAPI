@@ -232,12 +232,14 @@ class ProductApi{
      * @return Product[]
      */
     public function searchProduct(string $query, int $id_partner, int|string|null $idCategory){
-        $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
+        $busqueda = null;
         if (!is_null($idCategory)){
             $productCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), $idCategory)->distinct()->get()->toArray();
             $productsId = $this->getProductByCategory($productCategory);
-            print_r($productsId);
-            $busqueda->whereIn($this->text->getId(), $productsId);
+            $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->whereIn($this->text->getId(), $productsId)
+            ->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->whereIn($this->text->getId(), $productsId);
+        }else{
+            $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
         }
         return $busqueda->offset(0)->limit(10)->distinct()->get();
     }
