@@ -12,6 +12,8 @@ class Permissions extends Model
     protected $table = 'permissions';
 
     protected $fillable = ['name', 'code', 'created_at', 'updated_at'];
+    
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
