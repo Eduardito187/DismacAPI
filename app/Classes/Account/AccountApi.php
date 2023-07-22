@@ -272,7 +272,7 @@ class AccountApi{
         if (is_null($permissions)){
             return null;
         }
-        return $this->rolArray($permissions->permissions);
+        return $this->rolArray($permissions);
     }
 
     /**
