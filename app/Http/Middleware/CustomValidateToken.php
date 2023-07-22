@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use \Closure;
 use \Illuminate\Http\Request;
-use \Illuminate\Support\Facades\Log;
 use App\Classes\TokenAccess;
 use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
@@ -14,6 +13,8 @@ use \Illuminate\Http\RedirectResponse;
 
 class CustomValidateToken
 {
+    const ERROR_402 = 402;
+    const ERROR_404 = 404;
     /**
      * @var Text
      */
@@ -48,10 +49,10 @@ class CustomValidateToken
             if ($tokenAccess->validateAPI() == $this->status->getEnable()) {
                 return $next($request);
             }else{
-                return abort(402, $this->text->getTokenDecline());
+                return abort(self::ERROR_402, $this->text->getTokenDecline());
             }
         }else{
-            return abort(404, $this->text->getAccessDecline());
+            return abort(self::ERROR_404, $this->text->getAccessDecline());
         }
     }
 }

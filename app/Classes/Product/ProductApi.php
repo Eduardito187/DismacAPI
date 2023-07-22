@@ -227,11 +227,11 @@ class ProductApi{
 
     /**
      * @param string $query
-     * @param int $id_partner
+     * @param int|string|null $id_partner
      * @param int|string|null $idCategory
      * @return Product[]
      */
-    public function searchProduct(string $query, int $id_partner, int|string|null $idCategory){
+    public function searchProduct(string $query, int|string|null $id_partner, int|string|null $idCategory){
         $busqueda = null;
         if (!is_null($idCategory)){
             $productCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdCategory(), $idCategory)->distinct()->get()->toArray();
@@ -239,7 +239,11 @@ class ProductApi{
             $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->whereIn($this->text->getId(), $productsId)
             ->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->whereIn($this->text->getId(), $productsId);
         }else{
-            $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
+            if (is_null($id_partner)){
+                $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query));
+            }else{
+                $busqueda = Product::where($this->text->getName(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner)->orwhere($this->text->getSku(), $this->text->getLike(), $this->queryLike($query))->where($this->text->getIdPartner(), $id_partner);
+            }
         }
         return $busqueda->offset(0)->limit(10)->distinct()->get();
     }
@@ -335,15 +339,17 @@ class ProductApi{
 
     /**
      * @param array $query
-     * @param int $id_partner
+     * @param int|null $id_partner
      * @return array
      */
-    public function getSearchProduct(array $query, int $id_partner){
+    public function getSearchProduct(array $query, int|null $id_partner){
         $data = array();
         $searching = $this->paramsSearching($query, $this->text->getQuery());
-        $idPartner = $this->paramsSearching($query, $this->text->getIdPartner());
-        if (!is_null($idPartner)){
-            $id_partner = $idPartner;
+        if (!is_null($id_partner)){
+            $idPartner = $this->paramsSearching($query, $this->text->getIdPartner());
+            if (!is_null($idPartner)){
+                $id_partner = $idPartner;
+            }
         }
         $idCategory = $this->paramsSearching($query, $this->text->getIdCategory());
         foreach ($this->searchProduct($searching, $id_partner, $idCategory) as $key => $product) {
