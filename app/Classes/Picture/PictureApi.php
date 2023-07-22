@@ -328,6 +328,13 @@ class PictureApi{
     }
 
     /**
+     * @return Picture
+     */
+    public function getDefaultPicture(){
+        return $this->getImageById($this::DEFAULT_IMAGE);
+    }
+
+    /**
      * @param int|null $id_picture
      * @return string
      */

@@ -1708,6 +1708,13 @@ class ProductApi{
                 $this->text->getUrl() => $Picture->url
             );
         }
+        if (count($dataPictures) == 0){
+            $Picture = $this->pictureApi->getDefaultPicture();
+            $dataPictures[] = array(
+                $this->text->getId() => $Picture->id,
+                $this->text->getUrl() => $Picture->url
+            );
+        }
         return $dataPictures;
     }
 
