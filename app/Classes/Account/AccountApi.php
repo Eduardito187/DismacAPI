@@ -270,13 +270,9 @@ class AccountApi{
 
     public function getPermissionsArray($permissions){
         if (is_null($permissions)){
-            return [];
+            return null;
         }
-        $data = array();
-        foreach ($permissions as $key => $permission) {
-            $data[] = $this->rolArray($permission);
-        }
-        return $data;
+        return $this->rolArray($permissions->permissions);
     }
 
     /**
