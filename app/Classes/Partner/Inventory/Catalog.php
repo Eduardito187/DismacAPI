@@ -17,6 +17,7 @@ use App\Classes\Product\ProductApi;
 use App\Models\CategoryInfo;
 use App\Models\Content;
 use App\Models\Metadata;
+use App\Models\Partner;
 use App\Models\ProductCategory;
 use \Illuminate\Support\Facades\Log;
 
@@ -479,6 +480,62 @@ class Catalog{
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
+    }
+
+    /**
+     * @param int|string $id_catalog
+     * @param int|string $idPartner
+     * @return ModelCatalog
+     */
+    public function getCatalogModel(int|string $id_catalog, int|string $idPartner){
+        $Catalog = ModelCatalog::find($id_catalog);
+        if (is_null($Catalog)) {
+            throw new Exception($this->text->getCatalogNoExist());
+        }
+        if ($this->validateCatalogPartner($Catalog->id, $idPartner)){
+            return $Catalog;
+        }else{
+            throw new Exception($this->text->getCatalogPartnerNone());
+        }
+    }
+
+    /**
+     * @param int|string $id_catalog
+     * @param int|string $id_partner
+     * @return bool
+     */
+    public function validateCatalogPartner(int|string $id_catalog, int|string $id_partner){
+        $CatalogPartner = CatalogPartner::where($this->text->getIdCatalog(), $id_catalog)->where($this->text->getIdPartner(), $id_partner)->get();
+        if (!$CatalogPartner){
+            throw new Exception($this->text->getCatalogPartnerNone());
+        }
+        return true;
+    }
+
+    /**
+     * @param int|string $id_catalog
+     * @param string $name
+     * @param string $code
+     * @param Partner $Partner
+     * @return void
+     */
+    public function updateCatalog(int|string $id_catalog, string $name, string $code, Partner $Partner){
+        $Catalog = $this->getCatalogModel($id_catalog, $Partner->id);
+        $this->updateCatalogInfo($Catalog->id, $name, $code);
+    }
+
+    /**
+     * @param int|string $id_catalog
+     * @param string $name
+     * @param string $code
+     * @return void
+     */
+    public function updateCatalogInfo(int|string $id_catalog, string $name, string $code){
+        ModelCatalog::where($this->text->getId(), $id_catalog)->update([
+            $this->text->getName() => $name,
+            $this->text->getCode() => $code,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
 
     /**

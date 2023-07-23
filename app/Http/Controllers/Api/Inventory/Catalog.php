@@ -105,7 +105,24 @@ class Catalog extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json([]);
+        $response = array();
+        try {
+            if (!is_null($request->all()[$this->text->getName()]) && !is_null($request->all()[$this->text->getCode()])) {
+                $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+                $this->catalogApi->updateCatalog(
+                    $id,
+                    $request->all()[$this->text->getName()],
+                    $request->all()[$this->text->getCode()],
+                    $Account->accountPartner->Partner
+                );
+                $response = $this->text->getResponseApi($this->status->getEnable(), $this->text->getUpdateSuccess());
+            }else{
+                throw new Exception($this->text->getErrorParametros());
+            }
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

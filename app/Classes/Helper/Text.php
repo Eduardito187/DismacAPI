@@ -390,9 +390,17 @@ class Text{
     CONST CAMPAIGN_NONE       = "La campaña no existe.";
     CONST PERMISSIONS         = "permissions";
     CONST ROLES               = "roles";
+    CONST CATALOG_NO_PARTNET  = "El catálogo no pertenece al partner.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCatalogPartnerNone(){
+        return SELF::CATALOG_NO_PARTNET;
     }
 
     /**
