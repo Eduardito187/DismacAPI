@@ -189,6 +189,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/inventory/catalog', 'index');
         Route::post('partner/inventory/catalog', 'store');
         Route::get('partner/inventory/catalog/show/{id}', 'show');
+        Route::get('partner/inventory/catalog/info/{id}', 'info');
         Route::patch('partner/inventory/catalog/{id}', 'update');
         Route::delete('partner/inventory/catalog/{id}', 'destroy');
     });

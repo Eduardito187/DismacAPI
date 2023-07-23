@@ -163,6 +163,22 @@ class Catalog{
     }
 
     /**
+     * @param int|null $id_catalog
+     * @return array
+     */
+    public function getCatalogBasicInfo(int|null $id_catalog){
+        $Catalog = ModelCatalog::find($id_catalog);
+        if (is_null($Catalog)) {
+            throw new Exception($this->text->getCatalogNoExist());
+        }
+        return array(
+            $this->text->getId() => $Catalog->id,
+            $this->text->getName() => $Catalog->name,
+            $this->text->getCode() => $Catalog->code
+        );
+    }
+
+    /**
      * @param int $id_catalog
      * @return int
      */
