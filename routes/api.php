@@ -58,8 +58,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware([CustomValidateToken::class])->group(function () {
 
     Route::controller(System::class)->group(function(){
-        Route::post('store', 'store');
-        Route::post('delimitation', 'delimitation');
+        Route::post('system/store', 'store');
+        Route::post('system/delimitation', 'delimitation');
     });
 
     Route::controller(IpSecurity::class)->group(function(){
