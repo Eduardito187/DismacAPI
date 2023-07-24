@@ -1690,7 +1690,7 @@ class ProductApi{
      * @return void
      */
     public function enableClacom(int $id){
-        Clacom::where($this->text->getId(), $this->text->getSymbolMayor(), $this->text->getCero())->update([
+        Clacom::where($this->text->getId(), $id)->update([
             $this->text->getStatus() => $this->status->getEnable(),
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
