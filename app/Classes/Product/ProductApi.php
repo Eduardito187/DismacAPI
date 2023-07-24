@@ -1670,8 +1670,11 @@ class ProductApi{
                 try {
                     $clacom = $this->getClacom($clacom[$this->text->getLabel()]);
                     if (is_null($clacom)){
-                        $this->setClacom($clacom[$this->text->getLabel()]); 
+                        if ($this->setClacom($clacom[$this->text->getLabel()])){
+                            $clacom = $this->getClacom($clacom[$this->text->getLabel()]);
+                        }
                     }
+                    $this->enableClacom($clacom);
                 } catch (\Throwable $th) {
                     //throw new Exception($this->text->getClacomNone());
                 }
@@ -1680,6 +1683,17 @@ class ProductApi{
             throw new Exception($this->text->getParametersNone());
         }
         return $this->status->getEnable();
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function enableClacom(int $id){
+        Clacom::where($this->text->getId(), $this->text->getSymbolMayor(), $this->text->getCero())->update([
+            $this->text->getStatus() => $this->status->getEnable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
 
     /**
