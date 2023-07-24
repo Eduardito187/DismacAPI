@@ -43,9 +43,9 @@ class PlatformApi{
                 try {
                     $id_store = $this->getStoreById($store[$this->text->getId()]);
                     if (is_null($id_store)){
-                        $this->createStore($store[$this->text->getId()], $store[$this->text->getName()], $store[$this->text->getStore()]);
+                        $this->createStore($store[$this->text->getId()], $store[$this->text->getName()], $store[$this->text->getCode()]);
                     }else{
-                        $this->updateStore($store[$this->text->getId()], $store[$this->text->getName()], $store[$this->text->getStore()]);
+                        $this->updateStore($store[$this->text->getId()], $store[$this->text->getName()], $store[$this->text->getCode()]);
                     }
                 } catch (\Throwable $th) {
                     //throw $th;
