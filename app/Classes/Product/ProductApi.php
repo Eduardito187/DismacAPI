@@ -1676,7 +1676,7 @@ class ProductApi{
                     }
                     $this->enableClacom($clacom);
                 } catch (\Throwable $th) {
-                    //
+                    //throw new Exception($this->text->getClacomNone());
                 }
             }
         }else{
