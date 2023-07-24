@@ -1740,7 +1740,6 @@ class ProductApi{
         $allStore = $this->getAllStoreID();
         $Products = Product::all();
         foreach ($Products as $key => $Product) {
-            Log::channel('return_stock')->info($Product->sku);
             $this->activateProduct($Product, $allStore);
         }
     }
