@@ -1740,7 +1740,7 @@ class ProductApi{
         $allStore = $this->getAllStoreID();
         $Products = Product::where($this->text->getIdPartner(), $this->text->getDistinctSymbol(), null)->get();
         foreach ($Products as $key => $Product) {
-            Log::channel('return_stock')->info("SKU ".$Product->sku." PROCESS CRON.");
+            Log::channel('status_product')->info("SKU ".$Product->sku." PROCESS CRON.");
             $this->activateProduct($Product, $allStore);
         }
     }
