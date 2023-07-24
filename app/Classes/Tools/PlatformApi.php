@@ -92,6 +92,7 @@ class PlatformApi{
         Store::where($this->text->getId(), $id)->update([
             $this->text->getName() => $name,
             $this->text->getCode() => $code,
+            $this->text->getStatus() => $this->status->getEnable(),
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
