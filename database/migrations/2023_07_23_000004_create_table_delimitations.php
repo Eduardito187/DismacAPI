@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('delimitations', function (Blueprint $table) {
+        Schema::create('delimitations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_store')->nullable();
             $table->foreign('id_store')->references('id')->on('store')->onDelete('cascade');
