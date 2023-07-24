@@ -1664,7 +1664,7 @@ class ProductApi{
      */
     public function processClacom(Request $request){
         $params = $request->all();
-        if (isset($params[$this->text->getProducts()])){
+        if (isset($params[$this->text->getClacom()])){
             $this->disableAllClacom();
             foreach ($params[$this->text->getClacom()] as $key => $clacom){
                 try {
