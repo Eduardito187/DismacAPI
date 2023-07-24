@@ -1738,7 +1738,7 @@ class ProductApi{
      */
     public function processCron(){
         $allStore = $this->getAllStoreID();
-        $Products = Product::all();
+        $Products = Product::where($this->text->getIdPartner(), $this->text->getDistinctSymbol(), null)->get();
         foreach ($Products as $key => $Product) {
             Log::channel('return_stock')->info("SKU ".$Product->sku." PROCESS CRON.");
             $this->activateProduct($Product, $allStore);
