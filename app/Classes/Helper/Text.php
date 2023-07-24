@@ -392,9 +392,17 @@ class Text{
     CONST ROLES               = "roles";
     CONST CATALOG_NO_PARTNET  = "El catálogo no pertenece al partner.";
     CONST CLACOM_NONE         = "El código no se encuentra asignado asignado a una clacom.";
+    CONST DELIMITATION        = "delimitation";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDelimitation(){
+        return SELF::DELIMITATION;
     }
 
     /**

@@ -31,6 +31,7 @@ use App\Http\Controllers\Api\Sales\Order;
 use App\Http\Controllers\Api\Inventory\Stock\Stock;
 use App\Http\Controllers\Api\Upload\Upload;
 use App\Http\Controllers\Api\Tools\IpSecurity;
+use App\Http\Controllers\Api\Tools\System;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /{id} => destroy <= delete
 
 Route::middleware([CustomValidateToken::class])->group(function () {
+
+    Route::controller(System::class)->group(function(){
+        Route::post('store', 'store');
+        Route::post('delimitation', 'delimitation');
+    });
 
     Route::controller(IpSecurity::class)->group(function(){
         Route::post('lockIp', 'lockIp');
