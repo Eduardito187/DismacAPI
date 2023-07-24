@@ -11,7 +11,7 @@ class Clacom extends Model
 
     protected $table = 'clacom';
 
-    protected $fillable = ['label', 'code', 'id_picture', 'created_at', 'updated_at'];
+    protected $fillable = ['label', 'code', 'id_picture', 'created_at', 'updated_at', 'status'];
 
     protected $hidden = ['id', 'id_picture', 'created_at', 'updated_at'];
 

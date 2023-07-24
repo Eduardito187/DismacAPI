@@ -4,18 +4,18 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use App\Classes\Partner\PartnerApi;
+use App\Classes\Product\ProductApi;
 
-class RetornarStock extends Command
+class StatusProduct extends Command
 {
     /**
-     * @var PartnerApi
+     * @var ProductApi
      */
-    protected $PartnerApi;
+    protected $ProductApi;
 
     public function __construct() {
         parent::__construct();
-        $this->PartnerApi = new PartnerApi();
+        $this->ProductApi = new ProductApi();
     }
 
     /**
@@ -23,7 +23,7 @@ class RetornarStock extends Command
      *
      * @var string
      */
-    protected $signature = 'return_stock:cron';
+    protected $signature = 'status_product:cron';
 
     /**
      * The console command description.
@@ -39,8 +39,8 @@ class RetornarStock extends Command
      */
     public function handle()
     {
-        $this->PartnerApi->runProcessCronCommitedStock();
-        Log::channel('return_stock')->info("Cron retorno de stock ejecutado.");
+        $this->ProductApi->processCron();
+        Log::channel('status_product')->info("Cron de estados ejecutado.");
         return Command::SUCCESS;
     }
 }

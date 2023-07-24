@@ -32,7 +32,7 @@ class Product extends Controller
     {
         return response()->json([]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -42,6 +42,44 @@ class Product extends Controller
     public function store(Request $request)
     {
         return response()->json([]);
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function clacom(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->processClacom($request),
+                $this->text->getUpdateSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function seturl(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->setUrl($request),
+                $this->text->getUpdateSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

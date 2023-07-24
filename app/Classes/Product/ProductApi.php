@@ -120,9 +120,9 @@ class ProductApi{
      */
     public function getFilterAll(string $filter){
         if ($filter == SELF::FILTER_ALL) {
-            return true;
+            return $this->status->getEnable();
         }else{
-            return false;
+            return $this->status->getDisable();
         }
     }
 
@@ -276,12 +276,13 @@ class ProductApi{
         $date = $this->date->getFullDate();
         return array(
             $this->text->getId() => $Product->id,
+            $this->text->getUrl() => $Product->url,
             $this->text->getSku() => $Product->sku,
             $this->text->getName() => $Product->name,
             $this->text->getImage() => $this->pictureApi->productFirstPicture($Product->id),
             $this->text->getPrice() => $this->getProductPriceByStore(self::DEFAULT_STORE, $Product->id),
-            $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($date, $Product->created_at, true),
-            $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($date, $Product->updated_at, false)
+            $this->text->getCreatedDiference() => $this->date->getDiferenceInDates($date, $Product->created_at, $this->status->getEnable()),
+            $this->text->getUpdatedDiference() => $this->date->getDiferenceInDates($date, $Product->updated_at, $this->status->getDisable())
         );
     }
 
@@ -486,10 +487,10 @@ class ProductApi{
                 $this->changeMiniCuotas($id_product, $res[$this->text->getMinicuotas()]);
             }
             if (!empty($res[$this->text->getEstado()]) && is_array($res[$this->text->getEstado()]) && !is_null($id_product)) {
-                $this->changeStatusProduct($id_product, $allStore, $res[$this->text->getEstado()][$this->text->getVisible()] ?? false);
+                $this->changeStatusProduct($id_product, $allStore, $res[$this->text->getEstado()][$this->text->getVisible()] ?? $this->status->getDisable());
             }
             if (!empty($res[$this->text->getClasificacion()]) && is_array($res[$this->text->getClasificacion()]) && !is_null($id_product)) {
-                $this->setClasificacion($res[$this->text->getClasificacion()], false, $allStore, $id_product);
+                $this->setClasificacion($res[$this->text->getClasificacion()], $this->status->getDisable(), $allStore, $id_product);
             }
             if (!empty($res[$this->text->getPreciosPos()]) && is_array($res[$this->text->getPreciosPos()]) && !is_null($id_product)) {
                 $this->setProductAllPrice($res[$this->text->getPreciosPos()], $id_product);
@@ -556,7 +557,8 @@ class ProductApi{
      */
     public function updateProductStock(int $id_product, int $stock){
         Product::where($this->text->getId(), $id_product)->update([
-            $this->text->getStock() => $stock
+            $this->text->getStock() => $stock,
+            $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
 
@@ -1064,7 +1066,7 @@ class ProductApi{
                 $id_cat = $this->getCategory($clasificacion[$this->text->getNombre()], $clasificacion[$this->text->getCodigo()], $clasificacion[$this->text->getCodigoPadre()]);
             }
             if (!is_null($clasificacion[$this->text->getClasificacion()])) {
-                $this->setClasificacion($clasificacion[$this->text->getClasificacion()], true, $allStore, $id_product);
+                $this->setClasificacion($clasificacion[$this->text->getClasificacion()], $this->status->getEnable(), $allStore, $id_product);
             }else{
                 $this->setAllProductCategoryStore($id_product, $allStore, $id_cat);
             }
@@ -1097,9 +1099,9 @@ class ProductApi{
         $ProductCategory = ProductCategory::select($this->text->getIdProduct())->where($this->text->getIdProduct(), $id_product)->
         where($this->text->getIdStore(), $id_store)->where($this->text->getIdCategory(), $id_category)->get()->toArray();
         if (count($ProductCategory) > 0) {
-            return true;
+            return $this->status->getEnable();
         }else{
-            return false;
+            return $this->status->getDisable();
         }
     }
 
@@ -1123,7 +1125,7 @@ class ProductApi{
     public function setCategoryInfo(int $id_pos, int $sub_category_pos){
         try {
             $CategoryInfo = new CategoryInfo();
-            $CategoryInfo->show_filter = true;
+            $CategoryInfo->show_filter = $this->status->getEnable();
             $CategoryInfo->id_pos = $id_pos;
             $CategoryInfo->sub_category_pos = $sub_category_pos;
             $CategoryInfo->id_picture = null;
@@ -1175,8 +1177,8 @@ class ProductApi{
             $Category->name_pos = $name;
             $Category->code = $code;
             $Category->inheritance = $inheritance == 0 ? null : $this->getCategoryIdPos($inheritance);
-            $Category->status = true;
-            $Category->in_menu = true;
+            $Category->status = $this->status->getEnable();
+            $Category->in_menu = $this->status->getEnable();
             $Category->id_info_category = $id_info_category;
             $Category->id_metadata = null;
             $Category->created_at = $this->date->getFullDate();
@@ -1252,9 +1254,9 @@ class ProductApi{
                 $MiniCuota->id_product = $id_product;
                 $MiniCuota->id_minicuota = $id_minicuota;
                 $MiniCuota->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1337,9 +1339,9 @@ class ProductApi{
                 $MiniCuota->created_at = $this->date->getFullDate();
                 $MiniCuota->updated_at = null;
                 $MiniCuota->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1368,9 +1370,9 @@ class ProductApi{
                 $Brand = new Brand();
                 $Brand->name = $name;
                 $Brand->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1412,9 +1414,9 @@ class ProductApi{
                 $ProductType->created_at = $this->date->getFullDate();
                 $ProductType->updated_at = null;
                 $ProductType->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1443,12 +1445,13 @@ class ProductApi{
                 $Clacom->label = $clacom;
                 $Clacom->code = str_replace($this->text->getSpace(), $this->text->getGuionBajo(), $clacom);
                 $Clacom->id_picture = null;
+                $Clacom->status = $this->status->getEnable();
                 $Clacom->created_at = $this->date->getFullDate();
                 $Clacom->updated_at = null;
                 $Clacom->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1546,9 +1549,9 @@ class ProductApi{
                 $ProductStoreStatus->id_store = $id_store;
                 $ProductStoreStatus->status = $status;
                 $ProductStoreStatus->save();
-                return true;
+                return $this->status->getEnable();
             }else{
-                return false;
+                return $this->status->getDisable();
             }
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
@@ -1631,6 +1634,134 @@ class ProductApi{
     }
 
     /**
+     * @param Request $request
+     * @return array
+     */
+    public function setUrl(Request $request){
+        $params = $request->all();
+        $data = array();
+        $allStore = $this->getAllStoreID();
+        if (isset($params[$this->text->getProducts()])){
+            foreach ($params[$this->text->getProducts()] as $key => $product) {
+                try {
+                    $Product = $this->getProductBySkuPartner($product[$this->text->getSku()], $product[$this->text->getIdPartner()]);
+                    $this->updateProductUrl($Product->id, $product[$this->text->getUrl()]);
+                    $this->activateProduct($this->getProductById($Product->id), $allStore);
+                    $data[] = $product[$this->text->getSku()];
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+            return $data;
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function processClacom(Request $request){
+        $params = $request->all();
+        if (isset($params[$this->text->getProducts()])){
+            $this->disableAllClacom();
+            foreach ($params[$this->text->getClacom()] as $key => $clacom){
+                try {
+                    $clacom = $this->getClacom($clacom[$this->text->getLabel()]);
+                    if (is_null($clacom)){
+                        $this->setClacom($clacom[$this->text->getLabel()]); 
+                    }
+                } catch (\Throwable $th) {
+                    //throw new Exception($this->text->getClacomNone());
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @return void
+     */
+    public function disableAllClacom(){
+        Clacom::where($this->text->getId(), $this->text->getSymbolMayor(), $this->text->getCero())->update([
+            $this->text->getStatus() => $this->status->getDisable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @return Clacom
+     */
+    public function getClacomByCode(string $code){
+        $Clacom = Clacom::where($this->text->getCode(), $code)->first();
+        if (!$Clacom){
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $Clacom;
+    }
+
+    /**
+     * @param Product $Product
+     * @param array $allStore
+     * @return void
+     */
+    private function activateProduct(Product $Product, array $allStore){
+        $status = $this->status->getEnable();
+        if (is_null($Product->url)){
+            $status = $this->status->getDisable();
+            $this->changeStatusProduct($Product->id, $allStore, $status);
+        }else{
+            $this->changeProductStatus($Product->id, $allStore);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function processCron(){
+        $allStore = $this->getAllStoreID();
+        $Products = Product::all();
+        foreach ($Products as $key => $Product) {
+            $this->activateProduct($Product, $allStore);
+        }
+    }
+
+    /**
+     * @param int $idProduct
+     * @param array $stores
+     * @return bool
+     */
+    public function changeProductStatus(int $idProduct, array $stores){
+        foreach ($stores as $store) {
+            $ProductPriceStore = $this->getPriceByStore($store[$this->text->getId()], $idProduct);
+            if (!$ProductPriceStore) {
+                $this->updateProductStoreStatus($idProduct, $store[$this->text->getId()], $this->status->getDisable());
+            }else{
+                $this->updateProductStoreStatus($idProduct, $store[$this->text->getId()], $this->status->getEnable());
+            }
+        }
+    }
+
+    /**
+     * @param int $id
+     * @param string|null $url
+     * @return void
+     */
+    private function updateProductUrl(int $id, string|null $url){
+        if ($url == $this->text->getTextNone()){
+            $url = null;
+        }
+        Product::where($this->text->getId(), $id)->update([
+            $this->text->getUrl() => $url,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
      * @param int $id
      * @return array
      */
@@ -1644,6 +1775,7 @@ class ProductApi{
             $this->text->getSku() => $Product->sku,
             $this->text->getBrand() => $Product->Brand,
             $this->text->getClacom() => $Product->Clacom,
+            $this->text->getUrl() => $Product->url,
             $this->text->getType() => $Product->Type,
             $this->text->getDescripcion() => $Product->Description,
             $this->text->getStatus() => $this->statusProducts($Stores, $Product->Status),
@@ -1736,7 +1868,7 @@ class ProductApi{
                 return $State->status;
             }
         }
-        return false;
+        return $this->status->getDisable();
     }
 
     private function getProductSheet($Sheets){

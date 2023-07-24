@@ -375,7 +375,7 @@ class Text{
     CONST MAXIMUS_IGUALS      = ">=";
     CONST FOTOS               = "Fotos";
     CONST LONG                = "Long";
-    CONST PARAMETROS_INVALIDSO= "Los parametros recibidos son invalidos.";
+    CONST PARAMETROS_INVALIDOS= "Los parametros recibidos son invalidos.";
     CONST ERROR_NO_BLOCK_IP   = "Lo sentimos no se pudo bloquear la IP.";
     CONST PICTURES_DATA       = "pictures";
     CONST FAMILY_API          = "family";
@@ -391,9 +391,17 @@ class Text{
     CONST PERMISSIONS         = "permissions";
     CONST ROLES               = "roles";
     CONST CATALOG_NO_PARTNET  = "El catálogo no pertenece al partner.";
+    CONST CLACOM_NONE         = "El código no se encuentra asignado asignado a una clacom.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getClacomNone(){
+        return SELF::CLACOM_NONE;
     }
 
     /**
@@ -512,7 +520,7 @@ class Text{
      * @return string
      */
     public function getParametersNone(){
-        return SELF::PARAMETROS_INVALIDSO;
+        return SELF::PARAMETROS_INVALIDOS;
     }
 
     /**

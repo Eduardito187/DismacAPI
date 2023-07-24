@@ -61,6 +61,11 @@ return [
             'path' => storage_path('logs/return_stock.log'),
             'level' => 'info',
         ],
+        'status_product' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/status_product.log'),
+            'level' => 'info',
+        ],
         'process_run' => [
             'driver' => 'single',
             'path' => storage_path('logs/process_run.log'),
