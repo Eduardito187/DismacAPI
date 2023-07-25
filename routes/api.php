@@ -60,6 +60,11 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     Route::controller(System::class)->group(function(){
         Route::post('system/store', 'store');
         Route::post('system/delimitation', 'delimitation');
+        Route::patch('store/enable/{id}', 'storeEnable');
+        Route::patch('store/disable/{id}', 'storeDisable');
+        Route::post('rol/modifyPermissions', 'modifyPermissions');
+        Route::post('rol/addPermission', 'addPermission');
+        Route::post('rol/removePermission', 'removePermission');
     });
 
     Route::controller(IpSecurity::class)->group(function(){

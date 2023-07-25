@@ -389,13 +389,45 @@ class Text{
     CONST ROL_ACCOUNT_PARAM   = "rol_account";
     CONST CAMPAIGN_NONE       = "La campaña no existe.";
     CONST PERMISSIONS         = "permissions";
+    CONST PERMISSION          = "permission";
     CONST ROLES               = "roles";
     CONST CATALOG_NO_PARTNET  = "El catálogo no pertenece al partner.";
     CONST CLACOM_NONE         = "El código no se encuentra asignado asignado a una clacom.";
     CONST DELIMITATION        = "delimitation";
+    CONST STORE_NONE          = "El store no existe en el registro.";
+    CONST ROL_NONE            = "El rol no existe en el registro.";
+    CONST PERMISSION_NONE     = "El permiso no existe en el registro.";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getRolNone(){
+        return SELF::ROL_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermissionNone(){
+        return SELF::PERMISSION_NONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermission(){
+        return SELF::PERMISSION;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreNoneId(){
+        return SELF::STORE_NONE;
     }
 
     /**

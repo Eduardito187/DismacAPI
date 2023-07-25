@@ -57,4 +57,91 @@ class System extends Controller
         }
         return response()->json($response);
     }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeEnable(Request $request, $id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->enableStore($id),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeDisable(Request $request, $id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->disableStore($id),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function modifyPermissions(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->modifyPermissions($request),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addPermission(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->addPermission($request),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function removePermission(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->removePermission($request),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
 }

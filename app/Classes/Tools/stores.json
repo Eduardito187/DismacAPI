@@ -1,0 +1,189 @@
+[
+    {
+        "code": 67,
+        "ciudadNombre": "Cochabamba",
+        "almacenSucursalId": "110013",
+        "almacenSucursalNombre": "CBA - Av. Pando 1377",
+        "almacenCentral": false,
+        "municipioId": 33
+    },
+    {
+        "code": -1,
+        "ciudadNombre": "Cochabamba",
+        "almacenSucursalId": "110004",
+        "almacenSucursalNombre": "CBA - MONTERREY",
+        "almacenCentral": true,
+        "municipioId": null
+    },
+    {
+        "code": 81,
+        "ciudadNombre": "Cochabamba",
+        "almacenSucursalId": "110101",
+        "almacenSucursalNombre": "CBA - Quillacollo",
+        "almacenCentral": false,
+        "municipioId": 33
+    },
+    {
+        "code": 77,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101045",
+        "almacenSucursalNombre": "SCZ - Av.Paurito#6005 Plan3000",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": -1,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101101",
+        "almacenSucursalNombre": "SCZ-Centro de Distrib.P.I-46",
+        "almacenCentral": true,
+        "municipioId": null
+    },
+    {
+        "code": 0,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101002",
+        "almacenSucursalNombre": "SCZ - P. Industrial ShowRoom",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 83,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105033",
+        "almacenSucursalNombre": "LPZ - Av.Hernando Siles esq. c/16 OBRAJES",
+        "almacenCentral": false,
+        "municipioId": 42
+    },
+    {
+        "code": -1,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105050",
+        "almacenSucursalNombre": "LPZ - Almacen Central NUEVO",
+        "almacenCentral": true,
+        "municipioId": null
+    },
+    {
+        "code": 71,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101027",
+        "almacenSucursalNombre": "SCZ - Pampa de la Isla",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 92,
+        "ciudadNombre": "Tarija",
+        "almacenSucursalId": "116006",
+        "almacenSucursalNombre": "TJA - Tarija c/ Sucre esq. Avaroa",
+        "almacenCentral": false,
+        "municipioId": 118
+    },
+    {
+        "code": 39,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101039",
+        "almacenSucursalNombre": "SCZ - 1o. de Mayo c/14 No.2",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 53,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105021",
+        "almacenSucursalNombre": "LPZ - Eloy Salmon No 1053",
+        "almacenCentral": false,
+        "municipioId": 42
+    },
+    {
+        "code": 76,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101044",
+        "almacenSucursalNombre": "SCZ - 4o.Anillo #3220, ISUTO",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 13,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101005",
+        "almacenSucursalNombre": "SCZ - Av. Viedma",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 68,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101055",
+        "almacenSucursalNombre": "SCZ - Cristobal de Mendoza1055",
+        "almacenCentral": false,
+        "municipioId": 10
+    },
+    {
+        "code": 75,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105037",
+        "almacenSucursalNombre": "LPZ - Loayza1406",
+        "almacenCentral": false,
+        "municipioId": 42
+    },
+    {
+        "code": 85,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105015",
+        "almacenSucursalNombre": "LPZ - El Alto MULTICINE",
+        "almacenCentral": false,
+        "municipioId": 42
+    },
+    {
+        "code": 91,
+        "ciudadNombre": "Chuquisaca",
+        "almacenSucursalId": "115005",
+        "almacenSucursalNombre": "CHQ - Sucre c/ Estudiantes #82",
+        "almacenCentral": false,
+        "municipioId": 107
+    },
+    {
+        "code": 78,
+        "ciudadNombre": "Cochabamba",
+        "almacenSucursalId": "110039",
+        "almacenSucursalNombre": "CBA - Ayacucho 309",
+        "almacenCentral": false,
+        "municipioId": 33
+    },
+    {
+        "code": 49,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105020",
+        "almacenSucursalNombre": "LPZ - El Alto4",
+        "almacenCentral": false
+    },
+    {
+        "code": 70,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101046",
+        "almacenSucursalNombre": "SCZ  - Doble vía Km6",
+        "almacenCentral": false
+    },
+    {
+        "code": 12,
+        "ciudadNombre": "Santa Cruz",
+        "almacenSucursalId": "101025",
+        "almacenSucursalNombre": "SCZ - c/ I.Catolica/Chi - ISA1",
+        "almacenCentral": false
+    },
+    {
+        "code": 59,
+        "ciudadNombre": "La Paz",
+        "almacenSucursalId": "105027",
+        "almacenSucursalNombre": "LPZ - Calacoto, Ballivian 2550",
+        "almacenCentral": false
+    },
+    {
+        "code": 82,
+        "ciudadNombre": "Tarija",
+        "almacenSucursalId": "116002",
+        "almacenSucursalNombre": "TJA - Tienda E-COMM Tarija",
+        "almacenCentral": false
+    }
+]

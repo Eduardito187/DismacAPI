@@ -9,6 +9,9 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use App\Models\Delimitations;
 use App\Models\Localization;
+use App\Models\Permissions;
+use App\Models\Rol;
+use App\Models\RolPermissions;
 use App\Models\Store;
 
 class PlatformApi{
@@ -31,6 +34,113 @@ class PlatformApi{
         $this->status = new Status();
     }
 
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function modifyPermissions(Request $request){
+        $params = $request->all();
+        if (isset($params[$this->text->getRol()]) && isset($params[$this->text->getPermissions()])){
+            $rol = $this->getRolByCode($params[$this->text->getRol()]);
+            $this->clearAllRolPermission($rol->id);
+            foreach ($params[$this->text->getPermissions()] as $key => $permissionApi) {
+                $permission = $this->getPermissionByCode($permissionApi);
+                $this->createRolPermission($permission->id, $rol->id);
+            }
+            return $this->status->getEnable();
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function addPermission(Request $request){
+        $params = $request->all();
+        if (isset($params[$this->text->getRol()]) && isset($params[$this->text->getPermission()])){
+            $rol = $this->getRolByCode($params[$this->text->getRol()]);
+            $permission = $this->getPermissionByCode($params[$this->text->getPermission()]);
+            return $this->createRolPermission($permission->id, $rol->id);
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function removePermission(Request $request){
+        $params = $request->all();
+        if (isset($params[$this->text->getRol()]) && isset($params[$this->text->getPermission()])){
+            $rol = $this->getRolByCode($params[$this->text->getRol()]);
+            $permission = $this->getPermissionByCode($params[$this->text->getPermission()]);
+            return $this->clearRolPermission($permission->id, $rol->id);
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+    }
+    
+    /**
+     * @param int $IdRol
+     * @return bool
+     */
+    public function clearAllRolPermission(int $IdRol){
+        return RolPermissions::where($this->text->getIdRol(), $IdRol)->delete();
+    }
+    
+    /**
+     * @param int $IdRolPermissions
+     * @param int $IdRol
+     * @return bool
+     */
+    public function clearRolPermission(int $IdRolPermissions, int $IdRol){
+        return RolPermissions::where($this->text->getIdRolPermissions(), $IdRolPermissions)->where($this->text->getIdRol(), $IdRol)->delete();
+    }
+
+    /**
+     * @param int $IdRolPermissions
+     * @param int $IdRol
+     * @return bool
+     */
+    public function createRolPermission(int $IdRolPermissions, int $IdRol){
+        try {
+            $RolPermissions = new RolPermissions();
+            $RolPermissions->id_permissions = $IdRolPermissions;
+            $RolPermissions->id_rol = $IdRol;
+            $RolPermissions->save();
+            return $this->status->getEnable();
+        } catch (Exception $th) {
+            return $this->status->getDisable();
+        }
+    }
+
+    /**
+     * @param string $code
+     * @return Rol
+     */
+    public function getRolByCode(string $code){
+        $rol = Rol::where($this->text->getCode(), $code)->first();
+        if (!$rol){
+            throw new Exception($this->text->getRolNone());
+        }
+        return $rol;
+    }
+
+    /**
+     * @param string $code
+     * @return Permissions
+     */
+    public function getPermissionByCode(string $code){
+        $permission = Permissions::where($this->text->getCode(), $code)->first();
+        if (!$permission){
+            throw new Exception($this->text->getPermissionNone());
+        }
+        return $permission;
+    }
+    
     /**
      * @param Request $request
      * @return bool
@@ -81,7 +191,6 @@ class PlatformApi{
         return $store->id;
     }
 
-
     /**
      * @param int $id
      * @param string $name
@@ -93,6 +202,44 @@ class PlatformApi{
             $this->text->getName() => $name,
             $this->text->getCode() => $code,
             $this->text->getStatus() => $this->status->getEnable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function enableStore(int $id){
+        $store = $this->getStoreById($id);
+        if (is_null($store)){
+            throw new Exception($this->text->getStoreNoneId());
+        }
+        $this->updateStatusStore($store, $this->status->getEnable());
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function disableStore(int $id){
+        $store = $this->getStoreById($id);
+        if (is_null($store)){
+            throw new Exception($this->text->getStoreNoneId());
+        }
+        $this->updateStatusStore($store, $this->status->getDisable());
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param int $id
+     * @param bool $status
+     * @return void
+     */
+    public function updateStatusStore(int $id, bool $status){
+        Store::where($this->text->getId(), $id)->update([
+            $this->text->getStatus() => $status,
             $this->text->getUpdated() => $this->date->getFullDate()
         ]);
     }
