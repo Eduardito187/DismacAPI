@@ -297,6 +297,7 @@ class PlatformApi{
             }else{
                 $this->updateMunicipalityPos($minipioPos->id);
             }
+            print_r($municipio[$this->text->getNombre()]);
         }
     }
 
@@ -380,11 +381,11 @@ class PlatformApi{
     }
 
     /**
-     * @param string $code
+     * @param string $name
      * @return int|null
      */
-    public function getStoreByName(string $code){
-        $store = Store::where($this->text->getName(), $code)->first();
+    public function getStoreByName(string $name){
+        $store = Store::where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$name.$this->text->getPercent())->first();
         if (!$store){
             return null;
         }
