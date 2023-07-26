@@ -409,10 +409,13 @@ class PlatformApi{
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return int|null
      */
-    public function getStoreByName(string $name){
+    public function getStoreByName(string|null $name){
+        if (is_null($name)){
+            return null;
+        }
         $store = Store::where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$name.$this->text->getPercent())->first();
         if (!$store){
             return null;
@@ -421,10 +424,13 @@ class PlatformApi{
     }
 
     /**
-     * @param string $code
+     * @param string|null $code
      * @return int|null
      */
-    public function getStoreByCode(string $code){
+    public function getStoreByCode(string|null $code){
+        if (is_null($code)){
+            return null;
+        }
         $store = Store::where($this->text->getCode(), $code)->first();
         if (!$store){
             return null;
