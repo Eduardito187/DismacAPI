@@ -527,16 +527,25 @@ class PlatformApi{
             $this->disableAllDelimitations();
             foreach ($param[$this->text->getDelimitation()] as $key => $delimitation) {
                 try {
-                    $id_store = $this->getStoreByCode($delimitation[$this->text->getStore()]);
-                    if (!is_null($id_store)){
-                        $id_geo = $this->getGeo($delimitation[$this->text->getLatitud()], $delimitation[$this->text->getLongitud()]);
-                        if (is_null($id_geo)){
-                            $id_geo = $this->createGeo($delimitation[$this->text->getLatitud()], $delimitation[$this->text->getLongitud()]);
-                        }
+                    $id_store = $this->getStoreByCode($delimitation[$this->text->getStore()] ?? null);
+
+                    $id_geo = $this->getGeo($delimitation[$this->text->getLatitud()], $delimitation[$this->text->getLongitud()]);
+                    if (is_null($id_geo)){
+                        $id_geo = $this->createGeo($delimitation[$this->text->getLatitud()], $delimitation[$this->text->getLongitud()]);
                     }
-                    $id_delimitation = $this->getDelimitation($id_store, $id_geo);
+
+                    $idMunicipio = $delimitation[$this->text->getMunicipioApi()] ?? null;
+                    $minipioPos = $this->getMunicipalityPos($idMunicipio);
+
+                    if (!$minipioPos){
+                        $idMunicipio = null;
+                    }else{
+                        $id_store = $minipioPos->id_store;
+                    }
+
+                    $id_delimitation = $this->getDelimitation($id_store, $id_geo, $idMunicipio);
                     if (is_null($id_delimitation)){
-                        $this->createDelimitation($id_store, $id_geo);
+                        $this->createDelimitation($id_store, $id_geo, $idMunicipio);
                     }
                 } catch (\Throwable $th) {
                     //throw $th;
@@ -564,12 +573,13 @@ class PlatformApi{
     }
 
     /**
-     * @param int $id_store
-     * @param int $id_geo
+     * @param int|null $id_store
+     * @param int|null $id_geo
+     * @param int|null $id_municipio
      * @return int|null
      */
-    public function getDelimitation(int $id_store, int $id_geo){
-        $Delimitations = Delimitations::where($this->text->getIdStore(), $id_store)->where($this->text->getIdLocalization(), $id_geo)->first();
+    public function getDelimitation(int|null $id_store, int|null $id_geo, int|null $id_municipio){
+        $Delimitations = Delimitations::where($this->text->getIdStore(), $id_store)->where($this->text->getIdLocalization(), $id_geo)->where($this->text->getIdMunicipalitypos(), $id_municipio)->first();
         if (!$Delimitations){
             return null;
         }
@@ -577,19 +587,20 @@ class PlatformApi{
     }
 
     /**
-     * @param int $id_store
-     * @param int $id_localization
+     * @param int|null $id_store
+     * @param int|null $id_geo
+     * @param int|null $id_municipio
      * @return int|null
      */
-    public function createDelimitation(int $id_store, int $id_localization){
+    public function createDelimitation(int|null $id_store, int|null $id_geo, int|null $id_municipio){
         try {
             $Delimitations = new Delimitations();
             $Delimitations->id_store = $id_store;
-            $Delimitations->id_localization = $id_localization;
+            $Delimitations->id_localization = $id_geo;
             $Delimitations->status = $this->status->getEnable();
             $Delimitations->created_at = $this->date->getFullDate();
             $Delimitations->updated_at = null;
-            $Delimitations->id_municipality_pos = null;
+            $Delimitations->id_municipality_pos = $id_municipio;
             $Delimitations->save();
             return $Delimitations->id;
         } catch (Exception $th) {
