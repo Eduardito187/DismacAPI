@@ -549,7 +549,7 @@ class PlatformApi{
                     }
                     print_r($delimitation);
                 } catch (\Throwable $th) {
-                    print_r("ERROR");
+                    print_r($th->getMessage());
                     //throw $th;
                 }
             }
