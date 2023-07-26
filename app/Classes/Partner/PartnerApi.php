@@ -1584,10 +1584,18 @@ class PartnerApi{
         $value = 0;
         foreach ($stores as $s => $store) {
             foreach ($products as $p => $product) {
-                $value += $this->calculoPriceProduct($store->id, $product->id) * $product->stock;
+                $value += $this->calculoPriceProduct($store->id, $product->id) * $this->getStockAbsolutePorduct($product->id);
             }
         }
         return $value;
+    }
+
+    /**
+     * @param int $product_id
+     * @return int
+     */
+    public function getStockAbsolutePorduct(int $product_id){
+        return intval(ProductWarehouse::where($this->text->getIdProduct(), $product_id)->sum($this->text->getStock()));
     }
 
     /**
