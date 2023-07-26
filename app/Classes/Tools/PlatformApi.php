@@ -164,11 +164,11 @@ class PlatformApi{
     }
 
     /**
-     * @param string $code
+     * @param string $almacen
      * @return int|null
      */
-    public function getWarehouseByCode(string $code){
-        $warehouse = Warehouse::where($this->text->getCode(), $code)->first();
+    public function getWarehouseByCode(string $almacen){
+        $warehouse = Warehouse::where($this->text->getAlmacen(), $almacen)->first();
         if (!$warehouse){
             return null;
         }
