@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('municipality_pos', function (Blueprint $table) {
+        Schema::dropIfExists('municipality_pos', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_store');
         });
     }

@@ -36,7 +36,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('campaign', function (Blueprint $table) {
+        Schema::dropIfExists('campaign', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_partner');
             $table->dropConstrainedForeignId('id_category');
         });

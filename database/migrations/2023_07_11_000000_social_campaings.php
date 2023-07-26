@@ -29,7 +29,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('social_campaings', function (Blueprint $table) {
+        Schema::dropIfExists('social_campaings', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_social_network');
             $table->dropConstrainedForeignId('id_campaign');
         });
