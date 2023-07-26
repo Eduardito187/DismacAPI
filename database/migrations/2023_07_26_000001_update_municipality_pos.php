@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_municipality_pos')->nullable();
             $table->foreign('id_municipality_pos')->references('id')->on('municipality_pos')->onDelete('cascade');
         });
-        Schema::table('warehouse', function (Blueprint $table) {
+        Schema::table('warehouses', function (Blueprint $table) {
             $table->unsignedBigInteger('id_municipality_pos')->nullable();
             $table->foreign('id_municipality_pos')->references('id')->on('municipality_pos')->onDelete('cascade');
             $table->boolean('status');
@@ -35,7 +35,7 @@ return new class extends Migration
         Schema::table('delimitations', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_municipality_pos');
         });
-        Schema::table('warehouse', function (Blueprint $table) {
+        Schema::table('warehouses', function (Blueprint $table) {
             $table->dropConstrainedForeignId('id_municipality_pos');
             $table->dropColumn('status');
         });
