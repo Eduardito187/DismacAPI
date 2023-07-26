@@ -3,7 +3,7 @@
         {
             "id": 1,
             "nombre": "Santa Cruz",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 10,
                     "nombre": "Santa Cruz De La Sierra"
@@ -73,7 +73,7 @@
         {
             "id": 2,
             "nombre": "Cochabamba",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 26,
                     "nombre": "Arani"
@@ -143,7 +143,7 @@
         {
             "id": 3,
             "nombre": "La Paz",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 42,
                     "nombre": "La Paz"
@@ -229,7 +229,7 @@
         {
             "id": 4,
             "nombre": "Beni",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 62,
                     "nombre": "Antonio Vaca Díez"
@@ -267,7 +267,7 @@
         {
             "id": 5,
             "nombre": "Pando",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 70,
                     "nombre": "Abuná"
@@ -293,7 +293,7 @@
         {
             "id": 6,
             "nombre": "Oruro",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 75,
                     "nombre": "Tomás Barrón"
@@ -363,7 +363,7 @@
         {
             "id": 7,
             "nombre": "Potosi",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 91,
                     "nombre": "Alonso de Ibáñez"
@@ -433,7 +433,7 @@
         {
             "id": 8,
             "nombre": "Chuquisaca",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 107,
                     "nombre": "Sucre"
@@ -479,7 +479,7 @@
         {
             "id": 9,
             "nombre": "Tarija",
-            "municipos": [
+            "municipios": [
                 {
                     "id": 117,
                     "nombre": "Francis Burdett O'Connor"

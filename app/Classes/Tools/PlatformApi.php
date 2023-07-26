@@ -297,7 +297,6 @@ class PlatformApi{
             }else{
                 $this->updateMunicipalityPos($minipioPos->id);
             }
-            print_r($municipio[$this->text->getNombre()]);
         }
     }
 
