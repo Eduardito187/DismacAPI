@@ -281,6 +281,7 @@ class PlatformApi{
         }else{
             throw new Exception($this->text->getParametersNone());
         }
+        
         return $this->status->getEnable();
     }
 
