@@ -28,6 +28,40 @@ class System extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function warehouse(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->warehouseProcess($request),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function municipality(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->municipalityProcess($request),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         try {

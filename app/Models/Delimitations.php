@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Store;
 use App\Models\Localization;
+use App\Models\MunicipalityPos;
 
 class Delimitations extends Model
 {
@@ -13,7 +14,7 @@ class Delimitations extends Model
 
     protected $table = 'delimitations';
 
-    protected $fillable = ['id_store', 'id_localization', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['id_store', 'id_localization', 'status', 'created_at', 'updated_at', 'id_municipality_pos'];
     
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -28,5 +29,9 @@ class Delimitations extends Model
 
     public function Localization(){
         return $this->hasOne(Localization::class, 'id', 'id_localization');
+    }
+
+    public function MunicipalityPos(){
+        return $this->hasOne(MunicipalityPos::class, 'id', 'id_municipality_pos');
     }
 }

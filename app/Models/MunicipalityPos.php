@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\MunicipalityPos;
+use App\Models\Store;
 
-class Warehouse extends Model
+class MunicipalityPos extends Model
 {
     use HasFactory;
 
-    protected $table = 'warehouses';
+    protected $table = 'municipality_pos';
 
-    protected $fillable = ['name', 'code', 'base', 'almacen', 'created_at', 'updated_at', 'id_municipality_pos', 'status'];
+    protected $fillable = ['id_store', 'name', 'status', 'created_at', 'updated_at'];
     
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -21,7 +21,7 @@ class Warehouse extends Model
     protected $keyType = 'integer';
     public $timestamps = false;
     
-    public function MunicipalityPos(){
-        return $this->hasOne(MunicipalityPos::class, 'id', 'id_municipality_pos');
+    public function Store(){
+        return $this->hasOne(Store::class, 'id', 'id_store');
     }
 }

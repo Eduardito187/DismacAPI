@@ -632,6 +632,8 @@ class ProductApi{
             $Warehouse->almacen = $almacen;
             $Warehouse->created_at = $this->date->getFullDate();
             $Warehouse->updated_at = null;
+            $Warehouse->id_municipality_pos = null;
+            $Warehouse->status = $this->status->getEnable();
             $Warehouse->save();
         } catch (Exception $th) {
             throw new Exception($th->getMessage());

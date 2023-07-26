@@ -231,6 +231,7 @@ class Text{
     CONST PAIS                = "Pais";
     CONST CIUDAD              = "Ciudad";
     CONST MUNICIPIO           = "Municipio";
+    CONST MUNICIPIO_API       = "municipio";
     CONST LOCALIZACION        = "Localizacion";
     CONST DIRECCION           = "Direccion";
     CONST DIRECCION_EXTRA     = "DireccionExtra";
@@ -397,9 +398,32 @@ class Text{
     CONST STORE_NONE          = "El store no existe en el registro.";
     CONST ROL_NONE            = "El rol no existe en el registro.";
     CONST PERMISSION_NONE     = "El permiso no existe en el registro.";
+    CONST MUNICIPIOS          = "municipios";
+    CONST ID_MUNICIPALITY_POS = "id_municipality_pos";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdMunicipalitypos(){
+        return SELF::ID_MUNICIPALITY_POS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipioApi(){
+        return SELF::MUNICIPIO_API;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipios(){
+        return SELF::MUNICIPIOS;
     }
 
     /**

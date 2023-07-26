@@ -9,10 +9,12 @@ use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
 use App\Models\Delimitations;
 use App\Models\Localization;
+use App\Models\MunicipalityPos;
 use App\Models\Permissions;
 use App\Models\Rol;
 use App\Models\RolPermissions;
 use App\Models\Store;
+use App\Models\Warehouse;
 
 class PlatformApi{
     /**
@@ -140,6 +142,204 @@ class PlatformApi{
         }
         return $permission;
     }
+
+    /**
+     * @return void
+     */
+    public function disableAllMunicipality(){
+        MunicipalityPos::where($this->text->getId(), $this->text->getSymbolMayor(), $this->text->getCero())->update([
+            $this->text->getStatus() => $this->status->getDisable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function disableAllWarehouses(){
+        Warehouse::where($this->text->getId(), $this->text->getSymbolMayor(), $this->text->getCero())->update([
+            $this->text->getStatus() => $this->status->getDisable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @return int|null
+     */
+    public function getWarehouseByCode(string $code){
+        $warehouse = Warehouse::where($this->text->getCode(), $code)->first();
+        if (!$warehouse){
+            return null;
+        }
+        return $warehouse->id;
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function warehouseProcess(Request $request){
+        $param = $request->all();
+        if (isset($param[$this->text->getWarehouses()])){
+            $this->disableAllWarehouses();
+            foreach ($param[$this->text->getWarehouses()] as $key => $warehouses) {
+                try {
+                    $id_store = $this->getStoreByName($warehouses[$this->text->getStore()]);
+                    $warehouse = $this->getWarehouseByCode($warehouses[$this->text->getAlmacen()]);
+                    if (!is_null($id_store)){
+                        if (is_null($warehouse)){
+                            $this->setWarehouse(
+                                $warehouses[$this->text->getName()],
+                                $warehouses[$this->text->getCode()],
+                                $warehouses[$this->text->getBase()],
+                                $warehouses[$this->text->getAlmacen()],
+                                $warehouses[$this->text->getMunicipioApi()]
+                            );
+                        }else{
+                            $this->updateWarehouse(
+                                $warehouse,
+                                $warehouses[$this->text->getName()],
+                                $warehouses[$this->text->getCode()],
+                                $warehouses[$this->text->getBase()],
+                                $warehouses[$this->text->getMunicipioApi()]
+                            );
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+    
+    /**
+     * @param string $name
+     * @param string $code
+     * @param bool $base
+     * @param string $almacen
+     * @param int|null $id_municipio
+     * @return void
+     */
+    public function setWarehouse(string $name, string $code, bool $base, string $almacen, int|null $id_municipio){
+        try {
+            $Warehouse = new Warehouse();
+            $Warehouse->name = $name;
+            $Warehouse->code = $code;
+            $Warehouse->base = $base;
+            $Warehouse->almacen = $almacen;
+            $Warehouse->created_at = $this->date->getFullDate();
+            $Warehouse->updated_at = null;
+            $Warehouse->id_municipality_pos = $id_municipio;
+            $Warehouse->status = $this->status->getEnable();
+            $Warehouse->save();
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id_store
+     * @param string $name
+     * @param string $code
+     * @param bool $base
+     * @param int|null $id_municipio
+     * @return void
+     */
+    public function updateWarehouse(int $id, string $name, string $code, bool $base, int|null $id_municipio){
+        Warehouse::where($this->text->getId(), $id)->update([
+            $this->text->getName() => $name,
+            $this->text->getCode() => $code,
+            $this->text->getBase() => $base,
+            $this->text->getIdMunicipalitypos() => $id_municipio,
+            $this->text->getStatus() => $this->status->getEnable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function municipalityProcess(Request $request){
+        $param = $request->all();
+        if (isset($param[$this->text->getMunicipios()])){
+            $this->disableAllMunicipality();
+            foreach ($param[$this->text->getMunicipios()] as $key => $municipality) {
+                try {
+                    $id_store = $this->getStoreByName($municipality[$this->text->getNombre()]);
+                    if (!is_null($id_store)){
+                        $this->processAllStore($id_store, $municipality[$this->text->getMunicipios()]);
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param int $id_store
+     * @param array $municipios
+     * @return bool
+     */
+    public function processAllStore(int $id_store, array $municipios){
+        foreach ($municipios as $key => $municipio) {
+            $minipioPos = $this->getMunicipalityPos($municipio[$this->text->getId()]);
+            if (!$minipioPos){
+                $this->createMunicipalityPos($id_store, $municipio[$this->text->getNombre()], $municipio[$this->text->getId()]);
+            }else{
+                $this->updateMunicipalityPos($minipioPos->id);
+            }
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function updateMunicipalityPos(int $id){
+        MunicipalityPos::where($this->text->getId(), $id)->update([
+            $this->text->getStatus() => $this->status->getEnable(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+    
+    /**
+     * @param int $id_store
+     * @param string $name
+     * @param int $id
+     * @return int
+     */
+    public function createMunicipalityPos(int $id_store, string $name, int $id){
+        try {
+            $MunicipalityPos = new MunicipalityPos();
+            $MunicipalityPos->id = $id;
+            $MunicipalityPos->name = $name;
+            $MunicipalityPos->id_store = $id_store;
+            $MunicipalityPos->created_at = $this->date->getFullDate();
+            $MunicipalityPos->updated_at = null;
+            $MunicipalityPos->status = $this->status->getEnable();
+            $MunicipalityPos->save();
+            return $MunicipalityPos->id;
+        } catch (Exception $th) {
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return MunicipalityPos|null
+     */
+    public function getMunicipalityPos(int $id){
+        return MunicipalityPos::find($id);
+    }
     
     /**
      * @param Request $request
@@ -173,6 +373,18 @@ class PlatformApi{
      */
     public function getStoreById(int $id){
         $store = Store::find($id);
+        if (!$store){
+            return null;
+        }
+        return $store->id;
+    }
+
+    /**
+     * @param string $code
+     * @return int|null
+     */
+    public function getStoreByName(string $code){
+        $store = Store::where($this->text->getName(), $code)->first();
         if (!$store){
             return null;
         }
@@ -348,6 +560,7 @@ class PlatformApi{
             $Delimitations->status = $this->status->getEnable();
             $Delimitations->created_at = $this->date->getFullDate();
             $Delimitations->updated_at = null;
+            $Delimitations->id_municipality_pos = null;
             $Delimitations->save();
             return $Delimitations->id;
         } catch (Exception $th) {

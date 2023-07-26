@@ -1,0 +1,510 @@
+{
+    "municipios": [
+        {
+            "id": 1,
+            "nombre": "Santa Cruz",
+            "municipos": [
+                {
+                    "id": 10,
+                    "nombre": "Santa Cruz De La Sierra"
+                },
+                {
+                    "id": 11,
+                    "nombre": "Montero"
+                },
+                {
+                    "id": 12,
+                    "nombre": "Warnes"
+                },
+                {
+                    "id": 13,
+                    "nombre": "La Guardia"
+                },
+                {
+                    "id": 14,
+                    "nombre": "San Ignacio De Velasco"
+                },
+                {
+                    "id": 15,
+                    "nombre": "Yapacaní"
+                },
+                {
+                    "id": 16,
+                    "nombre": "El Torno"
+                },
+                {
+                    "id": 17,
+                    "nombre": "San Julián"
+                },
+                {
+                    "id": 18,
+                    "nombre": "Cotoca"
+                },
+                {
+                    "id": 19,
+                    "nombre": "Camiri"
+                },
+                {
+                    "id": 20,
+                    "nombre": "Pailón"
+                },
+                {
+                    "id": 21,
+                    "nombre": "Charagua"
+                },
+                {
+                    "id": 22,
+                    "nombre": "San José De Chiquitos"
+                },
+                {
+                    "id": 23,
+                    "nombre": "Ascención De Guarayos"
+                },
+                {
+                    "id": 24,
+                    "nombre": "Cabezas"
+                },
+                {
+                    "id": 25,
+                    "nombre": "Mineros"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "nombre": "Cochabamba",
+            "municipos": [
+                {
+                    "id": 26,
+                    "nombre": "Arani"
+                },
+                {
+                    "id": 27,
+                    "nombre": "Arque"
+                },
+                {
+                    "id": 28,
+                    "nombre": "Ayopaya"
+                },
+                {
+                    "id": 29,
+                    "nombre": "Bolívar"
+                },
+                {
+                    "id": 30,
+                    "nombre": "Campero"
+                },
+                {
+                    "id": 31,
+                    "nombre": "Capinota"
+                },
+                {
+                    "id": 32,
+                    "nombre": "José Carrasco"
+                },
+                {
+                    "id": 33,
+                    "nombre": "Cochabamba"
+                },
+                {
+                    "id": 34,
+                    "nombre": "Chapare"
+                },
+                {
+                    "id": 35,
+                    "nombre": "Esteban Arze"
+                },
+                {
+                    "id": 36,
+                    "nombre": "Germán Jordán"
+                },
+                {
+                    "id": 37,
+                    "nombre": "Mizque"
+                },
+                {
+                    "id": 38,
+                    "nombre": "Punata"
+                },
+                {
+                    "id": 39,
+                    "nombre": "Quillacollo"
+                },
+                {
+                    "id": 40,
+                    "nombre": "Tapacarí"
+                },
+                {
+                    "id": 41,
+                    "nombre": "Tiraque"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "nombre": "La Paz",
+            "municipos": [
+                {
+                    "id": 42,
+                    "nombre": "La Paz"
+                },
+                {
+                    "id": 43,
+                    "nombre": "El Alto"
+                },
+                {
+                    "id": 44,
+                    "nombre": "Bautista Saavedra"
+                },
+                {
+                    "id": 45,
+                    "nombre": "Camacho"
+                },
+                {
+                    "id": 46,
+                    "nombre": "Caranavi"
+                },
+                {
+                    "id": 47,
+                    "nombre": "Franz Tamayo"
+                },
+                {
+                    "id": 48,
+                    "nombre": "Gualberto Villarroel"
+                },
+                {
+                    "id": 49,
+                    "nombre": "Ingavi"
+                },
+                {
+                    "id": 50,
+                    "nombre": "Inquisivi"
+                },
+                {
+                    "id": 51,
+                    "nombre": "José Manuel Pando"
+                },
+                {
+                    "id": 52,
+                    "nombre": "Larecaja"
+                },
+                {
+                    "id": 53,
+                    "nombre": "Loayza"
+                },
+                {
+                    "id": 54,
+                    "nombre": "Los Andes"
+                },
+                {
+                    "id": 55,
+                    "nombre": "Manco Kapac"
+                },
+                {
+                    "id": 56,
+                    "nombre": "Muñecas"
+                },
+                {
+                    "id": 57,
+                    "nombre": "Nor Yungas"
+                },
+                {
+                    "id": 58,
+                    "nombre": "Omasuyos"
+                },
+                {
+                    "id": 59,
+                    "nombre": "Pacajes"
+                },
+                {
+                    "id": 60,
+                    "nombre": "Pedro Domingo Murillo"
+                },
+                {
+                    "id": 61,
+                    "nombre": "Sud Yungas"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "nombre": "Beni",
+            "municipos": [
+                {
+                    "id": 62,
+                    "nombre": "Antonio Vaca Díez"
+                },
+                {
+                    "id": 63,
+                    "nombre": "Cercado"
+                },
+                {
+                    "id": 64,
+                    "nombre": "General José Ballivián Segurola"
+                },
+                {
+                    "id": 65,
+                    "nombre": "Iténez"
+                },
+                {
+                    "id": 66,
+                    "nombre": "Mamoré"
+                },
+                {
+                    "id": 67,
+                    "nombre": "Marbán"
+                },
+                {
+                    "id": 68,
+                    "nombre": "Moxos"
+                },
+                {
+                    "id": 69,
+                    "nombre": "Yacuma"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "nombre": "Pando",
+            "municipos": [
+                {
+                    "id": 70,
+                    "nombre": "Abuná"
+                },
+                {
+                    "id": 71,
+                    "nombre": "General Federico Román"
+                },
+                {
+                    "id": 72,
+                    "nombre": "Madre de Dios"
+                },
+                {
+                    "id": 73,
+                    "nombre": "Manuripi"
+                },
+                {
+                    "id": 74,
+                    "nombre": "Nicolás Suárez"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "nombre": "Oruro",
+            "municipos": [
+                {
+                    "id": 75,
+                    "nombre": "Tomás Barrón"
+                },
+                {
+                    "id": 76,
+                    "nombre": "Cercado"
+                },
+                {
+                    "id": 77,
+                    "nombre": "Pantaleón Dalence"
+                },
+                {
+                    "id": 78,
+                    "nombre": "Poopó"
+                },
+                {
+                    "id": 79,
+                    "nombre": "Eduardo Abaroa"
+                },
+                {
+                    "id": 80,
+                    "nombre": "Sebastián Pagador"
+                },
+                {
+                    "id": 81,
+                    "nombre": "Saucarí"
+                },
+                {
+                    "id": 82,
+                    "nombre": "Nor Carangas"
+                },
+                {
+                    "id": 83,
+                    "nombre": "San Pedro de Totora"
+                },
+                {
+                    "id": 84,
+                    "nombre": "Carangas"
+                },
+                {
+                    "id": 85,
+                    "nombre": "Sud Carangas"
+                },
+                {
+                    "id": 86,
+                    "nombre": "Ladislao Cabrera"
+                },
+                {
+                    "id": 87,
+                    "nombre": "Litoral"
+                },
+                {
+                    "id": 88,
+                    "nombre": "Sajama"
+                },
+                {
+                    "id": 89,
+                    "nombre": "Sabaya"
+                },
+                {
+                    "id": 90,
+                    "nombre": "Mejillones"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "nombre": "Potosi",
+            "municipos": [
+                {
+                    "id": 91,
+                    "nombre": "Alonso de Ibáñez"
+                },
+                {
+                    "id": 92,
+                    "nombre": "Antonio Quijarro"
+                },
+                {
+                    "id": 93,
+                    "nombre": "Bernardino Bilbao"
+                },
+                {
+                    "id": 94,
+                    "nombre": "Charcas"
+                },
+                {
+                    "id": 95,
+                    "nombre": "Chayanta"
+                },
+                {
+                    "id": 96,
+                    "nombre": "Cornelio Saavedra"
+                },
+                {
+                    "id": 97,
+                    "nombre": "Daniel Campos"
+                },
+                {
+                    "id": 98,
+                    "nombre": "Enrique Baldivieso"
+                },
+                {
+                    "id": 99,
+                    "nombre": "José María Linares"
+                },
+                {
+                    "id": 100,
+                    "nombre": "Modesto Omiste"
+                },
+                {
+                    "id": 101,
+                    "nombre": "Nor Chichas"
+                },
+                {
+                    "id": 102,
+                    "nombre": "Nor Lípez"
+                },
+                {
+                    "id": 103,
+                    "nombre": "Rafael Bustillo"
+                },
+                {
+                    "id": 104,
+                    "nombre": "Sur Chichas"
+                },
+                {
+                    "id": 105,
+                    "nombre": "Sur Lípez"
+                },
+                {
+                    "id": 106,
+                    "nombre": "Tomás Frías"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "nombre": "Chuquisaca",
+            "municipos": [
+                {
+                    "id": 107,
+                    "nombre": "Sucre"
+                },
+                {
+                    "id": 108,
+                    "nombre": "Juana Azurduy"
+                },
+                {
+                    "id": 109,
+                    "nombre": "Jaime Zudáñez"
+                },
+                {
+                    "id": 110,
+                    "nombre": "Tomina"
+                },
+                {
+                    "id": 111,
+                    "nombre": "Hernando Siles"
+                },
+                {
+                    "id": 112,
+                    "nombre": "Yamparáez"
+                },
+                {
+                    "id": 113,
+                    "nombre": "Nor Cinti"
+                },
+                {
+                    "id": 114,
+                    "nombre": "Sud Cinti"
+                },
+                {
+                    "id": 115,
+                    "nombre": "Belisario Boeto"
+                },
+                {
+                    "id": 116,
+                    "nombre": "Luis Calvo"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "nombre": "Tarija",
+            "municipos": [
+                {
+                    "id": 117,
+                    "nombre": "Francis Burdett O'Connor"
+                },
+                {
+                    "id": 118,
+                    "nombre": "Tarija"
+                },
+                {
+                    "id": 119,
+                    "nombre": "José María Avilés"
+                },
+                {
+                    "id": 120,
+                    "nombre": "Eustaquio Méndez Arenas"
+                },
+                {
+                    "id": 121,
+                    "nombre": "Gran Chaco"
+                },
+                {
+                    "id": 122,
+                    "nombre": "Aniceto Arce Ruiz"
+                }
+            ]
+        }
+    ]
+}
