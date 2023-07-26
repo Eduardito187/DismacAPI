@@ -181,15 +181,17 @@ class PlatformApi{
      */
     public function warehouseProcess(Request $request){
         $param = $request->all();
+        $listProcessWarehouse = array();
         if (isset($param[$this->text->getWarehouses()])){
             $this->disableAllWarehouses();
             foreach ($param[$this->text->getWarehouses()] as $key => $warehouses) {
                 try {
                     $id_store = $this->getStoreByName($warehouses[$this->text->getStore()]);
                     $warehouse = $this->getWarehouseByCode($warehouses[$this->text->getAlmacen()]);
+                    $idWarehouse = 0;
                     if (!is_null($id_store)){
                         if (is_null($warehouse)){
-                            $this->setWarehouse(
+                            $idWarehouse = $this->setWarehouse(
                                 $warehouses[$this->text->getName()],
                                 $warehouses[$this->text->getCode()],
                                 $warehouses[$this->text->getBase()],
@@ -197,6 +199,7 @@ class PlatformApi{
                                 $warehouses[$this->text->getMunicipioApi()] ?? null
                             );
                         }else{
+                            $idWarehouse = $warehouse;
                             $this->updateWarehouse(
                                 $warehouse,
                                 $warehouses[$this->text->getName()],
@@ -205,15 +208,26 @@ class PlatformApi{
                                 $warehouses[$this->text->getMunicipioApi()] ?? null
                             );
                         }
+                        $listProcessWarehouse[] = $idWarehouse;
                     }
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
             }
+            $this->clearStockWarehouseDisable($listProcessWarehouse);
         }else{
             throw new Exception($this->text->getParametersNone());
         }
         return $this->status->getEnable();
+    }
+
+    /**
+     * @param array $list
+     * @return void
+     */
+    public function clearStockWarehouseDisable(array $list){
+        $listWarehouse = Warehouse::whereNotIn($this->text->getId(), $list)->pluck($this->text->getId());
+        print_r($listWarehouse);
     }
     
     /**
@@ -222,7 +236,7 @@ class PlatformApi{
      * @param bool $base
      * @param string $almacen
      * @param int|null $id_municipio
-     * @return void
+     * @return int
      */
     public function setWarehouse(string $name, string $code, bool $base, string $almacen, int|null $id_municipio){
         try {
@@ -236,6 +250,7 @@ class PlatformApi{
             $Warehouse->id_municipality_pos = $id_municipio;
             $Warehouse->status = $this->status->getEnable();
             $Warehouse->save();
+            return $Warehouse->id;
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
