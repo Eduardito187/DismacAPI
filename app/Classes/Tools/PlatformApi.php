@@ -238,7 +238,10 @@ class PlatformApi{
      * @return void
      */
     public function clearStockWarehouse(int $id){
-        ProductWarehouse::where($this->text->getIdWarehouse(), $id)->delete();
+        Warehouse::where($this->text->getIdWarehouse(), $id)->update([
+            $this->text->getStock() => $this->text->getCero(),
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
     }
     
     /**
