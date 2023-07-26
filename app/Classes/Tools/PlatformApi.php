@@ -547,7 +547,9 @@ class PlatformApi{
                     if (is_null($id_delimitation)){
                         $this->createDelimitation($id_store, $id_geo, $idMunicipio);
                     }
+                    print_r($delimitation);
                 } catch (\Throwable $th) {
+                    print_r("ERROR");
                     //throw $th;
                 }
             }
