@@ -11,6 +11,7 @@ use App\Models\Delimitations;
 use App\Models\Localization;
 use App\Models\MunicipalityPos;
 use App\Models\Permissions;
+use App\Models\ProductWarehouse;
 use App\Models\Rol;
 use App\Models\RolPermissions;
 use App\Models\Store;
@@ -227,7 +228,17 @@ class PlatformApi{
      */
     public function clearStockWarehouseDisable(array $list){
         $listWarehouse = Warehouse::whereNotIn($this->text->getId(), $list)->pluck($this->text->getId());
-        print_r($listWarehouse);
+        foreach ($listWarehouse as $key => $wh) {
+            $this->clearStockWarehouse($wh);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function clearStockWarehouse(int $id){
+        ProductWarehouse::where($this->text->getIdWarehouse(), $id)->delete();
     }
     
     /**
