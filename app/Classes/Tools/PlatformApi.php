@@ -194,7 +194,7 @@ class PlatformApi{
                                 $warehouses[$this->text->getCode()],
                                 $warehouses[$this->text->getBase()],
                                 $warehouses[$this->text->getAlmacen()],
-                                $warehouses[$this->text->getMunicipioApi()]
+                                $warehouses[$this->text->getMunicipioApi()] ?? null
                             );
                         }else{
                             $this->updateWarehouse(
@@ -202,7 +202,7 @@ class PlatformApi{
                                 $warehouses[$this->text->getName()],
                                 $warehouses[$this->text->getCode()],
                                 $warehouses[$this->text->getBase()],
-                                $warehouses[$this->text->getMunicipioApi()]
+                                $warehouses[$this->text->getMunicipioApi()] ?? null
                             );
                         }
                     }
@@ -242,7 +242,7 @@ class PlatformApi{
     }
 
     /**
-     * @param int $id_store
+     * @param int $id
      * @param string $name
      * @param string $code
      * @param bool $base
