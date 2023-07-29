@@ -1808,10 +1808,10 @@ class ProductApi{
         if (isset($params[$this->text->getStores()])){
             foreach ($params[$this->text->getStores()] as $key => $store) {
                 try {
-                    if(is_null($this->getProductStoreStatus($id, $store[$this->text->getIdStore()]))){
-                        $this->setProductStoreStatus($id, $store[$this->text->getIdStore()], $store[$this->text->getChecked()]);
+                    if(is_null($this->getProductStoreStatus($id, $store[$this->text->getId()]))){
+                        $this->setProductStoreStatus($id, $store[$this->text->getId()], $store[$this->text->getChecked()]);
                     }else{
-                        $this->updateProductStoreStatus($id, $store[$this->text->getIdStore()], $store[$this->text->getChecked()]);
+                        $this->updateProductStoreStatus($id, $store[$this->text->getId()], $store[$this->text->getChecked()]);
                     }
                     $this->productUpdate($id);
                 } catch (\Throwable $th) {
@@ -1834,7 +1834,7 @@ class ProductApi{
         if (isset($params[$this->text->getStores()])){
             foreach ($params[$this->text->getStores()] as $key => $store) {
                 try {
-                    $id_price = $this->getProductPriceStore($store[$this->text->getIdStore()], $id);
+                    $id_price = $this->getProductPriceStore($store[$this->text->getId()], $id);
                     $_price = floatval($store[$this->text->getPrice()]);
                     if ($_price < 1){
                         $_price = null;
@@ -1848,7 +1848,7 @@ class ProductApi{
                     if (is_null($id_price)) {
                         $this->setPrice($_price, $_special_price, $from_date, $to_date);
                         $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
-                        $this->setProductPriceStore($id_price, $store[$this->text->getIdStore()], $id);
+                        $this->setProductPriceStore($id_price, $store[$this->text->getId()], $id);
                     }else{
                         $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
                     }
