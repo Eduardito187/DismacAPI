@@ -1782,6 +1782,26 @@ class ProductApi{
      * @param int $id
      * @return array
      */
+    public function getProductStatusArray(int $id){
+        $Product = $this->getProductById($id);
+        $Stores = $this->getAllStoreEntity();
+        return $this->statusProducts($Stores, $Product->Status);
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getProductPricesArray(int $id){
+        $Product = $this->getProductById($id);
+        $Stores = $this->getAllStoreEntity();
+        return $this->pricesProducts($Stores, $Product->PriceStore);
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();

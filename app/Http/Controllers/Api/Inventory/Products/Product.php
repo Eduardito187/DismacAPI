@@ -83,8 +83,40 @@ class Product extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPrices($id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->getProductStatusArray($id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getStatus($id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->getProductStatusArray($id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
