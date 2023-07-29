@@ -1902,7 +1902,7 @@ class ProductApi{
     private function statusStore($store_id, $Status){
         foreach ($Status as $key => $State) {
             if ($store_id == $State->id_store) {
-                return $State->status;
+                return $State->status == 0 ? $this->status->getDisable() : $this->status->getEnable();
             }
         }
         return $this->status->getDisable();
