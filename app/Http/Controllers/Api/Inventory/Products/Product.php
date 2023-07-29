@@ -134,15 +134,39 @@ class Product extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
-        return response()->json([]);
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->updateStatus($request, $id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePrices(Request $request, $id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->updatePrices($request, $id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**

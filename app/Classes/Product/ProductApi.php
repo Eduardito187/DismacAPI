@@ -1789,6 +1789,69 @@ class ProductApi{
     }
 
     /**
+     * @param Request $request
+     * @param int $id
+     * @return bool
+     */
+    public function updateStatus(Request $request, int $id){
+        $params = $request->all();
+        if (isset($params[$this->text->getStores()])){
+            foreach ($params[$this->text->getStores()] as $key => $store) {
+                try {
+                    if(is_null($this->getProductStoreStatus($id, $store[$this->text->getIdStore()]))){
+                        $this->setProductStoreStatus($id, $store[$this->text->getIdStore()], $store[$this->text->getChecked()]);
+                    }else{
+                        $this->updateProductStoreStatus($id, $store[$this->text->getIdStore()], $store[$this->text->getChecked()]);
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return bool
+     */
+    public function updatePrices(Request $request, int $id){
+        $params = $request->all();
+        if (isset($params[$this->text->getStores()])){
+            foreach ($params[$this->text->getStores()] as $key => $store) {
+                try {
+                    $id_price = $this->getProductPriceStore($store[$this->text->getIdStore()], $id);
+                    $_price = floatval($store[$this->text->getPrice()]);
+                    if ($_price < 1){
+                        $_price = null;
+                    }
+                    $_special_price = floatval($store[$this->text->getSpecialPrice()]);
+                    if ($_special_price < 1){
+                        $_special_price = null;
+                    }
+                    $from_date = $this->date->getFullDate();
+                    $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
+                    if (is_null($id_price)) {
+                        $this->setPrice($_price, $_special_price, $from_date, $to_date);
+                        $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
+                        $this->setProductPriceStore($id_price, $store[$this->text->getIdStore()], $id);
+                    }else{
+                        $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+
+    /**
      * @param int $id
      * @return array
      */

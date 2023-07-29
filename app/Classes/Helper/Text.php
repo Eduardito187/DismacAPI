@@ -400,9 +400,17 @@ class Text{
     CONST PERMISSION_NONE     = "El permiso no existe en el registro.";
     CONST MUNICIPIOS          = "municipios";
     CONST ID_MUNICIPALITY_POS = "id_municipality_pos";
+    CONST CHECKED             = "check";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getChecked(){
+        return SELF::CHECKED;
     }
 
     /**
