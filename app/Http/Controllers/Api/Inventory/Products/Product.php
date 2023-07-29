@@ -90,7 +90,7 @@ class Product extends Controller
     {
         try {
             $response = $this->text->getResponseApi(
-                $this->productApi->getProductStatusArray($id),
+                $this->productApi->getProductPricesArray($id),
                 $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {
