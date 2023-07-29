@@ -815,6 +815,19 @@ class AccountApi{
 
     /**
      * @param string $value
+     * @return Account|null
+     */
+    public function getAccountByPublic(string $value){
+        $this->tokenAccess = new TokenAccess($value);
+        $Account = Account::where($this->text->getToken(), $this->tokenAccess->getToken())->first();
+        if (!$Account) {
+            return null;
+        }
+        return $Account;
+    }
+
+    /**
+     * @param string $value
      * @return Account
      */
     public function getAccountByToken(string $value){

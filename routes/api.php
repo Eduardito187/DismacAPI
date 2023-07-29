@@ -168,6 +168,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
 
     Route::controller(Stores::class)->group(function(){
         Route::get('store', 'index');
+        Route::get('getStores', 'getStores');
         Route::post('store', 'store');
         Route::get('store/show/{id}', 'show');
         Route::patch('store/{id}', 'update');

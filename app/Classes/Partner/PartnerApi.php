@@ -1454,6 +1454,61 @@ class PartnerApi{
     }
 
     /**
+     * @param Account|null $Account
+     * @return array
+     */
+    public function getStorePartner(Account|null $Account){
+        $data = array();
+        $data[$this->text->getStore()] = $this->getAllStore();
+        if (is_null($Account)){
+            $data[$this->text->getPartner()] = null;
+        }else{
+            $partner = $Account->accountPartner->Partner;
+            $data[$this->text->getPartner()] = $this->getAllStorePartnerArray($partner->Stores);
+        }
+        return $data;
+    }
+
+    public function getAllStorePartnerArray($stores){
+        $data = array();
+        foreach ($stores as $key => $store) {
+            $data[] = $this->storeArray($store->Store);
+        }
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllStore(){
+        $stores = Store::all();
+        return $this->getAllStoreArray($stores);
+    }
+
+    public function getAllStoreArray($stores){
+        $data = array();
+        foreach ($stores as $key => $store) {
+            $data[] = $this->storeArray($store);
+        }
+        return $data;
+    }
+
+    /**
+     * @param Store|null $store
+     * @return array
+     */
+    public function storeArray(Store|null $store){
+        if (!$store){
+            return null;
+        }
+        return array(
+            $this->text->getId() => $store->id,
+            $this->text->getName() => $store->name,
+            $this->text->getCode() => $store->code
+        );
+    }
+
+    /**
      * @param Partner $partner
      * @return array
      */

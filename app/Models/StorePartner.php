@@ -19,7 +19,7 @@ class StorePartner extends Model
     public $timestamps = false;
 
     public function Store() {
-        return $this->hasMany(Store::class, 'id', 'id_store');
+        return $this->hasOne(Store::class, 'id', 'id_store');
     }
 
     public function Partner() {
