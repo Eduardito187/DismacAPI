@@ -1765,6 +1765,16 @@ class ProductApi{
 
     /**
      * @param int $id
+     * @return void
+     */
+    private function productUpdate(int $id){
+        Product::where($this->text->getId(), $id)->update([
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id
      * @param string|null $url
      * @return void
      */
@@ -1803,6 +1813,7 @@ class ProductApi{
                     }else{
                         $this->updateProductStoreStatus($id, $store[$this->text->getIdStore()], $store[$this->text->getChecked()]);
                     }
+                    $this->productUpdate($id);
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
@@ -1841,6 +1852,7 @@ class ProductApi{
                     }else{
                         $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
                     }
+                    $this->productUpdate($id);
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
