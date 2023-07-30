@@ -86,6 +86,23 @@ class Product extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function getAttributes($id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->getProductAttributesArray($id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function getPrices($id)
     {
         try {

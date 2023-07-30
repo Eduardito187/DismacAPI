@@ -1903,6 +1903,15 @@ class ProductApi{
      * @param int $id
      * @return array
      */
+    public function getProductAttributesArray(int $id){
+        $Product = $this->getProductById($id);
+        return $this->getAttributesInFamily($Product->Family, $id);
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getProductPricesArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
