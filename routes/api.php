@@ -236,6 +236,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('product/show/{id}', 'show');
         Route::patch('product/status/{id}', 'updateStatus');
         Route::patch('product/prices/{id}', 'updatePrices');
+        Route::patch('product/attributes/{id}', 'updateAttributes');
         Route::delete('product/{id}', 'destroy');
     });
     

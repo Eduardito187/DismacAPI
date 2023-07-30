@@ -27,6 +27,7 @@ use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
 use App\Classes\Picture\PictureApi;
 use App\Models\Partner;
+use App\Models\Attribute;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -1824,6 +1825,90 @@ class ProductApi{
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
         return $this->statusProducts($Stores, $Product->Status);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return bool
+     */
+    public function updateAttributes(Request $request, int $id){
+        $params = $request->all();
+        if (isset($params[$this->text->getAttributes()])){
+            foreach ($params[$this->text->getAttributes()] as $key => $attribute) {
+                try {
+                    $Attribute = $this->getAttributeById($attribute[$this->text->getCustom()][$this->text->getId()]);
+                    if (!is_null($Attribute)){
+                        if ($this->validateProductAttribute($id, $Attribute->id)){
+                            $this->updateProductAttribute($id, $Attribute->id, $attribute[$this->text->getValue()]);
+                        }else{
+                            $this->createProductAttribute($id, $Attribute->id, $attribute[$this->text->getValue()]);
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return $this->status->getEnable();
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @param string $name
+     * @param string|int|float|bool|null $value
+     */
+    private function updateProductAttribute(int $id_product, int $attribute_id, string|int|float|bool|null $value){
+        ProductAttribute::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdAttribute(), $attribute_id)->update([
+            $this->text->getValue() => $value,
+            $this->text->getUpdated() => $this->date->getFullDate()
+        ]);
+    }
+
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @return bool
+     */
+    public function validateProductAttribute(int $id_product, int $attribute_id){
+        $ProductAttribute = ProductAttribute::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdAttribute(), $attribute_id)->first();
+        if (!$ProductAttribute){
+            return $this->status->getDisable();
+        }
+        return $this->status->getEnable();
+    }
+    
+    /**
+     * @param int $id_product
+     * @param int $attribute_id
+     * @param string $value
+     * @return void
+     */
+    public function createProductAttribute(int $id_product, int $attribute_id, string $value){
+        try {
+            $ProductAttribute = new ProductAttribute();
+            $ProductAttribute->value = $value;
+            $ProductAttribute->id_product = $id_product;
+            $ProductAttribute->id_attribute = $attribute_id;
+            $ProductAttribute->save();
+        } catch (Exception $th) {
+            //
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return Attribute|null
+     */
+    public function getAttributeById(int $id){
+        $attribute = Attribute::find($id);
+        if (!$attribute){
+            return null;
+        }
+        return $attribute;
     }
 
     /**

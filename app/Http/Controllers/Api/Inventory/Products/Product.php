@@ -172,6 +172,24 @@ class Product extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
+    public function updateAttributes(Request $request, $id)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->productApi->updateAttributes($request, $id),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
     public function updateStatus(Request $request, $id)
     {
         try {
