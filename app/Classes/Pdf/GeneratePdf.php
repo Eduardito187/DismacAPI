@@ -145,6 +145,9 @@ class GeneratePdf{
     }
 
     /**
+     * @param int $id_category
+     * @param array $stores
+     * @param int $id_partner
      * @return array
      */
     public function generateProductListPDF(int $id_category, array $stores, int $id_partner){
@@ -171,18 +174,17 @@ class GeneratePdf{
             }
 
             $pdf = new PDFProductList();
-            $pdf->SetMargins(10, 10, 10); // Establece los márgenes del PDF según tus necesidades.
+            $pdf->SetMargins(10, 10, 10);
             $pdf->AddPage();
             $pdf->generatePDF($products);
 
             $filename = date("Y-m-d H:i:s")."-".$store[$this->text->getName()].'.pdf';
 
             $filePath = public_path($locationStorage.$filename);
-            print_r($filePath);
 
             $pdf->Output($filePath, 'F');
 
-            $list[] = $filePath;
+            $list[] = $locationStorage.$filename;
         }
         return $list;
     }
