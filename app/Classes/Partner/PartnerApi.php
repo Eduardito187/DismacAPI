@@ -1478,6 +1478,21 @@ class PartnerApi{
     }
 
     /**
+     * @param Store|null $store
+     * @return array
+     */
+    public function storeArray(Store|null $store){
+        if (!$store){
+            return null;
+        }
+        return array(
+            $this->text->getId() => $store->id,
+            $this->text->getName() => $store->name,
+            $this->text->getCode() => $store->code
+        );
+    }
+
+    /**
      * @return array
      */
     public function getAllStore(){
@@ -1491,21 +1506,6 @@ class PartnerApi{
             $data[] = $this->storeArray($store);
         }
         return $data;
-    }
-
-    /**
-     * @param Store|null $store
-     * @return array
-     */
-    public function storeArray(Store|null $store){
-        if (!$store){
-            return null;
-        }
-        return array(
-            $this->text->getId() => $store->id,
-            $this->text->getName() => $store->name,
-            $this->text->getCode() => $store->code
-        );
     }
 
     /**

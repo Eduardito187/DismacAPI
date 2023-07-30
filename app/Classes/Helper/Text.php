@@ -349,6 +349,7 @@ class Text{
     CONST IMAGENES_FOLDER     = "Imagenes/";
     CONST APP_URL             = "APP_URL";
     CONST PUBLIC_STORAGE      = "storage/Products/";
+    CONST PUBLIC_STORAGE_PDF  = "storage/Pdfs/";
     CONST FILE                = "File";
     CONST PICTURE_PARAM       = "-picture-";
     CONST PUNTO               = ".";
@@ -789,6 +790,13 @@ class Text{
      */
     public function getPublicStorage(){
         return SELF::PUBLIC_STORAGE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicStoragePdf(){
+        return SELF::PUBLIC_STORAGE_PDF;
     }
 
     /**

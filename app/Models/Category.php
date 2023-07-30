@@ -34,4 +34,8 @@ class Category extends Model
     public function Metadata(){
         return $this->hasOne(Metadata::class, 'id', 'id_metadata');
     }
+
+    public function ProductCategory(){
+        return $this->hasMany(ProductCategory::class, 'id_category', 'id');
+    }
 }

@@ -13,14 +13,34 @@ use App\Classes\Helper\Text;
 use App\Classes\Helper\Status;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Classes\Pdf\GeneratePdf;
 
 class Partner extends Controller
 {
+    /**
+     * @var AddressApi
+     */
     protected $addressApi;
+    /**
+     * @var AccountApi
+     */
     protected $accountApi;
+    /**
+     * @var PartnerApi
+     */
     protected $partnerApi;
+    /**
+     * @var Text
+     */
     protected $text;
+    /**
+     * @var Status
+     */
     protected $status;
+    /**
+     * @var GeneratePdf
+     */
+    protected $generatePdf;
 
     public function __construct() {
         $this->addressApi = new AddressApi();
@@ -28,6 +48,7 @@ class Partner extends Controller
         $this->partnerApi = new PartnerApi();
         $this->text       = new Text();
         $this->status     = new Status();
+        $this->generatePdf= new GeneratePdf();
     }
 
     /**
@@ -124,8 +145,6 @@ class Partner extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function countAccount(Request $request)
@@ -134,6 +153,26 @@ class Partner extends Controller
         try {
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
             $response = $this->text->getResponseApi($this->accountApi->getAccountsPartner($Account->accountPartner->Partner), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePdfByCategory(Request $request, int $id)
+    {
+        $response = array();
+        try {
+            $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $response = $this->text->getResponseApi(
+                $this->generatePdf->generatePdfCategory($Account, $id),
+                $this->text->getQuerySuccess()
+            );
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
