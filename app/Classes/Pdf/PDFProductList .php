@@ -5,8 +5,7 @@ namespace App\Classes\Pdf;
 use TCPDF;
 use App\Classes\Helper\Text;
 
-class PDFProductList extends TCPDF
-{
+class PDFProductList extends TCPDF{
     public function Header()
     {
         // Define el encabezado del PDF (opcional)
