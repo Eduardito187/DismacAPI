@@ -699,7 +699,6 @@ class ProductApi{
     }
 
     /**
-     * @param int $id_price
      * @param int $id_store
      * @param int $id_product
      */
@@ -718,6 +717,7 @@ class ProductApi{
      * @param float|null $special_price
      * @param string $from_date
      * @param string $to_date
+     * @return int
      */
     public function setPrice(float $price, float|null $special_price, string $from_date, string $to_date){
         try {
@@ -729,6 +729,7 @@ class ProductApi{
             $Price->created_at = $this->date->getFullDate();
             $Price->updated_at = null;
             $Price->save();
+            return $Price->id;
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
         }
@@ -804,12 +805,20 @@ class ProductApi{
         $from_date = $this->date->getFullDate();
         $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
         if (is_null($id_price)) {
-            $this->setPrice($_price, $_special_price, $from_date, $to_date);
-            $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
-            $this->setProductPriceStore($id_price, $id_store, $id_product);
+            $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
         }else{
-            $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+            $Price = $this->priceById($id_price);
+            if (is_null($Price)){
+                $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+            }else{
+                if ($Price->price != $_price || $Price->special_price != $_special_price){
+                    $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+                }
+            }
         }
+        $this->deleteProductPriceStore($id_store, $id_product);
+        $this->setProductPriceStore($id_price, $id_store, $id_product);
+
     }
 
     /**
@@ -828,12 +837,31 @@ class ProductApi{
         $from_date = $this->date->getFullDate();
         $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
         if (is_null($id_price)) {
-            $this->setPrice($_price, $_special_price, $from_date, $to_date);
-            $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
-            $this->setProductPriceStore($id_price, $id_store, $id_product);
+            $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
         }else{
-            $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+            $Price = $this->priceById($id_price);
+            if (is_null($Price)){
+                $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+            }else{
+                if ($Price->price != $_price || $Price->special_price != $_special_price){
+                    $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+                }
+            }
         }
+        $this->deleteProductPriceStore($id_store, $id_product);
+        $this->setProductPriceStore($id_price, $id_store, $id_product);
+    }
+
+    /**
+     * @param int $id
+     * @return Price|null
+     */
+    public function priceById(int $id){
+        $price = Price::find($id);
+        if (!$price){
+            return null;
+        }
+        return $price;
     }
 
     /**
@@ -853,7 +881,7 @@ class ProductApi{
      * @param array $product
      * @return void
      */
-    private function setPriceAPI(array $product){
+    public function setPriceAPI(array $product){
         $this->setPrice(
             $product[$this->text->getPrice()],
             $product[$this->text->getSpecialPrice()],
@@ -1834,7 +1862,8 @@ class ProductApi{
         if (isset($params[$this->text->getStores()])){
             foreach ($params[$this->text->getStores()] as $key => $store) {
                 try {
-                    $id_price = $this->getProductPriceStore($store[$this->text->getId()], $id);
+                    $id_store = $store[$this->text->getId()];
+                    $id_price = $this->getProductPriceStore($id_store, $id);
                     $_price = floatval($store[$this->text->getPrice()]);
                     if ($_price < 1){
                         $_price = null;
@@ -1846,17 +1875,24 @@ class ProductApi{
                     $from_date = $this->date->getFullDate();
                     $to_date = $this->date->addDateToDate($from_date, $this->text->getAddOneYear());
                     if (is_null($id_price)) {
-                        $this->setPrice($_price, $_special_price, $from_date, $to_date);
-                        $id_price = $this->getPrice($_price, $_special_price, $from_date, $to_date);
-                        $this->setProductPriceStore($id_price, $store[$this->text->getId()], $id);
+                        $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
                     }else{
-                        $this->updatePriceByID($id_price, $_price, $_special_price, $from_date, $to_date);
+                        $Price = $this->priceById($id_price);
+                        if (is_null($Price)){
+                            $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+                        }else{
+                            if ($Price->price != $_price || $Price->special_price != $_special_price){
+                                $id_price = $this->setPrice($_price, $_special_price, $from_date, $to_date);
+                            }
+                        }
                     }
-                    $this->productUpdate($id);
+                    $this->deleteProductPriceStore($id_store, $id);
+                    $this->setProductPriceStore($id_price, $id_store, $id);
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
             }
+            $this->productUpdate($id);
         }else{
             throw new Exception($this->text->getParametersNone());
         }
