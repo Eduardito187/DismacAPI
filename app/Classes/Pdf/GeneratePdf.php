@@ -178,7 +178,7 @@ class GeneratePdf{
             $dompdf->loadHtml($html);
             $filename = date("Y-m-d H:i:s")."-".$store[$this->text->getName()].'.pdf';
             $filePath = public_path($locationStorage.$filename);
-            $dompdf->save($filePath);
+            file_put_contents($filePath, $dompdf->output());
             $list[] = $locationStorage.$filename;
         }
         return $list;
