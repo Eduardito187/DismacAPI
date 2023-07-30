@@ -13,6 +13,7 @@ use App\Models\ProductPriceStore;
 use App\Models\Store;
 use Exception;
 use App\Classes\Picture\PictureApi;
+use PDF;
 
 class GeneratePdf{
     CONST DEFAULT_PRICE = 24948;
@@ -50,7 +51,8 @@ class GeneratePdf{
     public function generatePdfCategory(Account $Account, int $id_category){
         $Category = $this->categoryById($id_category);
         $partner = $Account->accountPartner->Partner;
-        return $this->generateProductListPDF($Category->id, $this->getAllStorePartnerArray($partner->Stores), $partner->id);
+        return $this->generateCategoryPdf($Category->id, $this->getAllStorePartnerArray($partner->Stores), $partner->id);
+        //return $this->generateProductListPDF($Category->id, $this->getAllStorePartnerArray($partner->Stores), $partner->id);
     }
 
     public function getAllStorePartnerArray($stores){
@@ -184,6 +186,44 @@ class GeneratePdf{
 
             $pdf->Output($filePath, 'F');
 
+            $list[] = $locationStorage.$filename;
+        }
+        return $list;
+    }
+
+    public function generateCategoryPdf(int $id_category, array $stores, int $id_partner){
+        $list = array();
+        $locationStorage = $this->text->getPublicStoragePdf().$id_partner.$this->text->getSlashOnly();
+        $this->createFolder($locationStorage);
+        foreach ($stores as $key => $store) {
+            $products = array();
+            $listProduct = $this->getProductCategoryStore($id_category, $store[$this->text->getId()]);
+            foreach ($listProduct as $key => $list) {
+                $Product = $list->Product;
+                $ProductPriceStore = $this->getProductPriceByStore($store[$this->text->getId()], $Product->id);
+                if (!$ProductPriceStore) {
+                    //
+                }else{
+                    $products[] = array(
+                        $this->text->getName() => $Product->name,
+                        $this->text->getBrand() => $this->getBrand($Product->Brand),
+                        $this->text->getPrice() => $ProductPriceStore[$this->text->getPrice()],
+                        $this->text->getSpecialPrice() => $ProductPriceStore[$this->text->getSpecialPrice()],
+                        $this->text->getImage() => $this->pictureApi->productFirstPicture($Product->id)
+                    );
+                }
+            }
+
+            $data = [
+                'name' => 'John Doe',
+                'email' => 'john@example.com'
+            ];
+            $html = view('welcome', $data)->render();
+            PDF::setPaper('A4', 'portrait');
+            PDF::loadHTML($html);
+            $filename = date("Y-m-d H:i:s")."-".$store[$this->text->getName()].'.pdf';
+            $filePath = public_path($locationStorage.$filename);
+            PDF::save($filePath);
             $list[] = $locationStorage.$filename;
         }
         return $list;

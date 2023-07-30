@@ -193,6 +193,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        Dompdf\ServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
@@ -209,7 +210,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'PDF' => Dompdf\Facade::class
     ])->toArray(),
 
 ];
