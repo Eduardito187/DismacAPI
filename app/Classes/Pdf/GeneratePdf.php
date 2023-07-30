@@ -148,7 +148,6 @@ class GeneratePdf{
      * @return array
      */
     public function generateProductListPDF(int $id_category, array $stores, int $id_partner){
-        print_r(public_path('storage/Pdfs/'));
         $list = array();
         $locationStorage = $this->text->getPublicStoragePdf().$id_partner.$this->text->getSlashOnly();
         $this->createFolder($locationStorage);
@@ -178,7 +177,8 @@ class GeneratePdf{
 
             $filename = date("Y-m-d H:i:s")."-".$store[$this->text->getName()].'.pdf';
 
-            $filePath = $locationStorage.$filename;
+            $filePath = public_path($locationStorage.$filename);
+            print_r($filePath);
 
             $pdf->Output($filePath, 'F');
 
