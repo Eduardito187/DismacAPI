@@ -231,6 +231,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('product/clacom', 'clacom');
         Route::get('product/status/{id}', 'getStatus');
         Route::get('product/prices/{id}', 'getPrices');
+        Route::get('product/pos/{id}', 'getPosData');
         Route::get('product/show/{id}', 'show');
         Route::patch('product/status/{id}', 'updateStatus');
         Route::patch('product/prices/{id}', 'updatePrices');

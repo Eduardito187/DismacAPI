@@ -1913,6 +1913,19 @@ class ProductApi{
      * @param int $id
      * @return array
      */
+    public function getPosData(int $id){
+        $Product = $this->getProductById($id);
+        return array(
+            $this->text->getClacom() => $Product->Clacom,
+            $this->text->getUrl() => $Product->url,
+            $this->text->getType() => $Product->Type
+        );
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getProductArray(int $id){
         $Product = $this->getProductById($id);
         $Stores = $this->getAllStoreEntity();
