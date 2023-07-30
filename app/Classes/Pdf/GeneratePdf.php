@@ -176,10 +176,10 @@ class GeneratePdf{
             $dompdf = new Dompdf();
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->loadHtml($html);
-            $filename = date("Y-m-d H:i:s")."-".$store[$this->text->getName()].'.pdf';
+            $filename = date("Y-m-d H:i:s")."-PDF-".$store[$this->text->getName()].'.pdf';
             $filePath = public_path($locationStorage.$filename);
             file_put_contents($filePath, $dompdf->output());
-            $list[] = $locationStorage.$filename;
+            $list[] = $filename;
         }
         return $list;
     }
