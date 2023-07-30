@@ -31,6 +31,22 @@ class Search extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function categorySearch(Request $request)
+    {
+        $categorys = array();
+        try {
+            $categorys = $this->accountApi->searchCategory($request);
+            $response = $this->text->getResponseApi($categorys, $this->text->getSuccessSearch());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($categorys, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -38,12 +54,12 @@ class Search extends Controller
      */
     public function store(Request $request)
     {
-        $accounts = array();
+        $catalogs = array();
         try {
-            $accounts = $this->accountApi->searchCatalog($request);
-            $response = $this->text->getResponseApi($accounts, $this->text->getSuccessSearch());
+            $catalogs = $this->accountApi->searchCatalog($request);
+            $response = $this->text->getResponseApi($catalogs, $this->text->getSuccessSearch());
         } catch (Exception $th) {
-            $response = $this->text->getResponseApi($accounts, $th->getMessage());
+            $response = $this->text->getResponseApi($catalogs, $th->getMessage());
         }
         return response()->json($response);
     }

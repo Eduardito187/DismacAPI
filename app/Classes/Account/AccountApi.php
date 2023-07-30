@@ -19,6 +19,7 @@ use App\Models\Mejoras;
 use App\Models\Partner;
 use App\Models\SupportTechnical;
 use App\Classes\Address\AddressApi;
+use App\Models\Category;
 use App\Models\PartnerSession;
 use App\Models\Picture;
 use App\Models\Rol;
@@ -587,6 +588,19 @@ class AccountApi{
             return false;
         }
         return $accountStatus->status;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function searchCategory(Request $request){
+        $param = $request->all()[$this->text->getQuery()];
+        $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
+        $idPartner = $this->getPartnerId($id_Account);
+        $Categorys = Category::select($this->text->getId(),$this->text->getName(),$this->text->getCode())->where($this->text->getIdPartner(), $idPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
+        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->where($this->text->getIdPartner(), $idPartner)->get()->toArray();
+        return $Categorys;
     }
 
     /**
