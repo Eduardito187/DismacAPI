@@ -53,5 +53,8 @@
         width: 200px;
         height: 200px;
         background-color: #ff0000;
+        background-image: url('https://dismacapi.grazcompany.com/storage/dismac_red.png');
+        background-size: cover;
+        background-position: center;
     }
 </style>
