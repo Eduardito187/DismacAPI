@@ -20,15 +20,15 @@ class PluginAccount{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Account $model){
+    public function created(Account $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function updating(Account $model){
+    public function updated(Account $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function deleting(Account $model){
+    public function deleted(Account $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }

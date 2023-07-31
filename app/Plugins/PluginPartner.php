@@ -20,15 +20,15 @@ class PluginPartner{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Partner $model){
+    public function created(Partner $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PARTNER, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function updating(Partner $model){
+    public function updated(Partner $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PARTNER, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function deleting(Partner $model){
+    public function deleted(Partner $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }

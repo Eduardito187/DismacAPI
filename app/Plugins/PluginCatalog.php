@@ -20,15 +20,15 @@ class PluginCatalog{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Catalog $model){
+    public function created(Catalog $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATALOG, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function updating(Catalog $model){
+    public function updated(Catalog $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATALOG, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function deleting(Catalog $model){
+    public function deleted(Catalog $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }

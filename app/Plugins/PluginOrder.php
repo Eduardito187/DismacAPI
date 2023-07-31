@@ -21,11 +21,11 @@ class PluginOrder{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Sales $model){
+    public function created(Sales $model){
         //
     }
 
-    public function updating(Sales $model){
+    public function updated(Sales $model){
         if ($model->status == self::STATUS_CANCEL){
             $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::ORDER_STATUS_CANCEL, $model->id, $model->total);
         }
@@ -34,7 +34,7 @@ class PluginOrder{
         }
     }
 
-    public function deleting(Sales $model){
+    public function deleted(Sales $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }

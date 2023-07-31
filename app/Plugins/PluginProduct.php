@@ -20,15 +20,15 @@ class PluginProduct{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Product $model){
+    public function created(Product $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function updating(Product $model){
+    public function updated(Product $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function deleting(Product $model){
+    public function deleted(Product $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }

@@ -20,15 +20,15 @@ class PluginCategory{
         $this->Analytics = new Analytics();
     }
 
-    public function creating(Category $model){
+    public function created(Category $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATEGORY, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function updating(Category $model){
+    public function updated(Category $model){
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATEGORY, $model->id, self::VALUE_ANALYTICS);
     }
 
-    public function deleting(Category $model){
+    public function deleted(Category $model){
         // Acciones a realizar cuando se actualiza un modelo
     }
 }
