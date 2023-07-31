@@ -36,7 +36,7 @@
 
     .error-message {
         text-align: center;
-        color: #333;
+        color: #fff;
     }
 
     .error-message h1 {
@@ -52,7 +52,7 @@
     .animated-bg {
         width: 200px;
         height: 200px;
-        background-color: #ff0000;
+        background-color: #ec1c24;
         background-image: url('https://dismacapi.grazcompany.com/storage/dismac_red.png');
         background-size: cover;
         background-position: center;
