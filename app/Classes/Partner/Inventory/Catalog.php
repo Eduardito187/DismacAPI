@@ -463,16 +463,17 @@ class Catalog{
             if (is_null($id_category_info)) {
                 $id_category_info = $this->createCateogryInfo($filtros, $id_pos, $url, $sub_category_pos, $landing);
             }
-            Category::where($this->text->getId(), $Category->id)->update([
-                $this->text->getName() => $name,
-                $this->text->getNamePos() => $name,
-                $this->text->getInhitance() => $inheritance,
-                $this->text->getStatus() => $estado,
-                $this->text->getInMenu() => $visible,
-                $this->text->getIdMetadata() => $id_metadata,
-                $this->text->getIdInfoCat() => $id_category_info,
-                $this->text->getUpdated() => $this->date->getFullDate()
-            ]);
+            
+            $Category = Category::where($this->text->getId(), $Category->id)->first();
+            $Category->name = $name;
+            $Category->name_pos = $name;
+            $Category->inheritance = $inheritance;
+            $Category->status = $estado;
+            $Category->in_menu = $visible;
+            $Category->id_metadata = $id_metadata;
+            $Category->id_info_category = $id_category_info;
+            $Category->updated_at = $this->date->getFullDate();
+            $Category->save();
             /*
             $this->setListStore($id_catalog, $Category->id, $id_account, $id_store);
             $this->asignarProductosInCategory($id_catalog, $Category->id, $id_store, $productos);
@@ -531,11 +532,11 @@ class Catalog{
      * @return void
      */
     public function updateCatalogInfo(int|string $id_catalog, string $name, string $code){
-        ModelCatalog::where($this->text->getId(), $id_catalog)->update([
-            $this->text->getName() => $name,
-            $this->text->getCode() => $code,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $ModelCatalog = ModelCatalog::where($this->text->getId(), $id_catalog)->first();
+        $ModelCatalog->name = $name;
+        $ModelCatalog->code = $code;
+        $ModelCatalog->updated_at = $this->date->getFullDate();
+        $ModelCatalog->save();
     }
 
     /**

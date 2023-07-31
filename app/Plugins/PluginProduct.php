@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class PluginProduct{
     const TYPE_ANALYTICS = "Product";
-    const CREATED_PRODUCT = "CREATED_PRODUCT";
+    const creating_PRODUCT = "creating_PRODUCT";
     const UPDATED_PRODUCT = "UPDATED_PRODUCT";
     const VALUE_ANALYTICS = 1;
     /**
@@ -21,9 +21,9 @@ class PluginProduct{
         $this->Analytics = new Analytics();
     }
 
-    public function created(Product $model){
-        Log::info('PRUDUCT CREATED OBSERVER => '.$model->sku);
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
+    public function creating(Product $model){
+        Log::info('PRUDUCT creating OBSERVER => '.$model->sku);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Product $model){

@@ -8,7 +8,7 @@ use App\Models\Account;
 
 class PluginAccount{
     const TYPE_ANALYTICS = "Account";
-    const CREATED_ACCOUNT = "CREATED_ACCOUNT";
+    const creating_ACCOUNT = "creating_ACCOUNT";
     const UPDATED_ACCOUNT = "UPDATED_ACCOUNT";
     const VALUE_ANALYTICS = 1;
     /**
@@ -20,8 +20,8 @@ class PluginAccount{
         $this->Analytics = new Analytics();
     }
 
-    public function created(Account $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
+    public function creating(Account $model){
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Account $model){

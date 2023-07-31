@@ -683,9 +683,11 @@ class Process{
      */
     public function updateProductAttribute(int $id_product, string|int $value, string $attribute){
         Product::where($this->Text->getId(), $id_product)->update([
-            $attribute => $value,
-            $this->Text->getUpdated() => $this->Date->getFullDate()
+            $attribute => $value
         ]);
+        $Product = Product::where($this->Text->getId(), $id_product)->first();
+        $Product->updated_at = $this->Date->getFullDate();
+        $Product->save();
     }
 
     /**
@@ -853,10 +855,10 @@ class Process{
      * @param int $newStock
      */
     public function updateProductStock(int $id_product, int $newStock){
-        Product::where($this->Text->getId(), $id_product)->update([
-            $this->Text->getStock() => $newStock,
-            $this->Text->getUpdated() => $this->Date->getFullDate()
-        ]);
+        $Product = Product::where($this->Text->getId(), $id_product)->first();
+        $Product->stock = $newStock;
+        $Product->updated_at = $this->Date->getFullDate();
+        $Product->save();
     }
 
     /**

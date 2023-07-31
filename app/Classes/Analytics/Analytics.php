@@ -63,10 +63,10 @@ class Analytics{
      * @return void
      */
     public function updateAnalytics(int $id, bool $status){
-        ModelsAnalytics::where($this->text->getId(), $id)->update([
-            $this->text->getStatus() => $status,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $ModelsAnalytics = ModelsAnalytics::where($this->text->getId(), $id)->first();
+        $ModelsAnalytics->status = $status;
+        $ModelsAnalytics->updated_at = $this->date->getFullDate();
+        $ModelsAnalytics->save();
     }
 }
 ?>

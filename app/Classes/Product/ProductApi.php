@@ -186,14 +186,14 @@ class ProductApi{
      * @param int|null $id_Account
      */
     private function updateProductALL(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
-        Product::where($this->text->getId(), $id)->update([
-            $this->text->getName() => $name,
-            $this->text->getIdBrand() => $id_brand,
-            $this->text->getIdClacom() => $id_clacom,
-            $this->text->getIdType() => $id_type,
-            $this->text->getUpdated() => $this->date->getFullDate(),
-            $this->text->getIdPartner() => $id_Account
-        ]);
+        $Product = Product::where($this->text->getId(), $id)->first();
+        $Product->name = $name;
+        $Product->id_brand = $id_brand;
+        $Product->id_clacom = $id_clacom;
+        $Product->id_type = $id_type;
+        $Product->id_partner = $id_Account;
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**
@@ -408,13 +408,14 @@ class ProductApi{
      * @param int|null $id_Account
      */
     private function updateProductRelations(int $id, string $code, string $name, string|null $id_brand, string|null $id_clacom, string|null $id_type, int|null $id_Account){
-        Product::where($this->text->getId(), $id)->update([
-            $this->text->getIdBrand() => $id_brand,
-            $this->text->getIdClacom() => $id_clacom,
-            $this->text->getIdType() => $id_type,
-            $this->text->getUpdated() => $this->date->getFullDate(),
-            $this->text->getIdPartner() => $id_Account
-        ]);
+        $Product = Product::where($this->text->getId(), $id)->first();
+        $Product->name = $name;
+        $Product->id_brand = $id_brand;
+        $Product->id_clacom = $id_clacom;
+        $Product->id_type = $id_type;
+        $Product->id_partner = $id_Account;
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**
@@ -557,10 +558,10 @@ class ProductApi{
      * @param int $stock
      */
     public function updateProductStock(int $id_product, int $stock){
-        Product::where($this->text->getId(), $id_product)->update([
-            $this->text->getStock() => $stock,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Product = Product::where($this->text->getId(), $id_product)->first();
+        $Product->stock = $stock;
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**
@@ -1800,9 +1801,9 @@ class ProductApi{
      * @return void
      */
     private function productUpdate(int $id){
-        Product::where($this->text->getId(), $id)->update([
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Product = Product::where($this->text->getId(), $id)->first();
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**
@@ -1814,10 +1815,10 @@ class ProductApi{
         if ($url == $this->text->getTextNone()){
             $url = null;
         }
-        Product::where($this->text->getId(), $id)->update([
-            $this->text->getUrl() => $url,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Product = Product::where($this->text->getId(), $id)->first();
+        $Product->url = $url;
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**

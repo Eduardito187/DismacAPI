@@ -219,9 +219,9 @@ class PictureApi{
      * @return void
      */
     public function updateProductInformation(int $id_product){
-        Product::where($this->text->getId(), $id_product)->update([
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Product = Product::where($this->text->getId(), $id_product)->first();
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**

@@ -359,10 +359,10 @@ class Import{
      * @return void
      */
     public function updateStatusProcess(int $id, int $status){
-        Process::where($this->text->getId(), $id)->update([
-            $this->text->getStatusColumn() => $status,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Process = Process::where($this->text->getId(), $id)->first();
+        $Process->Status = $status;
+        $Process->updated_at = $this->date->getFullDate();
+        $Process->save();
     }
 
     /**

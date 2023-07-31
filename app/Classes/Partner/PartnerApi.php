@@ -181,9 +181,11 @@ class PartnerApi{
      */
     public function updatePicturePartner(int $id_picture, int $id_partner, string $code){
         Partner::where($this->text->getId(), $id_partner)->update([
-            $code => $id_picture,
-            $this->text->getUpdated() => $this->date->getFullDate()
+            $code => $id_picture
         ]);
+        $Partner = Partner::where($this->text->getId(), $id_partner)->first();
+        $Partner->updated_at = $this->date->getFullDate();
+        $Partner->save();
         return $this->status->getEnable();
     }
 
@@ -575,9 +577,11 @@ class PartnerApi{
      */
     public function updateStatusSales(int $id_sale, string $status){
         $id_Status = $this->getStatusOrderId($status);
-        Sales::where($this->text->getId(), $id_sale)->update([
-            $this->text->getStatus() => $id_Status
-        ]);
+
+        $Sales = Sales::where($this->text->getId(), $id_sale)->first();
+        $Sales->status = $id_Status;
+        $Sales->save();
+
         $this->setHistoryStatusOrder($id_sale, $id_Status);
     }
 
@@ -587,9 +591,10 @@ class PartnerApi{
      * @return void
      */
     public function updatedOrderStatus(int $id_sale, int $id_Status){
-        Sales::where($this->text->getId(), $id_sale)->update([
-            $this->text->getStatus() => $id_Status
-        ]);
+        $Sales = Sales::where($this->text->getId(), $id_sale)->first();
+        $Sales->status = $id_Status;
+        $Sales->updated_at = $this->date->getFullDate();
+        $Sales->save();
         $this->setHistoryStatusOrder($id_sale, $id_Status);
     }
 
@@ -742,10 +747,10 @@ class PartnerApi{
      * @param int $newStock
      */
     public function updateProductStock(int $id_product, int $newStock){
-        Product::where($this->text->getId(), $id_product)->update([
-            $this->text->getStock() => $newStock,
-            $this->text->getUpdated() => $this->date->getFullDate()
-        ]);
+        $Product = Product::where($this->text->getId(), $id_product)->first();
+        $Product->stock = $newStock;
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
     }
 
     /**

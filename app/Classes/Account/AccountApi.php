@@ -638,16 +638,63 @@ class AccountApi{
         $Account = $this->getAccountById($ID);
         if ($Account != null) {
             $time = $this->date->getFullDate();
-            Account::where($this->text->getId(), $ID)->update([
-                $this->text->getUpdated() => $time
-            ]);
-            AccountLogin::where($this->text->getIdAccount(), $ID)->update([
-                $this->text->getStatus() => $status,
-                $this->text->getUpdated() => $time
-            ]);
+
+            $this->updateAccountAt($ID, $time);
+
+            $this->updateAccountLoginStatus($ID, $time, $status);
         }else{
             throw new Exception($this->text->AccountNotExist());
         }
+    }
+
+    /**
+     * @param int $id
+     * @param string $time
+     * @param string $name
+     * @return void
+     */
+    public function updateAccountName(int $id, string $time, string $name){
+        $UpdateAccount = Account::where($this->text->getId(), $id)->first();
+        $UpdateAccount->name = $name;
+        $UpdateAccount->updated_at = $time;
+        $UpdateAccount->save();
+    }
+
+    /**
+     * @param int $id
+     * @param string $time
+     * @return void
+     */
+    public function updateAccountAt(int $id, string $time){
+        $UpdateAccount = Account::where($this->text->getId(), $id)->first();
+        $UpdateAccount->updated_at = $time;
+        $UpdateAccount->save();
+    }
+
+    /**
+     * @param int $id
+     * @param string $time
+     * @param bool $status
+     * @return void
+     */
+    public function updateAccountLoginStatus(int $id, string $time, bool $status){
+        $UpdateAccountLogin = AccountLogin::where($this->text->getIdAccount(), $id)->first();
+        $UpdateAccountLogin->updated_at = $time;
+        $UpdateAccountLogin->status = $status;
+        $UpdateAccountLogin->save();
+    }
+
+    /**
+     * @param int $id
+     * @param string $time
+     * @param string $password
+     * @return void
+     */
+    public function updateAccountLoginPassword(int $id, string $time, string $password){
+        $UpdateAccountLogin = AccountLogin::where($this->text->getIdAccount(), $id)->first();
+        $UpdateAccountLogin->updated_at = $time;
+        $UpdateAccountLogin->password = $password;
+        $UpdateAccountLogin->save();
     }
 
     /**
@@ -684,13 +731,11 @@ class AccountApi{
     public function changeStatusAccount(Account $account, array $cuenta){
         try {
             if ($account != null) {
-                Account::where($this->text->getId(), $account->id)->update([
-                    $this->text->getUpdated() => $this->date->getFullDate()
-                ]);
-                AccountLogin::where($this->text->getIdAccount(), $account->id)->update([
-                    $this->text->getStatus() => $cuenta[$this->text->getStatus()],
-                    $this->text->getUpdated() => $this->date->getFullDate()
-                ]);
+                $time= $this->date->getFullDate();
+
+                $this->updateAccountAt($account->id, $time);
+    
+                $this->updateAccountLoginStatus($account->id, $time, $cuenta[$this->text->getStatus()]);
             }else{
                 throw new Exception($this->text->AccountNotExist());
             }
@@ -792,10 +837,8 @@ class AccountApi{
     public function changeAccountDate(Account $account, array $cuenta){
         try {
             if ($account != null) {
-                Account::where($this->text->getId(), $account->id)->update([
-                    $this->text->getName() => $cuenta[$this->text->getName()],
-                    $this->text->getUpdated() => $this->date->getFullDate()
-                ]);
+                $time = $this->date->getFullDate();
+                $this->updateAccountName($account->id, $cuenta[$this->text->getName()], $time);
             }else{
                 throw new Exception($this->text->AccountNotExist());
             }
@@ -812,13 +855,9 @@ class AccountApi{
     public function changePassword(Account $account, array $cuenta){
         try {
             if ($account != null) {
-                Account::where($this->text->getId(), $account->id)->update([
-                    $this->text->getUpdated() => $this->date->getFullDate()
-                ]);
-                AccountLogin::where($this->text->getIdAccount(), $account->id)->update([
-                    $this->text->getPassword() => $this->encriptionPawd($cuenta[$this->text->getPassword()]),
-                    $this->text->getUpdated() => $this->date->getFullDate()
-                ]);
+                $time = $this->date->getFullDate();
+                $this->updateAccountAt($account->id, $time);
+                $this->updateAccountLoginPassword($account->id, $time, $this->encriptionPawd($cuenta[$this->text->getPassword()]));
             }else{
                 throw new Exception($this->text->AccountNotExist());
             }

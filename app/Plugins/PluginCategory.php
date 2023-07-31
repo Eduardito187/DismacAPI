@@ -8,7 +8,7 @@ use App\Models\Category;
 
 class PluginCategory{
     const TYPE_ANALYTICS = "Category";
-    const CREATED_CATEGORY = "CREATED_CATEGORY";
+    const creating_CATEGORY = "creating_CATEGORY";
     const UPDATED_CATEGORY = "UPDATED_CATEGORY";
     const VALUE_ANALYTICS = 1;
     /**
@@ -20,8 +20,8 @@ class PluginCategory{
         $this->Analytics = new Analytics();
     }
 
-    public function created(Category $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATEGORY, $model->id, self::VALUE_ANALYTICS);
+    public function creating(Category $model){
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_CATEGORY, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Category $model){

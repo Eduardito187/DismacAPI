@@ -21,7 +21,7 @@ class PluginOrder{
         $this->Analytics = new Analytics();
     }
 
-    public function created(Sales $model){
+    public function creating(Sales $model){
         //
     }
 
