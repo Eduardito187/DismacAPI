@@ -22,11 +22,12 @@ class PluginProduct{
     }
 
     public function created(Product $model){
+        Log::info('PRUDUCT CREATED OBSERVER => '.$model->sku);
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Product $model){
-        Log::info('PRUDUCT OBSERVER => '.$model->sku);
+        Log::info('PRUDUCT UPDATED OBSERVER => '.$model->sku);
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
