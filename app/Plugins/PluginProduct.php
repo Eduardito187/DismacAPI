@@ -5,6 +5,7 @@ namespace App\Plugins;
 use Illuminate\Database\Eloquent\Observer;
 use App\Classes\Analytics\Analytics;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class PluginProduct{
     const TYPE_ANALYTICS = "Product";
@@ -25,6 +26,7 @@ class PluginProduct{
     }
 
     public function updated(Product $model){
+        Log::info('PRUDUCT OBSERVER => '.$model->sku);
         $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
