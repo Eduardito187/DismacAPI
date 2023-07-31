@@ -1759,8 +1759,10 @@ class ProductApi{
         if (is_null($Product->url)){
             $status = $this->status->getDisable();
             $this->changeStatusProduct($Product->id, $allStore, $status);
+            Log::channel('status_product')->info("SKU ".$Product->sku." DISABLED.");
         }else{
             $this->changeProductStatus($Product->id, $allStore);
+            Log::channel('status_product')->info("SKU ".$Product->sku." ENABLES.");
         }
     }
 
@@ -1773,6 +1775,7 @@ class ProductApi{
         foreach ($Products as $key => $Product) {
             Log::channel('status_product')->info("SKU ".$Product->sku." PROCESS CRON.");
             $this->activateProduct($Product, $allStore);
+            $this->productUpdate($Product->id);
         }
     }
 
