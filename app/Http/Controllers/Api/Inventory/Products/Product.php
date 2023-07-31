@@ -22,27 +22,6 @@ class Product extends Controller
         $this->text       = new Text();
         $this->status     = new Status();
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return response()->json([]);
-    }
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return response()->json([]);
-    }
     
     /**
      * Store a newly created resource in storage.
@@ -219,16 +198,5 @@ class Product extends Controller
             $response = $this->text->getResponseApi(null, $th->getMessage());
         }
         return response()->json($response);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        return response()->json([]);
     }
 }

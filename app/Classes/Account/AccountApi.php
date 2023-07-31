@@ -26,9 +26,23 @@ use App\Models\Picture;
 use App\Models\Rol;
 use App\Models\RolAccount;
 use App\Models\Session;
+use App\Classes\Analytics\Analytics;
 
 class AccountApi{
     const DEFAULT_IMAGE = 3;
+    const TYPE_ANALYTICS_ACCOUNT = "Account";
+    const TYPE_ANALYTICS_COUPON = "Coupon";
+    const TYPE_ANALYTICS_CATEGORY = "Category";
+    const TYPE_ANALYTICS_CATALOG = "Catalog";
+    const SEARCH_ACCOUNT = "SEARCH_ACCOUNT";
+    const SEARCH_ACCOUNT_RESPONSE = "SEARCH_ACCOUNT_RESPONSE";
+    const SEARCH_COUPON = "SEARCH_COUPON";
+    const SEARCH_COUPON_RESPONSE = "SEARCH_COUPON_RESPONSE";
+    const SEARCH_CATEGORY = "SEARCH_CATEGORY";
+    const SEARCH_CATEGORY_RESPONSE = "SEARCH_CATEGORY_RESPONSE";
+    const SEARCH_CATALOG = "SEARCH_CATALOG";
+    const SEARCH_CATALOG_RESPONSE = "SEARCH_CATALOG_RESPONSE";
+    const VALUE_ANALYTICS = 1;
     /**
      * @var Account
      */
@@ -56,7 +70,10 @@ class AccountApi{
     /**
      * @var AddressApi
      */
-    protected $addressApi;
+    protected $addressApi;/**
+     * @var Analytics
+     */
+    protected $Analytics;
 
     public function __construct() {
         $this->date        = new Date();
@@ -64,6 +81,7 @@ class AccountApi{
         $this->text        = new Text();
         $this->partner     = new PartnerApi();
         $this->addressApi  = new AddressApi();
+        $this->Analytics   = new Analytics();
     }
 
     /**
@@ -458,6 +476,7 @@ class AccountApi{
      */
     public function searchAccount(Request $request){
         $param = $request->all()[$this->text->getQuery()];
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_ACCOUNT, self::SEARCH_ACCOUNT, null, $param);
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
         return $this->getAccountSearch($id_Account, $param);
     }
@@ -494,12 +513,15 @@ class AccountApi{
     private function convertAccountArray($accounts){
         $data = array();
         foreach ($accounts as $key => $account) {
-            $data[] = $this->accountToArray($account);
+            $data[] = $this->accountToArray($account, true);
         }
         return $data;
     }
 
-    public function accountToArray($account){
+    public function accountToArray($account, $type = false){
+        if ($type){
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_ACCOUNT, self::SEARCH_ACCOUNT_RESPONSE, $account->id, self::VALUE_ANALYTICS);
+        }
         return array(
             $this->text->getId() => $account->id,
             $this->text->getName() => $account->name,
@@ -597,11 +619,25 @@ class AccountApi{
      */
     public function searchCoupon(Request $request){
         $param = $request->all()[$this->text->getQuery()];
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_COUPON, self::SEARCH_COUPON, null, $param);
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
         $idPartner = $this->getPartnerId($id_Account);
         $Coupons = Coupon::select($this->text->getId(),$this->text->getName(),$this->text->getCouponCode())->where($this->text->getIdPartner(), $idPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
-        orwhere($this->text->getCouponCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->where($this->text->getIdPartner(), $idPartner)->get()->toArray();
-        return $Coupons;
+        orwhere($this->text->getCouponCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->where($this->text->getIdPartner(), $idPartner)->get();
+        return $this->processResponseCoupon($Coupons);
+    }
+
+    private function processResponseCoupon($Coupons){
+        $data = array();
+        foreach($Coupons as $key => $Coupon){
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_COUPON, self::SEARCH_COUPON_RESPONSE, $Coupon->id, self::VALUE_ANALYTICS);
+            $data[] = array(
+                $this->text->getId() => $Coupon->id,
+                $this->text->getName() => $Coupon->name,
+                $this->text->getCouponCode() => $Coupon->coupon_code
+            );
+        }
+        return $data;
     }
 
     /**
@@ -610,11 +646,25 @@ class AccountApi{
      */
     public function searchCategory(Request $request){
         $param = $request->all()[$this->text->getQuery()];
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_CATEGORY, self::SEARCH_CATEGORY, null, $param);
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
         $idPartner = $this->getPartnerId($id_Account);
         $Categorys = Category::select($this->text->getId(),$this->text->getName(),$this->text->getCode())->where($this->text->getIdPartner(), $idPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
-        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->where($this->text->getIdPartner(), $idPartner)->get()->toArray();
-        return $Categorys;
+        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->where($this->text->getIdPartner(), $idPartner)->get();
+        return $this->processResponseCategory($Categorys);
+    }
+
+    private function processResponseCategory($Categorys){
+        $data = array();
+        foreach($Categorys as $key => $Category){
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_CATEGORY, self::SEARCH_CATEGORY_RESPONSE, $Category->id, self::VALUE_ANALYTICS);
+            $data[] = array(
+                $this->text->getId() => $Category->id,
+                $this->text->getName() => $Category->name,
+                $this->text->getCode() => $Category->code
+            );
+        }
+        return $data;
     }
 
     /**
@@ -623,11 +673,25 @@ class AccountApi{
      */
     public function searchCatalog(Request $request){
         $param = $request->all()[$this->text->getQuery()];
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_CATALOG, self::SEARCH_CATALOG, null, $param);
         $id_Account = $this->getAccountToken($request->header($this->text->getAuthorization()));
         $CatalogPartner = CatalogPartner::select($this->text->getIdCatalog())->where($this->text->getIdPartner(), $this->getPartnerId($id_Account))->get()->toArray();
         $Catalogs = Catalog::select($this->text->getId(),$this->text->getName(),$this->text->getCode())->whereIn($this->text->getId(), $CatalogPartner)->where($this->text->getName(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->
-        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->whereIn($this->text->getId(), $CatalogPartner)->get()->toArray();
-        return $Catalogs;
+        orwhere($this->text->getCode(), $this->text->getLike(), $this->text->getPercent().$param.$this->text->getPercent())->whereIn($this->text->getId(), $CatalogPartner)->get();
+        return $this->processResponseCatalog($Catalogs);
+    }
+
+    private function processResponseCatalog($Catalogs){
+        $data = array();
+        foreach($Catalogs as $key => $Catalog){
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS_CATALOG, self::SEARCH_CATALOG_RESPONSE, $Catalog->id, self::VALUE_ANALYTICS);
+            $data[] = array(
+                $this->text->getId() => $Catalog->id,
+                $this->text->getName() => $Catalog->name,
+                $this->text->getCode() => $Catalog->code
+            );
+        }
+        return $data;
     }
 
     /**

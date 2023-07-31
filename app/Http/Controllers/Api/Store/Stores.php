@@ -71,17 +71,6 @@ class Stores extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return response()->json([]);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -91,28 +80,5 @@ class Stores extends Controller
     {
         $Store = Store::select($this->text->getId(),$this->text->getName(),$this->text->getCode())->where($this->text->getId(),$id)->get()->toArray();
         return response()->json($Store);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        return response()->json([]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        return response()->json([]);
     }
 }

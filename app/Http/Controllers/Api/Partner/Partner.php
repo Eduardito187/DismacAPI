@@ -98,18 +98,6 @@ class Partner extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, int $id)
-    {
-        return response()->json([]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \Illuminate\Http\Request  $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function campaignPartner(Request $request, int $id)
     {
         $response = array();
@@ -119,29 +107,6 @@ class Partner extends Controller
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
         return response()->json($response);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        return response()->json([]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        return response()->json([]);
     }
 
     /**

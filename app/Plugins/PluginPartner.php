@@ -8,7 +8,7 @@ use App\Models\Partner;
 
 class PluginPartner{
     const TYPE_ANALYTICS = "Partner";
-    const creating_PARTNER = "creating_PARTNER";
+    const CREATED_PARTNER = "CREATED_PARTNER";
     const UPDATED_PARTNER = "UPDATED_PARTNER";
     const VALUE_ANALYTICS = 1;
     /**
@@ -21,7 +21,7 @@ class PluginPartner{
     }
 
     public function creating(Partner $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_PARTNER, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PARTNER, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Partner $model){

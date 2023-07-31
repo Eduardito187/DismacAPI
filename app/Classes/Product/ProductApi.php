@@ -30,6 +30,7 @@ use App\Models\Partner;
 use App\Models\Attribute;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Classes\Analytics\Analytics;
 
 class ProductApi{
     CONST DEFAULT_PRICE = 24948;
@@ -48,6 +49,12 @@ class ProductApi{
     CONST NAME_TRJ         = "TRJ";
     CONST OPLN_TIENDAS_SCE = 23;
     CONST NAME_SCE         = "SCE";
+    const TYPE_ANALYTICS = "Product";
+    const SEARCH_PRODUCT_ADMIN = "SEARCH_PRODUCT_ADMIN";
+    const SEARCH_PRODUCT_STORE = "SEARCH_PRODUCT_STORE";
+    const SEARCH_PRODUCT_ADMIN_RESPONSE = "SEARCH_PRODUCT_ADMIN_RESPONSE";
+    const SEARCH_PRODUCT_STORE_RESPONSE = "SEARCH_PRODUCT_STORE_RESPONSE";
+    const VALUE_ANALYTICS = 1;
     /**
      * @var Date
      */
@@ -68,6 +75,10 @@ class ProductApi{
      * @var PictureApi
      */
     protected $pictureApi;
+    /**
+     * @var Analytics
+     */
+    protected $Analytics;
 
     public function __construct() {
         $this->date         = new Date();
@@ -75,6 +86,7 @@ class ProductApi{
         $this->text         = new Text();
         $this->accountApi   = new AccountApi();
         $this->pictureApi   = new PictureApi();
+        $this->Analytics    = new Analytics();
     }
 
     /**
@@ -271,10 +283,19 @@ class ProductApi{
 
     /**
      * @param Product $Product
+     * @param bool $type
+     * @param int|null $idPartner
      * @return array
      */
-    private function getArrayproduct(Product $Product){
+    private function getArrayproduct(Product $Product, bool $type = false, int|null $idPartner = null){
         $date = $this->date->getFullDate();
+        if ($type){
+            if (is_null($idPartner)){
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN_RESPONSE, $Product->id, self::VALUE_ANALYTICS);
+            }else{
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE_RESPONSE, $Product->id, self::VALUE_ANALYTICS);
+            }
+        }
         return array(
             $this->text->getId() => $Product->id,
             $this->text->getUrl() => $Product->url,
@@ -351,12 +372,15 @@ class ProductApi{
             $idPartner = $this->paramsSearching($query, $this->text->getIdPartner());
             if (!is_null($idPartner)){
                 $id_partner = $idPartner;
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN, null, $searching);
             }
+        }else{
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE, null, $searching);
         }
         $idCategory = $this->paramsSearching($query, $this->text->getIdCategory());
         foreach ($this->searchProduct($searching, $id_partner, $idCategory) as $key => $product) {
             /** @var Product $product */
-            $data[] = $this->getArrayproduct($product);
+            $data[] = $this->getArrayproduct($product, true, $id_partner);
         }
         return $data;
     }

@@ -8,7 +8,7 @@ use App\Models\Product;
 
 class PluginProduct{
     const TYPE_ANALYTICS = "Product";
-    const creating_PRODUCT = "creating_PRODUCT";
+    const CREATED_PRODUCT = "CREATED_PRODUCT";
     const UPDATED_PRODUCT = "UPDATED_PRODUCT";
     const VALUE_ANALYTICS = 1;
     /**
@@ -21,7 +21,7 @@ class PluginProduct{
     }
 
     public function creating(Product $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_PRODUCT, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Product $model){

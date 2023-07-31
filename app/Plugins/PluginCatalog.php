@@ -8,7 +8,7 @@ use App\Models\Catalog;
 
 class PluginCatalog{
     const TYPE_ANALYTICS = "Catalog";
-    const creating_CATALOG = "creating_CATALOG";
+    const CREATED_CATALOG = "CREATED_CATALOG";
     const UPDATED_CATALOG = "UPDATED_CATALOG";
     const VALUE_ANALYTICS = 1;
     /**
@@ -21,7 +21,7 @@ class PluginCatalog{
     }
 
     public function creating(Catalog $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::creating_CATALOG, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATALOG, $model->id, self::VALUE_ANALYTICS);
     }
 
     public function updated(Catalog $model){
