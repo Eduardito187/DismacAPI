@@ -277,6 +277,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('search/inventory', 'index');
         Route::post('search/inventory', 'store');
         Route::post('search/category', 'categorySearch');
+        Route::post('search/coupon', 'couponSearch');
         Route::get('search/inventory/show/{id}', 'show');
         Route::patch('search/inventory/{id}', 'update');
         Route::delete('search/inventory/{id}', 'destroy');

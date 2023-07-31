@@ -34,6 +34,22 @@ class Search extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+    public function couponSearch(Request $request)
+    {
+        $coupons = array();
+        try {
+            $coupons = $this->accountApi->searchCoupon($request);
+            $response = $this->text->getResponseApi($coupons, $this->text->getSuccessSearch());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($coupons, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function categorySearch(Request $request)
     {
         $categorys = array();
