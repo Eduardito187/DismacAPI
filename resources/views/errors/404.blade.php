@@ -12,8 +12,6 @@
                 <p>La página que estás buscando no pudo ser encontrada.</p>
             </div>
             <div class="animated-bg">
-                <!-- Aquí puedes agregar tu animación o efecto -->
-                <!-- Por ejemplo, puedes usar CSS animations o librerías como Animate.css -->
             </div>
         </div>
     </body>
