@@ -14,6 +14,7 @@ use Exception;
 use App\Classes\Picture\PictureApi;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class GeneratePdf{
     CONST DEFAULT_PRICE = 24948;
@@ -168,18 +169,13 @@ class GeneratePdf{
                 }
             }
 
-            $data = [
-                'name' => 'John Doe',
-                'email' => 'john@example.com'
-            ];
-            $html = View::make('welcome', $data)->render();
-            $dompdf = new Dompdf();
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->loadHtml($html);
+            $pdf = PDF::loadView('catalogo', compact('products'));
+
             $filename = date("Y-m-d H:i:s")."-PDF-".$store[$this->text->getName()].'.pdf';
             $list[] = $filename;
             $filePath = public_path($locationStorage.$filename);
-            file_put_contents($filePath, $dompdf->output());
+
+            $pdf->save($filePath);
         }
         return $list;
     }
