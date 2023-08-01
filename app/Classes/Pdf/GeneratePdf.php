@@ -168,6 +168,7 @@ class GeneratePdf{
                     );
                 }
             }
+            $products = array_chunk($products, 12);
 
             $pdf = PDF::loadView('catalogo', compact('products'));
 

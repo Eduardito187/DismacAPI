@@ -11,26 +11,24 @@
             padding: 20px;
         }
 
-        .producto {
+        .cuadrante {
             width: 33.33%;
+            height: 33.33%;
             float: left;
-            padding: 10px;
+            padding: 5px;
             box-sizing: border-box;
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    @foreach ($products->chunk(12) as $pagina)
+    @foreach ($products as $grupo)
         <div class="catalogo-page">
-            @foreach ($pagina->chunk(3) as $fila)
-                <div style="width: 100%; display: flex; justify-content: space-between;">
-                    @foreach ($fila as $producto)
-                        <div class="producto">
-                            <h2>{{ $producto->name }}</h2>
-                            <p>Precio: ${{ $producto->price }}</p>
-                            <!-- Más información del producto -->
-                        </div>
-                    @endforeach
+            @foreach ($grupo as $producto)
+                <div class="cuadrante">
+                    <h2>{{ $producto->name }}</h2>
+                    <p>Precio: ${{ $producto->price }}</p>
+                    <!-- Más información del producto -->
                 </div>
             @endforeach
         </div>
