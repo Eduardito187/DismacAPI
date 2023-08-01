@@ -173,10 +173,10 @@ class GeneratePdf{
             $pdf = PDF::loadView('catalogo', compact('products'));
 
             $filename = date("Y-m-d H:i:s")."-PDF-".$store[$this->text->getName()].'.pdf';
-            $list[] = $filename;
             $filePath = public_path($locationStorage.$filename);
-
             $pdf->save($filePath);
+            $list[] = $filename;
+
         }
         return $list;
     }
