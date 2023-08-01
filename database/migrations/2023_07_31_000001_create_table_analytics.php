@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('key', 50)->nullable();
             $table->string('value')->nullable();
             $table->boolean('status')->nullable();
+            $table->unsignedBigInteger('id_partner')->nullable();
+            $table->foreign('id_partner')->references('id')->on('partner')->onDelete('cascade');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
         });
@@ -35,6 +37,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('analytics');
+        Schema::dropIfExists('analytics', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('id_partner');
+        });
     }
 };
