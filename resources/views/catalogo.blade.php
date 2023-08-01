@@ -26,9 +26,7 @@
         <div class="catalogo-page">
             @foreach ($grupo as $producto)
                 <div class="cuadrante">
-                    <h2>{{ $producto->name }}</h2>
-                    <p>Precio: ${{ $producto->price }}</p>
-                    <!-- Más información del producto -->
+                    {{print_r($producto)}}
                 </div>
             @endforeach
         </div>
