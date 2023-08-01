@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-    @foreach ($productos->chunk(12) as $pagina)
+    @foreach ($products->chunk(12) as $pagina)
         <div class="catalogo-page">
             @foreach ($pagina->chunk(3) as $fila)
                 <div style="width: 100%; display: flex; justify-content: space-between;">
