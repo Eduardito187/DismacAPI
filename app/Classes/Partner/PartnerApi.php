@@ -37,6 +37,7 @@ use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
 use App\Classes\TokenAccess;
+use App\Models\Analytics;
 use App\Models\ProductCategory;
 use App\Models\SocialNetwork;
 use Illuminate\Support\Facades\File;
@@ -1373,6 +1374,13 @@ class PartnerApi{
     public function campaignPartner(int $id){
         $Campaign = $this->getCampaignById($id);
         return $this->getCampaingArray($Campaign);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAnalyticsType(){
+        return Analytics::select($this->text->getId(), $this->text->getType())->distinct()->get()->toArray();
     }
 
     /**

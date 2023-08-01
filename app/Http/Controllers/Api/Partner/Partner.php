@@ -108,7 +108,22 @@ class Partner extends Controller
         }
         return response()->json($response);
     }
-
+    
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listAnalytics(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->partnerApi->getAnalyticsType(), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
     /**
      * @return \Illuminate\Http\Response
      */
