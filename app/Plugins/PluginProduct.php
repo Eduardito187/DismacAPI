@@ -21,11 +21,11 @@ class PluginProduct{
     }
 
     public function creating(Product $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PRODUCT, $model->id, self::VALUE_ANALYTICS, $model->id_partner);
     }
 
     public function updated(Product $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PRODUCT, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PRODUCT, $model->id, self::VALUE_ANALYTICS, $model->id_partner);
     }
 
     public function deleted(Product $model){

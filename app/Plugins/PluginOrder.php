@@ -27,10 +27,10 @@ class PluginOrder{
 
     public function updated(Sales $model){
         if ($model->status == self::STATUS_CANCEL){
-            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::ORDER_STATUS_CANCEL, $model->id, $model->total);
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::ORDER_STATUS_CANCEL, $model->id, $model->total, $model->id_partner);
         }
         if ($model->status == self::STATUS_SUCCESS){
-            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::ORDER_STATUS_SUCCESS, $model->id, $model->total);
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::ORDER_STATUS_SUCCESS, $model->id, $model->total, $model->id_partner);
         }
     }
 

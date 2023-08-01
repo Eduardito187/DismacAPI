@@ -21,11 +21,11 @@ class PluginCatalog{
     }
 
     public function creating(Catalog $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATALOG, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATALOG, $model->id, self::VALUE_ANALYTICS, null);
     }
 
     public function updated(Catalog $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATALOG, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATALOG, $model->id, self::VALUE_ANALYTICS, null);
     }
 
     public function deleted(Catalog $model){

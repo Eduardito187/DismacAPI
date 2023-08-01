@@ -291,9 +291,9 @@ class ProductApi{
         $date = $this->date->getFullDate();
         if ($type){
             if (is_null($idPartner)){
-                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN_RESPONSE, $Product->id, self::VALUE_ANALYTICS);
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN_RESPONSE, $Product->id, self::VALUE_ANALYTICS, null);
             }else{
-                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE_RESPONSE, $Product->id, self::VALUE_ANALYTICS);
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE_RESPONSE, $Product->id, self::VALUE_ANALYTICS, $idPartner);
             }
         }
         return array(
@@ -372,10 +372,10 @@ class ProductApi{
             $idPartner = $this->paramsSearching($query, $this->text->getIdPartner());
             if (!is_null($idPartner)){
                 $id_partner = $idPartner;
-                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN, null, $searching);
+                $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_ADMIN, null, $searching, $idPartner);
             }
         }else{
-            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE, null, $searching);
+            $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::SEARCH_PRODUCT_STORE, null, $searching, null);
         }
         $idCategory = $this->paramsSearching($query, $this->text->getIdCategory());
         foreach ($this->searchProduct($searching, $id_partner, $idCategory) as $key => $product) {

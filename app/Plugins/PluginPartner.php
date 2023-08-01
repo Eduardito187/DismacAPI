@@ -21,11 +21,11 @@ class PluginPartner{
     }
 
     public function creating(Partner $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PARTNER, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_PARTNER, $model->id, self::VALUE_ANALYTICS, $model->id);
     }
 
     public function updated(Partner $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PARTNER, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_PARTNER, $model->id, self::VALUE_ANALYTICS, $model->id);
     }
 
     public function deleted(Partner $model){

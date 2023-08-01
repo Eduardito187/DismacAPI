@@ -21,11 +21,11 @@ class PluginCategory{
     }
 
     public function creating(Category $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATEGORY, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_CATEGORY, $model->id, self::VALUE_ANALYTICS, $model->id_partner);
     }
 
     public function updated(Category $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATEGORY, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_CATEGORY, $model->id, self::VALUE_ANALYTICS, $model->id_partner);
     }
 
     public function deleted(Category $model){

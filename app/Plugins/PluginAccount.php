@@ -21,11 +21,11 @@ class PluginAccount{
     }
 
     public function creating(Account $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::CREATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS, null);
     }
 
     public function updated(Account $model){
-        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS);
+        $this->Analytics->registerAnalytics(null, null, self::TYPE_ANALYTICS, self::UPDATED_ACCOUNT, $model->id, self::VALUE_ANALYTICS, null);
     }
 
     public function deleted(Account $model){

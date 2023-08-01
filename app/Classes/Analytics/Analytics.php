@@ -37,9 +37,10 @@ class Analytics{
      * @param string|null $code
      * @param string|null $key
      * @param string|null $value
+     * @param int|null $id_partner
      * @return void
      */
-    public function registerAnalytics(string|null $channel, string|null $medium, string|null $type, string|null $code, string|null $key, string|null $value){
+    public function registerAnalytics(string|null $channel, string|null $medium, string|null $type, string|null $code, string|null $key, string|null $value, int|null $id_partner){
         try {
             $ModelsAnalytics = new ModelsAnalytics();
             $ModelsAnalytics->channel = $channel == null ? self::DEFAULT_CHANNEL : $channel;
@@ -51,6 +52,7 @@ class Analytics{
             $ModelsAnalytics->status = $this->status->getEnable();
             $ModelsAnalytics->created_at = $this->date->getFullDate();
             $ModelsAnalytics->updated_at = null;
+            $ModelsAnalytics->id_partner = $id_partner;
             $ModelsAnalytics->save();
         } catch (Exception $th) {
             throw new Exception($th->getMessage());
