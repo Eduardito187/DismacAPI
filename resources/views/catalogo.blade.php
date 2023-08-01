@@ -12,7 +12,7 @@
         }
 
         .cuadrante {
-            width: 33.33%;
+            width: 50%;
             height: 33.33%;
             float: left;
             padding: 5px;
