@@ -1380,7 +1380,7 @@ class PartnerApi{
      * @return array
      */
     public function getAnalyticsType(){
-        return Analytics::select($this->text->getId(), $this->text->getType())->distinct()->get()->toArray();
+        return Analytics::select($this->text->getType())->distinct($this->text->getType())->get()->toArray();
     }
 
     /**
