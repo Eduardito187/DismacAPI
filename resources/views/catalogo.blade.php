@@ -5,12 +5,11 @@
     <!-- Agrega los estilos CSS que necesites -->
     <style>
         .catalogo-page {
-            width: calc(100% - 20px);
-            height: calc(100% - 20px);
+            width: 8.5in;
+            height: 11in;
             margin: 0 auto;
             padding: 20px;
         }
-
         .cuadrante {
             width: 50%;
             height: 33.33%;
@@ -26,7 +25,8 @@
         <div class="catalogo-page">
             @foreach ($grupo as $producto)
                 <div class="cuadrante">
-                    {{print_r($producto)}}
+                    {{$producto['name']}}
+                    {{$producto['price']}}
                 </div>
             @endforeach
         </div>
