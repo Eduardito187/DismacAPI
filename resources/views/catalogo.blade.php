@@ -5,8 +5,8 @@
     <!-- Agrega los estilos CSS que necesites -->
     <style>
         .catalogo-page {
-            width: 100%;
-            height: 100%;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
             margin: 0 auto;
             padding: 20px;
         }
