@@ -14,7 +14,7 @@ use Exception;
 use App\Classes\Picture\PictureApi;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class GeneratePdf{
     CONST DEFAULT_PRICE = 24948;
