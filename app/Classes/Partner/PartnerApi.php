@@ -1406,7 +1406,7 @@ class PartnerApi{
             $englishDay = Carbon::parse($result->date)->format('l');
     
             // Obtener el nombre del día en español directamente de la traducción
-            $spanishDay = __('carbon.days.' . strtolower($englishDay));
+            $spanishDay = __(strtolower($englishDay));
 
             echo "Fecha: " . $spanishDay . ", Total: " . $result->total . "\n";
         }
