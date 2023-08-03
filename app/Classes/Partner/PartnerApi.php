@@ -1387,18 +1387,53 @@ class PartnerApi{
      * @param string $code
      * @return array
      */
+    public function generateAnalyticsReportYear(string $type, string $code){
+        $firstDayOfMonth = Carbon::today()->firstOfMonth();
+        $lastDayOfMonth = Carbon::today()->lastOfMonth();
+        $daysOfMonth = [];
+        $currentDay = $firstDayOfMonth->copy();
+        while ($currentDay->lte($lastDayOfMonth)) {
+            $daysOfMonth[] = $currentDay->format($this->text->getDatePhp());
+            $currentDay->addDay();
+        }
+        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
+        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])->groupBy(DB::raw($this->text->getRawCreated()))
+        ->selectRaw($this->text->getSelectedRawCreated())->get();
+
+        $sumByDay = [];
+        foreach ($daysOfMonth as $day) {
+            $sumByDay[$day] = 0;
+        }
+        foreach ($sumValuesByDay as $result) {
+            $sumByDay[$result->date] = $result->total;
+        }
+        foreach ($sumByDay as $date => $total) {
+            $dayNumber = Carbon::parse($date)->day;
+            $response[] = [
+                "day" => $dayNumber,
+                "total" => $total,
+            ];
+        }
+        return $response;
+    }
+
+    /**
+     * @param string $type
+     * @param string $code
+     * @return array
+     */
     public function generateAnalyticsReportMonths(string $type, string $code){
         $firstDayOfMonth = Carbon::today()->firstOfMonth();
         $lastDayOfMonth = Carbon::today()->lastOfMonth();
         $daysOfMonth = [];
         $currentDay = $firstDayOfMonth->copy();
         while ($currentDay->lte($lastDayOfMonth)) {
-            $daysOfMonth[] = $currentDay->format('Y-m-d');
+            $daysOfMonth[] = $currentDay->format($this->text->getDatePhp());
             $currentDay->addDay();
         }
         $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
-        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])
-            ->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
+        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])->groupBy(DB::raw($this->text->getRawCreated()))
+        ->selectRaw($this->text->getSelectedRawCreated())->get();
 
         $sumByDay = [];
         foreach ($daysOfMonth as $day) {

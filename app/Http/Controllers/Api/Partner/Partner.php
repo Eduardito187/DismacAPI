@@ -128,6 +128,22 @@ class Partner extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+    public function generateAnalyticsReportYear(Request $request)
+    {
+        $response = array();
+        try {
+            $params = $request->all();
+            $response = $this->text->getResponseApi($this->partnerApi->generateAnalyticsReportYear($params[$this->text->getType()], $params[$this->text->getCode()]), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function generateAnalyticsReportDays(Request $request)
     {
         $response = array();
