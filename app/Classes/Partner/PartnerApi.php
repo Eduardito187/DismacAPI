@@ -1464,33 +1464,37 @@ class PartnerApi{
     public function generateAnalyticsReportDays(string $type, string $code){
         $today = Carbon::today();
         $firstDayOfWeek = Carbon::today()->startOfWeek();
+
         $sumValuesByDayOfWeek = Analytics::where($this->text->getType(), $type)
             ->where($this->text->getCode(), $code)
             ->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
             ->groupBy(DB::raw($this->text->getRawCreated()))
             ->selectRaw($this->text->getSelectedRawCreated())
             ->get();
-        $sumByDayOfWeek = [
-            'Domingo' => 0,
-            'Lunes' => 0,
-            'Martes' => 0,
-            'Miércoles' => 0,
-            'Jueves' => 0,
-            'Viernes' => 0,
-            'Sábado' => 0
+
+        $allDays = [
+            'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
         ];
+
+        $sumByDayOfWeek = array_fill_keys($allDays, 0);
+
         foreach ($sumValuesByDayOfWeek as $result) {
             $englishDay = Carbon::parse($result->date)->format('l');
             $spanishDay = strtolower($englishDay);
-            $sumByDayOfWeek[$spanishDay] = $result->total;
+            if (array_key_exists($spanishDay, $sumByDayOfWeek)) {
+                $sumByDayOfWeek[$spanishDay] = $result->total;
+            }
         }
+
         $response = [];
+
         foreach ($sumByDayOfWeek as $day => $total) {
             $response[] = [
                 $this->text->getDayParam() => $day,
                 $this->text->getTotal() => $total,
             ];
         }
+
         return $response;
     }
 
