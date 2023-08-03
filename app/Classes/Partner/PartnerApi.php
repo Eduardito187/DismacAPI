@@ -1388,33 +1388,43 @@ class PartnerApi{
      * @return array
      */
     public function generateAnalyticsReportYear(string $type, string $code){
-        $firstDayOfMonth = Carbon::today()->firstOfMonth();
-        $lastDayOfMonth = Carbon::today()->lastOfMonth();
-        $daysOfMonth = [];
-        $currentDay = $firstDayOfMonth->copy();
-        while ($currentDay->lte($lastDayOfMonth)) {
-            $daysOfMonth[] = $currentDay->format($this->text->getDatePhp());
-            $currentDay->addDay();
-        }
-        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
-        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])->groupBy(DB::raw($this->text->getRawCreated()))
-        ->selectRaw($this->text->getSelectedRawCreated())->get();
+        // Obtener el primer día del año actual
+        $firstDayOfYear = Carbon::today()->firstOfYear();
 
-        $sumByDay = [];
-        foreach ($daysOfMonth as $day) {
-            $sumByDay[$day] = 0;
+        // Obtener el último día del año actual
+        $lastDayOfYear = Carbon::today()->lastOfYear();
+
+        // Generar un arreglo con todos los meses del año
+        $monthsOfYear = [];
+        $currentMonth = $firstDayOfYear->copy();
+        while ($currentMonth->lte($lastDayOfYear)) {
+            $monthsOfYear[] = $currentMonth->format('Y-m');
+            $currentMonth->addMonth();
         }
-        foreach ($sumValuesByDay as $result) {
-            $sumByDay[$result->date] = $result->total;
+
+        // Obtener la suma de 'value' por meses del año actual
+        $sumValuesByMonth = Analytics::where('type', $type)
+            ->where('code', $code)
+            ->whereBetween('created_at', [$firstDayOfYear, $lastDayOfYear])
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(value) as total')
+            ->get();
+
+        $sumByMonth = [];
+        foreach ($monthsOfYear as $month) {
+            $sumByMonth[$month] = 0;
         }
-        foreach ($sumByDay as $date => $total) {
-            $dayNumber = Carbon::parse($date)->day;
-            $response[] = [
-                "day" => $dayNumber,
-                "total" => $total,
-            ];
+
+        foreach ($sumValuesByMonth as $result) {
+            $sumByMonth[$result->month] = $result->total;
         }
-        return $response;
+
+        foreach ($sumByMonth as $month => $total) {
+            $monthNumber = Carbon::parse($month)->month;
+
+            echo "Mes: $monthNumber ($month), Total: $total\n";
+        }
+        return [];
     }
 
     /**
