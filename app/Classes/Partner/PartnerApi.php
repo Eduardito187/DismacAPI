@@ -1419,8 +1419,12 @@ class PartnerApi{
         }
 
         foreach ($sumByMonth as $month => $total) {
+
+            $monthNumber = Carbon::parse($result->month)->month;
+
             // Obtener el nombre del mes en español desde las traducciones
-            $spanishMonth = __(strtolower(Carbon::parse($month)->formatLocalized('%B')));
+            $spanishMonth = __('carbon.' . strtolower(Carbon::createFromDate(null, $monthNumber, 1)->format('F')));
+
 
             echo "Mes: $spanishMonth, Total: $total\n";
         }
