@@ -1429,20 +1429,50 @@ class PartnerApi{
      */
     public function generateAnalyticsReportDays(string $type, string $code){
         $today = Carbon::today();
-        $lastWeek = Carbon::today()->subDays($this->text->getSevenValue());
 
-        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)->
-        whereBetween($this->text->getCreated(), [$lastWeek, $today])->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
+        // Obtener el primer día de la semana actual (domingo)
+        $firstDayOfWeek = Carbon::today()->startOfWeek();
 
-        $response = array();
-        foreach ($sumValuesByDay as $result) {
-            $englishDay = Carbon::parse($result->date)->format($this->text->getCarbonParse());
+        // Obtener la suma de 'value' por días de la semana actual
+        $sumValuesByDayOfWeek = Analytics::where($this->text->getType(), $type)
+            ->where($this->text->getCode(), $code)
+            ->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
+            ->groupBy(DB::raw($this->text->getRawCreated()))
+            ->selectRaw($this->text->getSelectedRawCreated())
+            ->get();
+
+        // Crear un arreglo para almacenar la suma de cada día de la semana
+        $sumByDayOfWeek = [
+            'sunday' => 0,
+            'monday' => 0,
+            'tuesday' => 0,
+            'wednesday' => 0,
+            'thursday' => 0,
+            'friday' => 0,
+            'saturday' => 0,
+        ];
+
+        // Actualizar el arreglo con los valores obtenidos de la base de datos
+        foreach ($sumValuesByDayOfWeek as $result) {
+            // Obtener el nombre del día en inglés
+            $englishDay = Carbon::parse($result->date)->format('l');
+            
+            // Obtener el nombre del día en español directamente de la traducción
             $spanishDay = strtolower($englishDay);
-            $response[] = array(
-                "day" => $spanishDay,
-                "total" => $result->total
-            );
+
+            // Actualizar el valor en el arreglo con la suma correspondiente
+            $sumByDayOfWeek[$spanishDay] = $result->total;
         }
+
+        // Imprimir los resultados con el nombre del día en español
+        $response = [];
+        foreach ($sumByDayOfWeek as $day => $total) {
+            $response[] = [
+                "day" => $day,
+                "total" => $total,
+            ];
+        }
+
         return $response;
     }
 
