@@ -39,9 +39,7 @@ use Illuminate\Http\Request;
 use App\Classes\TokenAccess;
 use App\Models\Analytics;
 use App\Models\ProductCategory;
-use App\Models\SocialNetwork;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -1381,6 +1379,33 @@ class PartnerApi{
      */
     public function getAnalyticsType(){
         return Analytics::select($this->text->getType())->distinct($this->text->getType())->get()->toArray();
+    }
+
+    /**
+     * @param string $type
+     * @param string $code
+     * @return array
+     */
+    public function generateAnalyticsReport(string $type, string $code){
+        $today = Carbon::today();
+
+        // Obtener la fecha hace una semana
+        $lastWeek = Carbon::today()->subDays(7);
+
+        // Obtener la suma de 'value' por días de la última semana
+        $sumValuesByDay = Analytics::where('type', $type)
+            ->where('code', $code)
+            ->whereBetween('created_at', [$lastWeek, $today])
+            ->groupBy('created_at')
+            ->orderBy('created_at')
+            ->selectRaw('DATE(created_at) as date, SUM(value) as total')
+            ->get();
+
+        // Imprimir los resultados
+        foreach ($sumValuesByDay as $result) {
+            echo "Fecha: " . $result->date . ", Total: " . $result->total . "\n";
+        }
+        return [];
     }
 
     /**
