@@ -1398,7 +1398,9 @@ class PartnerApi{
         }
         $sumValuesByMonth = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
             ->whereBetween($this->text->getDatePhp(), [$firstDayOfYear, $lastDayOfYear])
-            ->groupBy(DB::raw($this->text->getDateFormatMonth()))->selectRaw($this->text->getDateFormatMonthSum())->get();
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(value) as total')
+            ->get();
 
         $sumByMonth = [];
         foreach ($monthsOfYear as $month) {
@@ -1412,7 +1414,7 @@ class PartnerApi{
         $response = array();
         foreach ($sumByMonth as $month => $total) {
             $monthNumber = Carbon::parse($month)->month;
-            $spanishMonth = __($this->text->getCarbonInitial(). strtolower(Carbon::createFromDate(null, $monthNumber, $this->text->getValueOne())->format($this->text->getFormatTime())));
+            $spanishMonth = __('carbon.' . strtolower(Carbon::createFromDate(null, $monthNumber, 1)->format('F')));
             $response[] = [
                 "month" => $spanishMonth,
                 "total" => $total,
