@@ -1,4 +1,3 @@
-<?php
 return [
     'days' => [
         'sunday' => 'Domingo',
@@ -10,4 +9,3 @@ return [
         'saturday' => 'Sábado',
     ],
 ];
-?>
