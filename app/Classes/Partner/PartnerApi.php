@@ -1387,31 +1387,63 @@ class PartnerApi{
      * @param string $code
      * @return array
      */
-    public function generateAnalyticsReport(string $type, string $code){
-        $today = Carbon::today();
+    public function generateAnalyticsReportMonths(string $type, string $code){
+        $firstDayOfMonth = Carbon::today()->firstOfMonth();
+        $lastDayOfMonth = Carbon::today()->lastOfMonth();
+        $daysOfMonth = [];
+        $currentDay = $firstDayOfMonth->copy();
+        while ($currentDay->lte($lastDayOfMonth)) {
+            $daysOfMonth[] = $currentDay->format('Y-m-d');
+            $currentDay->addDay();
+        }
 
-        // Obtener la fecha hace una semana
-        $lastWeek = Carbon::today()->subDays(7);
-
-        // Obtener la suma de 'value' por días de la última semana
         $sumValuesByDay = Analytics::where('type', $type)
-        ->where('code', $code)
-        ->whereBetween('created_at', [$lastWeek, $today])
-        ->groupBy(DB::raw('DATE(created_at)'))
-        ->selectRaw('DATE(created_at) as date, SUM(value) as total')
-        ->get();
+            ->where('code', $code)
+            ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->selectRaw('DATE(created_at) as date, SUM(value) as total')
+            ->get();
 
-        // Imprimir los resultados
+        $sumByDay = [];
+        foreach ($daysOfMonth as $day) {
+            $sumByDay[$day] = 0;
+        }
+
         foreach ($sumValuesByDay as $result) {
-            // Obtener el nombre del día en inglés
-            $englishDay = Carbon::parse($result->date)->format('l');
-            
-            // Obtener el nombre del día en español directamente de la traducción
-            $spanishDay = __('carbon.' . strtolower($englishDay));
+            $sumByDay[$result->date] = $result->total;
+        }
 
-            echo "Fecha: " . $spanishDay . ", Total: " . $result->total . "\n";
+        foreach ($sumByDay as $date => $total) {
+            $englishDay = Carbon::parse($date)->format('l');
+            $spanishDay = __(strtolower($englishDay));
+
+            echo "Fecha: " . $spanishDay . " ($date), Total: " . $total . "\n";
         }
         return [];
+    }
+
+    /**
+     * @param string $type
+     * @param string $code
+     * @return array
+     */
+    public function generateAnalyticsReportDays(string $type, string $code){
+        $today = Carbon::today();
+        $lastWeek = Carbon::today()->subDays($this->text->getSevenValue());
+
+        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)->
+        whereBetween($this->text->getCreated(), [$lastWeek, $today])->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
+
+        $response = array();
+        foreach ($sumValuesByDay as $result) {
+            $englishDay = Carbon::parse($result->date)->format($this->text->getCarbonParse());
+            $spanishDay = strtolower($englishDay);
+            $response[] = array(
+                "day" => $spanishDay,
+                "total" => $result->total
+            );
+        }
+        return $response;
     }
 
     /**

@@ -402,9 +402,41 @@ class Text{
     CONST MUNICIPIOS          = "municipios";
     CONST ID_MUNICIPALITY_POS = "id_municipality_pos";
     CONST CHECKED             = "check";
+    CONST CARBON_PARSE        = "l";
+    CONST RAW_CREATED         = "DATE(created_at)";
+    CONST SELECTED_RAW_CREATED= "DATE(created_at) as date, SUM(value) as total";
+    CONST SEVEN_VALUE_NUMBER  = 7;
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getSevenValue(){
+        return SELF::SEVEN_VALUE_NUMBER;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawCreated(){
+        return SELF::RAW_CREATED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectedRawCreated(){
+        return SELF::SELECTED_RAW_CREATED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCarbonParse(){
+        return SELF::CARBON_PARSE;
     }
 
     /**

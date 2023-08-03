@@ -128,12 +128,28 @@ class Partner extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function generateAnalyticsReport(Request $request)
+    public function generateAnalyticsReportDays(Request $request)
     {
         $response = array();
         try {
             $params = $request->all();
-            $response = $this->text->getResponseApi($this->partnerApi->generateAnalyticsReport($params[$this->text->getType()], $params[$this->text->getCode()]), $this->text->getQuerySuccess());
+            $response = $this->text->getResponseApi($this->partnerApi->generateAnalyticsReportDays($params[$this->text->getType()], $params[$this->text->getCode()]), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generateAnalyticsReportMonths(Request $request)
+    {
+        $response = array();
+        try {
+            $params = $request->all();
+            $response = $this->text->getResponseApi($this->partnerApi->generateAnalyticsReportMonths($params[$this->text->getType()], $params[$this->text->getCode()]), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
         }
