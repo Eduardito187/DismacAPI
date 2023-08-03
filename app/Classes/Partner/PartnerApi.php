@@ -1414,17 +1414,15 @@ class PartnerApi{
         foreach ($monthsOfYear as $month) {
             $sumByMonth[$month] = 0;
         }
-
+        
         foreach ($sumValuesByMonth as $result) {
-            $sumByMonth[$result->month] = $result->total;
-        }
-
-        foreach ($sumByMonth as $month => $total) {
-            // Obtener el nombre del mes en español usando el formato localizado
-            $spanishMonth = Carbon::parse($month)->format('l');
-            $spanishMonth = strtolower($spanishMonth);
-
-            echo "Mes: $spanishMonth ($month), Total: $total\n";
+            // Obtener el número del mes
+            $monthNumber = Carbon::parse($result->month)->month;
+        
+            // Obtener el nombre del mes en español desde las traducciones
+            $spanishMonth = __('carbon.' . strtolower(Carbon::createFromDate(null, $monthNumber, 1)->format('F')));
+        
+            echo "Mes: $spanishMonth, Total: $result->total\n";
         }
         return [];
     }
