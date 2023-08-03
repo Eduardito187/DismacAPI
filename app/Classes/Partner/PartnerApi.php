@@ -40,6 +40,7 @@ use App\Classes\TokenAccess;
 use App\Models\Analytics;
 use App\Models\ProductCategory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -1394,12 +1395,11 @@ class PartnerApi{
 
         // Obtener la suma de 'value' por días de la última semana
         $sumValuesByDay = Analytics::where('type', $type)
-            ->where('code', $code)
-            ->whereBetween('created_at', [$lastWeek, $today])
-            ->groupBy('created_at')
-            ->orderBy('created_at')
-            ->selectRaw('DATE(created_at) as date, SUM(value) as total')
-            ->get();
+        ->where('code', $code)
+        ->whereBetween('created_at', [$lastWeek, $today])
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->selectRaw('DATE(created_at) as date, SUM(value) as total')
+        ->get();
 
         // Imprimir los resultados
         foreach ($sumValuesByDay as $result) {
