@@ -1482,7 +1482,7 @@ class PartnerApi{
             $englishDay = Carbon::parse($result->date)->format('l');
             $spanishDay = strtolower($englishDay);
             if (array_key_exists($spanishDay, $sumByDayOfWeek)) {
-                $sumByDayOfWeek[$spanishDay] = $result->total;
+                $sumByDayOfWeek[$spanishDay] += $result->total; // Usamos += para sumar los valores por día
             }
         }
 
@@ -1490,13 +1490,14 @@ class PartnerApi{
 
         foreach ($sumByDayOfWeek as $day => $total) {
             $response[] = [
-                $this->text->getDayParam() => $day,
+                $this->text->getDayParam() => ucfirst($day), // Convertimos la primera letra en mayúscula para que quede "Domingo" en lugar de "domingo"
                 $this->text->getTotal() => $total,
             ];
         }
 
         return $response;
     }
+
 
     /**
      * @param string $type
