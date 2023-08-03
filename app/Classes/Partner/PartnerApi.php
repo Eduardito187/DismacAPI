@@ -1403,7 +1403,8 @@ class PartnerApi{
 
         // Imprimir los resultados
         foreach ($sumValuesByDay as $result) {
-            echo "Fecha: " . $result->date . ", Total: " . $result->total . "\n";
+            $date = Carbon::parse($result->date)->formatLocalized('%A');
+            echo "Fecha: " . $date . ", Total: " . $result->total . "\n";
         }
         return [];
     }
