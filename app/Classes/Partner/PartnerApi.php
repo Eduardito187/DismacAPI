@@ -1384,6 +1384,14 @@ class PartnerApi{
     }
 
     /**
+     * @param string $type
+     * @return array
+     */
+    public function getAnalyticsEventsType(string $type){
+        return Analytics::select($this->text->getCode())->where($this->text->getType(), $type)->distinct($this->text->getCode())->get()->toArray();
+    }
+
+    /**
      * @param Partner $partner
      * @return array
      */

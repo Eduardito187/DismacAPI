@@ -116,6 +116,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner/campaignsPartner', 'campaignsPartner');
         Route::get('partner/campaignPartner/{id}', 'campaignPartner');
         Route::get('partner/listAnalytics', 'listAnalytics');
+        Route::post('partner/listAnalyticsEvent', 'listAnalyticsEvent');
     });
 
     Route::controller(SendCode::class)->group(function(){

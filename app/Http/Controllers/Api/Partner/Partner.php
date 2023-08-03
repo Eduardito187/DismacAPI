@@ -125,6 +125,22 @@ class Partner extends Controller
     }
     
     /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listAnalyticsEvent(Request $request)
+    {
+        $response = array();
+        try {
+            $params = $request->all();
+            $response = $this->text->getResponseApi($this->partnerApi->getAnalyticsEventsType($params[$this->text->getType()]), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
      * @return \Illuminate\Http\Response
      */
     public function countAccount(Request $request)
