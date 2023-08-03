@@ -406,8 +406,8 @@ class Text{
     CONST RAW_CREATED         = "DATE(created_at)";
     CONST SELECTED_RAW_CREATED= "DATE(created_at) as date, SUM(value) as total";
     CONST SEVEN_VALUE_NUMBER  = 7;
-    CONST DATE_FORMAT_MONTH   = "DATE_FORMAT(created_at, '%Y-%m')";
-    CONST DATE_FORMAT_MONTH_SU= "DATE_FORMAT(created_at, '%Y-%m') as month, SUM(value) as total";
+    CONST DATE_FORMAT_MONTH   = 'DATE_FORMAT(created_at, "%Y-%m")';
+    CONST DATE_FORMAT_MONTH_SU= 'DATE_FORMAT(created_at, "%Y-%m") as month, SUM(value) as total';
     CONST CARBON_INITIAL_CONCA= "carbon.";
     CONST VALUE_FORMAT_TIME   = "F";
     CONST VALUE_ONE           = 1;
