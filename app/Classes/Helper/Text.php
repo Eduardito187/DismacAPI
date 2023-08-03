@@ -411,9 +411,25 @@ class Text{
     CONST CARBON_INITIAL_CONCA= "carbon.";
     CONST VALUE_FORMAT_TIME   = "F";
     CONST VALUE_ONE           = 1;
+    CONST DAY_PARAM           = "day";
+    CONST MONTH_PARAM         = "month";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getDayParam(){
+        return SELF::DAY_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMonthParma(){
+        return SELF::MONTH_PARAM;
     }
 
     /**

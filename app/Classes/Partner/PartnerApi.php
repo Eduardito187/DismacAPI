@@ -1414,8 +1414,8 @@ class PartnerApi{
             $monthNumber = Carbon::parse($month)->month;
             $spanishMonth = __($this->text->getCarbonInitial(). strtolower(Carbon::createFromDate(null, $monthNumber, $this->text->getValueOne())->format($this->text->getFormatTime())));
             $response[] = [
-                "month" => $spanishMonth,
-                "total" => $total,
+                $this->text->getMonthParma() => $spanishMonth,
+                $this->text->getTotal() => $total,
             ];
         }
         return $response;
@@ -1449,8 +1449,8 @@ class PartnerApi{
         foreach ($sumByDay as $date => $total) {
             $dayNumber = Carbon::parse($date)->day;
             $response[] = [
-                "day" => $dayNumber,
-                "total" => $total,
+                $this->text->getDayParam() => $dayNumber,
+                $this->text->getTotal() => $total,
             ];
         }
         return $response;
@@ -1487,8 +1487,8 @@ class PartnerApi{
         $response = [];
         foreach ($sumByDayOfWeek as $day => $total) {
             $response[] = [
-                "day" => $day,
-                "total" => $total,
+                $this->text->getDayParam() => $day,
+                $this->text->getTotal() => $total,
             ];
         }
         return $response;
