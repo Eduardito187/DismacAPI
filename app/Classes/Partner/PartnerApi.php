@@ -1389,41 +1389,32 @@ class PartnerApi{
      */
     public function generateAnalyticsReportMonths(string $type, string $code){
         $firstDayOfMonth = Carbon::today()->firstOfMonth();
-
-        // Obtener el último día del mes actual
         $lastDayOfMonth = Carbon::today()->lastOfMonth();
-
-        // Generar un arreglo con todos los días del mes
         $daysOfMonth = [];
         $currentDay = $firstDayOfMonth->copy();
         while ($currentDay->lte($lastDayOfMonth)) {
             $daysOfMonth[] = $currentDay->format('Y-m-d');
             $currentDay->addDay();
         }
-
-        // Obtener la suma de 'value' por días del mes actual
-        $sumValuesByDay = Analytics::where('type', $type)
-            ->where('code', $code)
-            ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->selectRaw('DATE(created_at) as date, SUM(value) as total')
-            ->get();
+        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
+        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])
+            ->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
 
         $sumByDay = [];
         foreach ($daysOfMonth as $day) {
             $sumByDay[$day] = 0;
         }
-
         foreach ($sumValuesByDay as $result) {
             $sumByDay[$result->date] = $result->total;
         }
-
         foreach ($sumByDay as $date => $total) {
-            $spanishMonth = __(Carbon::parse($date)->format('F'));
-
-            echo "Fecha: " . $spanishMonth . " ($date), Total: " . $total . "\n";
+            $dayNumber = Carbon::parse($date)->day;
+            $response[] = [
+                "day" => $dayNumber,
+                "total" => $total,
+            ];
         }
-        return [];
+        return $response;
     }
 
     /**
