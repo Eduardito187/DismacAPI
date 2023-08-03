@@ -1388,7 +1388,6 @@ class PartnerApi{
      * @return array
      */
     public function generateAnalyticsReportYear(string $type, string $code){
-        // Obtener el primer día del año actual
         $firstDayOfYear = Carbon::today()->firstOfYear();
 
         // Obtener el último día del año actual
@@ -1414,15 +1413,16 @@ class PartnerApi{
         foreach ($monthsOfYear as $month) {
             $sumByMonth[$month] = 0;
         }
-        
+
         foreach ($sumValuesByMonth as $result) {
-            // Obtener el número del mes
-            $monthNumber = Carbon::parse($result->month)->month;
-        
+            $sumByMonth[$result->month] = $result->total;
+        }
+
+        foreach ($sumByMonth as $month => $total) {
             // Obtener el nombre del mes en español desde las traducciones
-            $spanishMonth = __('carbon.' . strtolower(Carbon::createFromDate(null, $monthNumber, 1)->format('F')));
-        
-            echo "Mes: $spanishMonth, Total: $result->total\n";
+            $spanishMonth = __(strtolower(Carbon::parse($month)->formatLocalized('%B')));
+
+            echo "Mes: $spanishMonth, Total: $total\n";
         }
         return [];
     }
