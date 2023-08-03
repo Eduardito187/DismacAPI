@@ -406,9 +406,49 @@ class Text{
     CONST RAW_CREATED         = "DATE(created_at)";
     CONST SELECTED_RAW_CREATED= "DATE(created_at) as date, SUM(value) as total";
     CONST SEVEN_VALUE_NUMBER  = 7;
+    CONST DATE_FORMAT_MONTH   = "DATE_FORMAT(created_at, '%Y-%m')";
+    CONST DATE_FORMAT_MONTH_SU= "DATE_FORMAT(created_at, '%Y-%m') as month, SUM(value) as total";
+    CONST CARBON_INITIAL_CONCA= "carbon.";
+    CONST VALUE_FORMAT_TIME   = "F";
+    CONST VALUE_ONE           = 1;
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getValueOne(){
+        return SELF::VALUE_ONE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCarbonInitial(){
+        return SELF::CARBON_INITIAL_CONCA;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormatTime(){
+        return SELF::VALUE_FORMAT_TIME;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormatMonth(){
+        return SELF::DATE_FORMAT_MONTH;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormatMonthSum(){
+        return SELF::DATE_FORMAT_MONTH_SU;
     }
 
     /**
