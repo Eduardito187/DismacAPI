@@ -1389,7 +1389,11 @@ class PartnerApi{
      */
     public function generateAnalyticsReportMonths(string $type, string $code){
         $firstDayOfMonth = Carbon::today()->firstOfMonth();
+
+        // Obtener el último día del mes actual
         $lastDayOfMonth = Carbon::today()->lastOfMonth();
+
+        // Generar un arreglo con todos los días del mes
         $daysOfMonth = [];
         $currentDay = $firstDayOfMonth->copy();
         while ($currentDay->lte($lastDayOfMonth)) {
@@ -1397,6 +1401,7 @@ class PartnerApi{
             $currentDay->addDay();
         }
 
+        // Obtener la suma de 'value' por días del mes actual
         $sumValuesByDay = Analytics::where('type', $type)
             ->where('code', $code)
             ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
@@ -1414,10 +1419,9 @@ class PartnerApi{
         }
 
         foreach ($sumByDay as $date => $total) {
-            $englishDay = Carbon::parse($date)->format('l');
-            $spanishDay = __(strtolower($englishDay));
+            $spanishMonth = __(Carbon::parse($date)->format('F'));
 
-            echo "Fecha: " . $spanishDay . " ($date), Total: " . $total . "\n";
+            echo "Fecha: " . $spanishMonth . " ($date), Total: " . $total . "\n";
         }
         return [];
     }
@@ -1429,19 +1433,13 @@ class PartnerApi{
      */
     public function generateAnalyticsReportDays(string $type, string $code){
         $today = Carbon::today();
-
-        // Obtener el primer día de la semana actual (domingo)
         $firstDayOfWeek = Carbon::today()->startOfWeek();
-
-        // Obtener la suma de 'value' por días de la semana actual
         $sumValuesByDayOfWeek = Analytics::where($this->text->getType(), $type)
             ->where($this->text->getCode(), $code)
             ->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
             ->groupBy(DB::raw($this->text->getRawCreated()))
             ->selectRaw($this->text->getSelectedRawCreated())
             ->get();
-
-        // Crear un arreglo para almacenar la suma de cada día de la semana
         $sumByDayOfWeek = [
             'Domingo' => 0,
             'Lunes' => 0,
@@ -1451,21 +1449,11 @@ class PartnerApi{
             'Viernes' => 0,
             'Sábado' => 0
         ];
-
-        // Actualizar el arreglo con los valores obtenidos de la base de datos
         foreach ($sumValuesByDayOfWeek as $result) {
-            // Obtener el nombre del día en inglés
             $englishDay = Carbon::parse($result->date)->format('l');
-            
-            // Obtener el nombre del día en español directamente de la traducción
             $spanishDay = strtolower($englishDay);
-            echo $spanishDay."-";
-
-            // Actualizar el valor en el arreglo con la suma correspondiente
             $sumByDayOfWeek[$spanishDay] = $result->total;
         }
-
-        // Imprimir los resultados con el nombre del día en español
         $response = [];
         foreach ($sumByDayOfWeek as $day => $total) {
             $response[] = [
@@ -1473,7 +1461,6 @@ class PartnerApi{
                 "total" => $total,
             ];
         }
-
         return $response;
     }
 
