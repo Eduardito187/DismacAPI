@@ -1443,13 +1443,13 @@ class PartnerApi{
 
         // Crear un arreglo para almacenar la suma de cada día de la semana
         $sumByDayOfWeek = [
-            'sunday' => 0,
-            'monday' => 0,
-            'tuesday' => 0,
-            'wednesday' => 0,
-            'thursday' => 0,
-            'friday' => 0,
-            'saturday' => 0,
+            'Domingo' => 0,
+            'Lunes' => 0,
+            'Martes' => 0,
+            'Miércoles' => 0,
+            'Jueves' => 0,
+            'Viernes' => 0,
+            'Sábado' => 0
         ];
 
         // Actualizar el arreglo con los valores obtenidos de la base de datos
