@@ -1403,10 +1403,11 @@ class PartnerApi{
 
         // Imprimir los resultados
         foreach ($sumValuesByDay as $result) {
+            // Obtener el nombre del día en inglés
             $englishDay = Carbon::parse($result->date)->format('l');
-    
+            
             // Obtener el nombre del día en español directamente de la traducción
-            $spanishDay = __(strtolower($englishDay));
+            $spanishDay = __('carbon.' . strtolower($englishDay));
 
             echo "Fecha: " . $spanishDay . ", Total: " . $result->total . "\n";
         }
