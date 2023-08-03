@@ -1459,6 +1459,7 @@ class PartnerApi{
             
             // Obtener el nombre del día en español directamente de la traducción
             $spanishDay = strtolower($englishDay);
+            echo $spanishDay."-";
 
             // Actualizar el valor en el arreglo con la suma correspondiente
             $sumByDayOfWeek[$spanishDay] = $result->total;
