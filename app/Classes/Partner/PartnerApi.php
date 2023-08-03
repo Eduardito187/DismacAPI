@@ -1389,19 +1389,13 @@ class PartnerApi{
      */
     public function generateAnalyticsReportYear(string $type, string $code){
         $firstDayOfYear = Carbon::today()->firstOfYear();
-
-        // Obtener el último día del año actual
         $lastDayOfYear = Carbon::today()->lastOfYear();
-
-        // Generar un arreglo con todos los meses del año
         $monthsOfYear = [];
         $currentMonth = $firstDayOfYear->copy();
         while ($currentMonth->lte($lastDayOfYear)) {
             $monthsOfYear[] = $currentMonth->format('Y-m');
             $currentMonth->addMonth();
         }
-
-        // Obtener la suma de 'value' por meses del año actual
         $sumValuesByMonth = Analytics::where('type', $type)
             ->where('code', $code)
             ->whereBetween('created_at', [$firstDayOfYear, $lastDayOfYear])
@@ -1413,23 +1407,21 @@ class PartnerApi{
         foreach ($monthsOfYear as $month) {
             $sumByMonth[$month] = 0;
         }
-
         foreach ($sumValuesByMonth as $result) {
-            // Obtener el mes y el valor de la base de datos
             $month = $result->month;
             $total = $result->total;
-
-            // Reemplazar el valor en $sumByMonth con el valor de la base de datos
             $sumByMonth[$month] = $total;
         }
-
+        $response = array();
         foreach ($sumByMonth as $month => $total) {
             $monthNumber = Carbon::parse($month)->month;
             $spanishMonth = __('carbon.' . strtolower(Carbon::createFromDate(null, $monthNumber, 1)->format('F')));
-
-            echo "Mes: $spanishMonth, Total: $total\n";
+            $response[] = [
+                "month" => $spanishMonth,
+                "total" => $total,
+            ];
         }
-        return [];
+        return $response;
     }
 
     /**
