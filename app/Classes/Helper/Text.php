@@ -419,9 +419,17 @@ class Text{
     CONST ID_MINICUOTA        = "id_minicuota";
     CONST RUN_AHORA           = "AHORA";
     CONST ID_FAMILY           = "id_family";
+    CONST Type_Param          = "Type";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeParam(){
+        return SELF::Type_Param;
     }
 
     /**

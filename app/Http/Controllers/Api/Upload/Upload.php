@@ -56,7 +56,7 @@ class Upload extends Controller
         try {
             $params = $request->all();
             $response = $this->text->getResponseApi(
-                $params[$this->text->getType()] == $this->text->getFotos() ? $this->PartnerApi->uploadZipPicture($request) :$this->Import->setActionProgram($request),
+                $params[$this->text->getTypeParam()] == $this->text->getFotos() ? $this->PartnerApi->uploadZipPicture($request) :$this->Import->setActionProgram($request),
                 $this->text->getQuerySuccess()
             );
         } catch (Exception $th) {
