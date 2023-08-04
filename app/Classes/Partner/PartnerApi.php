@@ -1450,13 +1450,10 @@ class PartnerApi{
             $sumByWeek[$weekNumber] += $result->total;
         }
     
-        // Obtener nombres de las semanas usando el archivo de traducción
-        $spanishWeeks = Lang::get('carbon.weeks');
-    
         $response = [];
     
         foreach ($sumByWeek as $weekNumber => $total) {
-            $weekName = $spanishWeeks['week'] . ' ' . $weekNumber;
+            $weekName = 'Semana ' . $weekNumber;
             $response[] = [
                 $this->text->getWeekParam() => $weekName,
                 $this->text->getTotal() => $total,
