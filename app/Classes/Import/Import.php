@@ -206,6 +206,7 @@ class Import{
             }else{
                 $this->validateHeadersCsv($Process, $this->DataExcel[0]);
                 $this->validateDocumentFile($Process, $this->DataExcel);
+                Log::channel($this->text->getProcessRun())->info("DataExcel => ".json_encode($this->DataExcel));
                 $this->saveProcessCron();
             }
         }else{
