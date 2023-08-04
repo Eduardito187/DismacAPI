@@ -1344,7 +1344,34 @@ class PartnerApi{
      * @return array
      */
     public function getWarehousesList(Partner $partner){
+        $listWh = Warehouse::all();
+        $data = array();
+        foreach ($listWh as $wh) {
+            $data[] = array(
+                $this->text->getId() => $wh->id,
+                $this->text->getName() => $wh->name,
+                $this->text->getCode() => $wh->code,
+                $this->text->getBase() => $wh->base,
+                $this->text->getAlmacen() => $wh->almacen,
+                $this->text->getStatus() => $wh->status,
+                $this->text->getCity() => $this->getMunicipality($wh->MunicipalityPos)
+            );
+        }
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMunicipality($MunicipalityPos){
+        if (!$MunicipalityPos){
+            return null;
+        }
+        return array(
+            $this->text->getId() => $MunicipalityPos->id,
+            $this->text->getName() => $MunicipalityPos->name,
+            $this->text->getStatus() => $MunicipalityPos->status
+        );
     }
     
     /**
