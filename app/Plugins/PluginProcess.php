@@ -14,12 +14,16 @@ class PluginProcess{
 
     public function __construct() {
         $this->Import = new Import();
-    }
+    } 
 
-    public function creating(Process $model){
+    public function created(Process $model){
         if ($model->Ejecucion == self::PROCESS_AHORA){
             $this->Import->processApply($model);
         }
+    }
+
+    public function creating(Process $model){
+        // Acciones a realizar cuando se actualiza un modelo
     }
 
     public function updated(Process $model){
