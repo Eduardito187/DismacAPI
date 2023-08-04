@@ -1357,7 +1357,7 @@ class PartnerApi{
                 $this->text->getCity() => $this->getMunicipality($wh->MunicipalityPos)
             );
         }
-        return [];
+        return $data;
     }
 
     /**
