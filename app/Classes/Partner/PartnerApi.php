@@ -1468,7 +1468,7 @@ class PartnerApi{
         $sumValuesByDayOfWeek = Analytics::where($this->text->getType(), $type)
             ->where($this->text->getCode(), $code)->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
             ->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
-        $spanishDays = Lang::get('carbon'); // Carga el archivo de traducción carbon.php
+        $spanishDays = Lang::get('carbon')["days"];
 
         $sumByDayOfWeek = array_fill_keys(array_values($spanishDays), 0);
     
