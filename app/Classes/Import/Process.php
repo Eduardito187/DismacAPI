@@ -376,6 +376,7 @@ class Process{
      */
     public function saveProcess(){
         foreach ($this->Data as $key => $row) {
+            Log::channel($this->Text->getProcessRun())->info("row => ".json_encode($row));
             $this->changeRow($row);
         }
     }
