@@ -18,6 +18,7 @@ use App\Models\Warehouse;
 use App\Classes\Product\ProductApi;
 use App\Models\ProductWarehouse;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class Process{
     const SCZ = "SCZ";
@@ -434,6 +435,8 @@ class Process{
      */
     public function updateFamily(array $defaultValues, array $row, int $id_product){
         $family = $this->getCodeParam($row, $this->Text->getFamilyApi());
+        Log::info("family => ".$family);
+        Log::info("id_product => ".$id_product);
         if (!is_null($family)){
             $this->ProductApi->productUpdateFamily($id_product, $family);
         }
