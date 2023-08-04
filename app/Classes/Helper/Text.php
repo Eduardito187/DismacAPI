@@ -413,9 +413,17 @@ class Text{
     CONST VALUE_ONE           = 1;
     CONST DAY_PARAM           = "day";
     CONST MONTH_PARAM         = "month";
+    CONST WEEK_PARAM          = "week";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getWeekParam(){
+        return SELF::WEEK_PARAM;
     }
 
     /**

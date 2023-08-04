@@ -1430,30 +1430,39 @@ class PartnerApi{
     public function generateAnalyticsReportMonths(string $type, string $code){
         $firstDayOfMonth = Carbon::today()->firstOfMonth();
         $lastDayOfMonth = Carbon::today()->lastOfMonth();
-        $daysOfMonth = [];
-        $currentDay = $firstDayOfMonth->copy();
-        while ($currentDay->lte($lastDayOfMonth)) {
-            $daysOfMonth[] = $currentDay->format($this->text->getDatePhp());
-            $currentDay->addDay();
+    
+        // Obtener el número de la primera semana del mes y el número de la última semana del mes
+        $firstWeekOfMonth = $firstDayOfMonth->weekOfYear;
+        $lastWeekOfMonth = $lastDayOfMonth->weekOfYear;
+    
+        $sumValuesByWeek = Analytics::where($this->text->getType(), $type)
+            ->where($this->text->getCode(), $code)
+            ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])
+            ->groupBy(DB::raw($this->text->getRawCreated()))
+            ->selectRaw($this->text->getSelectedRawCreated())
+            ->get();
+    
+        // Inicializar array para cada semana del mes con total cero
+        $sumByWeek = array_fill_keys(range($firstWeekOfMonth, $lastWeekOfMonth), 0);
+    
+        foreach ($sumValuesByWeek as $result) {
+            $weekNumber = Carbon::parse($result->date)->weekOfYear;
+            $sumByWeek[$weekNumber] += $result->total;
         }
-        $sumValuesByDay = Analytics::where($this->text->getType(), $type)->where($this->text->getCode(), $code)
-        ->whereBetween($this->text->getCreated(), [$firstDayOfMonth, $lastDayOfMonth])->groupBy(DB::raw($this->text->getRawCreated()))
-        ->selectRaw($this->text->getSelectedRawCreated())->get();
-
-        $sumByDay = [];
-        foreach ($daysOfMonth as $day) {
-            $sumByDay[$day] = 0;
-        }
-        foreach ($sumValuesByDay as $result) {
-            $sumByDay[$result->date] = $result->total;
-        }
-        foreach ($sumByDay as $date => $total) {
-            $dayNumber = Carbon::parse($date)->day;
+    
+        // Obtener nombres de las semanas usando el archivo de traducción
+        $spanishWeeks = Lang::get('carbon.weeks');
+    
+        $response = [];
+    
+        foreach ($sumByWeek as $weekNumber => $total) {
+            $weekName = $spanishWeeks['week'] . ' ' . $weekNumber;
             $response[] = [
-                $this->text->getDayParam() => $dayNumber,
+                $this->text->getWeekParam() => $weekName,
                 $this->text->getTotal() => $total,
             ];
         }
+    
         return $response;
     }
 
