@@ -1453,7 +1453,7 @@ class PartnerApi{
         $response = [];
     
         foreach ($sumByWeek as $weekNumber => $total) {
-            $weekName = $this->text->getSemana().$weekNumber;
+            $weekName = $this->text->getWeek().$weekNumber;
 
             $response[] = [
                 $this->text->getWeekParam() => $weekName,
