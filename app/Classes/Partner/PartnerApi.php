@@ -1341,6 +1341,27 @@ class PartnerApi{
 
     /**
      * @param Partner $partner
+     * @return array
+     */
+    public function getWarehousesList(Partner $partner){
+        return [];
+    }
+    
+    /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function getStoresList(Partner $partner){
+        $lists = StorePartner::where($this->text->getIdPartner(), $partner->id)->get();
+        $data = array();
+        foreach ($lists as $store) {
+            $data[] = $store->Store->toArray();
+        }
+        return $data;
+    }
+
+    /**
+     * @param Partner $partner
      * @return int
      */
     public function countSocialNetworkPartner(Partner $partner){

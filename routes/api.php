@@ -120,6 +120,8 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::post('partner/generateAnalyticsReportDays', 'generateAnalyticsReportDays');
         Route::post('partner/generateAnalyticsReportYear', 'generateAnalyticsReportYear');
         Route::post('partner/generateAnalyticsReportMonths', 'generateAnalyticsReportMonths');
+        Route::get('partner/getWarehousesList', 'getWarehousesList');
+        Route::get('partner/getStoresList', 'getStoresList');
     });
 
     Route::controller(SendCode::class)->group(function(){
