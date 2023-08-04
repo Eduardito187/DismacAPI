@@ -347,7 +347,10 @@ class Import{
         $DataCsv = array();
         if (($open = fopen($path, "r")) !== FALSE) {
             while (($data = fgetcsv($open, 1000, ";")) !== FALSE) {
-                $DataCsv[] = $data;
+                $cleanedData = array_map(function ($item) {
+                    return str_replace("\r", "", $item);
+                }, $data);
+                $DataCsv[] = $cleanedData;
             }
             fclose($open);
         }
