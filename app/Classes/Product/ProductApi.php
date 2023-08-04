@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Clacom;
 use App\Models\MiniCuota;
+use App\Models\Families;
 use App\Models\ProductMinicuotaStore;
 use App\Models\ProductStoreStatus;
 use App\Models\ProductType;
@@ -1835,6 +1836,30 @@ class ProductApi{
         $Product = Product::where($this->text->getId(), $id)->first();
         $Product->updated_at = $this->date->getFullDate();
         $Product->save();
+    }
+
+    /**
+     * @param int $id
+     * @param string|null $family
+     * @return void
+     */
+    public function productUpdateFamily(int $id, string|null $family){
+        $Product = Product::where($this->text->getId(), $id)->first();
+        $Product->id_family = $family == null ? $family : $this->getFamilyId($family);
+        $Product->updated_at = $this->date->getFullDate();
+        $Product->save();
+    }
+
+    /**
+     * @param string $family
+     * @return null|int
+     */
+    public function getFamilyId(string $family){
+        $family = Families::where($this->text->getCode(), $family)->first();
+        if (!$family){
+            return null;
+        }
+        return $family->id;
     }
 
     /**

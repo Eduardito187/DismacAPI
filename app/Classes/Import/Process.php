@@ -26,6 +26,7 @@ class Process{
     const ID_CBA = 3;
     const LPZ = "LPZ";
     const ID_LPZ = 1;
+    const FAMILY = "Family";
     const PRODUCT = "Product";
     const STOCK = "Stock";
     const ESTADOS = "Estados";
@@ -159,6 +160,8 @@ class Process{
             $this->Attributes = $this->loadCategoryProduct();
         } else if ($this->Type == self::PRECIOS) {
             $this->Attributes = $this->loadPricesProduct();
+        } else if ($this->Type == self::FAMILY) {
+            $this->Attributes = $this->loadFamilyProduct();
         }
         $this->getAllStore();
         $this->setProductBaseWarehouse();
@@ -189,6 +192,16 @@ class Process{
             $this->Text->getCategory() => $this->Text->getInt(),
             $this->Text->getStore() => $this->Text->getString(),
             $this->Text->getIdCatalog() => $this->Text->getInt()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function loadFamilyProduct(){
+        return array(
+            $this->Text->getSku() => $this->Text->getString(),
+            $this->Text->getFamilyApi() => $this->Text->getString()
         );
     }
 
@@ -407,6 +420,22 @@ class Process{
         } else if ($this->Type == self::PRECIOS) {
             $defaultValues = $this->loadPricesProduct();
             $this->updatePrices($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        } else if ($this->Type == self::FAMILY) {
+            $defaultValues = $this->loadFamilyProduct();
+            $this->updateFamily($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
+        }
+    }
+
+    /**
+     * @param array $defaultValues
+     * @param array $row
+     * @param int $id_product
+     * @return void
+     */
+    public function updateFamily(array $defaultValues, array $row, int $id_product){
+        $family = $this->getCodeParam($row, $this->Text->getFamilyApi());
+        if (!is_null($family)){
+            $this->ProductApi->productUpdateFamily($id_product, $family);
         }
     }
 

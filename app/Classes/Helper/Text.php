@@ -417,9 +417,25 @@ class Text{
     CONST SEMANA              = "Semana ";
     CONST WEEK                = "Week ";
     CONST ID_MINICUOTA        = "id_minicuota";
+    CONST RUN_AHORA           = "AHORA";
+    CONST ID_FAMILY           = "id_family";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdFamily(){
+        return SELF::ID_FAMILY;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRunAhora(){
+        return SELF::RUN_AHORA;
     }
 
     /**

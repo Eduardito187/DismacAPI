@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Sales;
+use App\Models\Process;
 use Illuminate\Support\ServiceProvider;
 use App\Plugins\PluginOrder;
 use App\Plugins\PluginProduct;
@@ -15,6 +16,7 @@ use App\Plugins\PluginCatalog;
 use App\Plugins\PluginCategory;
 use App\Plugins\PluginPartner;
 use App\Plugins\PluginAccount;
+use App\Plugins\PluginProcess;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
         Catalog::observe(PluginCatalog::class);
         Partner::observe(PluginPartner::class);
         Account::observe(PluginAccount::class);
+        Process::observe(PluginProcess::class);
     }
 }
