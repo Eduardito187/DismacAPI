@@ -423,8 +423,6 @@ class Process{
             $this->updatePrices($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         } else if ($this->Type == self::FAMILY) {
             $defaultValues = $this->loadFamilyProduct();
-            Log::channel($this->Text->getProcessRun())->info("defaultValues => ".json_encode($defaultValues));
-            Log::channel($this->Text->getProcessRun())->info("row => ".json_encode($row));
             $this->updateFamily($defaultValues, $row[$this->Text->getData()], $row[$this->Text->getId()]);
         }
     }
@@ -437,8 +435,6 @@ class Process{
      */
     public function updateFamily(array $defaultValues, array $row, int $id_product){
         $family = $this->getCodeParam($row, $this->Text->getFamilyApi());
-        Log::channel($this->Text->getProcessRun())->info("family => ".json_encode($family));
-        Log::channel($this->Text->getProcessRun())->info("id_product => ".json_encode($id_product));
         if (!is_null($family)){
             $this->ProductApi->productUpdateFamily($id_product, $family);
         }

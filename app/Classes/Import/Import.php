@@ -231,7 +231,6 @@ class Import{
      * @return void
      */
     public function validateDocumentFile(Process $Process, array $Csv){
-        Log::channel($this->text->getProcessRun())->info("Csv => ".json_encode($Csv));
         for ($i=1; $i < count($Csv); $i++) {
             $this->validateRows($Process, $Csv[$i]);
             $this->Process_Cron->setDataQuery();
