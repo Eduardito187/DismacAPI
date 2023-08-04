@@ -206,7 +206,6 @@ class Import{
             }else{
                 $this->validateHeadersCsv($Process, $this->DataExcel[0]);
                 $this->validateDocumentFile($Process, $this->DataExcel);
-                Log::channel($this->text->getProcessRun())->info("DataExcel => ".json_encode($this->DataExcel));
                 $this->saveProcessCron();
             }
         }else{
@@ -233,6 +232,7 @@ class Import{
      */
     public function validateDocumentFile(Process $Process, array $Csv){
         for ($i=1; $i < count($Csv); $i++) {
+            Log::channel($this->text->getProcessRun())->info("Csv => ".json_encode($Csv[$i]));
             $this->validateRows($Process, $Csv[$i]);
             $this->Process_Cron->setDataQuery();
         }
@@ -246,6 +246,7 @@ class Import{
     public function validateRows(Process $Process, array $Row){
         $id_Product = 0;
         for ($i=0; $i < count($Row); $i++) {
+            Log::channel($this->text->getProcessRun())->info("Row => ".json_encode($Row));
             if ($i == 0){
                 $id_Product = $this->Process_Cron->validateSku($Row[$i], $Process->Partner);
                 if ($id_Product != 0){
