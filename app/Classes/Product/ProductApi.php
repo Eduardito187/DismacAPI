@@ -1305,11 +1305,18 @@ class ProductApi{
     private function setProductMinicuotaStore(int $id_product, int $id_store, int $id_minicuota){
         try {
             if(!is_null($id_store) > 0 && !is_null($id_product) > 0 && !is_null($id_minicuota) > 0){    
-                $MiniCuota = new ProductMinicuotaStore();
-                $MiniCuota->id_store = $id_store;
-                $MiniCuota->id_product = $id_product;
-                $MiniCuota->id_minicuota = $id_minicuota;
-                $MiniCuota->save();
+                $data = ProductMinicuotaStore::where($this->text->getIdStore(), $id_store)->where($this->text->getIdProduct(), $id_product)->first();
+                if (!$data){
+                    $MiniCuota = new ProductMinicuotaStore();
+                    $MiniCuota->id_store = $id_store;
+                    $MiniCuota->id_product = $id_product;
+                    $MiniCuota->id_minicuota = $id_minicuota;
+                    $MiniCuota->save();
+                }else{
+                    ProductMinicuotaStore::where($this->text->getIdProduct(), $id_product)->where($this->text->getIdStore(), $id_store)->update([
+                        $this->text->getIdMinicuota() => $id_minicuota
+                    ]);
+                }
                 return $this->status->getEnable();
             }else{
                 return $this->status->getDisable();

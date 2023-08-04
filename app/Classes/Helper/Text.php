@@ -416,9 +416,17 @@ class Text{
     CONST WEEK_PARAM          = "week";
     CONST SEMANA              = "Semana ";
     CONST WEEK                = "Week ";
+    CONST ID_MINICUOTA        = "id_minicuota";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdMinicuota(){
+        return SELF::ID_MINICUOTA;
     }
 
     /**
