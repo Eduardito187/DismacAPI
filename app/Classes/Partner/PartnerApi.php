@@ -41,6 +41,7 @@ use App\Models\Analytics;
 use App\Models\ProductCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -1465,25 +1466,16 @@ class PartnerApi{
         $today = Carbon::today();
         $firstDayOfWeek = Carbon::today()->startOfWeek();
         $sumValuesByDayOfWeek = Analytics::where($this->text->getType(), $type)
-            ->where($this->text->getCode(), $code)
-            ->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
-            ->groupBy(DB::raw($this->text->getRawCreated()))
-            ->selectRaw($this->text->getSelectedRawCreated())
-            ->get();
-        $sumByDayOfWeek = [
-            'Domingo' => 0,
-            'Lunes' => 0,
-            'Martes' => 0,
-            'Miércoles' => 0,
-            'Jueves' => 0,
-            'Viernes' => 0,
-            'Sábado' => 0
-        ];
+            ->where($this->text->getCode(), $code)->whereBetween($this->text->getCreated(), [$firstDayOfWeek, $today])
+            ->groupBy(DB::raw($this->text->getRawCreated()))->selectRaw($this->text->getSelectedRawCreated())->get();
+        $spanishDays = Lang::get('carbon'); // Carga el archivo de traducción carbon.php
+
+        $sumByDayOfWeek = array_fill_keys(array_values($spanishDays), 0);
+    
         foreach ($sumValuesByDayOfWeek as $result) {
             $englishDay = Carbon::parse($result->date)->format('l');
-            $spanishDay = strtolower($englishDay);
-            echo $spanishDay."-";
-            $sumByDayOfWeek[$spanishDay] = $result->total;
+            $spanishDay = $spanishDays[strtolower($englishDay)]; // Busca el día en el archivo de traducción
+            $sumByDayOfWeek[$spanishDay] += $result->total;
         }
         $response = [];
         foreach ($sumByDayOfWeek as $day => $total) {
