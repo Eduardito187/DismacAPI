@@ -2290,7 +2290,6 @@ class ProductApi{
         foreach ($ProductMinicuotaStore as $key => $minicuota) {
             $res[] = $minicuota->MiniCuota;
         }
-        print_r($res);
         return $res;
     }
 
