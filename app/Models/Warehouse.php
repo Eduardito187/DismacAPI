@@ -13,15 +13,16 @@ class Warehouse extends Model
     protected $table = 'warehouses';
 
     protected $fillable = ['name', 'code', 'base', 'almacen', 'created_at', 'updated_at', 'id_municipality_pos', 'status'];
-    
+
     protected $hidden = ['created_at', 'updated_at'];
 
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'integer';
     public $timestamps = false;
-    
-    public function MunicipalityPos(){
+
+    public function MunicipalityPos()
+    {
         return $this->hasOne(MunicipalityPos::class, 'id', 'id_municipality_pos');
     }
 }

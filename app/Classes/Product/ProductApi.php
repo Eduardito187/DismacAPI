@@ -2360,4 +2360,3 @@ class ProductApi{
         return 0;
     }
 }
-?>
