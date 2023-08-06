@@ -87,14 +87,14 @@ class Notifications{
                 )
             )
         );
-        //print_r($this->getAccessToken());
+        print_r($this->getAccessToken());
         
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '.$this->getAccessToken(),
             'Content-Type' => 'application/json;charset=UTF-8'
         ])->post($fcmEndpoint, $notification);
 
-        print_r($response);
+        //print_r($response);
         
     }
 }
