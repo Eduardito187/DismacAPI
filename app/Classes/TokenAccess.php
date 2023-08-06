@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use App\Models\IntegrationsAPI as ModelIntegrations;
 use App\Models\Account as ModelAccount;
+use App\Models\Partner as ModelPartner;
 use Illuminate\Support\Facades\Log;
 use App\Classes\Helper\Text;
 
@@ -19,10 +20,13 @@ class TokenAccess{
         $this->text  = new Text();
     }
 
+    /**
+     * @return bool
+     */
     public function validateAPI() {
         $validateAPIS = ModelIntegrations::select($this->text->getId())->where($this->text->getToken(), $this->token)->get()->toArray();
         if (count($validateAPIS) == 0) {
-            return $this->getTokenAccount();
+            return $this->getTokenPartner();
         }else{
             return true;
         }
@@ -37,10 +41,25 @@ class TokenAccess{
         }
     }
 
+    /**
+     * @return bool
+     */
     private function getTokenAccount(){
         $validateAccount = ModelAccount::select($this->text->getId())->where($this->text->getToken(), $this->getToken())->get()->toArray();
         if (count($validateAccount) == 0) {
             return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function getTokenPartner(){
+        $validatePartner = ModelPartner::select($this->text->getId())->where($this->text->getToken(), $this->getToken())->get()->toArray();
+        if (count($validatePartner) == 0) {
+            return $this->getTokenAccount();
         }else{
             return true;
         }
