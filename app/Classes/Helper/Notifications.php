@@ -23,8 +23,7 @@ class Notifications{
         
         $notification = [
             'title' => 'Título de la notificación',
-            'body' => 'Cuerpo de la notificación',
-            // Otras opciones de la notificación
+            'body' => 'Cuerpo de la notificación'
         ];
         
         $response = Http::withHeaders([
@@ -34,6 +33,8 @@ class Notifications{
             'registration_ids' => $tokens,
             'notification' => $notification,
         ]);
+
+        print_r($response);
     }
 }
 ?>
