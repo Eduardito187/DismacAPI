@@ -70,7 +70,8 @@ class Notifications{
         ];
 
         $token = $this->getAccessToken();
-        echo $token . "/";
+        print_r($token);
+        echo $token . "";
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
