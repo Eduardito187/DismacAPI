@@ -55,6 +55,26 @@ class Notifications{
     }
 
     public function sendNotificationAndroid(){
+        $serverKey = 'AAAAHaUG26I:APA91bFDOcLu0wTpRsR7PsFoCJJIqYnwh3l6yJBs239HqzZtrWWq7JhzP2SRQQRHOvLeTFSPqfzwgpN7sHcJH8QgETL8u9DnWCCdLWuI-aFFMbT5T5RwbNgp-NJXf-vZXSuGssvvBtrT';
+        $fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
+
+        $tokens = ['e6jAm2RBRhirK4-HSfljnd:APA91bHdU3JEwX0TlHVN6zsFcNQUgRhimYKFePq8RTMZ3i56mOE4ViC_IN6pznbn8cFaHille6wceDh1C1xJJLFGDp9eO6EwsbE9qu7sSGj1_sDQPp-lwfltQvdeApv4oGEUHbs6T79o'];
+
+        $notification = [
+            'title' => 'Título de la notificación',
+            'body' => 'Cuerpo de la notificación'
+        ];
+
+        $response = Http::withHeaders([
+            'Authorization' => 'key=' . $serverKey,
+            'Content-Type' => 'application/json',
+        ])->post($fcmEndpoint, [
+            'registration_ids' => $tokens,
+            'notification' => $notification,
+        ]);
+        print_r($response);
+        /*
+
         $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/modalidad-682cf/messages:send';
 
         $notification = array(
@@ -93,8 +113,7 @@ class Notifications{
             'Authorization' => 'Bearer '.$this->getAccessToken(),
             'Content-Type' => 'application/json;charset=UTF-8'
         ])->post($fcmEndpoint, $notification);
-
-        //print_r($response);
+        */
         
     }
 }
