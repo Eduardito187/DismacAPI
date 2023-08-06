@@ -87,14 +87,14 @@ class Notifications{
                 )
             )
         );
-        print_r($this->getAccessToken());
-        /*
+        //print_r($this->getAccessToken());
+        
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.$this->getAccessToken(),
+            'Authorization' => 'Bearer '.'ya29.c.b0Aaekm1JOh02okj4_7UzMOJnscoRzoWFQge8nd5784LTDdjTpJNtLrXkOxz5tXhUjpJj5el8JmrSbYz42a_mau5f3wrqnyZ27cxC1H_PLAboMdJ75NI9bQlQXPF2B7MgELDy1AkAkLG2zl-O_2YH-lJKa2NNEgp2THMutHSnH1n1aG29qs_91gnUp15mXqV1KlJAv-d2mq8-qwwc-T0-FIa0iIhyQ7qeR10P2jWpZWtlTvQECU8i3RsXbvRib9nJRAcNNtahjd9LwIsTJsmSWh4QFDxrm7SyAuI863T4JPeprmj_BN68osArypqHVaeRJ8q5VG-xCsAL339Pooum1F66ozgJofkhlWoyS5gzz-tQShuIjzfQyl55qFYeuVQsRhv0ywVsgl0_wMQYr1x9V3luqeqehSWUBUR9obs28d6vc9aSYe3OzfIOveXqI8nBI6sycFZRt6qtnjMVromcj95bh5IW3b2oVmkXMp_7M7W_qmv07i8bF2iYIg99B9U6Ri6za_Xwp_B5SSnOqyJ1XQhbJcj_ymbQr2soZyRzVpV5-xoltrewJyXBpRwnYblpsqsv37Is8zmvau1ukbqh_Wc2n-s5iFJvyJ5a_kiYk_X_VXa-RB2wq42WB0ZFhB2f1zdjlgy8e2xlOboB0IRUaw0I1caY1gtXI6Rlw8JOvZem5l9qnWfSddu2WsyW1M5cz2BFxefo54eqWbsWcu2ut0Id7ok9Bb7FomzuWVB1w5X4ax4SObWMOBn500fZMo7U191h-_hxWWm61R7_W8q3ui0jrzO8J_mStcuxrJysYfcs9rdpI8dQ8FxX1mhtvRzI51qM6IpkF9baubX87Fyo21R4k0fiQ5stFV0lW77U-pvqogWl4a17loWUX-sej9Okcr_xmlFOmdl-zMwsXZO-OrSe1vZccORje_pr6fVXQX251oe5va4i6i2qcZ61b9pflObB1zeoSy4b22c7efv5oMxcjo5bBv-Iqu0r3hq-qbOegJg87piISFcZ',
             'Content-Type' => 'application/json; UTF-8'
         ])->post($fcmEndpoint, $notification);
 
         print_r($response);
-        */
+        
     }
 }
