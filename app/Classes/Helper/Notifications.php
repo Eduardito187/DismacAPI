@@ -6,7 +6,7 @@ use App\Classes\Helper\Text;
 use Illuminate\Support\Facades\Http;
 
 class Notifications{
-    const SERVER_KEY_DE_FCM = "BNqTYcanIiF59jll47CKp2tM-4apzHUYMyj7g6tdT-HfYKeL8WtvSSfQ4CALHAjvHbdtA_LbXPiznXv3EpwRubY";
+    const SERVER_KEY_DE_FCM = "d7_8nqTZdm0e-w37HupvhxHUuwR4rZNDE7nMyLeV42c";
     /**
      * @var Text
      */
