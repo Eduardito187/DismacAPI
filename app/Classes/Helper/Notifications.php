@@ -68,7 +68,7 @@ class Notifications{
         'tLYK9tuvGWHO90KTc6MrwgBeAC7TwfDOkAgY7rZCJSBCDUX6hnENoA3XTC7eFYqY' .
         'HKr/JB+YEmY6ouy+dqZCChRSZT4+7UndXWh0gVAKDiQO0nHhE4Tx8mZOhivjsU' .
         '-----END PRIVATE KEY-----';
-        $clientId = 'firebase-adminsdk-9xb4r@modalidad-682cf.iam.gserviceaccount.com';
+        $clientId = '112005420686990628111';
 
         $response = Http::post($accessTokenEndpoint, [
             'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
