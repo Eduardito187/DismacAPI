@@ -55,7 +55,7 @@ class Notifications{
     }
 
     public function sendNotificationAndroid(){
-        $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/modalidad-682cf/messages:send';
+        $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/106428917534849264060/messages:send';
 
         $notification = array(
             "message" => array(
