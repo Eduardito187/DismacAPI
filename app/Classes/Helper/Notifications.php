@@ -76,7 +76,7 @@ class Notifications{
         echo "<-->";
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ya29.c.b0Aaekm1LIqMOqomejABnmX8c1tkswwjpE3fTo1wID2uSsGgongkfrMuYEMiYSo8V0vgKA9jTHHRNGeqp2nopuwWSsj68dz_tR6Zb-8l8dTXrqW6EvpgNouFZtz83TEh8EC8kVjEqAIQxAbiKZm5kLRDLmY3yhT8oWDKOOgzXOHJ8D6XhfKm3e8H-yBXOhkJiYvxnUcxlq5rxiDrPNkilEnMC5p1QrbOOjTgvbJwMlId6URvb-lThiCWLgyXtbs5UGpEARGqNDRqo4xs6PoCmm5lUjrdbOC8Idru539kGrpZa_gZfvcnvpsGjml2nj9XTEUa2sV8111QN339AwtdkXzXai9nW0Uv__kQpojM5zdspz9kviyJqRWWcicVt0vyIaW6qY9m8_oj-z8Z-S5rOt7necZdluyhS1w3ykxRYX2z1g66Zae0OlwzvYIZp9wsBlSBsum9oQvtB0R4iUd3yBs_FIR9jjtWnm7k29x0IOt449t3Mn6qM-0ibZzS1vsy3ROjlRiW5Yneeezz_0J9Qmxzya67eqBc7e7-tim8mXm1Ym5hII1cj58Yqr6yfamd3gS-bujWO7MBnQptlOWh-dOzu26nRFOdpFxX_ujaudQok09qxfZOrFmj4R_8sUjhkuwXc0qMe876_gZc06Q2bFOeZa2vYh07nc7moSjUwOp0k4v4mt01eb_2XZF1tw7c564Fqs1cOrI71fq0uSIJr9-v1Z6B_oWcIWwwI20WueFhBX6vjQ5w51d88ub9M-_RetU9J0fk16kpQiF49qJcQnqcnUj2UO7szcdlajQmjr9FtkyssZwyjs8uv0eFMO_6Xee7b7QkZxu4Inihr83kUpYyXIzctakyjIliYMsUrFzQXbd3-14ZRVVM5fmOdjRFBXVgzcznyn80wt-VoMfb0IWS0hs46IdZbZFMUeZcwzevecrudq_VMMnIq8qkecVVnn1ZYRi2w49shRvS5_WM0iJ4pMu2oxzX9BqB6Mxm57q6ROU1uYblhunn9',
-            'Content-Type' => 'application/json',
+            'Content-Type' => 'application/json; UTF-8'
         ])->post($fcmEndpoint, $notification);
 
         print_r($response);
