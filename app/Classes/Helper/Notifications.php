@@ -75,7 +75,7 @@ class Notifications{
             'assertion' => $this->getTokenAssertion($privateKey, $clientId),
         ]);
 
-        $accessToken = $response->json()['access_token'];
+        return $response->json()['access_token'];
     }
 
     public function sendNotificationAndroid(){
