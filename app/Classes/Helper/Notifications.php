@@ -71,7 +71,7 @@ class Notifications{
 
         $token = $this->getAccessToken();
         print_r($token);
-
+        echo "<-->";
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Content-Type' => 'application/json',
