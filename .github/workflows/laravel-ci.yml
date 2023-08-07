@@ -19,7 +19,7 @@ jobs:
           php-version: 8.1
 
       - name: Clear Composer cache
-        run: composer2 clear-cache
+        run: composer clear-cache
 
 
       - name: Install Composer dependencies
