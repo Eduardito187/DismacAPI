@@ -22,7 +22,7 @@ jobs:
         run: composer clear-cache
 
       - name: Navigate to project directory
-        run: pwd;cd ..;pwd;
+        run: ls -la /home/runner/work/DismacAPI/DismacAPI;pwd;cd ..;ls -la /home/runner/work/DismacAPI;pwd;
 
       - name: Install Composer dependencies
         run: composer install
