@@ -62,7 +62,7 @@ class Partner extends Controller
 
         // Datos de la notificación
         $notificationData = [
-            'to' => 'fofveZuBRLuskqi6YuuPvS:APA91bHN9_iwToKLq6AdvhOcGO0K3sUzhA8X_bEf6qj5UCimtV5FpD91Bs4WCVYxprAnVua9O4-ApZY-jr0pJQfpOCrK1oHWvwEfen62B4VWj4XIf73C3tFjy5l_YCFHUb7FI-kGiHu-', // Reemplaza con el token de registro del dispositivo
+            'token' => 'fofveZuBRLuskqi6YuuPvS:APA91bHN9_iwToKLq6AdvhOcGO0K3sUzhA8X_bEf6qj5UCimtV5FpD91Bs4WCVYxprAnVua9O4-ApZY-jr0pJQfpOCrK1oHWvwEfen62B4VWj4XIf73C3tFjy5l_YCFHUb7FI-kGiHu-', // Reemplaza con el token de registro del dispositivo
             'notification' => [
                 'title' => 'Título de la notificación',
                 'body' => 'Cuerpo de la notificación'
