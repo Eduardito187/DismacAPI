@@ -21,11 +21,6 @@ jobs:
       - name: Clear Composer cache
         run: composer clear-cache
 
-      - name: Navigate to project directory
-        run: ls -la /home/runner/work/DismacAPI/DismacAPI;pwd;cd ..;ls -la /home/runner/work/DismacAPI;pwd;
-
-      - name: Install Composer dependencies
-        run: composer install
-
-      - name: Run database migrations
-        run: php artisan migrate --force
+      - name: Run Post-Deploy Commands
+        run: |
+          sshpass -p 'Abel1234567$' ssh -p 65002 u960392013@149.100.155.148 "cd public_html/DismacAPI/ && composer install;php artisan migrate;"
