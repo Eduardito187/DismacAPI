@@ -55,6 +55,7 @@ class Notifications{
     }
 
     public function sendNotificationAndroid(){
+        /*
         $serverKey = 'AAAAHaUG26I:APA91bFDOcLu0wTpRsR7PsFoCJJIqYnwh3l6yJBs239HqzZtrWWq7JhzP2SRQQRHOvLeTFSPqfzwgpN7sHcJH8QgETL8u9DnWCCdLWuI-aFFMbT5T5RwbNgp-NJXf-vZXSuGssvvBtrT';
         $fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
 
@@ -72,7 +73,8 @@ class Notifications{
             'registration_ids' => $tokens,
             'notification' => $notification,
         ]);
-        print_r($response);
+        */
+        print_r($this->getAccessToken());
         /*
 
         $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send';
