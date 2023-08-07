@@ -81,8 +81,8 @@ class Partner extends Controller
 
         $response = curl_exec($ch);
         curl_close($ch);
-
-        echo 'Respuesta del servidor FCM: ' . $response;
+        echo 'Respuesta del servidor FCM: ';
+        print_r(json_decode($response, true));
 
         $response = array();
         try {
