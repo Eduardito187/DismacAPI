@@ -1382,7 +1382,9 @@ class PartnerApi{
         $lists = StorePartner::where($this->text->getIdPartner(), $partner->id)->get();
         $data = array();
         foreach ($lists as $store) {
-            $data[] = $store->Store->toArray();
+            $ArrayStore = $store->Store->toArray();
+            $ArrayStore["count_warehouse"] = 5;
+            $data[] = $ArrayStore;
         }
         return $data;
     }
