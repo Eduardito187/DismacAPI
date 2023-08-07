@@ -22,7 +22,7 @@ jobs:
         run: composer clear-cache
 
       - name: Navigate to project directory
-        run: ls
+        run: pwd
 
       - name: Install Composer dependencies
         run: composer install
