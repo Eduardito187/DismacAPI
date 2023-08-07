@@ -75,7 +75,7 @@ class Notifications{
         ]);
         print_r($response);
         */
-
+        /*
         $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send';
 
         $notification = array(
@@ -114,6 +114,7 @@ class Notifications{
             'Authorization' => 'Bearer '.$this->getAccessToken(),
             'Content-Type' => 'application/json;charset=UTF-8'
         ])->post($fcmEndpoint, $notification);
+        */
         
         $url = "https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send";
 
