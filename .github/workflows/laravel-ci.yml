@@ -23,7 +23,7 @@ jobs:
 
 
       - name: Install Composer dependencies
-        run: composer2 install
+        run: composer install
 
       - name: Run database migrations
         run: php artisan migrate --force
