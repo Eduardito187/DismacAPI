@@ -1792,6 +1792,30 @@ class PartnerApi{
     }
 
     /**
+     * @param Partner $partner
+     * @return array
+     */
+    public function valuePartnerStores(Partner $partner){
+        $Stores = $this->getAllStoreEntity();
+        $Products = $this->listProductPartnerStock($partner->id);
+        $data = [];
+        try {
+            foreach ($Stores as $s => $store) {    
+                $ArrayStore = $store->toArray();
+                $price = 0;
+                foreach ($Products as $p => $product) {
+                    $price += $this->calculoPriceProduct($store->id, $product->id) * $this->getStockAbsolutePorduct($product->id, $store->id);
+                }
+                $ArrayStore[$this->text->getPrice()] = $price;
+                $data[] = $ArrayStore;
+            }
+        } catch (\Throwable $th) {
+            //
+        }
+        return $data;
+    }
+
+    /**
      * @param int $id_partner
      * @return Product[]
      */

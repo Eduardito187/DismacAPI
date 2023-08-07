@@ -419,6 +419,23 @@ class Partner extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function valuePartnerStores(Request $request)
+    {
+        $response = array();
+        try {
+            $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $response = $this->text->getResponseApi($this->partnerApi->valuePartnerStores($Account->accountPartner->Partner), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function valuePartner(Request $request)
     {
         $response = array();
