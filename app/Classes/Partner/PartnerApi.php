@@ -1383,10 +1383,14 @@ class PartnerApi{
         $data = array();
         foreach ($lists as $store) {
             $ArrayStore = $store->Store->toArray();
-            $ArrayStore["count_warehouse"] = 5;
+            $ArrayStore[$this->text->getCountWarehouse()] = $this->sumWarehouseStore($store->id_store);
             $data[] = $ArrayStore;
         }
         return $data;
+    }
+
+    public function sumWarehouseStore(int $id_store){
+        return ProductWarehouse::where($this->text->getIdStore(), $id_store)->distinct($this->text->getIdWarehouse())->count($this->text->getIdWarehouse());
     }
 
     /**

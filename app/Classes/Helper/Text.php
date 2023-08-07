@@ -420,9 +420,17 @@ class Text{
     CONST RUN_AHORA           = "AHORA";
     CONST ID_FAMILY           = "id_family";
     CONST Type_Param          = "Type";
+    CONST COUND_WAREHOUSE     = "count_warehouse";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountWarehouse(){
+        return SELF::COUND_WAREHOUSE;
     }
 
     /**
