@@ -14,7 +14,6 @@ use App\Classes\Helper\Status;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Classes\Pdf\GeneratePdf;
-use App\Classes\Helper\Notifications;
 
 class Partner extends Controller
 {
@@ -62,8 +61,6 @@ class Partner extends Controller
         $response = array();
         try {
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
-            $Notifications = new Notifications();
-            $Notifications->sendNotificationAndroid();
             $response = $this->text->getResponseApi($this->accountApi->getPartner($Account->accountPartner->Partner), $this->text->getQuerySuccess());
         } catch (Exception $th) {
             $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
