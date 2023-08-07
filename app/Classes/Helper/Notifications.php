@@ -55,71 +55,11 @@ class Notifications{
     }
 
     public function sendNotificationAndroid(){
-        /*
-        $serverKey = 'AAAAHaUG26I:APA91bFDOcLu0wTpRsR7PsFoCJJIqYnwh3l6yJBs239HqzZtrWWq7JhzP2SRQQRHOvLeTFSPqfzwgpN7sHcJH8QgETL8u9DnWCCdLWuI-aFFMbT5T5RwbNgp-NJXf-vZXSuGssvvBtrT';
-        $fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
-
-        $tokens = ['e6jAm2RBRhirK4-HSfljnd:APA91bHdU3JEwX0TlHVN6zsFcNQUgRhimYKFePq8RTMZ3i56mOE4ViC_IN6pznbn8cFaHille6wceDh1C1xJJLFGDp9eO6EwsbE9qu7sSGj1_sDQPp-lwfltQvdeApv4oGEUHbs6T79o'];
-
-        $notification = [
-            'title' => 'Título de la notificación',
-            'body' => 'Cuerpo de la notificación'
-        ];
-
-        $response = Http::withHeaders([
-            'Authorization' => 'key=' . $serverKey,
-            'Content-Type' => 'application/json',
-        ])->post($fcmEndpoint, [
-            'registration_ids' => $tokens,
-            'notification' => $notification,
-        ]);
-        print_r($response);
-        */
-        /*
-        $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send';
-
-        $notification = array(
-            "message" => array(
-                "token" => 'fofveZuBRLuskqi6YuuPvS:APA91bHN9_iwToKLq6AdvhOcGO0K3sUzhA8X_bEf6qj5UCimtV5FpD91Bs4WCVYxprAnVua904-ApZY-jrOpJQfpOCrK10HWvwEfen62B4VWj4X1f73C3tFjy51_YCFHUb7Fl-kGiHu-',
-                "notification" => array(
-                    "title" => "Match update",
-                    "body" => "Arsenal goal in added time, score is now 3-0"
-                ),
-                "android" => array(
-                    "ttl" => "86400s",
-                    "notification" => array(
-                        "click_action" => "OPEN_ACTIVITY_1"
-                    )
-                ),
-                "apns" => array(
-                    "headers" => array(
-                        "apns-priority" => "5"
-                    ),
-                    "payload" => array(
-                        "aps" => array(
-                            "category" => "NEW_MESSAGE_CATEGORY"
-                        )
-                    )
-                ),
-                "webpush" => array(
-                    "headers" => array(
-                        "TTL" => "86400"
-                    )
-                )
-            )
-        );
-        print_r($this->getAccessToken());
-        
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.$this->getAccessToken(),
-            'Content-Type' => 'application/json;charset=UTF-8'
-        ])->post($fcmEndpoint, $notification);
-        */
         
         $url = "https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send";
 
         // Token de autorización del servidor de FCM
-        $authorization = "Bearer ya29.c.b0Aaekm1K98icYYmZqvU7wnGWwFYd0asWQERckqHYUswTfJELkwFbbKWNIqVLesBZEzqn7oAbitnVlsRFzsHRGSuBq8uTekKWFLF7lTNRbnbr6ct58KF0d4F2JTMx9RKyE4pQGhdzpbnh-UWpf-SGc4v0LnyP8yOhLxsv-nkVzpAkasW6ALWZSFTU4Pu7ChJwthham3G7S-8xbM2LrHO9mnHIpgWWf5MWqArNi6GRe5UU6ulaiQvm0XRwbHfwPHPzpTRUxF00t6Wpq2AHpmODqZUCV-88q3G81aIH1k4uvRZUFWJ1OQoE3bGrprx4wyEp2dyexBLGDN337P4I1i5RkZn-c8qpO5FbZd8JfygMj7ieo6YY0tdkb67m8yxY7tx26vqvRaB-4XqFyftz_Vjt2qeMR4rFohJtqsUVm450q5WYRvSmWj16U-0xZcruvcdygs-6rhUXu0Z_WXe_csbffZ9Mu67O2fjnrMwav92tB9Uo8_oUrI_QZ-es33yg64lfIp2rIUbtRR-2lWygj0QFq7WB1zSldxmpyi0etphX5629YRSta9Xbu8VuF6m11upmqytQSf6fUQ72g6ed7sablnnyyQd08kXifpFnkyu6Yn9kRRrZuvQ97s_RIhQRaJnvoi3msMjblOaoz4OUf9plZzmMcROraf0VO0l7kcfmSZkOzFl6xlWXj7-x4Vr5rpkj6h-j451qeOc9Wam3zwmYskFg4061ZRnngwQ9Rq6zdRecotos4xacex0IjdSUyfX1R3iQB7a_XZ747_a0Up42dk3hz87F5wVc0nd2II1u55ysjhdosx6Fll5lc_fFX_wYr8sXdfWlF9zRiZ93ZgRyhJ4BZ52uRXs4ehlUwhtwdF7-yeM2xZ_b9_QBuVmFr_hnkvk5lFs0u56pWU3XjIlWk657vXu0g5vMS94Mq2t8lwvi3dvYji-6vI5Qxb9lfSJsdSIpOp3lSItOUz80eISpiFRcgVYSowcsMSSahsocZ5cuzrZ-v-xlp2m9"; // Reemplaza con tu clave del servidor FCM
+        $authorization = "Bearer AAAAoqaefyg:APA91bFxpj2TAd6IXz8cz6RjQx2qxlsYxTtP9uBwa4-4ij0BDuC8ayh-QJO0RKyKVTbaF_jrrCyDSUWa-2c1ybOm-mgq9L73EJdKOhzHHlHhUXieaj0jEQSbSvyAzIbvhgSR0xSuTtyG"; // Reemplaza con tu clave del servidor FCM
 
         // Datos de la notificación
         $data = [
