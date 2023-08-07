@@ -58,10 +58,8 @@ class Notifications{
         
         $url = "https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send";
 
-        // Token de autorización del servidor de FCM
-        $authorization = "Bearer AAAAoqaefyg:APA91bFxpj2TAd6IXz8cz6RjQx2qxlsYxTtP9uBwa4-4ij0BDuC8ayh-QJO0RKyKVTbaF_jrrCyDSUWa-2c1ybOm-mgq9L73EJdKOhzHHlHhUXieaj0jEQSbSvyAzIbvhgSR0xSuTtyG"; // Reemplaza con tu clave del servidor FCM
+        $authorization = "Bearer ya29.c.b0Aaekm1K98icYYmZqvU7wnGWwFYd0asWQERckqHYUswTfJELkwFbbKWNIqVLesBZEzqn7oAbitnVlsRFzsHRGSuBq8uTekKWFLF7lTNRbnbr6ct58KF0d4F2JTMx9RKyE4pQGhdzpbnh-UWpf-SGc4v0LnyP8yOhLxsv-nkVzpAkasW6ALWZSFTU4Pu7ChJwthham3G7S-8xbM2LrHO9mnHIpgWWf5MWqArNi6GRe5UU6ulaiQvm0XRwbHfwPHPzpTRUxF00t6Wpq2AHpmODqZUCV-88q3G81aIH1k4uvRZUFWJ1OQoE3bGrprx4wyEp2dyexBLGDN337P4I1i5RkZn-c8qpO5FbZd8JfygMj7ieo6YY0tdkb67m8yxY7tx26vqvRaB-4XqFyftz_Vjt2qeMR4rFohJtqsUVm450q5WYRvSmWj16U-0xZcruvcdygs-6rhUXu0Z_WXe_csbffZ9Mu67O2fjnrMwav92tB9Uo8_oUrI_QZ-es33yg64lfIp2rIUbtRR-2lWygj0QFq7WB1zSldxmpyi0etphX5629YRSta9Xbu8VuF6m11upmqytQSf6fUQ72g6ed7sablnnyyQd08kXifpFnkyu6Yn9kRRrZuvQ97s_RIhQRaJnvoi3msMjblOaoz4OUf9plZzmMcROraf0VO0l7kcfmSZkOzFl6xlWXj7-x4Vr5rpkj6h-j451qeOc9Wam3zwmYskFg4061ZRnngwQ9Rq6zdRecotos4xacex0IjdSUyfX1R3iQB7a_XZ747_a0Up42dk3hz87F5wVc0nd2II1u55ysjhdosx6Fll5lc_fFX_wYr8sXdfWlF9zRiZ93ZgRyhJ4BZ52uRXs4ehlUwhtwdF7-yeM2xZ_b9_QBuVmFr_hnkvk5lFs0u56pWU3XjIlWk657vXu0g5vMS94Mq2t8lwvi3dvYji-6vI5Qxb9lfSJsdSIpOp3lSItOUz80eISpiFRcgVYSowcsMSSahsocZ5cuzrZ-v-xlp2m9"; // Reemplaza con tu clave del servidor FCM
 
-        // Datos de la notificación
         $data = [
             "message" => [
                 "token" => "fofveZuBRLuskqi6YuuPvS:APA91bHN9_iwToKLq6AdvhOcGO0K3sUzhA8X_bEf6qj5UCimtV5FpD91Bs4WCVYxprAnVua9O4-ApZY-jr0pJQfpOCrK1oHWvwEfen62B4VWj4XIf73C3tFjy5l_YCFHUb7FI-kGiHu-", // Reemplaza con el token de registro del dispositivo
@@ -72,24 +70,17 @@ class Notifications{
             ]
         ];
 
-        // Configuración de la solicitud
-        $options = [
-            "http" => [
-                "header" => "Authorization: " . $authorization . "\r\n" .
-                            "Content-Type: application/json\r\n",
-                "method" => "POST",
-                "content" => json_encode($data)
-            ]
-        ];
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "Authorization: Bearer $authorization"
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        // Realizar la solicitud
-        $context = stream_context_create($options);
-        $response = file_get_contents($url, false, $context);
-
-        if ($response === false) {
-            echo "Error al enviar la notificación";
-        } else {
-            echo "Notificación enviada con éxito";
-        }
+        // Ejecutar la solicitud
+        $response = curl_exec($ch);
+        print_r($response);
     }
 }
