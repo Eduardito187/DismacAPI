@@ -58,6 +58,32 @@ class Partner extends Controller
      */
     public function index(Request $request)
     {
+        $serverKey = 'AAAAoqaefyg:APA91bFxpj2TAd6IXz8cz6RjQx2qxlsYxTtP9uBwa4-4ij0BDuC8ayh-QJO0RKyKVTbaF_jrrCyDSUWa-2c1ybOm-mgq9L73EJdKOhzHHlHhUXieaj0jEQSbSvyAzIbvhgSR0xSuTtyG';
+
+        // Datos de la notificación
+        $notificationData = [
+            'to' => 'fofveZuBRLuskqi6YuuPvS:APA91bHN9_iwToKLq6AdvhOcGO0K3sUzhA8X_bEf6qj5UCimtV5FpD91Bs4WCVYxprAnVua9O4-ApZY-jr0pJQfpOCrK1oHWvwEfen62B4VWj4XIf73C3tFjy5l_YCFHUb7FI-kGiHu-', // Reemplaza con el token de registro del dispositivo
+            'notification' => [
+                'title' => 'Título de la notificación',
+                'body' => 'Cuerpo de la notificación'
+            ]
+        ];
+
+        $ch = curl_init('https://fcm.googleapis.com/fcm/send');
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($notificationData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: key=' . $serverKey,
+            'Content-Type: application/json'
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo 'Respuesta del servidor FCM: ' . $response;
+
         $response = array();
         try {
             $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
