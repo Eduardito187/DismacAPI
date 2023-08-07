@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #- name: Set up PHP
-        #uses: shivammathur/setup-php@v2
-        #with:
-          #php-version: 8.1
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
 
-      #- name: Clear Composer cache
-        #run: composer clear-cache
+      - name: Clear Composer cache
+        run: composer clear-cache
 
       #- name: Run Post-Deploy Commands
         #run: sshpass -p 'Abel1234567$' ssh -p 65002 u960392013@149.100.155.148 "cd public_html/DismacAPI/ && composer install;php artisan migrate;"
