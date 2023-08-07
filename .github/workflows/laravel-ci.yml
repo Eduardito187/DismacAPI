@@ -23,5 +23,3 @@ jobs:
 
       #- name: Run Post-Deploy Commands
         #run: sshpass -p 'Abel1234567$' ssh -p 65002 u960392013@149.100.155.148 "cd public_html/DismacAPI/ && composer install;php artisan migrate;"
-
-if: false
