@@ -1806,7 +1806,7 @@ class PartnerApi{
                 foreach ($Products as $p => $product) {
                     $price += $this->calculoPriceProduct($store->id, $product->id) * $this->getStockAbsolutePorduct($product->id, $store->id);
                 }
-                $ArrayStore[$this->text->getPrice()] = $price;
+                $ArrayStore[$this->text->getPrice()] = number_format($price, 2, ',', '.');
                 $data[] = $ArrayStore;
             }
         } catch (\Throwable $th) {
