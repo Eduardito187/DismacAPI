@@ -21,6 +21,8 @@ jobs:
       - name: Clear Composer cache
         run: composer clear-cache
 
+      - name: Navigate to project directory
+        run: ls
 
       - name: Install Composer dependencies
         run: composer install
