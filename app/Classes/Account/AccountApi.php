@@ -254,11 +254,10 @@ class AccountApi{
         if (array_key_exists($this->text->getToken(), $data)){
             $TOKEN = $data[$this->text->getToken()];
             $this->validateSessionToken($Account->id, $TOKEN);
-            $this->createSessionToken($Account->id, $TOKEN);
+            return $this->createSessionToken($Account->id, $TOKEN);
         }else{
             throw new Exception($this->text->getParametersNone());
         }
-        return true;
     }
     
     /**
@@ -292,7 +291,7 @@ class AccountApi{
         
         $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
         $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
-        
+
         return true;
     }
 
