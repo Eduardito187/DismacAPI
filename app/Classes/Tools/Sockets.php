@@ -6,7 +6,7 @@ use App\Classes\Helper\Text;
 use App\Classes\Helper\Date;
 
 class Sockets{
-    const URL = "http://31.220.31.243:3000/";
+    const URL = "http://62.72.9.102:3000/";
     /**
      * @var Text
      */
