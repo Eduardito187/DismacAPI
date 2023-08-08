@@ -74,7 +74,7 @@ class Notifications{
             'notification' => $notification,
         ]);
         */
-        print_r($this->getAccessToken());
+        //print_r($this->getAccessToken());
         /*
 
         $fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/notificaciones-a60ac/messages:send';

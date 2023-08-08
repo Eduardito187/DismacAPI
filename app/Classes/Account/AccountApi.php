@@ -277,7 +277,6 @@ class AccountApi{
             $SessionToken->save();
             return true;
         } catch (Exception $th) {
-            print_r($th->getMessage());
             return false;
         }
     }
