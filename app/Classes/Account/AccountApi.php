@@ -287,13 +287,12 @@ class AccountApi{
      * @return bool
      */
     public function validateSessionToken(int $idAccount, string $TOKEN){
-        $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
-        if (!$SessionToken){
-            $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
-            $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
-            return true;
-        }
+        //$SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
+        
+        $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
+        $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
+        
         return true;
     }
 
