@@ -109,7 +109,7 @@ class Notifications{
                 )
             )
         );
-        print_r($this->getAccessToken());
+        //print_r($this->getAccessToken());
         
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '.$this->getAccessToken(),
