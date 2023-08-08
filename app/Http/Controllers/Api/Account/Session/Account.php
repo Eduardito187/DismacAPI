@@ -104,6 +104,25 @@ class Account extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function registerToken(Request $request)
+    {
+        try {
+            $response = $this->text->getResponseApi(
+                $this->accountApi->registerToken($request->header($this->text->getAuthorization()), $request->all()),
+                $this->text->getQuerySuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(null, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function getImprovementsActive(Request $request)
     {
         try {

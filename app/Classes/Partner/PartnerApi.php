@@ -42,6 +42,7 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use App\Classes\Tools\Sockets;
 
 class PartnerApi{
     CONST FOLDER_PROFILES = "Profiles/";
@@ -96,6 +97,10 @@ class PartnerApi{
      * @var TokenAccess
      */
     protected $tokenAccess;
+    /**
+     * @var Sockets
+     */
+    protected $Sockets;
 
     public function __construct() {
         $this->date       = new Date();
@@ -103,6 +108,7 @@ class PartnerApi{
         $this->text       = new Text();
         $this->pictureApi = new PictureApi();
         $this->addressApi = new AddressApi();
+        $this->Sockets    = new Sockets();
     }
 
     /**
@@ -110,8 +116,13 @@ class PartnerApi{
      * @return bool
      */
     public function uploadPicture(Request $request){
-        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $idAccount = $this->getAccountToken($request->header($this->text->getAuthorization()));
+        $id_Partner = $this->getPartnerByAccountId($idAccount);
         $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_PROFILES);
+        
+        $data = array($this->text->getIdPartner() => $id_Partner);
+        $this->Sockets->sendQueryPost($this->text->getUpdatePartnerAccount(), $data);
+
         return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureProfile());
     }
 
@@ -156,8 +167,13 @@ class PartnerApi{
      * @return bool
      */
     public function uploadCover(Request $request){
-        $id_Partner = $this->getPartnerByAccountId($this->getAccountToken($request->header($this->text->getAuthorization())));
+        $idAccount = $this->getAccountToken($request->header($this->text->getAuthorization()));
+        $id_Partner = $this->getPartnerByAccountId($idAccount);
         $id_picture = $this->pictureApi->uploadPicture($request, $id_Partner, self::FOLDER_COVERS);
+
+        $data = array($this->text->getIdPartner() => $id_Partner);
+        $this->Sockets->sendQueryPost($this->text->getUpdatePartnerAccount(), $data);
+
         return $this->updatePicturePartner($id_picture, $id_Partner, $this->text->getPictureFront());
     }
 

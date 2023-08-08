@@ -421,9 +421,33 @@ class Text{
     CONST ID_FAMILY           = "id_family";
     CONST Type_Param          = "Type";
     CONST COUND_WAREHOUSE     = "count_warehouse";
+    CONST CLOSE_ACCOUNT_SOCKET= "CloseAccount";
+    CONST DISABLE_ACCOUNT_SOCK= "DisableAccount";
+    CONST UPDATE_ACCOUNT_SOCKE= "UpdateAccountPartner";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatePartnerAccount(){
+        return SELF::UPDATE_ACCOUNT_SOCKE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisableAccount(){
+        return SELF::DISABLE_ACCOUNT_SOCK;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCloseAccount(){
+        return SELF::CLOSE_ACCOUNT_SOCKET;
     }
 
     /**

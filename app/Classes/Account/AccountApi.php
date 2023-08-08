@@ -27,6 +27,8 @@ use App\Models\Rol;
 use App\Models\RolAccount;
 use App\Models\Session;
 use App\Classes\Analytics\Analytics;
+use App\Models\SessionToken;
+use App\Classes\Tools\Sockets;
 
 class AccountApi{
     const DEFAULT_IMAGE = 3;
@@ -74,6 +76,10 @@ class AccountApi{
      * @var Analytics
      */
     protected $Analytics;
+    /**
+     * @var Sockets
+     */
+    protected $Sockets;
 
     public function __construct() {
         $this->date        = new Date();
@@ -82,6 +88,7 @@ class AccountApi{
         $this->partner     = new PartnerApi();
         $this->addressApi  = new AddressApi();
         $this->Analytics   = new Analytics();
+        $this->Sockets     = new Sockets();
     }
 
     /**
@@ -235,6 +242,54 @@ class AccountApi{
     public function createImprovement(string $token, array $data){
         $Account = $this->getCurrentAccount($token);
         return $this->newImprovement($Account->id, $data);
+    }
+
+    /**
+     * @param string $token
+     * @param array $data
+     * @return bool
+     */
+    public function registerToken(string $token, array $data){
+        $Account = $this->getCurrentAccount($token);
+        if (array_key_exists($this->text->getToken(), $data)){
+            $TOKEN = $data[$this->text->getToken()];
+            $this->validateSessionToken($Account->id);
+            $this->createSessionToken($Account->id, $TOKEN);
+        }else{
+            throw new Exception($this->text->getParametersNone());
+        }
+        return true;
+    }
+    
+    /**
+     * @param int $idAccount
+     * @param string $token
+     * @return bool
+     */
+    public function createSessionToken(int $idAccount, string $token){
+        try {
+            $SessionToken = new SessionToken();
+            $SessionToken->id_account = $idAccount;
+            $SessionToken->token = $token;
+            $SessionToken->status = $this->status->getEnable();
+            $SessionToken->created_at = $this->date->getFullDate();
+            $SessionToken->updated_at = null;
+            $SessionToken->save();
+            return true;
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    public function validateSessionToken(int $idAccount){
+        $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
+        if (!$SessionToken){
+            $data = array($this->text->getIdAccount() => $idAccount);
+            $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
+            return true;
+        }
+        SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
+        return true;
     }
 
     /**
@@ -454,6 +509,7 @@ class AccountApi{
             $this->text->getEmail() => $Account->email,
             $this->text->getProfile() => $Partner->Profile->url,
             $this->text->getCover() => $Partner->Front->url,
+            $this->text->getIdPartner() => $Partner->id,
             $this->text->getRoles() => $this->rolAccountArray($Account->rolAccount)
         );
     }
@@ -708,6 +764,11 @@ class AccountApi{
 
             $this->updateAccountAt($ID, $time);
 
+            if ($status == $this->status->getDisable()){
+                $data = array($this->text->getIdAccount() => $ID);
+                $this->Sockets->sendQueryPost($this->text->getDisableAccount(), $data);
+            }
+
             $this->updateAccountLoginStatus($ID, $time, $status);
         }else{
             throw new Exception($this->text->AccountNotExist());
@@ -801,8 +862,13 @@ class AccountApi{
                 $time= $this->date->getFullDate();
 
                 $this->updateAccountAt($account->id, $time);
-    
-                $this->updateAccountLoginStatus($account->id, $time, $cuenta[$this->text->getStatus()]);
+                $status = $cuenta[$this->text->getStatus()];
+                if ($status == $this->status->getDisable()){
+                    $data = array($this->text->getIdAccount() => $account->id);
+                    $this->Sockets->sendQueryPost($this->text->getDisableAccount(), $data);
+                }
+
+                $this->updateAccountLoginStatus($account->id, $time, $status);
             }else{
                 throw new Exception($this->text->AccountNotExist());
             }
