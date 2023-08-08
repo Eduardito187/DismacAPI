@@ -253,7 +253,7 @@ class AccountApi{
         $Account = $this->getCurrentAccount($token);
         if (array_key_exists($this->text->getToken(), $data)){
             $TOKEN = $data[$this->text->getToken()];
-            $this->validateSessionToken($Account->id);
+            $this->validateSessionToken($Account->id, $TOKEN);
             $this->createSessionToken($Account->id, $TOKEN);
         }else{
             throw new Exception($this->text->getParametersNone());
@@ -281,10 +281,15 @@ class AccountApi{
         }
     }
 
-    public function validateSessionToken(int $idAccount){
+    /**
+     * @param int $idAccount
+     * @param string $TOKEN
+     * @return bool
+     */
+    public function validateSessionToken(int $idAccount, string $TOKEN){
         $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         if (!$SessionToken){
-            $data = array($this->text->getIdAccount() => $idAccount);
+            $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
             $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
             return true;
         }
