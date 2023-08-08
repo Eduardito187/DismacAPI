@@ -289,9 +289,7 @@ class AccountApi{
         //$SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
         $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
-        echo "1";
         $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
-        echo "2";
     }
 
     /**
