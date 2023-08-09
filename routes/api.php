@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware([CustomValidateToken::class])->group(function () {
 
     Route::controller(System::class)->group(function(){
+        Route::post('system/verifyVersion', 'verifyVersion');
         Route::post('system/store', 'store');
         Route::post('system/delimitation', 'delimitation');
         Route::post('system/municipality', 'municipality');

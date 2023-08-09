@@ -25,6 +25,25 @@ class System extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
+     * @param string $code
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyVersion(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi(
+                $this->PlatformApi->verifyVersion($request->all()),
+                $this->text->getDataProcessSuccess()
+            );
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi(false, $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */

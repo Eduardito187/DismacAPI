@@ -7,6 +7,7 @@ use Exception;
 use \Illuminate\Http\Request;
 use App\Classes\Helper\Date;
 use App\Classes\Helper\Status;
+use App\Models\Config;
 use App\Models\Delimitations;
 use App\Models\Localization;
 use App\Models\MunicipalityPos;
@@ -18,6 +19,7 @@ use App\Models\Store;
 use App\Models\Warehouse;
 
 class PlatformApi{
+    const CODE_VERSION = "version";
     /**
      * @var Text
      */
@@ -174,6 +176,38 @@ class PlatformApi{
             return null;
         }
         return $warehouse->id;
+    }
+
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function verifyVersion(array $data){
+        $Config = $this->getConfigValue(self::CODE_VERSION);
+        if (is_null($Config)){
+            return false;
+        }
+        if (array_key_exists($this->text->getVersion(), $data)){
+            $result = version_compare($data[$this->text->getVersion()], $Config);
+            if ($result < 0) {
+                return false;
+            } elseif ($result > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    public function getConfigValue(string $code){
+        $Config = Config::where($this->text->getCode(), $code)->first();
+        if (!$Config){
+            return null;
+        }
+        return $Config->value;
     }
 
     /**
