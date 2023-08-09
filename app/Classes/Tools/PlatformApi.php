@@ -212,6 +212,7 @@ class PlatformApi{
             } else {
                 $status = true;
             }
+            print_r($result);
             $data = array($this->text->getIdAccount() => $Account->id);
             $data = array($this->text->getStatus() => $status);
             $this->Sockets->sendQueryPost($this->text->getVersionVerify(), $data);
