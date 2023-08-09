@@ -17,6 +17,8 @@ use App\Models\Rol;
 use App\Models\RolPermissions;
 use App\Models\Store;
 use App\Models\Warehouse;
+use App\Classes\Account\AccountApi;
+use App\Classes\Tools\Sockets;
 
 class PlatformApi{
     const CODE_VERSION = "version";
@@ -32,11 +34,21 @@ class PlatformApi{
      * @var Status
      */
     protected $status;
+    /**
+     * @var AccountApi
+     */
+    protected $AccountApi;
+    /**
+     * @var Sockets
+     */
+    protected $Sockets;
 
     public function __construct() {
         $this->text = new Text();
         $this->date = new Date();
         $this->status = new Status();
+        $this->AccountApi = new AccountApi();
+        $this->Sockets = new Sockets();
     }
 
     /**
@@ -180,23 +192,30 @@ class PlatformApi{
 
 
     /**
+     * @param Request $request
      * @param array $data
      * @return bool
      */
-    public function verifyVersion(array $data){
+    public function verifyVersion(Request $request, array $data){
         $Config = $this->getConfigValue(self::CODE_VERSION);
         if (is_null($Config)){
             return false;
         }
         if (array_key_exists($this->text->getVersion(), $data)){
             $result = version_compare($data[$this->text->getVersion()], $Config);
+            $Account = $this->AccountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $status = false;
             if ($result < 0) {
-                return false;
+                $status = false;
             } elseif ($result > 0) {
-                return false;
+                $status = false;
             } else {
-                return true;
+                $status = true;
             }
+            $data = array($this->text->getIdAccount() => $Account->id);
+            $data = array($this->text->getStatus() => $status);
+            $this->Sockets->sendQueryPost($this->text->getVersionVerify(), $data);
+            return true;
         }else{
             return false;
         }

@@ -34,7 +34,7 @@ class System extends Controller
         $response = array();
         try {
             $response = $this->text->getResponseApi(
-                $this->PlatformApi->verifyVersion($request->all()),
+                $this->PlatformApi->verifyVersion($request, $request->all()),
                 $this->text->getDataProcessSuccess()
             );
         } catch (Exception $th) {

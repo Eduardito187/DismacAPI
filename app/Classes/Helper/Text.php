@@ -425,9 +425,17 @@ class Text{
     CONST DISABLE_ACCOUNT_SOCK= "DisableAccount";
     CONST UPDATE_ACCOUNT_SOCKE= "UpdateAccountPartner";
     CONST VERSION             = "version";
+    CONST VERSION_VERIFY      = "VersionVerify";
 
     public function __construct() {
         //
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionVerify(){
+        return SELF::VERSION_VERIFY;
     }
 
     /**
