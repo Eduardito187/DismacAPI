@@ -1071,10 +1071,7 @@ class AccountApi{
                 $municipios[$Delimitation->id_municipality_pos][] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
             }
         }
-        return array(
-            "delimitation" => $delimitation,
-            "municipios" => $municipios
-        );
+        return array("delimitation" => $delimitation,"municipios" => $municipios);
     }
 
     /**
