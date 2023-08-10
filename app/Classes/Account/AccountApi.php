@@ -1068,7 +1068,7 @@ class AccountApi{
             foreach ($Delimitations as $key2 => $Delimitation){
                 $Localization = $Delimitation->Localization;
                 $delimitation[] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
-                $municipios[$Delimitation->id_municipality_pos] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
+                $municipios[$Delimitation->id_municipality_pos][] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
             }
         }
         return array(
