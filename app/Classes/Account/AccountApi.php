@@ -1061,15 +1061,20 @@ class AccountApi{
      */
     public function getDelimitations(Partner $partner){
         $delimitation = array();
+        $municipios = array();
         foreach($partner->Stores as $key => $store){
             $Store = $store->Store;
             $Delimitations = $Store->Delimitations;
             foreach ($Delimitations as $key2 => $Delimitation){
                 $Localization = $Delimitation->Localization;
                 $delimitation[] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
+                $municipios[$Delimitation->id_municipality_pos] = array($this->text->getLatitude() => floatval($Localization->latitud), $this->text->getLongitude() => floatval($Localization->longitud));
             }
         }
-        return $delimitation;
+        return array(
+            "delimitation" => $delimitation,
+            "municipios" => $municipios
+        );
     }
 
     /**
