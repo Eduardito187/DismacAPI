@@ -1059,6 +1059,23 @@ class AccountApi{
      * @param Partner $partner
      * @return array
      */
+    public function getDelimitations(Partner $partner){
+        $delimitation = array();
+        foreach($partner->Stores as $key => $store){
+            $Store = $store->Store;
+            $Delimitations = $Store->Delimitations;
+            foreach ($Delimitations as $key2 => $Delimitation){
+                $Localization = $Delimitation->Localization;
+                $delimitation[] = array($this->text->getLatitude() => $Localization->latitud, $this->text->getLongitude() => $Localization->longitud);
+            }
+        }
+        return $delimitation;
+    }
+
+    /**
+     * @param Partner $partner
+     * @return array
+     */
     public function getPartner(Partner $partner){
         return array(
             $this->text->getId() => $partner->id,

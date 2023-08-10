@@ -101,6 +101,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
 
     Route::controller(Partner::class)->group(function(){
         Route::get('partner', 'index');
+        Route::get('partner/delimitations', 'delimitations');
         Route::post('partner', 'store');
         Route::patch('partner/Pdf/Category/{id}', 'generatePdfByCategory');
         Route::get('partner/countAccount', 'countAccount');
