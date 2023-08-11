@@ -54,8 +54,12 @@ class Sockets{
             self::TO => "fXZ0N3oxS36-fIpKvuXdK1:APA91bFmg5VzP2mG0JSuaJ4IfBKtNr0zHBqmL9eb1iaFb9K0-2GcXlB6-SAillsx6odJpwViG9XKb7Xi6saGkxuAjn8u88MwxV1K2w9zk_XQ_gMpWlmWzpLgj2hF_3RkvZEMGW4gtsNY",
             self::NOTIFICATION => [
                 "body" => "Revirtamos longtime?",
-                "title" => "PlatformDismac",
-            ],
+                "title" => "PlatformDismac"
+            ]
+        ];
+        $headers = [
+            "Authorization: key=AAAAoqaefyg:APA91bFxpj2TAd6IXz8cz6RjQx2qxlsYxTtP9uBwa4-4ij0BDuC8ayh-QJO0RKyKVTbaF_jrrCyDSUWa-2c1ybOm-mgq9L73EJdKOhzHHlHhUXieaj0jEQSbSvyAzIbvhgSR0xSuTtyG",
+            self::TYPE_JSON
         ];
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
