@@ -292,8 +292,9 @@ class AccountApi{
     public function validateSessionToken(int $idAccount, string $TOKEN){
         $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         if (!$SessionToken){
-            //
+            echo "NO";
         }else{
+            echo "SI";
             $this->Sockets->sendNotification($SessionToken->token, "Title", "Body");
         }
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
