@@ -52,6 +52,22 @@ class Partner extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createCampaign(Request $request)
+    {
+        $response = array();
+        try {
+            $Account = $this->accountApi->getAccountByToken($request->header($this->text->getAuthorization()));
+            $response = $this->text->getResponseApi($this->accountApi->createCampaign($Account->accountPartner->Partner, $request->all()), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * @return \Illuminate\Http\Response
      */
     public function delimitations(Request $request)

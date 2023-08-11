@@ -29,6 +29,7 @@ use App\Models\Session;
 use App\Classes\Analytics\Analytics;
 use App\Models\SessionToken;
 use App\Classes\Tools\Sockets;
+use App\Models\Campaign;
 
 class AccountApi{
     const DEFAULT_IMAGE = 3;
@@ -1072,6 +1073,43 @@ class AccountApi{
             }
         }
         return array("delimitation" => $delimitation,"municipios" => $this->convertMunicipios($municipios));
+    }
+
+    /**
+     * @param Partner $partner
+     * @param array $body
+     * @return bool
+     */
+    public function createCampaign(Partner $partner, array $body){
+        return $this->addCampaign($partner->id, $body[$this->text->getName()], $body[$this->text->getUrl()], $body[$this->text->getStatus()], $body[$this->text->getIdCategory()], $body[$this->text->getFromAt()], $body[$this->text->getToAt()]);
+    }
+
+    /**
+     * @param int $idPartner
+     * @param string $name
+     * @param string $url
+     * @param bool $status
+     * @param int $id_category
+     * @param string $from_a
+     * @param  string $to_at
+     * @return bool
+     */
+    public function addCampaign(int $idPartner, string $name, string $url, bool $status, int $id_category, string $from_at, string $to_at){
+        try {
+            $Campaign = new Campaign();
+            $Campaign->id_partner = $idPartner;
+            $Campaign->id_category = $id_category;
+            $Campaign->name = $name;
+            $Campaign->url = $url;
+            $Campaign->status = $status;
+            $Campaign->created_at = $this->date->getFullDate();
+            $Campaign->updated_at = null;
+            $Campaign->from_at = $from_at;
+            $Campaign->to_at = $to_at;
+            return $Campaign->save();
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     /**

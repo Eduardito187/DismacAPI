@@ -103,6 +103,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
         Route::get('partner', 'index');
         Route::get('partner/delimitations', 'delimitations');
         Route::post('partner', 'store');
+        Route::post('partner/create/campaign', 'createCampaign');
         Route::patch('partner/Pdf/Category/{id}', 'generatePdfByCategory');
         Route::get('partner/countAccount', 'countAccount');
         Route::get('partner/countProduct', 'countProduct');
