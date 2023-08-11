@@ -52,6 +52,20 @@ class Partner extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\Response
+     */
+    public function sociaList(Request $request)
+    {
+        $response = array();
+        try {
+            $response = $this->text->getResponseApi($this->accountApi->listSocials(), $this->text->getQuerySuccess());
+        } catch (Exception $th) {
+            $response = $this->text->getResponseApi($this->status->getDisable(), $th->getMessage());
+        }
+        return response()->json($response);
+    }
+
+    /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */

@@ -100,6 +100,7 @@ Route::middleware([CustomValidateToken::class])->group(function () {
     });
 
     Route::controller(Partner::class)->group(function(){
+        Route::get('sociaList', 'sociaList');
         Route::get('partner', 'index');
         Route::get('partner/delimitations', 'delimitations');
         Route::post('partner', 'store');

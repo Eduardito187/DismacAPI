@@ -30,6 +30,7 @@ use App\Classes\Analytics\Analytics;
 use App\Models\SessionToken;
 use App\Classes\Tools\Sockets;
 use App\Models\Campaign;
+use App\Models\SocialNetwork;
 use \DateTime;
 
 class AccountApi{
@@ -1140,6 +1141,14 @@ class AccountApi{
             $this->text->getCover() => $partner->Front->url,
             $this->text->getToken() => $partner->token
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function listSocials(){
+        $data = SocialNetwork::all();
+        return $data->toArray();
     }
 
     /**
