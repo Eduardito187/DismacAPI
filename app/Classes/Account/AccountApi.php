@@ -294,8 +294,7 @@ class AccountApi{
         if (!$SessionToken){
             //
         }else{
-            $this->Sockets->sendNotification("e6jAm2RBRhirK4-HSfljnd:APA91bHdU3JEwX0TlHVN6zsFcNQUgRhimYKFePq8RTMZ3i56mOE4ViC_IN6pznbn8cFaHille6wceDh1C1xJJLFGDp9eO6EwsbE9qu7sSGj1_sDQPp-lwfltQvdeApv4oGEUHbs6T79o", "Title", "Body");
-            $SessionToken->token;
+            $this->Sockets->sendNotification($SessionToken->token, "Title", "Body");
         }
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
         $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
