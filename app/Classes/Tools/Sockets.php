@@ -12,6 +12,7 @@ class Sockets{
     const TYPE_JSON = "Content-Type: application/json";
     const TO = "to";
     const NOTIFICATION = "notification";
+    const TITLE_APP = "PlatformDismac";
     /**
      * @var Text
      */
@@ -44,17 +45,16 @@ class Sockets{
 
     /**
      * @param string $token
-     * @param string $title
-     * @param string $body
+     * @param string $message
      * @return void
      */
-    public function sendNotification($token, $title, $body){
+    public function sendNotification($token, $message){
         $ch = curl_init(self::FCM);
         $data = [
-            self::TO => "fXZ0N3oxS36-fIpKvuXdK1:APA91bFmg5VzP2mG0JSuaJ4IfBKtNr0zHBqmL9eb1iaFb9K0-2GcXlB6-SAillsx6odJpwViG9XKb7Xi6saGkxuAjn8u88MwxV1K2w9zk_XQ_gMpWlmWzpLgj2hF_3RkvZEMGW4gtsNY",
+            self::TO => $token,
             self::NOTIFICATION => [
-                "body" => "Revirtamos longtime?",
-                "title" => "PlatformDismac"
+                "body" => $message,
+                "title" => self::TITLE_APP
             ]
         ];
         $headers = [
@@ -63,7 +63,7 @@ class Sockets{
         ];
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(self::TYPE_JSON));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);

@@ -293,7 +293,7 @@ class AccountApi{
         $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         if (!$SessionToken){
         }else{
-            $this->Sockets->sendNotification($SessionToken->token, "Title", "Body");
+            $this->Sockets->sendNotification($SessionToken->token, "Alguien más se está conectando con su cuenta.");
         }
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
         $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
