@@ -290,7 +290,13 @@ class AccountApi{
      * @return void
      */
     public function validateSessionToken(int $idAccount, string $TOKEN){
-        //$SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
+        $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
+        if (!$SessionToken){
+            //
+        }else{
+            $this->Sockets->sendNotification("fi0c9e2NR7u5iZ7md5HRa2:APA91bEmoQJaqqKKPnKDPvc42T7LPvRaQ65qj9XQlfjq4svMWWS9GAbSrZkz8JsJ9nzzNoNjCA6aJ2TRkRxUwAj-9dD582oUgobNlwhfG6sJZeQUw0eSO-l6l2qLWCf1OuXPjB_ykGhN", "Title", "Body");
+            $SessionToken->token;
+        }
         SessionToken::where($this->text->getIdAccount(), $idAccount)->delete();
         $data = array($this->text->getIdAccount() => $idAccount, $this->text->getToken() => $TOKEN);
         $this->Sockets->sendQueryPost($this->text->getCloseAccount(), $data);
