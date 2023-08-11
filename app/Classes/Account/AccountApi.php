@@ -31,6 +31,7 @@ use App\Models\SessionToken;
 use App\Classes\Tools\Sockets;
 use App\Models\Campaign;
 use App\Models\SocialNetwork;
+use App\Models\SocialPartner;
 use \DateTime;
 
 class AccountApi{
@@ -1084,6 +1085,34 @@ class AccountApi{
      */
     public function createCampaign(Partner $partner, array $body){
         return $this->addCampaign($partner->id, $body[$this->text->getName()], $body[$this->text->getUrl()], $body[$this->text->getStatus()], $body[$this->text->getIdCategory()], $body[$this->text->getFromAt()], $body[$this->text->getToAt()]);
+    }
+
+    /**
+     * @param Partner $partner
+     * @param array $body
+     * @return bool
+     */
+    public function createSocials(Partner $partner, array $body){
+        return $this->addSocialPartner($body[$this->text->getSocialNetwork()], $partner->id, $body[$this->text->getUrl()]);
+    }
+
+    /**
+     * @param int $id_social_network
+     * @param int $id_partner
+     * @param string $url
+     * @return bool
+     */
+    public function addSocialPartner(int $id_social_network, int $id_partner, string $url){
+        try {
+            $SocialPartner = new SocialPartner();
+            $SocialPartner->id_social_network = $id_social_network;
+            $SocialPartner->id_partner = $id_partner;
+            $SocialPartner->url = $url;
+            return $SocialPartner->save();
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return false;
+        }
     }
 
     /**
