@@ -30,6 +30,7 @@ use App\Classes\Analytics\Analytics;
 use App\Models\SessionToken;
 use App\Classes\Tools\Sockets;
 use App\Models\Campaign;
+use \DateTime;
 
 class AccountApi{
     const DEFAULT_IMAGE = 3;
@@ -1104,8 +1105,8 @@ class AccountApi{
             $Campaign->status = $status;
             $Campaign->created_at = $this->date->getFullDate();
             $Campaign->updated_at = null;
-            $Campaign->from_at = $from_at;
-            $Campaign->to_at = $to_at;
+            $Campaign->from_at = DateTime::createFromFormat("Y-m-d\TH:i:s.u\Z", $from_at)->format("Y-m-d H:i:s");
+            $Campaign->to_at = DateTime::createFromFormat("Y-m-d\TH:i:s.u\Z", $to_at)->format("Y-m-d H:i:s");
             return $Campaign->save();
         } catch (\Throwable $th) {
             return $th->getMessage();
