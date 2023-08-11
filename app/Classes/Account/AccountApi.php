@@ -1108,6 +1108,7 @@ class AccountApi{
             $Campaign->to_at = $to_at;
             return $Campaign->save();
         } catch (\Throwable $th) {
+            return $th->getMessage();
             return false;
         }
     }
