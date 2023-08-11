@@ -292,6 +292,7 @@ class AccountApi{
     public function validateSessionToken(int $idAccount, string $TOKEN){
         $SessionToken = SessionToken::where($this->text->getIdAccount(), $idAccount)->first();
         if (!$SessionToken){
+            //
         }else{
             $this->Sockets->sendNotification($SessionToken->token, "Alguien más se está conectando con su cuenta.");
         }
